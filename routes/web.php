@@ -15,9 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// KASIH MIDDLEWARE 'auth' KALO ROUTES NYA DI AUTHENTICATED
+
 // AUTH ROUTES
-Route::get('/login', [AuthController::class, 'loginView'])->name('login');
+Route::get('/login', [AuthController::class, 'loginView'])->name('login')->middleware('guest');
 Route::get('/register', [AuthController::class, 'registerView'])->name('register');
+Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 // DASHBOARD ROUTES / HOME
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
