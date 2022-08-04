@@ -28,11 +28,13 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middle
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
 //Dashboard Routes / Legislatif
-Route::get("/dashboard/legislatif", [DashboardController::class, "legislatifView"]);
-Route::get("/dashboard/partai", [DashboardController::class, "partaiView"]);
+Route::controller(DashboardController::class)->middleware("auth")->group(function() {
+    Route::get("/dashboard/legislatif", "legislatifView");
+    Route::get("/dashboard/partai", "partaiView");
+    Route::get("/dashboard/medsos", "medsosView");
+});
 
 //Info Politik Routes
-
 Route::controller(InfoPolitikController::class)->middleware('auth')->group(function(){
     Route::get('/infoPolitik/daftarIsu', 'daftarIsuView');
     Route::get('/infoPolitik/rekapitulasi', 'rekapitulasiView');

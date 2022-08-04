@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Legislatif;
 use App\Models\Partai;
+use App\Models\Medsos;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -27,5 +28,12 @@ class DashboardController extends Controller
             "title" => "Halaman Partai",
             "dataArr" => Partai::all()
         ]);
+    }
+
+    public function medsosView() {
+        return view("dashboard.medsos", [
+            "title" => "Halaman Medsos",
+            "dataArr" => Medsos::all()
+    ]);
     }
 }

@@ -53,9 +53,9 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/dashboard/legislatif">Legislatif</a>
-                        <a class="collapse-item" href="">Partai</a>
-                        <a class="collapse-item" href="">Medsos</a>
+                        <a class="collapse-item font-weight-bold" href="/dashboard/legislatif">Legislatif</a>
+                        <a class="collapse-item font-weight-bold" href="/dashboard/partai">Partai</a>
+                        <a class="collapse-item font-weight-bold" href="/dashboard/medsos">Medsos</a>
                     </div>
                 </div>
             </li>
@@ -68,9 +68,9 @@
                 </a>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Daftar Isu</a>
-                        <a class="collapse-item" href="">Rekapitulasi</a>
-                        <a class="collapse-item" href="">Berita</a>
+                        <a class="collapse-item font-weight-bold" href="">Daftar Isu</a>
+                        <a class="collapse-item font-weight-bold" href="">Rekapitulasi</a>
+                        <a class="collapse-item font-weight-bold" href="">Berita</a>
                     </div>
                 </div>
             </li>
@@ -82,11 +82,11 @@
                 </a>
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Relawan</a>
-                        <a class="collapse-item" href="">Simpatisan</a>
-                        <a class="collapse-item" href="">DPT</a>
-                        <a class="collapse-item" href="">DPT Manual</a>
-                        <a class="collapse-item" href="">Tabulasi Suara</a>
+                        <a class="collapse-item font-weight-bold" href="">Relawan</a>
+                        <a class="collapse-item font-weight-bold" href="">Simpatisan</a>
+                        <a class="collapse-item font-weight-bold" href="">DPT</a>
+                        <a class="collapse-item font-weight-bold" href="">DPT Manual</a>
+                        <a class="collapse-item font-weight-bold" href="">Tabulasi Suara</a>
                     </div>
                 </div>
             </li>
@@ -98,8 +98,8 @@
                 </a>
                 <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Input Data</a>
-                        <a class="collapse-item" href="">Hasil Survey</a>
+                        <a class="collapse-item font-weight-bold" href="">Input Data</a>
+                        <a class="collapse-item font-weight-bold" href="">Hasil Survey</a>
                     </div>
                 </div>
             </li>
@@ -111,8 +111,8 @@
                 </a>
                 <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Data Saksi</a>
-                        <a class="collapse-item" href="">Monitoring</a>
+                        <a class="collapse-item font-weight-bold" href="">Data Saksi</a>
+                        <a class="collapse-item font-weight-bold" href="">Monitoring</a>
                     </div>
                 </div>
             </li>
@@ -124,7 +124,7 @@
                 </a>
                 <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Daftar Relawan</a>
+                        <a class="collapse-item font-weight-bold" href="">Daftar Relawan</a>
                     </div>
                 </div>
             </li>
@@ -136,9 +136,9 @@
                 </a>
                 <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Wa Blas</a>
-                        <a class="collapse-item" href="">Email Blas</a>
-                        <a class="collapse-item" href="">Info Mobile</a>
+                        <a class="collapse-item font-weight-bold" href="">Wa Blas</a>
+                        <a class="collapse-item font-weight-bold" href="">Email Blas</a>
+                        <a class="collapse-item font-weight-bold" href="">Info Mobile</a>
                     </div>
                 </div>
             </li>
