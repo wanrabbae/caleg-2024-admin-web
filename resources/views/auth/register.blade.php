@@ -11,45 +11,61 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Form Register Caleg 2024 Promotion</h1>
                             </div>
-                            <form class="user">
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name">
-                                    </div>
+                            <form class="user" method="POST" autocomplete="off" action="/register-action" enctype="multipart/form-data">
+                                @csrf
+                                <div class="form-group">
+                                    <input type="text" name="nama_caleg" class="form-control" required style="font-size: 17px" id="exampleFirstName" placeholder="Nama caleg">
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
+                                    <input type="text" name="nama_lengkap" class="form-control" required style="font-size: 17px" id="exampleLastName" placeholder="Nama lengkap">
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
-                                    </div>
+                                <div class="form-group">
+                                    <input type="email" name="email" class="form-control" required style="font-size: 17px" id="exampleInputEmail" placeholder="Email">
                                 </div>
-                                <a href="login.html" class="btn btn-primary btn-user btn-block">
+                                <div class="form-group">
+                                    <select name="legislatif" id="legislatif" class="form-control" required style="font-size: 17px">
+                                        <option value="" selected>Pilih Legislatif</option>
+                                        @foreach ($legislatif as $item)
+                                            <option value="{{ $item->id_legislatif }}">{{ $item->nama_legislatif }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <textarea name="alamat" id="alamat" cols="30" rows="3" class="form-control" required placeholder="Alamat lengkap"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <input type="number" name="nohp" class="form-control" required style="font-size: 17px" id="exampleInputEmail" placeholder="No Hp">
+                                </div>
+                                <div class="form-group">
+                                    <select name="partai" id="partai" class="form-control" required style="font-size: 17px">
+                                        <option value="" selected>Pilih partai</option>
+                                        @foreach ($partai as $item)
+                                            <option value="{{ $item->id_partai }}">{{ $item->nama_partai }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="file" name="file_up" class="form-control" style="font-size: 17px" id="exampleInputEmail">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="username" class="form-control" required style="font-size: 17px" id="exampleInputEmail" placeholder="Username">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" class="form-control" required style="font-size: 17px" id="exampleInputPassword" placeholder="Password">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-user btn-block">
                                     Register Account
-                                </a>
+                                </button>
                                 <hr>
-                                <a href="index.html" class="btn btn-google btn-user btn-block">
-                                    <i class="fab fa-google fa-fw"></i> Register with Google
-                                </a>
-                                <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
-                                </a>
                             </form>
                             <hr>
                             <div class="text-center">
                                 <a class="small" href="forgot-password.html">Forgot Password?</a>
                             </div>
                             <div class="text-center">
-                                <a class="small" href="login.html">Already have an account? Login!</a>
+                                <a class="small" href="login">Already have an account? Login!</a>
                             </div>
                         </div>
                     </div>

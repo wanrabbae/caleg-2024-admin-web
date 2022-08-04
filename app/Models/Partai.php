@@ -12,4 +12,8 @@ class Partai extends Model
     protected $table = "partai";
     protected $guarded = [];
 
+    public function caleg()
+    {
+        return $this->hasMany(Caleg::class);
+    }
 }

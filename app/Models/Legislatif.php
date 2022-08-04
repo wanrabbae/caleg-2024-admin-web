@@ -12,4 +12,9 @@ class Legislatif extends Model
     protected $table = "legislatif";
 
     protected $guarded = [];
+
+    public function caleg()
+    {
+        return $this->hasMany(Caleg::class);
+    }
 }

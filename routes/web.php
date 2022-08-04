@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 // AUTH ROUTES
 Route::get('/login', [AuthController::class, 'loginView'])->name('login')->middleware('guest');
 Route::get('/register', [AuthController::class, 'registerView'])->name('register');
+Route::post('/register-action', [AuthController::class, 'registerAction'])->name('register_action');
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
