@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rk_kategori extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
 }

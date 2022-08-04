@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Dapil extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
 }

@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Legislatif extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
 }
