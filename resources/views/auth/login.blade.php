@@ -26,10 +26,10 @@
                                     <form class="user" method="POST" action="/authenticate">
                                         @csrf
                                         <div class="form-group">
-                                            <input name="username" type="text" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Username">
+                                            <input name="username" type="text" class="form-control" style="font-size: 17px" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Username">
                                         </div>
                                         <div class="form-group">
-                                            <input name="password" type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                                            <input name="password" type="password" class="form-control" style="font-size: 17px" id="exampleInputPassword" placeholder="Password">
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
