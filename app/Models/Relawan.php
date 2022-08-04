@@ -8,4 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Relawan extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
 }
