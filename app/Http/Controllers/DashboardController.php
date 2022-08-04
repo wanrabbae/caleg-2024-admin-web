@@ -13,18 +13,19 @@ class DashboardController extends Controller
         return view('home.dashboard');
     }
 
-    public function legislatifView() {
+    public function legislatifView()
+    {
         return view("dashboard.legislatif", [
             "title" => "Halaman Legislatif",
             "dataArr" => Legislatif::all()
         ]);
     }
 
-    public function partaiView() {
-        dd(Partai::all());
+    public function partaiView()
+    {
         return view("dashboard.partai", [
             "title" => "Halaman Partai",
             "dataArr" => Partai::all()
-    ]);
+        ]);
     }
 }
