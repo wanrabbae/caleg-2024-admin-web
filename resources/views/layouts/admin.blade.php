@@ -9,7 +9,7 @@
     <meta name="description" content="Caleg">
     <meta name="author" content="Alwan">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ $title ?? "Laravel" }}</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -17,6 +17,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 
 </head>
 
@@ -26,7 +27,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        {{-- <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: {{ $dataArr->warna }}"> --}}
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
@@ -35,16 +36,6 @@
                 </div>
                 <div class="sidebar-brand-text mx-3">JagatTbk</div>
             </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -62,7 +53,7 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Legislatif</a>
+                        <a class="collapse-item" href="/dashboard/legislatif">Legislatif</a>
                         <a class="collapse-item" href="">Partai</a>
                         <a class="collapse-item" href="">Medsos</a>
                     </div>
@@ -415,12 +406,10 @@
     <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
 
     <!-- Page level plugins -->
-    <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
-    <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
-
+    <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
 </body>
 
 </html>

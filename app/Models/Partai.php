@@ -9,6 +9,7 @@ class Partai extends Model
 {
     use HasFactory;
 
+    protected $table = "partai";
     protected $guarded = [];
 
 }

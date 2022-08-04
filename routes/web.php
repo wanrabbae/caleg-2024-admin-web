@@ -25,3 +25,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middle
 
 // DASHBOARD ROUTES / HOME
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+
+//Dashboard Routes / Legislatif
+Route::get("/dashboard/legislatif", [DashboardController::class, "legislatifView"]);
+Route::get("/dashboard/partai", [DashboardController::class, "partaiView"]);
