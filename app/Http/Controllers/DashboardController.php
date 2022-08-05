@@ -14,12 +14,13 @@ class DashboardController extends Controller
         return view('home.dashboard');
     }
 
-    public function legislatifView()
-    {
-        return view("dashboard.legislatif", [
-            "title" => "Halaman Legislatif",
-            "dataArr" => Legislatif::all()
-        ]);
+
+    public function legislatifDelete(Legislatif $legislatif) {
+        if (Legislatif::where("id_legislatif", $legislatif->id_legislatif)->delete()) {
+            return back()->with("success", "Success Delete $legislatif->nama_legislatif Legislatif");
+        }
+
+        return back()->with("error", "Error, Can't Delete $legislatif->nama_legislatif Legislatif");
     }
 
     public function partaiView()

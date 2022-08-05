@@ -10,6 +10,8 @@ class Partai extends Model
     use HasFactory;
 
     protected $table = "partai";
+    protected $primaryKey = "id_partai";
+    public $timestamps = false;
     protected $guarded = [];
 
     public function caleg()

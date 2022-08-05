@@ -30,7 +30,7 @@
         <ul class="navbar-nav sidebar sidebar-dark accordion bg-primary" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -364,7 +364,19 @@
 
                 </nav>
                 <!-- End of Topbar -->
-
+                
+                {{-- Session Modal --}}
+                @if (session()->has('success'))
+                <div class="alert alert-success alert-dismissible fade show py-2" role="alert">
+                    {{ session()->get('success') }}
+                </div>
+                @endif
+                @if (session()->has('error'))
+                <div class="alert alert-danger alert-dismissible fade show py-2" role="alert">
+                    {{ session()->get('error') }}
+                </div>
+                @endif
+                
                 <!-- Begin Page Content -->
                 @yield('content')
                 <!-- /.container-fluid -->

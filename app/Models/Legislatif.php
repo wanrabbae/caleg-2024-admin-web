@@ -10,7 +10,8 @@ class Legislatif extends Model
     use HasFactory;
 
     protected $table = "legislatif";
-
+    public $timestamps = false;
+    protected $primaryKey = "id_legislatif";
     protected $guarded = [];
 
     public function caleg()
