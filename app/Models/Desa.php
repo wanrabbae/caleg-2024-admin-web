@@ -11,6 +11,8 @@ class Desa extends Model
 
     protected $table = 'desa';
 
+    protected $primary_key = 'id_desa';
+
     protected $guarded = [];
 
     public function kecamatan(){
