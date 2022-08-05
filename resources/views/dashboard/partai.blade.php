@@ -35,7 +35,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="" class="bg-warning">
+                                    <a href="" class="badge bg-warning">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <a href="" class="bg-danger">

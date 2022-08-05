@@ -22,10 +22,10 @@
                                 <td>{{ $data->id_legislatif }}</td>
                                 <td>{{ $data->nama_legislatif }}</td>
                                 <td>
-                                    <a href="" class="bg-warning">
+                                    <a href="" class="badge bg-warning">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="" class="bg-danger">
+                                    <a href="" class="badge bg-danger">
                                         <i class="fas fa-trash-alt"></i>
                                     </a>
                                 </td>
