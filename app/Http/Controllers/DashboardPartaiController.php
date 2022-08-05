@@ -89,6 +89,7 @@ class DashboardPartaiController extends Controller
     public function update(Request $request, Partai $partai)
     {
         $rules = [
+            "logo" => "max:2024|image",
             "warna" => "required",
             "no_urut" => "required|max:100"
         ];
@@ -97,21 +98,18 @@ class DashboardPartaiController extends Controller
             $rules["nama_partai"] = "required|max:255|unique:partai";
         }
 
+        $data = $request->validate($rules);
+        
         if ($request->file("logo")) {
-            $rules["logo"] = "image|max:2048|required";
             if (!Storage::exists($partai->logo)) {
                 Storage::delete($partai->logo);
             }
+            $data["logo"] = $request->file("logo")->store("/image");
         }
         
-        $data = $request->validate($rules);
-        
-        $data["logo"] = $request->file("logo")->store("/image");
-         
-
         
     if (Partai::where("id_partai", $partai->id_partai)->update($data)) {
-            return back()->with("success", "Success Edit $partai->nama_partai");
+            return redirect("/dashboard/partai")->with("success", "Success Edit $partai->nama_partai");
         }
         
         return back()->with("error", "Error, Can't Edit $partai->nama_partai");

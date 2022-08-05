@@ -84,7 +84,7 @@ class DashboardLegislatifController extends Controller
     ]);
 
         if (Legislatif::where("id_legislatif", $legislatif->id_legislatif)->update($data)) {
-            return back()->with("success", "Success Update $legislatif->nama_legislatif");
+            return redirect("/dashboard/legislatif")->with("success", "Success Update $legislatif->nama_legislatif");
         }
 
         return back()->with("error", "Error, Can't Update $legislatif->nama_legislatif");

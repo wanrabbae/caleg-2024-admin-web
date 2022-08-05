@@ -7,6 +7,7 @@ use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
 Use App\Http\Controllers\DashboardLegislatifController;
 Use App\Http\Controllers\DashboardPartaiController;
+Use App\Http\Controllers\DashboardMedsosController;
 use App\Http\Controllers\InfoPolitikController;
 use App\Http\Controllers\RekapitulasiController;
 
@@ -39,6 +40,9 @@ Route::resource("/dashboard/legislatif", DashboardLegislatifController::class)->
 
 //Partai
 Route::resource("/dashboard/partai", DashboardPartaiController::class)->middleware("auth");
+
+//Medsos
+Route::resource("/dashboard/medsos", DashboardMedsosController::class)->parameters(["medsos" => "medsos"])->middleware("auth");
 
 //Info Politik Routes
 Route::controller(InfoPolitikController::class)->middleware('auth')->group(function () {
