@@ -2,11 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 
 class DaftarIsuController extends Controller
 {
     public function store(Request $request){
-        ddd($request);
+        $data = $request->validate([
+            'nama_kecamatan' => 'required',
+            'wilayah' => 'required|unique:kecamatan',
+            'id_kabupaten' => 'required'
+        ]);
+
+        if(Kecamatan::create($data)){
+            return back()->with('success', 'Success Create Daftar Isu');
+        }
+
+        return back()->with('error', 'Failed Create Daftar Isu');
     }
 }

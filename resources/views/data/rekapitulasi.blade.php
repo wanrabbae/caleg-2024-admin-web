@@ -30,8 +30,8 @@
                                 <td>{{ $item->tps }}</td>
                                 <td>{{ $item->suara }}</td>
                                 <td>
-                                    <a href="{{ asset('editRekapitulasi') }}/{{ $item->id_kecamatan }}" class="badge bg-warning"><i class="fas fa-edit"></i></a>
-                                    <a href="{{ asset('deleteRekapitulasi') }}/{{ $item->id_kecamatan }}" class="badge bg-danger"><i class="fas fa-trash"></i></a>
+                                    <button type="button"></button>
+                                    <button type="button"></button>
                                 </td>
                             </tr>
                         @endforeach
