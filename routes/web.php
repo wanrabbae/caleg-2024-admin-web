@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
+Use App\Http\Controllers\DashboardLegislatifController;
+Use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\InfoPolitikController;
 use App\Http\Controllers\RekapitulasiController;
 
@@ -31,15 +33,14 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middle
 // DASHBOARD ROUTES / HOME
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
-//Dashboard Routes / Legislatif
-Route::controller(DashboardController::class)->middleware("auth")->group(function() {
-    Route::get("/dashboard/legislatif", "legislatifView");
-    Route::get("/dashboard/partai", "partaiView");
-    Route::get("/dashboard/medsos", "medsosView");
-});
+//Dashboard Routes
+// Legislatif
+Route::resource("/dashboard/legislatif", DashboardLegislatifController::class)->middleware("auth");
+
+//Partai
+Route::resource("/dashboard/partai", DashboardPartaiController::class)->middleware("auth");
 
 //Info Politik Routes
-
 Route::controller(InfoPolitikController::class)->middleware('auth')->group(function () {
     Route::get('/infoPolitik/daftarIsu', 'daftarIsuView');
     Route::get('/infoPolitik/rekapitulasi', 'rekapitulasiView');
