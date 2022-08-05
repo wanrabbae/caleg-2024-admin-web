@@ -68,9 +68,9 @@
                 </a>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="">Daftar Isu</a>
-                        <a class="collapse-item font-weight-bold" href="">Rekapitulasi</a>
-                        <a class="collapse-item font-weight-bold" href="">Berita</a>
+                        <a class="collapse-item font-weight-bold" href="/infoPolitik/daftarIsu">Daftar Isu</a>
+                        <a class="collapse-item font-weight-bold" href="/infoPolitik/rekapitulasi">Rekapitulasi</a>
+                        <a class="collapse-item font-weight-bold" href="/infoPolitik/berita">Berita</a>
                     </div>
                 </div>
             </li>
