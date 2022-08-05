@@ -1,9 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BeritaController;
+use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InfoPolitikController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RekapitulasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,4 +44,16 @@ Route::controller(InfoPolitikController::class)->middleware('auth')->group(funct
     Route::get('/infoPolitik/daftarIsu', 'daftarIsuView');
     Route::get('/infoPolitik/rekapitulasi', 'rekapitulasiView');
     Route::get('/infoPolitik/berita', 'beritaView');
+});
+
+Route::controller(DaftarIsuController::class)->middleware('auth')->group(function(){
+    Route::post('/postDaftarisu', 'store');
+});
+
+Route::controller(RekapitulasiController::class)->middleware('auth')->group(function(){
+    Route::post('/postRekapitulasi', 'store');
+});
+
+Route::controller(BeritaController::class)->middleware('auth')->group(function(){
+    Route::post('/postBerita', 'store');
 });

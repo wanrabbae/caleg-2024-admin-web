@@ -11,6 +11,8 @@ class News extends Model
 
     protected $tables = 'news';
 
+    protected $primary_key = 'id_news';
+
     protected $guarded = [];
 
 }
