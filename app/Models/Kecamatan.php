@@ -11,6 +11,8 @@ class Kecamatan extends Model
 
     protected $table = 'kecamatan';
 
+    protected $primary_key = 'id_kecamatan';
+
     protected $guarded = [];
 
     public function desa(){
