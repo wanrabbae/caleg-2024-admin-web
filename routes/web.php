@@ -5,10 +5,11 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
-Use App\Http\Controllers\DashboardLegislatifController;
-Use App\Http\Controllers\DashboardPartaiController;
+use App\Http\Controllers\DashboardLegislatifController;
+use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\InfoPolitikController;
 use App\Http\Controllers\RekapitulasiController;
+use App\Http\Controllers\RelawanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,14 +48,23 @@ Route::controller(InfoPolitikController::class)->middleware('auth')->group(funct
     Route::get('/infoPolitik/berita', 'beritaView');
 });
 
-Route::controller(DaftarIsuController::class)->middleware('auth')->group(function(){
+Route::controller(DaftarIsuController::class)->middleware('auth')->group(function () {
     Route::post('/postDaftarisu', 'store');
 });
 
-Route::controller(RekapitulasiController::class)->middleware('auth')->group(function(){
+Route::controller(RekapitulasiController::class)->middleware('auth')->group(function () {
     Route::post('/postRekapitulasi', 'store');
 });
 
-Route::controller(BeritaController::class)->middleware('auth')->group(function(){
+Route::controller(BeritaController::class)->middleware('auth')->group(function () {
     Route::post('/postBerita', 'store');
+});
+
+
+// RELAWAN ROUTES (KALO CONFLICT SAMA ROUTE LAIN, BISA TARO INI DI PALING BAWAH)
+Route::prefix('/relawan')->middleware('auth')->group(function () {
+    Route::get('/', [RelawanController::class, 'index'])->name('relawan');
+    Route::post('/', [RelawanController::class, 'store'])->name('relawan-store');
+    Route::put('/{id}', [RelawanController::class, 'update'])->name('relawan-update');
+    Route::delete('/{id}', [RelawanController::class, 'delete'])->name('relawan-delete');
 });

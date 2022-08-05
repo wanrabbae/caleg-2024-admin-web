@@ -11,6 +11,7 @@ class Caleg extends Model
 
     protected $table = 'caleg';
     public $timestamps = false;
+    protected $primaryKey = 'id_caleg';
 
     protected $guarded = [];
 
@@ -24,7 +25,13 @@ class Caleg extends Model
         return $this->belongsTo(Partai::class, 'id_partai');
     }
 
-    public function berita(){
+    public function berita()
+    {
         return $this->hasMany(News::class, 'id_caleg');
+    }
+
+    public function relawan()
+    {
+        return $this->hasMany(Relawan::class);
     }
 }

@@ -124,7 +124,7 @@
                 </a>
                 <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="">Daftar Relawan</a>
+                        <a class="collapse-item font-weight-bold" href="/relawan">Daftar Relawan</a>
                     </div>
                 </div>
             </li>
@@ -189,7 +189,7 @@
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-
+                    <h3>{{ $title ?? 'Laravel' }}</h3>
                     <!-- Topbar Search -->
                     {{-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
