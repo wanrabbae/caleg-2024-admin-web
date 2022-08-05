@@ -124,7 +124,7 @@
                 </a>
                 <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="">Daftar Relawan</a>
+                        <a class="collapse-item font-weight-bold" href="/relawan">Daftar Relawan</a>
                     </div>
                 </div>
             </li>
@@ -189,9 +189,9 @@
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-
+                    <h3>{{ $title ?? 'Laravel' }}</h3>
                     <!-- Topbar Search -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    {{-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
@@ -200,7 +200,7 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </form> --}}
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -364,26 +364,27 @@
 
                 </nav>
                 <!-- End of Topbar -->
-                
+
                 {{-- Session Modal --}}
                 @if (session()->has('success'))
-                <div class="alert alert-success alert-dismissible fade show py-2" role="alert">
-                    {{ session()->get('success') }}
-                </div>
+                    <div class="alert alert-success alert-dismissible fade show py-2" role="alert">
+                        {{ session()->get('success') }}
+                    </div>
                 @endif
                 @if (session()->has('error'))
-                <div class="alert alert-danger alert-dismissible fade show py-2" role="alert">
-                    {{ session()->get('error') }}
-                </div>
+                    <div class="alert alert-danger alert-dismissible fade show py-2" role="alert">
+                        {{ session()->get('error') }}
+                    </div>
                 @endif
+
                 @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-                    </ul>
-                </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @endif
                 <!-- Begin Page Content -->
                 @yield('content')
