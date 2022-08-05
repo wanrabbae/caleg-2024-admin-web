@@ -23,4 +23,8 @@ class Caleg extends Model
     {
         return $this->belongsTo(Partai::class, 'id_partai');
     }
+
+    public function berita(){
+        return $this->hasMany(News::class, 'id_caleg');
+    }
 }
