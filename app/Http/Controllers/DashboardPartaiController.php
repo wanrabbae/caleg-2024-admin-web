@@ -16,7 +16,7 @@ class DashboardPartaiController extends Controller
     public function index()
     {
         return view("dashboard.partai.partai", [
-            "title" => "Halaman Legislatif",
+            "title" => "Partai Page",
             "dataArr" => Partai::all()
         ]);
     }

@@ -15,7 +15,7 @@ class DashboardLegislatifController extends Controller
     public function index()
     {
         return view("dashboard.legislatif.legislatif", [
-            "title" => "Halaman Legislatif",
+            "title" => "Legislatif Page",
             "dataArr" => Legislatif::all()
         ]);
     }

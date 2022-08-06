@@ -87,22 +87,22 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <form action="" method="POST" id="edit_form">
         <div class="modal-body">
-            <form action="" method="POST" id="edit_form">
                 @method('put')
                 @csrf
                 <div class="form-group">
                   <label for="nama_legislatif">Nama Legislatif</label>
                   <input type="text" class="form-control" id="edit_legislatif" placeholder="Nama Legislatif" name="nama_legislatif">
                 </div>
-              </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <a href="">
-              <button type="submit" class="btn btn-primary">Edit</button>
-            </a>
-        </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="">
+                  <button type="submit" class="btn btn-primary">Edit</button>
+                </a>
+              </div>
+            </form>
       </div>
     </div>
   </div>

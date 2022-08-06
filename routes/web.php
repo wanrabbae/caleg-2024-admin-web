@@ -41,7 +41,7 @@ Route::resource("/dashboard/legislatif", DashboardLegislatifController::class)->
 //Partai
 Route::resource("/dashboard/partai", DashboardPartaiController::class)->middleware("auth");
 //Medsos
-Route::resource('/dashboard/medsos', DashboardPartaiController::class)->parameters(["medsos" => "medsos"])->middleware("auth");
+Route::resource('/dashboard/medsos', DashboardMedsosController::class)->parameters(["medsos" => "medsos"])->middleware("auth");
 
 //Info Politik Routes
 Route::controller(InfoPolitikController::class)->middleware('auth')->group(function () {

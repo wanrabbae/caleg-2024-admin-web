@@ -16,7 +16,7 @@ class DashboardMedsosController extends Controller
     public function index()
     {
         return view("dashboard.medsos.medsos", [
-            "title" => "Halaman Medsos",
+            "title" => "Medsos Page",
             "dataArr" => Medsos::all()
     ]);
     }
