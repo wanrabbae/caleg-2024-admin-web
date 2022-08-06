@@ -37,11 +37,11 @@
                                             <span>Image Not Found</span>
                                         @endif
                                     </td>
-                                    <td>
-                                        <a class="btn btn-primary" href="/dashboard/partai/{{ $data->id_partai }}/edit">
+                                    <td class="d-flex justify-content-center">
+                                        <a class="btn btn-warning mx-3" href="/dashboard/partai/{{ $data->id_partai }}/edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <form action="/dashboard/partai/{{ $data->id_partai }}" method="POST">
+                                        <form action="/dashboard/partai/{{ $data->id_partai }}" method="POST" class="d-inline">
                                             @method('delete')
                                             @csrf
                                             <button type="submit" class="btn btn-danger">

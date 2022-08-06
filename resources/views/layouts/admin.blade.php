@@ -367,13 +367,19 @@
 
                 {{-- Session Modal --}}
                 @if (session()->has('success'))
-                    <div class="alert alert-success alert-dismissible fade show py-2" role="alert">
-                        {{ session()->get('success') }}
+                    <div class="col-md-7 d-flex justify-content-center text-center">
+                        <div class="alert alert-success alert-dismissible fade show py-2" role="alert">
+                            {{ session()->get('success') }}
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="alert" aria-label="Close"> <i class="fas fa-times"></i></button>
+                        </div>
                     </div>
                 @endif
                 @if (session()->has('error'))
-                    <div class="alert alert-danger alert-dismissible fade show py-2" role="alert">
-                        {{ session()->get('error') }}
+                    <div class="col-md-7 d-flex justify-content-center text-center">
+                        <div class="alert alert-danger alert-dismissible fade show py-2" role="alert">
+                            {{ session()->get('error') }}
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="alert" aria-label="Close"> <i class="fas fa-times"></i></button>
+                        </div>
                     </div>
                 @endif
 

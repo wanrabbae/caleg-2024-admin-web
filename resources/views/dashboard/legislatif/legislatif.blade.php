@@ -10,7 +10,7 @@
                 Legislatif
             </button>
     </div>
-    
+
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -27,11 +27,11 @@
                             <tr>
                                 <td>{{ $data->id_legislatif }}</td>
                                 <td>{{ $data->nama_legislatif }}</td>
-                                <td>
-                                    <button class="btn btn-primary" onclick="getData({{ $data->id_legislatif }})" data-toggle="modal" data-target="#editModal">
+                                <td class="d-flex justify-content-center">
+                                    <button class="btn btn-warning mx-3" onclick="getData({{ $data->id_legislatif }})" data-toggle="modal" data-target="#editModal">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <form action="/dashboard/legislatif/{{ $data->id_legislatif }}" method="POST">
+                                    <form action="/dashboard/legislatif/{{ $data->id_legislatif }}" method="POST" class="d-inline">
                                         @method("delete")
                                         @csrf
                                         <button type="submit" class="btn btn-danger">
