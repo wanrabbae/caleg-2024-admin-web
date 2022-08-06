@@ -56,10 +56,10 @@
                                         <button class="btn btn-primary" onclick="getData({{ $data->id_relawan }})" data-toggle="modal" data-target="#editModal">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <form action="/dashboard/legislatif/{{ $data->id_relawan }}" method="POST">
+                                        <form action="/relawan/{{ $data->id_relawan }}" method="POST">
                                             @method('delete')
                                             @csrf
-                                            <button type="submit" class="btn btn-danger">
+                                            <button type="submit" onclick="return confirm('Anda yakin ingin menghapus data ini ?')" class="btn btn-danger">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -93,7 +93,7 @@
                         </div>
                         <div class="form-group">
                             <label for="nama_relawan">Nama Relawan</label>
-                            <input required value="{{ old('nama_relawan') }}" type="text" class="form-control" id="nama_relawan" placeholder="Nama Legislatif" name="nama_relawan">
+                            <input required value="{{ old('nama_relawan') }}" type="text" class="form-control" id="nama_relawan" placeholder="Nama Relawan" name="nama_relawan">
                         </div>
                         <div class="form-group">
                             <label for="id_desa">Pilih Desa</label>
@@ -160,31 +160,80 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <form action="" method="POST" id="edit_form">
+                <form action="" method="POST" id="edit_form" enctype="multipart/form-data">
+                    <div class="modal-body">
                         @method('put')
                         @csrf
                         <div class="form-group">
-                            <label for="nama_legislatif">Nama Legislatif</label>
-                            <input required value="{{ old('') }}" type="text" class="form-control" id="edit_legislatif" placeholder="Nama Legislatif" name="nama_legislatif">
+                            <label for="nik">Nik</label>
+                            <input required value="{{ old('nik') }}" type="number" class="form-control" id="nik_edit" placeholder="Nik" name="nik">
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <a href="">
+                        <div class="form-group">
+                            <label for="nama_relawan">Nama Relawan</label>
+                            <input required value="{{ old('nama_relawan') }}" type="text" class="form-control" id="edit_nama_relawan" placeholder="Nama Relawan" name="nama_relawan">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_desa">Pilih Desa</label>
+                            <select class="form-control" name="id_desa" id="edit_id_desa">
+                                @foreach ($desa as $item)
+                                    <option value="{{ $item->id_desa }}">{{ $item->nama_desa }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="foto_ktp">Upload Foto KTP</label>
+                            <input required value="{{ old('foto_ktp') }}" type="file" class="form-control" id="foto_ktp" name="foto_ktp">
+                        </div>
+                        <div class="form-group">
+                            <label for="id_caleg">Pilih Caleg</label>
+                            <select class="form-control" name="id_caleg" id="edit_id_caleg">
+                                @foreach ($caleg as $item)
+                                    <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select class="form-control" name="status" id="edit_status">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="no_hp">No Hp</label>
+                            <input required value="{{ old('no_hp') }}" type="number" class="form-control" id="edit_no_hp" placeholder="No Hp" name="no_hp">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail</label>
+                            <input required value="{{ old('email') }}" type="text" class="form-control" id="edit_email" placeholder="Email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input required value="{{ old('username') }}" type="text" class="form-control" id="edit_username" placeholder="Username" name="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">New Password</label>
+                            <input required value="{{ old('password') }}" type="password" class="form-control" id="edit_password" placeholder="Password" name="password">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Edit</button>
-                    </a>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <script>
         function getData(data) {
-            fetch(`/dashboard/legislatif/${data}`).then(resp => resp.json()).then(resp => {
-                document.getElementById("edit_form").action = `/dashboard/legislatif/${data}`
-                document.getElementById("edit_legislatif").value = resp.nama_legislatif
+            fetch(`/relawan/${data}`).then(resp => resp.json()).then(resp => {
+                document.getElementById("edit_form").action = `/relawan/${data}`
+                document.getElementById("edit_nama_relawan").value = resp.nama_relawan
+                document.getElementById("nik_edit").value = resp.nik
+                document.getElementById("edit_email").value = resp.email
+                document.getElementById("edit_username").value = resp.username
+                document.getElementById("edit_no_hp").value = resp.no_hp
             })
         }
     </script>

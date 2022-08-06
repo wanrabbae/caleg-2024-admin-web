@@ -11,8 +11,14 @@ class News extends Model
 
     protected $tables = 'news';
 
-    protected $primary_key = 'id_news';
+    public $timestamps = false;
+
+    protected $primaryKey = 'id_news';
 
     protected $guarded = [];
+
+    public function caleg(){
+        return $this->belongsTo(Caleg::class);
+    }
 
 }

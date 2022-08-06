@@ -7,8 +7,9 @@ use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardLegislatifController;
 use App\Http\Controllers\DashboardPartaiController;
-Use App\Http\Controllers\DashboardMedsosController;
+use App\Http\Controllers\DashboardMedsosController;
 use App\Http\Controllers\InfoPolitikController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
 
@@ -44,30 +45,17 @@ Route::resource("/dashboard/partai", DashboardPartaiController::class)->middlewa
 Route::resource('/dashboard/medsos', DashboardMedsosController::class)->parameters(["medsos" => "medsos"])->middleware("auth");
 
 //Info Politik Routes
-Route::controller(InfoPolitikController::class)->middleware('auth')->group(function () {
-    Route::get('/infoPolitik/daftarIsu', 'daftarIsuView');
-    Route::get('/infoPolitik/rekapitulasi', 'rekapitulasiView');
-    Route::get('/infoPolitik/berita', 'beritaView');
-});
+Route::resource("/infoPolitik/daftarIsu", DaftarIsuController::class)->middleware('auth');
 
-Route::controller(DaftarIsuController::class)->middleware('auth')->group(function () {
-    Route::post('/postDaftarisu', 'store');
-    Route::get('/deleteDaftarIsu/{kecamatan:id_kecamatan}', 'delete');
-});
+Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
 
-Route::controller(RekapitulasiController::class)->middleware('auth')->group(function () {
-    Route::post('/postRekapitulasi', 'store');
-});
-
-Route::controller(BeritaController::class)->middleware('auth')->group(function () {
-    Route::post('/postBerita', 'store');
-});
-
+Route::resource('/infoPolitik/berita', NewsController::class)->middleware('auth');
 
 // RELAWAN ROUTES (KALO CONFLICT SAMA ROUTE LAIN, BISA TARO INI DI PALING BAWAH)
 Route::prefix('/relawan')->middleware('auth')->group(function () {
     Route::get('/', [RelawanController::class, 'index'])->name('relawan');
     Route::post('/', [RelawanController::class, 'store'])->name('relawan-store');
+    Route::get('/{id}', [RelawanController::class, 'show'])->name('relawan-show');
     Route::put('/{id}', [RelawanController::class, 'update'])->name('relawan-update');
     Route::delete('/{id}', [RelawanController::class, 'delete'])->name('relawan-delete');
 });

@@ -10,6 +10,7 @@ class Relawan extends Model
     use HasFactory;
     protected $table = 'relawan';
     public $timestamps = false;
+    protected $primaryKey = 'id_relawan';
 
     protected $guarded = [];
 
