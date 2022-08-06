@@ -52,6 +52,7 @@ Route::controller(InfoPolitikController::class)->middleware('auth')->group(funct
 
 Route::controller(DaftarIsuController::class)->middleware('auth')->group(function () {
     Route::post('/postDaftarisu', 'store');
+    Route::get('/deleteDaftarIsu/{kecamatan:id_kecamatan}', 'delete');
 });
 
 Route::controller(RekapitulasiController::class)->middleware('auth')->group(function () {

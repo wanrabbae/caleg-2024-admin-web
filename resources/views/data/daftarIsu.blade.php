@@ -3,19 +3,6 @@
 
 <div class="card shadow mb-4">
     <div class="col-md-3">
-        @if (session()->has('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session()->get('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        @endif
-
-        @if (session()->has('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session()->get('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
     </div>
     <div class="card-header py-3">
         <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary"><i class="fas fa-plus"></i>Create</button>
@@ -37,8 +24,18 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama_kecamatan }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-success mx-3" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fas fa-edit"></i></button>
-                                    <button type="button" class="btn btn-danger"><a href="{{ asset('deleteDaftarisu') }}/{{ $item->id_kecamatan }}"><i class="fas fa-trash"></i></a></button>
+                                    <button type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    {{-- <form action="/deleteDaftarisu/{{ $item->id_kecamatan }}" method="post" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form> --}}
+                                    <a href="{{ asset('deleteDaftarIsu') }}/{{ $item->id_kecamatan }}" class="btn btn-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
@@ -54,7 +51,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Create data Daftar Isu</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Create Data Daftar Isu</h5>
         </div>
         <div class="modal-body">
             <form action="{{ asset('postDaftarisu') }}" method="post">
@@ -110,14 +107,16 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Update Data Daftar Isu</h5>
         </div>
         <div class="modal-body">
-            @foreach ($data as $item)
+            @if ($data->count())
+
+            @endif
             <form action="{{ asset('update') }}" method="post">
                 @csrf
             </form>
-            @endforeach
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -20,4 +20,12 @@ class DaftarIsuController extends Controller
 
         return back()->with('error', 'Failed Create Daftar Isu');
     }
+
+    public function delete($id_kecamatan){
+        if(Kecamatan::where('id_kecamatan', $id_kecamatan)->delete()){
+            return back()->with('success', "Success Delete Data Kecamatan");
+        }
+
+        return back()->with('Error', "Failed Delete Data Kecamatan");
+    }
 }

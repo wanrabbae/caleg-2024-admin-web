@@ -10,7 +10,7 @@
                 Medsos
             </button>
     </div>
-    
+
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -36,11 +36,11 @@
                                     <span>Image Not Found</span>
                                     @endif
                                 </td>
-                                <td>
-                                    <a class="btn btn-primary" href="/dashboard/medsos/{{ $data->id_medsos }}/edit">
+                                <td class="d-flex justify-content-center">
+                                    <a class="btn btn-warning mx-3" href="/dashboard/medsos/{{ $data->id_medsos }}/edit">
                                         <i class="fas fa-edit"></i>
                                 </a>
-                                    <form action="/dashboard/medsos/{{ $data->id_medsos }}" method="POST">
+                                    <form action="/dashboard/medsos/{{ $data->id_medsos }}" method="POST" class="d-inline">
                                         @method("delete")
                                         @csrf
                                         <button type="submit" class="btn btn-danger">
