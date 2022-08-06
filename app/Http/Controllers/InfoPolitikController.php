@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Desa;
+use App\Models\Kabupaten;
 use App\Models\Kecamatan;
 use App\Models\News;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ class InfoPolitikController extends Controller
     {
         return view('data.daftarIsu', [
             'title' => 'Daftar Isu Page',
-            'data' => Kecamatan::all()
+            'data' => Kecamatan::all(),
+            'datas' => Kabupaten::all()
         ]);
     }
 

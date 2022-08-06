@@ -15,8 +15,10 @@ class Kecamatan extends Model
 
     protected $guarded = [];
 
-    public function desa(){
-        return $this->hasMany(Desa::class);
+    public $timestamps = false;
+
+    public function kabupaten(){
+        return $this->belongsTo(Kabupaten::class);
     }
 
 }
