@@ -38,7 +38,7 @@ Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middl
 //Dashboard Routes
 // Legislatif
 Route::resource("/dashboard/legislatif", DashboardLegislatifController::class)->middleware("auth");
-//Partai
+//Partai    
 Route::resource("/dashboard/partai", DashboardPartaiController::class)->middleware("auth");
 //Medsos
 Route::resource('/dashboard/medsos', DashboardMedsosController::class)->parameters(["medsos" => "medsos"])->middleware("auth");
