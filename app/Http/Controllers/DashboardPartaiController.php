@@ -62,7 +62,7 @@ class DashboardPartaiController extends Controller
      */
     public function show(Partai $partai)
     {
-        //
+        return response()->json($partai->makeHidden("id_partai", "logo"));
     }
 
     /**
@@ -73,10 +73,6 @@ class DashboardPartaiController extends Controller
      */
     public function edit(Partai $partai)
     {
-        return view("dashboard.partai.editPartai", [
-            "title" => "Edit $partai->nama_partai",
-            "dataArr" => $partai
-        ]);
     }
 
     /**
@@ -124,6 +120,7 @@ class DashboardPartaiController extends Controller
     public function destroy(Partai $partai)
     {
         if (Partai::destroy($partai->id_partai)) {
+            Storage::delete($partai->logo);
             return back()->with("success", "Success Delete $partai->nama_partai Partai");
         }
 

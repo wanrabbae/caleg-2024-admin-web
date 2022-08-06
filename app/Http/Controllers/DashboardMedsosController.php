@@ -61,7 +61,7 @@ class DashboardMedsosController extends Controller
      */
     public function show(Medsos $medsos)
     {
-        //
+        return response()->json($medsos->makeHidden("id_medsos", "logo"));
     }
 
     /**
@@ -121,6 +121,7 @@ class DashboardMedsosController extends Controller
     public function destroy(Medsos $medsos)
     {
         if (Medsos::destroy($medsos->id_medsos)) {
+            Storage::delete($medsos->logo);
             return back()->with("success", "Success Delete $medsos->nama_medsos Medsos");
         }
 

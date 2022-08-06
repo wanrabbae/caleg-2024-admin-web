@@ -37,9 +37,9 @@
                                     @endif
                                 </td>
                                 <td class="d-flex justify-content-center">
-                                    <a class="btn btn-warning mx-3" href="/dashboard/medsos/{{ $data->id_medsos }}/edit">
+                                    <button class="btn btn-warning mx-3" data-target="#editModal" data-toggle="modal" onclick="getData({{ $data->id_medsos }})">
                                         <i class="fas fa-edit"></i>
-                                </a>
+                                   </button>
                                     <form action="/dashboard/medsos/{{ $data->id_medsos }}" method="POST" class="d-inline">
                                         @method("delete")
                                         @csrf
@@ -89,4 +89,51 @@
       </div>
     </div>
   </div>
+
+  {{-- Edit Modal --}}
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit Partai</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="" id="edit_form" method="POST" enctype="multipart/form-data">
+            <div class="modal-body">
+                @method('put')
+                @csrf
+                <div class="form-group">
+                    <label for="nama_partai">Nama Medsos</label>
+                    <input type="text" class="form-control edit" id="edit_nama_medsos" placeholder="Nama Partai" name="nama_medsos">
+                </div>
+                <div class="form-group">
+                    <label for="logo">Logo</label>
+                    <input type="file" class="form-control-file" id="logo" name="logo" value="">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </a>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+    <script>
+    function getData(data) {
+        fetch(`/dashboard/medsos/${data}`).then(resp => resp.json()).then(resp => 
+        {
+            document.getElementById("edit_form").action = `/dashboard/medsos/${data}`
+            for (let x in resp) {
+                console.log(x, document.getElementById(`edit_${x}`))
+                document.getElementById(`edit_${x}`).value = resp[x];
+            }
+        })
+    }
+  </script>
 @endsection
