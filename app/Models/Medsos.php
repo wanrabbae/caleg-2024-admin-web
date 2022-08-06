@@ -14,4 +14,6 @@ class Medsos extends Model
 
     protected $guarded = [];
 
+    
+
 }
