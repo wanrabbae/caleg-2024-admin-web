@@ -5,7 +5,10 @@
     <div class="col-md-3">
     </div>
     <div class="card-header py-3">
-        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary"><i class="fas fa-plus"></i>Create</button>
+        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Create
+        </button>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -24,18 +27,16 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama_kecamatan }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-warning mx-3" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    {{-- <form action="/deleteDaftarisu/{{ $item->id_kecamatan }}" method="post" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form> --}}
-                                    <a href="{{ asset('deleteDaftarIsu') }}/{{ $item->id_kecamatan }}" class="btn btn-danger">
+                                   <button type="button" class="btn btn-warning mx-3" onclick="getData({{ $item->id_kecamatan }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                       <i class="fas fa-edit"></i>
+                                   </button>
+                                   <form action="/infoPolitik/daftarIsu/{{ $item->id_kecamatan }}" method="post" class="d-inline">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus kecamatan {{ $item->nama_kecamatan }}')">
                                         <i class="fas fa-trash-alt"></i>
-                                    </a>
+                                    </button>
+                                </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -52,49 +53,36 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Create Data Daftar Isu</h5>
+          <span aria-hidden="true">&times;</span>
         </div>
-        <div class="modal-body">
-            <form action="{{ asset('postDaftarisu') }}" method="post">
+            <form action="{{ asset('infoPolitik/daftarIsu') }}/" method="POST">
                 @csrf
-                <div class="mb-3">
-                    <label for="nama_kecamatan" class="form-label">Nama Kecamatan</label>
-                    <input type="text" class="form-control @error('nama_kecamatan') is-invalid @enderror" id="nama_kecamatan" name="nama_kecamatan" value="{{ old('nama_kecamatan') }}">
-                    @error('nama_kecamatan')
-                    <div class="invalid-feedback">
-                        {{ $message }}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nama_kecamatan" class="form-label">Nama Kecamatan</label>
+                        <input type="text" class="form-control" id="nama_kecamatan" name="nama_kecamatan" id="nama_kecamatan" placeholder="Nama Kecamatan">
                     </div>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="wilayah" class="form-label">Wilayah</label>
-                    <input type="text" class="form-control @error('wilayah') is-invalid @enderror" id="wilayah" name="wilayah" value="{{ old('wilayah') }}">
-                    @error('wilayah')
-                    <div class="invalid-feedback">
-                        {{ $message }}
+                    <div class="mb-3">
+                        <label for="wilayah" class="form-label">Wilayah</label>
+                        <input type="text" class="form-control" id="wilayah" name="wilayah" id="wilayah" placeholder="Wilayah">
                     </div>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label for="kabupaten" id="kabupaten" class="form-label">Kabupaten</label>
-                    <select class=" form-control form-select @error('id_kabupaten') is-invalid @enderror" name="id_kabupaten">
-                        <option selected>Open this select menu</option>
-                        @foreach ($datas as $item)
-                            @if (old('id_kabupaten') == $item->id_kabupaten)
+                    <div class="mb-3">
+                        <label for="kabupaten" class="form-label">Kabupaten</label>
+                        <select class=" form-control form-select" name="id_kabupaten" id="id_kabupaten">
+                            <option selected>Open this select menu</option>
+                            @foreach ($datas as $item)
+                            @if (old('id_kabupaten')==$item->id_kabupaten)
                                 <option value="{{ $item->id_kabupaten }}" selected>{{ $item->nama_kabupaten }}</option>
                             @else
                                 <option value="{{ $item->id_kabupaten }}">{{ $item->nama_kabupaten }}</option>
                             @endif
-                        @endforeach
-                    </select>
-                    @error('id_kabupaten')
-                    <div class="invalid-feedback">
-                        {{ $message }}
+                            @endforeach
+                        </select>
                     </div>
-                    @enderror
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
             </form>
-        </div>
+        </form>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
@@ -102,28 +90,55 @@
     </div>
 </div>
 
-{{-- Modal Edit Berita --}}
 <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Update Data Daftar Isu</h5>
+          <span aria-hidden="true">&times;</span>
         </div>
-        <div class="modal-body">
-            @if ($data->count())
-
-            @endif
-            <form action="{{ asset('update') }}" method="post">
-                @csrf
-            </form>
-
-        </div>
+        <form action="" method="POST" id="edit_daftarIsu">
+            <div class="modal-body">
+            @method('patch')
+            @csrf
+                <div class="mb-3">
+                    <label for="nama_kecamatan" class="form-label">Nama Kecamatan</label>
+                    <input type="text" class="form-control" name="nama_kecamatan" id="update_nama_kecamatan" placeholder="Nama Kecamatan">
+                </div>
+                <div class="mb-3">
+                    <label for="wilayah" class="form-label">Wilayah</label>
+                    <input type="text" class="form-control" name="wilayah" id="update_wilayah" placeholder="Wilayah">
+                </div>
+                <div class="mb-3">
+                    <label for="kabupaten" class="form-label">Kabupaten</label>
+                    <select class=" form-control form-select" name="id_kabupaten" id="update_id_kabupaten">
+                        <option selected>Open this select menu</option>
+                        @foreach ($datas as $item)
+                        @if (old('id_kabupaten')==$item->id_kabupaten)
+                            <option value="{{ $item->id_kabupaten }}" selected>{{ $item->nama_kabupaten }}</option>
+                        @else
+                            <option value="{{ $item->id_kabupaten }}">{{ $item->nama_kabupaten }}</option>
+                        @endif
+                        @endforeach
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
-  </div>
-
+</div>
+<script>
+function getData(data) {
+    fetch(`/infoPolitik/daftarIsu/${data}`).then(resp => resp.json()).then(resp => {
+        document.getElementById("edit_daftarIsu").action = `/infoPolitik/daftarIsu/${data}`
+        document.getElementById("update_nama_kacamatan").value = resp.nama_kecamatan
+        document.getElementById("update_wilayah").value = resp.wilayah
+        document.getElementById("update_id_kabupaten").value = resp.id_kabupaten
+    })
+}
+</script>
 @endsection
