@@ -7,7 +7,7 @@ use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardLegislatifController;
 use App\Http\Controllers\DashboardPartaiController;
-Use App\Http\Controllers\DashboardMedsosController;
+use App\Http\Controllers\DashboardMedsosController;
 use App\Http\Controllers\InfoPolitikController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\RekapitulasiController;
@@ -55,6 +55,7 @@ Route::resource('/infoPolitik/berita', NewsController::class)->middleware('auth'
 Route::prefix('/relawan')->middleware('auth')->group(function () {
     Route::get('/', [RelawanController::class, 'index'])->name('relawan');
     Route::post('/', [RelawanController::class, 'store'])->name('relawan-store');
+    Route::get('/{id}', [RelawanController::class, 'show'])->name('relawan-show');
     Route::put('/{id}', [RelawanController::class, 'update'])->name('relawan-update');
     Route::delete('/{id}', [RelawanController::class, 'delete'])->name('relawan-delete');
 });

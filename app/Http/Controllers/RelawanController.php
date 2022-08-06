@@ -19,6 +19,11 @@ class RelawanController extends Controller
         ]);
     }
 
+    public function show($id)
+    {
+        return response()->json(Relawan::find($id));
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -59,13 +64,13 @@ class RelawanController extends Controller
         // update data relawan
         $data = $request->validate([
             "nik" => "required|integer",
-            "nama_relawan" => "required|max:255|unique:relawan",
+            "nama_relawan" => "required|max:255",
             "id_desa" => "required|integer",
             "id_caleg" => "required|integer",
             "status" => "required|integer",
             "no_hp" => "required|min:11",
             "email" => "required|email|max:255",
-            "username" => "required|max:255|unique:relawan",
+            "username" => "required|max:255",
             "password" => "required|max:255|min:3",
             "foto_ktp" => "image|max:2048"
         ]);
