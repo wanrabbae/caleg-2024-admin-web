@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @section('content')
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary"><i class="fas fa-plus"></i>Create</a>
@@ -27,12 +28,19 @@
                                 <td>{{ $item->isi_berita }}</td>
                                 <td>{{ $item->tgl_publish }}</td>
                                 <td>
-                                    <a href="/infoPolitik/berita/publish_news/{{ $item->id_news }}/{{ $item->aktif }}" class="btn btn-primary" onclick="return confirm('Apa Anda Yakin Ingin Menampilkan Berita Ini')">Publish</a>
+                                    <a href="/infoPolitik/news/publish_news/{{ $item->id_news }}/{{ $item->aktif }}" class="btn btn-primary" onclick="return confirm('Apa Anda Yakin Ingin Menampilkan Berita Ini')">Publish</a>
                                 </td>
                                 <td>{{ $item->gambar }}</td>
-                                <td>
-                                    <a href="{{ asset('editBerita') }}/{{ $item->id_kecamatan }}" class="badge bg-warning"><i class="fas fa-edit"></i></a>
-                                    <a href="{{ asset('deleteBerita') }}/{{ $item->id_kecamatan }}" class="badge bg-danger"><i class="fas fa-trash"></i></a>
+                                <td class="d-flex justify-content-center">
+                                    <button type="button" class="btn btn-warning mx-3" onclick="getValue({{ $item->id_news }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <form action="/infoPolitik/news/{{ $item->id_news }}" method="post" class="d-inline">
+                                     @method('delete')
+                                     @csrf
+                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus desa {{ $item->judul}}')">
+                                         <i class="fas fa-trash-alt"></i>
+                                     </button>
                                 </td>
                             </tr>
                         @endforeach
@@ -49,45 +57,54 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Create News</h5>
+          <span aria-hidden="true">&times;</span>
         </div>
         <div class="modal-body">
-            <form action="{{ asset('postBerita') }}" method="post" enctype="multipart/form-data">
+            <form action="infoPolitik/news" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
-                    <label for="judul_news" class="form-label">Judul News</label>
-                    <input type="text" class="form-control @error('judul_news') is-invalid @enderror" id="judul_news" name="judul_news" value="{{ old('judul_news') }}">
-                    @error('judul_news')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
+                    <label for="judul_berita" class="form-label">Judul Berita</label>
+                    <input type="text" class="form-control" id="judul_berita" name="judul_berita" placeholder="Masukan Judul Berita" value="{{ old('judul_berita') }}">
+                  </div>
+                  <div class="mb-3">
+                    <label for="isi_berita" class="form-label">Isi Berita</label>
+                    <textarea class="form-control" id="isi_berita" rows="2" placeholder="Masukan Isi berita" name="isi_berita"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="isi_berita" class="form-label">isi Berita</label>
-                    <textarea name="isi_berita" id="isi_berita"  rows="2" class="form-control @error('judul_news') is-invalid @enderror" value="{{ old('') }}"></textarea>
-                    @error('isi_berita')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
+                    <label for="tgl_publish" class="form-label">Tanggal Publish</label>
+                    <input type="date" class="form-control" id="tgl_publish" name="tgl_publish" value="{{ old('tgl_berita') }}">
+                  </div>
+                <div class="mb-3">
+                    <label for="Caleg" class="form-label">Calon Legislatif</label>
+                    <select class="form-select form-control" name="id_caleg" id="id_caleg">
+                        <option selected>Open this select menu</option>
+                        @foreach ($caleg as $item)
+                        @if (old('id_caleg')==$item->id_caleg)
+                            <option value="{{ $item->id_caleg}}">{{ $item->nama_caleg }}</option>
+                        @else
+                            <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                        @endif
+                        @endforeach
+                    </select>
                 </div>
                 <div class="mb-3">
-                    <label for="tgl_publish" class="form-label">Judul News</label>
-                    <input type="date" class="form-control @error('tgl_publish') is-invalid @enderror" id="tgl_publish" name="tgl_publish" value="{{ old('tgl_publish') }}">
-                    @error('tgl_publish')
-                    <div class="invalid-feedback">
-                        {{ $message }}
+                    <label for="chechkBox" class="form-label">Publish</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="yes" name="yes">
+                        <label class="form-check-label" for="yes">
+                            Yes
+                        </label>
                     </div>
-                    @enderror
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="No" name="no">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            No
+                        </label>
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <label for="formFile" class="form-label">Gambar</label>
-                    <input class="form-control @error('gambar') is-invalid @enderror" type="file" id="formFile" name="gambar" value="{{ old('gambar') }}">
-                    @error('gambar')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
+                    <label for="gambar" class="form-label">Gambar</label>
+                    <input type="file" name="gambar" id="gambar" class="form-control-file">
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
             </form>

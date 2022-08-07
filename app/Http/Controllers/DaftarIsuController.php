@@ -83,9 +83,19 @@ class DaftarIsuController extends Controller
      * @param  \App\Models\Kecamatan  $kecamatan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Kecamatan $kecamatan)
+    public function update(Request $request, Kecamatan $kecamatan, $id_kecamatan)
     {
+        $data = $request->validate([
+            'nama_kecamatan' => 'required|unique:kecamatan',
+            'wilayah' => 'required|unique:kecamatan',
+            'id_kabupaten' => 'required',
+        ]);
 
+        if(Kecamatan::where('id_kecamatan', $id_kecamatan)->update($data)){
+            return redirect('/infoPolitik/daftarIsu')->with('success', "Success Update Data Daftar Isu Kecamatan $kecamatan->nama_kecamatan");
+        }
+
+        return redirect('/infoPolitik/daftarIsu')->with('error', "Failed Update Data Daftar Isu Kecamatan $kecamatan->nama_kecamatan");
     }
 
     /**

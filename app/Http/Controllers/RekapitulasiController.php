@@ -85,9 +85,23 @@ class RekapitulasiController extends Controller
      * @param  \App\Models\Desa  $desa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Desa $desa)
+    public function update(Request $request, Desa $desa, $id_desa)
     {
-        //
+        $data= $request->validate([
+            'nama_desa' => 'required|unique:desa',
+            'type' => 'required|max:100',
+            'dpt' => 'required|integer',
+            'tps' => 'required|integer',
+            'suara' => 'required|integer',
+            'id_kecamatan' => 'required'
+        ]);
+
+        if(Desa::where('id_desa', $id_desa)->update($data)){
+            return redirect('/infoPolitik/rekapitulasi')->with('success', "Success Update Data Rekapitulasi Desa $desa->nama_desa");
+        }
+
+        return redirect('/infoPolitik/rekapitulasi')->with('error', "Failed Update Data Rekapitulasi Desa $desa->nama_desa");
+
     }
 
     /**

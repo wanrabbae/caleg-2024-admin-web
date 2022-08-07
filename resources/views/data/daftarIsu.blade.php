@@ -52,7 +52,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Create Data Daftar Isu</h5>
+          <h5 class="modal-title" id="createModalLabel">Create Data Daftar Isu</h5>
           <span aria-hidden="true">&times;</span>
         </div>
             <form action="{{ asset('infoPolitik/daftarIsu') }}/" method="POST">
@@ -94,24 +94,24 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Update Data Daftar Isu</h5>
+          <h5 class="modal-title" id="editModalLabel">Update Data Daftar Isu</h5>
           <span aria-hidden="true">&times;</span>
         </div>
-        <form action="" method="POST" id="edit_daftarIsu">
+        <form action="" method="POST" id="edit_form">
             <div class="modal-body">
-            @method('patch')
+            @method('put')
             @csrf
                 <div class="mb-3">
                     <label for="nama_kecamatan" class="form-label">Nama Kecamatan</label>
-                    <input type="text" class="form-control" name="nama_kecamatan" id="update_nama_kecamatan" placeholder="Nama Kecamatan">
+                    <input type="text" class="form-control" name="nama_kecamatan" id="edit_kecamatan" placeholder="Nama Kecamatan">
                 </div>
                 <div class="mb-3">
                     <label for="wilayah" class="form-label">Wilayah</label>
-                    <input type="text" class="form-control" name="wilayah" id="update_wilayah" placeholder="Wilayah">
+                    <input type="text" class="form-control" name="wilayah" id="edit_wilayah" placeholder="Wilayah">
                 </div>
                 <div class="mb-3">
                     <label for="kabupaten" class="form-label">Kabupaten</label>
-                    <select class=" form-control form-select" name="id_kabupaten" id="update_id_kabupaten">
+                    <select class=" form-control form-select" name="id_kabupaten" id="edit_kabupaten">
                         <option selected>Open this select menu</option>
                         @foreach ($datas as $item)
                         @if (old('id_kabupaten')==$item->id_kabupaten)
@@ -122,7 +122,7 @@
                         @endforeach
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Update</button>
             </div>
         </form>
         <div class="modal-footer">
@@ -131,14 +131,5 @@
       </div>
     </div>
 </div>
-<script>
-function getData(data) {
-    fetch(`/infoPolitik/daftarIsu/${data}`).then(resp => resp.json()).then(resp => {
-        document.getElementById("edit_daftarIsu").action = `/infoPolitik/daftarIsu/${data}`
-        document.getElementById("update_nama_kacamatan").value = resp.nama_kecamatan
-        document.getElementById("update_wilayah").value = resp.wilayah
-        document.getElementById("update_id_kabupaten").value = resp.id_kabupaten
-    })
-}
-</script>
+<script src="/js/value.js"></script>
 @endsection

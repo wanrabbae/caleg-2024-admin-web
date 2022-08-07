@@ -8,10 +8,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardLegislatifController;
 use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\DashboardMedsosController;
-use App\Http\Controllers\InfoPolitikController;
+use App\Http\Controllers\InputDataController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
+use App\Http\Controllers\VariableController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,13 +34,14 @@ Route::post('/register-action', [AuthController::class, 'registerAction'])->name
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-// DASHBOARD ROUTES / HOME
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+// // DASHBOARD ROUTES / HOME
+// Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+Route::get('/',[DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
 
 //Dashboard Routes
 // Legislatif
 Route::resource("/dashboard/legislatif", DashboardLegislatifController::class)->middleware("auth");
-//Partai    
+//Partai
 Route::resource("/dashboard/partai", DashboardPartaiController::class)->middleware("auth");
 //Medsos
 Route::resource('/dashboard/medsos', DashboardMedsosController::class)->parameters(["medsos" => "medsos"])->middleware("auth");
@@ -49,7 +51,13 @@ Route::resource("/infoPolitik/daftarIsu", DaftarIsuController::class)->middlewar
 
 Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
 
-Route::resource('/infoPolitik/berita', NewsController::class)->middleware('auth');
+Route::get('');
+
+//Survey data Route
+
+Route::resource('/survey/survey', InputDataController::class)->middleware('auth');
+
+Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth');
 
 // RELAWAN ROUTES (KALO CONFLICT SAMA ROUTE LAIN, BISA TARO INI DI PALING BAWAH)
 Route::prefix('/relawan')->middleware('auth')->group(function () {

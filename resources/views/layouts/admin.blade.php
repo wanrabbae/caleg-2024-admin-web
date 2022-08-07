@@ -70,7 +70,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item font-weight-bold" href="/infoPolitik/daftarIsu">Daftar Isu</a>
                         <a class="collapse-item font-weight-bold" href="/infoPolitik/rekapitulasi">Rekapitulasi</a>
-                        <a class="collapse-item font-weight-bold" href="/infoPolitik/berita">Berita</a>
+                        <a class="collapse-item font-weight-bold" href="/infoPolitik/news">Berita</a>
                     </div>
                 </div>
             </li>
@@ -98,8 +98,8 @@
                 </a>
                 <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="">Input Data</a>
-                        <a class="collapse-item font-weight-bold" href="">Hasil Survey</a>
+                        <a class="collapse-item font-weight-bold" href="/survey/survey">Input Data</a>
+                        <a class="collapse-item font-weight-bold" href="/survey/HasilSurvey">Hasil Survey</a>
                     </div>
                 </div>
             </li>

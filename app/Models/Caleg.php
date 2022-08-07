@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class Caleg extends Model
 {
@@ -25,7 +26,7 @@ class Caleg extends Model
         return $this->belongsTo(Partai::class, 'id_partai');
     }
 
-    public function berita()
+    public function news()
     {
         return $this->hasMany(News::class, 'id_caleg');
     }
@@ -33,5 +34,9 @@ class Caleg extends Model
     public function relawan()
     {
         return $this->hasMany(Relawan::class);
+    }
+
+    public function survey(){
+        return $this->hasMany(Survey::class);
     }
 }

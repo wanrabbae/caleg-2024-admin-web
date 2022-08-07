@@ -30,7 +30,7 @@
                                 <td>{{ $item->tps }}</td>
                                 <td>{{ $item->suara }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-warning mx-3" onclick="getData({{ $item->id_desa }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                    <button type="button" class="btn btn-warning mx-3" onclick="getValue({{ $item->id_desa }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <form action="/infoPolitik/rekapitulasi/{{ $item->id_desa }}" method="post" class="d-inline">
@@ -114,27 +114,15 @@
                 @csrf
                 <div class="mb-3">
                     <label for="name_desa" class="form-label">Nama Desa</label>
-                    <input type="text" class="form-control" id="name_desa" name="nama_desa" value="{{ old('nama_desa') }}">
+                    <input type="text" class="form-control" id="update_desa" name="nama_desa" value="{{ old('nama_desa') }}">
                 </div>
                 <div class="mb-3">
                     <label for="type" class="form-label">Type</label>
-                    <input type="text" class="form-control " id="type" name="type" value="{{ old('type') }}">
-                </div>
-                <div class="mb-3">
-                    <label for="dpt" class="form-label">DPT</label>
-                    <input type="number" class="form-control" id="dpt" name="dpt" value="{{ old('dpt') }}">
-                </div>
-                <div class="mb-3">
-                    <label for="tps" class="form-label">TPS</label>
-                    <input type="number" class="form-control " id="tps" name="tps" value="{{ old('tps') }}">
-                </div>
-                <div class="mb-3">
-                    <label for="suara" class="form-label">Suara</label>
-                    <input type="number" class="form-control " id="suara" name="suara" value="{{ old('suara') }}">
+                    <input type="text" class="form-control " id="update_type" name="type" value="{{ old('type') }}">
                 </div>
                 <div class="mb-3">
                     <label for="kecamatan" class="form-label">Kecamatan</label>
-                    <select class="form-select form-control" name="id_kecamatan" id="id_kecamatan">
+                    <select class="form-select form-control" name="id_kecamatan" id="update_kecamatan">
                         <option selected>Open this select menu</option>
                         @foreach ($kecamatan as $item)
                             @if (old('id_kecamatan')== $item->id_kecamatan)
@@ -145,7 +133,19 @@
                         @endforeach
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <div class="mb-3">
+                    <label for="dpt" class="form-label">DPT</label>
+                    <input type="number" class="form-control" id="update_dpt" name="dpt" value="{{ old('dpt') }}">
+                </div>
+                <div class="mb-3">
+                    <label for="tps" class="form-label">TPS</label>
+                    <input type="number" class="form-control " id="update_tps" name="tps" value="{{ old('tps') }}">
+                </div>
+                <div class="mb-3">
+                    <label for="suara" class="form-label">Suara</label>
+                    <input type="number" class="form-control " id="update_suara" name="suara" value="{{ old('suara') }}">
+                </div>
+                <button type="submit" class="btn btn-primary">Update</button>
             </form>
         </div>
         <div class="modal-footer">
@@ -154,14 +154,5 @@
       </div>
     </div>
 </div>
-<script>
-    function getData(data) {
-        fetch(`/infoPolitik/daftarIsu/${data}`).then(resp => resp.json()).then(resp => {
-            document.getElementById("edit_daftarIsu").action = `/infoPolitik/daftarIsu/${data}`
-            document.getElementById("update_nama_kacamatan").value = resp.nama_kecamatan
-            document.getElementById("update_wilayah").value = resp.wilayah
-            document.getElementById("update_id_kabupaten").value = resp.id_kabupaten
-        })
-    }
-    </script>
+<script src="/js/value.js"></script>
 @endsection
