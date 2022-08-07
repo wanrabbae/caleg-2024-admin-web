@@ -2,14 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardLegislatifController;
 use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\DashboardMedsosController;
-use App\Http\Controllers\InputDataController;
-use App\Http\Controllers\NewsController;
+use App\Http\Controllers\DataSurveyController;
 use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\VariableController;
@@ -34,9 +32,9 @@ Route::post('/register-action', [AuthController::class, 'registerAction'])->name
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-// // DASHBOARD ROUTES / HOME
-// Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
-Route::get('/',[DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+//  DASHBOARD ROUTES / HOME
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+// Route::get('/', ['middleware' => 'auth', 'uses' => 'DashboardController@index']);
 
 //Dashboard Routes
 // Legislatif
@@ -55,7 +53,7 @@ Route::get('');
 
 //Survey data Route
 
-Route::resource('/survey/survey', InputDataController::class)->middleware('auth');
+Route::resource('/survey/DataSurvey', DataSurveyController::class)->middleware('auth');
 
 Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth');
 

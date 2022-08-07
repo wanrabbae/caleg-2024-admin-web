@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Survey;
 use Illuminate\Http\Request;
 
-class InputDataController extends Controller
+class DataSurveyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +14,7 @@ class InputDataController extends Controller
      */
     public function index()
     {
-        return view('data.survey', [
-            'title' => 'Survey Page'
-        ]);
+        //
     }
 
     /**
@@ -43,10 +41,10 @@ class InputDataController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Survey  $survey
+     * @param   Survey $survey
      * @return \Illuminate\Http\Response
      */
-    public function show(Survey $survey)
+    public function show()
     {
         //
     }
@@ -54,10 +52,10 @@ class InputDataController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Survey  $survey
+     * @param
      * @return \Illuminate\Http\Response
      */
-    public function edit(Survey $survey)
+    public function edit()
     {
         //
     }
@@ -66,10 +64,10 @@ class InputDataController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Survey  $survey
+     * @param
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Survey $survey)
+    public function update(Request $request, )
     {
         //
     }
@@ -77,10 +75,10 @@ class InputDataController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Survey  $survey
+     * @param
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Survey $survey)
+    public function destroy()
     {
         //
     }
