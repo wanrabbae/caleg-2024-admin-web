@@ -166,11 +166,11 @@
                         @csrf
                         <div class="form-group">
                             <label for="nik">Nik</label>
-                            <input required value="{{ old('nik') }}" type="number" class="form-control" id="nik_edit" placeholder="Nik" name="nik">
+                            <input value="{{ old('nik') }}" type="number" class="form-control" id="nik_edit" placeholder="Nik" name="nik">
                         </div>
                         <div class="form-group">
                             <label for="nama_relawan">Nama Relawan</label>
-                            <input required value="{{ old('nama_relawan') }}" type="text" class="form-control" id="edit_nama_relawan" placeholder="Nama Relawan" name="nama_relawan">
+                            <input value="{{ old('nama_relawan') }}" type="text" class="form-control" id="edit_nama_relawan" placeholder="Nama Relawan" name="nama_relawan">
                         </div>
                         <div class="form-group">
                             <label for="id_desa">Pilih Desa</label>
@@ -182,7 +182,7 @@
                         </div>
                         <div class="form-group">
                             <label for="foto_ktp">Upload Foto KTP</label>
-                            <input required value="{{ old('foto_ktp') }}" type="file" class="form-control" id="foto_ktp" name="foto_ktp">
+                            <input value="{{ old('foto_ktp') }}" type="file" class="form-control" id="foto_ktp" name="foto_ktp">
                         </div>
                         <div class="form-group">
                             <label for="id_caleg">Pilih Caleg</label>
@@ -201,19 +201,19 @@
                         </div>
                         <div class="form-group">
                             <label for="no_hp">No Hp</label>
-                            <input required value="{{ old('no_hp') }}" type="number" class="form-control" id="edit_no_hp" placeholder="No Hp" name="no_hp">
+                            <input value="{{ old('no_hp') }}" type="number" class="form-control" id="edit_no_hp" placeholder="No Hp" name="no_hp">
                         </div>
                         <div class="form-group">
                             <label for="email">E-mail</label>
-                            <input required value="{{ old('email') }}" type="text" class="form-control" id="edit_email" placeholder="Email" name="email">
+                            <input value="{{ old('email') }}" type="text" class="form-control" id="edit_email" placeholder="Email" name="email">
                         </div>
                         <div class="form-group">
                             <label for="username">Username</label>
-                            <input required value="{{ old('username') }}" type="text" class="form-control" id="edit_username" placeholder="Username" name="username">
+                            <input value="{{ old('username') }}" type="text" class="form-control" id="edit_username" placeholder="Username" name="username">
                         </div>
                         <div class="form-group">
                             <label for="password">New Password</label>
-                            <input required value="{{ old('password') }}" type="password" class="form-control" id="edit_password" placeholder="Password" name="password">
+                            <input value="{{ old('password') }}" type="password" class="form-control" id="edit_password" placeholder="Password" name="password">
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -6,6 +6,7 @@ use App\Models\Caleg;
 use App\Models\Desa;
 use App\Models\Relawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RelawanController extends Controller
 {
@@ -52,6 +53,7 @@ class RelawanController extends Controller
     public function delete($id)
     {
         $relawan = Relawan::find($id);
+        Storage::delete($relawan->foto_ktp);
         if ($relawan->delete()) {
             return back()->with("success", "Success Delete Relawan");
         }
@@ -63,19 +65,20 @@ class RelawanController extends Controller
         $relawan = Relawan::find($id);
         // update data relawan
         $data = $request->validate([
-            "nik" => "required|integer",
-            "nama_relawan" => "required|max:255",
-            "id_desa" => "required|integer",
-            "id_caleg" => "required|integer",
-            "status" => "required|integer",
-            "no_hp" => "required|min:11",
-            "email" => "required|email|max:255",
-            "username" => "required|max:255",
-            "password" => "required|max:255|min:3",
+            "nik" => "integer",
+            "nama_relawan" => "max:255",
+            "id_desa" => "integer",
+            "id_caleg" => "integer",
+            "status" => "integer",
+            "no_hp" => "min:11",
+            "email" => "email|max:255",
+            "username" => "max:255",
+            "password" => "max:255",
             "foto_ktp" => "image|max:2048"
         ]);
 
         if ($request->hasFile("foto_ktp")) {
+            Storage::delete($relawan->foto_ktp);
             $data['foto_ktp'] = $request->file("foto_ktp")->store("/image");
         }
         $data['password'] = bcrypt($data['password']);
