@@ -26,16 +26,15 @@ function getVariable(Var){
     });
 }
 
-// let dateValue = moment(vale)
+let dateValue = moment(value,'YYY-MM-DD')
 
 function DataSurvey(survey) {
-    fetch(`/survey/inputSurvey/${survey}`).then(resp => resp.text()).then(resp =>{
-        document.getElementById("edit_form").action = `/survey/inputSurvey${survey}`
+    fetch(`/survey/inputSurvey/${survey}`).then(resp => resp.json()).then(resp =>{
+        document.getElementById("edit_form").action = `/survey/inputSurvey/${survey}`
         document.getElementById("edit_survey").value = resp.nama_survey
         document.getElementById("edit_mulai").value = resp.mulai_tanggal
         document.getElementById("edit_sampai").value = resp.sampai_tanggal
         document.getElementById("edit_caleg").value = resp.id_caleg
         document.getElementById("edit_variabel").value = resp.id_variabel
     });
-    fetch(`/survey/inputSurvey/${survey}`).then(resp => resp.text()).then(resp => console.log(resp))
 }

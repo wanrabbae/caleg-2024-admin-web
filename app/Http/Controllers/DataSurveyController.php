@@ -87,7 +87,18 @@ class DataSurveyController extends Controller
      */
     public function update(Request $request,$id_survey )
     {
-        dd($request);
+        $data = $request->validate([
+            'nama_survey' => 'unique:survey',
+            'mulai_tanggal' => 'date',
+            'sampai_tanggal' => 'date',
+            'id_caleg' => 'required',
+            'id_variabel' => 'required'
+        ]);
+
+        if(Survey::where('id_survey', $id_survey)->update($data)){
+            return back()->with('success', 'Success Updating Data Survey');
+        }
+        return back()->with('error', 'Failed Updating Data Survey');
     }
 
     /**
