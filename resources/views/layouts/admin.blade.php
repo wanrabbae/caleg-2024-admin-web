@@ -111,8 +111,8 @@
                 </a>
                 <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="">Data Saksi</a>
-                        <a class="collapse-item font-weight-bold" href="">Monitoring</a>
+                        <a class="collapse-item font-weight-bold" href="/saksi/daftar">Daftar Saksi</a>
+                        <a class="collapse-item font-weight-bold" href="/saksi/monitoring">Monitoring</a>
                     </div>
                 </div>
             </li>

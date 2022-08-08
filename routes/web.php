@@ -11,6 +11,8 @@ use App\Http\Controllers\DataSurveyController;
 use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\VariableController;
+use App\Http\Controllers\SaksiDaftarController;
+use App\Http\Controllers\SaksiMonitoringController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,13 +51,16 @@ Route::resource("/infoPolitik/daftarIsu", DaftarIsuController::class)->middlewar
 
 Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
 
-Route::get('');
-
 //Survey data Route
 
 Route::resource('/survey/DataSurvey', DataSurveyController::class)->middleware('auth');
 
 Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth');
+
+//Data Saksi Route
+Route::resource("/saksi/daftar", SaksiDaftarController::class)->middleware("auth");
+Route::resource("/saksi/monitoring", SaksiMonitoringController::class)->middleware("auth");
+
 
 // RELAWAN ROUTES (KALO CONFLICT SAMA ROUTE LAIN, BISA TARO INI DI PALING BAWAH)
 Route::prefix('/relawan')->middleware('auth')->group(function () {
