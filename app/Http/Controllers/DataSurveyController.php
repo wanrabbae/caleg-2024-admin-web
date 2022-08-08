@@ -14,7 +14,9 @@ class DataSurveyController extends Controller
      */
     public function index()
     {
-        //
+        return view('data.survey', [
+            'title' => 'Data Survey Page'
+        ]);
     }
 
     /**
@@ -35,7 +37,7 @@ class DataSurveyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**

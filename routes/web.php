@@ -25,6 +25,9 @@ use App\Http\Controllers\VariableController;
 
 // KASIH MIDDLEWARE 'auth' KALO ROUTES NYA DI AUTHENTICATED
 
+//  DASHBOARD ROUTES / HOME
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+
 // AUTH ROUTES
 Route::get('/login', [AuthController::class, 'loginView'])->name('login')->middleware('guest');
 Route::get('/register', [AuthController::class, 'registerView'])->name('register');
@@ -32,8 +35,7 @@ Route::post('/register-action', [AuthController::class, 'registerAction'])->name
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-//  DASHBOARD ROUTES / HOME
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+
 // Route::get('/', ['middleware' => 'auth', 'uses' => 'DashboardController@index']);
 
 //Dashboard Routes
@@ -48,8 +50,6 @@ Route::resource('/dashboard/medsos', DashboardMedsosController::class)->paramete
 Route::resource("/infoPolitik/daftarIsu", DaftarIsuController::class)->middleware('auth');
 
 Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
-
-Route::get('');
 
 //Survey data Route
 

@@ -80,7 +80,7 @@
           <h5 class="modal-title" id="editModalLabel">Update Data Hasil Survey</h5>
           <span aria-hidden="true">&times;</span>
         </div>
-        <form action="" method="POST" id="up_variabel">
+        <form action="" method="POST" id="update_variabel">
             <div class="modal-body">
             @method('put')
             @csrf

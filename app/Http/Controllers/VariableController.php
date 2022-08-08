@@ -38,7 +38,17 @@ class VariableController extends Controller
      */
     public function store(Request $request)
     {
+        $rule = [
+            'nama_variabel' => 'required|unique:variabel',
+        ];
 
+        $data = $request->validate($rule);
+
+        if(Variabel::create($data)){
+            return back()->with('success', 'Success Create Data Variable');
+        }
+
+        return back()->with('success', 'Failed Create Data Variable');
     }
 
     /**
@@ -70,9 +80,18 @@ class VariableController extends Controller
      * @param  \App\Models\Variabel  $variabel
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Variabel $variabel)
+    public function update(Request $request, Variabel $variabel,$id_variabel )
     {
-        return $request;
+       $rule = [
+        'nama_variabel' => 'required'
+       ];
+
+       $data = $request->validate($rule);
+
+       if(Variabel::where('id_variabel', $id_variabel)->update($data)){
+            return redirect('/survey/HasilSurvey')->with('success', "Success Update Variabel $variabel->nama_variabel");
+       }
+       return redirect('/survey/HasilSurvey')->with('error', "Failed Update Variabel $variabel->nama_variabel");
     }
 
     /**
@@ -81,8 +100,11 @@ class VariableController extends Controller
      * @param  \App\Models\Variabel  $variabel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Variabel $variabel)
+    public function destroy(Variabel $variabel, $id_variabel)
     {
-        //
+        if(Variabel::where('id_variabel', $id_variabel)->delete()){
+            return back()->with('success', "Success Deleting Data Variable");
+        }
+        return back()->with('error', "Failed Deleting Data Variable");
     }
 }
