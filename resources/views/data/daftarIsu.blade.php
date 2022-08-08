@@ -55,37 +55,36 @@
           <h5 class="modal-title" id="createModalLabel">Create Data Daftar Isu</h5>
           <span aria-hidden="true">&times;</span>
         </div>
-            <form action="{{ asset('infoPolitik/daftarIsu') }}/" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="nama_kecamatan" class="form-label">Nama Kecamatan</label>
-                        <input type="text" class="form-control" id="nama_kecamatan" name="nama_kecamatan" id="nama_kecamatan" placeholder="Nama Kecamatan">
-                    </div>
-                    <div class="mb-3">
-                        <label for="wilayah" class="form-label">Wilayah</label>
-                        <input type="text" class="form-control" id="wilayah" name="wilayah" id="wilayah" placeholder="Wilayah">
-                    </div>
-                    <div class="mb-3">
-                        <label for="kabupaten" class="form-label">Kabupaten</label>
-                        <select class=" form-control form-select" name="id_kabupaten" id="id_kabupaten">
-                            <option selected>Open this select menu</option>
-                            @foreach ($datas as $item)
-                            @if (old('id_kabupaten')==$item->id_kabupaten)
-                                <option value="{{ $item->id_kabupaten }}" selected>{{ $item->nama_kabupaten }}</option>
-                            @else
-                                <option value="{{ $item->id_kabupaten }}">{{ $item->nama_kabupaten }}</option>
-                            @endif
-                            @endforeach
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create</button>
+        <form action="{{ asset('infoPolitik/daftarIsu') }}/" method="POST">
+            @csrf
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="nama_kecamatan" class="form-label">Nama Kecamatan</label>
+                    <input type="text" class="form-control" id="nama_kecamatan" name="nama_kecamatan" id="nama_kecamatan" placeholder="Nama Kecamatan">
                 </div>
-            </form>
+                <div class="mb-3">
+                    <label for="wilayah" class="form-label">Wilayah</label>
+                    <input type="text" class="form-control" id="wilayah" name="wilayah" id="wilayah" placeholder="Wilayah">
+                </div>
+                <div class="mb-3">
+                    <label for="kabupaten" class="form-label">Kabupaten</label>
+                    <select class=" form-control form-select" name="id_kabupaten" id="id_kabupaten">
+                        <option selected>Open this select menu</option>
+                        @foreach ($datas as $item)
+                        @if (old('id_kabupaten')==$item->id_kabupaten)
+                            <option value="{{ $item->id_kabupaten }}" selected>{{ $item->nama_kabupaten }}</option>
+                        @else
+                            <option value="{{ $item->id_kabupaten }}">{{ $item->nama_kabupaten }}</option>
+                        @endif
+                        @endforeach
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </form>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
       </div>
     </div>
 </div>
@@ -122,12 +121,12 @@
                         @endforeach
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
             </div>
         </form>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
       </div>
     </div>
 </div>

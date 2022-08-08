@@ -107,9 +107,9 @@ class DaftarIsuController extends Controller
     public function destroy(Kecamatan $kecamatan, $id_kecamatan)
     {
        if(Kecamatan::where('id_kecamatan', $id_kecamatan)->delete()){
-            return back()->with('success', "Success Deleting Daftar Isu Kecamatan $kecamatan->nama_kecamatan");
+            return back()->with('success', "Success Deleting Data Daftar Isu");
        }
 
-       return back()->with('error', "Failed Deleting Daftar Isu Kecamatan $kecamatan->nama_kecamatan");
+       return back()->with('error', "Failed Deleting Data Daftar Isu");
     }
 }

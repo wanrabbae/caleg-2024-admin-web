@@ -32,7 +32,7 @@
                                 </td>
                                 <td>{{ $item->gambar }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-warning mx-3" onclick="getValue({{ $item->id_news }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                    <button type="button" class="btn btn-warning mx-3" onclick="getBerita({{ $item->id_news }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <form action="/infoPolitik/news/{{ $item->id_news }}" method="post" class="d-inline">
@@ -56,63 +56,19 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Create News</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Create News Data</h5>
           <span aria-hidden="true">&times;</span>
         </div>
         <div class="modal-body">
-            <form action="infoPolitik/news" method="post" enctype="multipart/form-data">
-                @csrf
-                <div class="mb-3">
-                    <label for="judul_berita" class="form-label">Judul Berita</label>
-                    <input type="text" class="form-control" id="judul_berita" name="judul_berita" placeholder="Masukan Judul Berita" value="{{ old('judul_berita') }}">
-                  </div>
-                  <div class="mb-3">
-                    <label for="isi_berita" class="form-label">Isi Berita</label>
-                    <textarea class="form-control" id="isi_berita" rows="2" placeholder="Masukan Isi berita" name="isi_berita"></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="tgl_publish" class="form-label">Tanggal Publish</label>
-                    <input type="date" class="form-control" id="tgl_publish" name="tgl_publish" value="{{ old('tgl_berita') }}">
-                  </div>
-                <div class="mb-3">
-                    <label for="Caleg" class="form-label">Calon Legislatif</label>
-                    <select class="form-select form-control" name="id_caleg" id="id_caleg">
-                        <option selected>Open this select menu</option>
-                        @foreach ($caleg as $item)
-                        @if (old('id_caleg')==$item->id_caleg)
-                            <option value="{{ $item->id_caleg}}">{{ $item->nama_caleg }}</option>
-                        @else
-                            <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
-                        @endif
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="chechkBox" class="form-label">Publish</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="yes" name="yes">
-                        <label class="form-check-label" for="yes">
-                            Yes
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="No" name="no">
-                        <label class="form-check-label" for="flexCheckDefault">
-                            No
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="gambar" class="form-label">Gambar</label>
-                    <input type="file" name="gambar" id="gambar" class="form-control-file">
-                </div>
+          <form action="{{ asset('/infoPolitik/news') }}" method="post" enctype="multipart/form-data">
+
+            <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Create</button>
-            </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-</div>
+  </div>
 @endsection

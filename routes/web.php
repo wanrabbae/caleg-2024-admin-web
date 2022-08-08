@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardLegislatifController;
@@ -27,6 +28,9 @@ use App\Http\Controllers\SaksiMonitoringController;
 
 // KASIH MIDDLEWARE 'auth' KALO ROUTES NYA DI AUTHENTICATED
 
+//  DASHBOARD ROUTES / HOME
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+
 // AUTH ROUTES
 Route::get('/login', [AuthController::class, 'loginView'])->name('login')->middleware('guest');
 Route::get('/register', [AuthController::class, 'registerView'])->name('register');
@@ -34,33 +38,26 @@ Route::post('/register-action', [AuthController::class, 'registerAction'])->name
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-//  DASHBOARD ROUTES / HOME
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('auth');
+
 // Route::get('/', ['middleware' => 'auth', 'uses' => 'DashboardController@index']);
 
 //Dashboard Routes
-// Legislatif
 Route::resource("/dashboard/legislatif", DashboardLegislatifController::class)->middleware("auth");
-//Partai
 Route::resource("/dashboard/partai", DashboardPartaiController::class)->middleware("auth");
-//Medsos
 Route::resource('/dashboard/medsos', DashboardMedsosController::class)->parameters(["medsos" => "medsos"])->middleware("auth");
 
 //Info Politik Routes
 Route::resource("/infoPolitik/daftarIsu", DaftarIsuController::class)->middleware('auth');
-
 Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
+Route::resource('/infoPolitik/news', BeritaController::class)->middleware('auth');
 
-//Survey data Route
-
-Route::resource('/survey/DataSurvey', DataSurveyController::class)->middleware('auth');
-
+//Survey Routes
+Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware('auth');
 Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth');
 
-//Data Saksi Route
+//Data Saksi Routes
 Route::resource("/saksi/daftar", SaksiDaftarController::class)->middleware("auth");
 Route::resource("/saksi/monitoring", SaksiMonitoringController::class)->middleware("auth");
-
 
 // RELAWAN ROUTES (KALO CONFLICT SAMA ROUTE LAIN, BISA TARO INI DI PALING BAWAH)
 Route::prefix('/relawan')->middleware('auth')->group(function () {

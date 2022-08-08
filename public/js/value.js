@@ -23,5 +23,18 @@ function getVariable(Var){
     fetch(`/survey/HasilSurvey/${Var}`).then(response => response.json()).then(response => {
         document.getElementById("update_variabel").action = `/survey/HasilSurvey/${Var}`
         document.getElementById("edit_variabel").value = response.nama_variabel
-    })
+    });
+}
+
+let dateValue = moment(value,'YYY-MM-DD')
+
+function DataSurvey(survey) {
+    fetch(`/survey/inputSurvey/${survey}`).then(resp => resp.json()).then(resp =>{
+        document.getElementById("edit_form").action = `/survey/inputSurvey/${survey}`
+        document.getElementById("edit_survey").value = resp.nama_survey
+        document.getElementById("edit_mulai").value = resp.mulai_tanggal
+        document.getElementById("edit_sampai").value = resp.sampai_tanggal
+        document.getElementById("edit_caleg").value = resp.id_caleg
+        document.getElementById("edit_variabel").value = resp.id_variabel
+    });
 }
