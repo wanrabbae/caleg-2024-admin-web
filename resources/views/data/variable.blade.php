@@ -46,7 +46,7 @@
     </div>
 </div>
 
-{{-- Modal Create Variable --}}
+{{-- Modal Create Hasil Survey --}}
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -54,20 +54,19 @@
           <h5 class="modal-title" id="createModalLabel">Create Data Hasil Survey</h5>
           <span aria-hidden="true">&times;</span>
         </div>
-            <form action="{{ asset('survey/HasilSurvey') }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="nama_variabel" class="form-label">Nama Variable</label>
-                        <input type="text" class="form-control" id="nama_variabel" name="nama_variabel" id="nama_variabel" placeholder="Nama Variabel">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Create</button>
+        <form action="{{ asset('survey/HasilSurvey') }}" method="POST">
+            @csrf
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="nama_variabel" class="form-label">Nama Variable</label>
+                    <input type="text" class="form-control" id="nama_variabel" name="nama_variabel" id="nama_variabel" placeholder="Nama Variabel">
                 </div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </form>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
       </div>
     </div>
 </div>
@@ -88,12 +87,12 @@
                     <label for="nama_variabel" class="form-label">Nama Variable</label>
                     <input type="text" class="form-control" name="nama_variabel" id="edit_variabel" placeholder="Nama Variable">
                 </div>
+            </div>
+            <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </form>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
       </div>
     </div>
 </div>

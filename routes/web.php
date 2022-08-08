@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardLegislatifController;
@@ -51,11 +52,14 @@ Route::resource("/infoPolitik/daftarIsu", DaftarIsuController::class)->middlewar
 
 Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
 
+Route::resource('/infoPolitik/news', BeritaController::class)->middleware('auth');
+
 //Survey data Route
 
-Route::resource('/survey/DataSurvey', DataSurveyController::class)->middleware('auth');
+Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware('auth');
 
 Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth');
+
 
 // RELAWAN ROUTES (KALO CONFLICT SAMA ROUTE LAIN, BISA TARO INI DI PALING BAWAH)
 Route::prefix('/relawan')->middleware('auth')->group(function () {

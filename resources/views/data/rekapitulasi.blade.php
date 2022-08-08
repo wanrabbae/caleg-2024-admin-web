@@ -93,11 +93,11 @@
                         @endforeach
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -145,11 +145,11 @@
                     <label for="suara" class="form-label">Suara</label>
                     <input type="number" class="form-control " id="update_suara" name="suara" value="{{ old('suara') }}">
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
