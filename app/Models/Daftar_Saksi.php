@@ -11,6 +11,7 @@ class Daftar_Saksi extends Model
     protected $table = "saksi";
     protected $primaryKey = "nik";
     public $timestamps = false;
+    protected $guarded = [""];
 
     public function relawan() {
         return $this->belongsTo(Relawan::class, "nik", "nik");
