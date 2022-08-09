@@ -56,6 +56,8 @@ Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware(
 Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth');
 
 //Data Saksi Routes
+Route::get("/saksi/daftar/{nik}", [SaksiDaftarController::class, "show"])->middleware("auth");
+Route::delete("/saksi/daftar/{nik}", [SaksiDaftarController::class, "destroy"])->middleware("auth");
 Route::resource("/saksi/daftar", SaksiDaftarController::class)->middleware("auth");
 Route::resource("/saksi/monitoring", SaksiMonitoringController::class)->middleware("auth");
 
