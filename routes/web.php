@@ -49,7 +49,7 @@ Route::resource('/dashboard/medsos', DashboardMedsosController::class)->paramete
 //Info Politik Routes
 Route::resource("/infoPolitik/daftarIsu", DaftarIsuController::class)->middleware('auth');
 Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
-Route::resource('/infoPolitik/news', BeritaController::class)->middleware('auth');
+Route::resource("/infoPolitik/berita", BeritaController::class)->parameters(["berita" => "berita"])->middleware('auth');
 
 //Survey Routes
 Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware('auth');
@@ -58,6 +58,11 @@ Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('a
 //Data Saksi Routes
 Route::resource("/saksi/daftar", SaksiDaftarController::class)->middleware("auth");
 Route::resource("/saksi/monitoring", SaksiMonitoringController::class)->middleware("auth");
+
+// Route::get('/infoPolitik/berita/publish/{news:id_news}/{aktif}', function() {
+
+// });
+// Route::get('');
 
 // RELAWAN ROUTES (KALO CONFLICT SAMA ROUTE LAIN, BISA TARO INI DI PALING BAWAH)
 Route::prefix('/relawan')->middleware('auth')->group(function () {

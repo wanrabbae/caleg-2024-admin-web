@@ -50,7 +50,7 @@ class DashboardPartaiController extends Controller
     if (Partai::create($data)) {
             return back()->with("success", "Success Create New Partai");
         }
-        
+
         return back()->with("error", "Error, Can't Create New Partai");
     }
 
@@ -89,25 +89,25 @@ class DashboardPartaiController extends Controller
             "warna" => "required",
             "no_urut" => "required|max:100"
         ];
-    
+
         if ($request->nama_partai != $partai->nama_partai) {
             $rules["nama_partai"] = "required|max:255|unique:partai";
         }
 
         $data = $request->validate($rules);
-        
+
         if ($request->file("logo")) {
             if (!Storage::exists($partai->logo)) {
                 Storage::delete($partai->logo);
             }
             $data["logo"] = $request->file("logo")->store("/image");
         }
-        
-        
+
+
     if (Partai::where("id_partai", $partai->id_partai)->update($data)) {
             return redirect("/dashboard/partai")->with("success", "Success Edit $partai->nama_partai");
         }
-        
+
         return back()->with("error", "Error, Can't Edit $partai->nama_partai");
     }
 
