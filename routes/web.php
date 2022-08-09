@@ -9,12 +9,15 @@ use App\Http\Controllers\DashboardLegislatifController;
 use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\DashboardMedsosController;
 use App\Http\Controllers\DataSurveyController;
+use App\Http\Controllers\DptController;
+use App\Http\Controllers\DptManualController;
 use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\VariableController;
 use App\Http\Controllers\SaksiDaftarController;
 use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SimpatisanController;
+use App\Http\Controllers\TabulasiSuaraController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,4 +83,31 @@ Route::prefix('/program')->middleware('auth')->group(function () {
     Route::get('/{id}', [SimpatisanController::class, 'show'])->name('simpatisan-show');
     Route::put('/{id}', [SimpatisanController::class, 'update'])->name('simpatisan-update');
     Route::delete('/{id}', [SimpatisanController::class, 'delete'])->name('simpatisan-delete');
+});
+
+// ROUTES REKAP DATA DPT / PEMILIH
+Route::prefix('/pemilih')->middleware('auth')->group(function () {
+    Route::get('/', [DptController::class, 'index'])->name('pemilih');
+    Route::post('/', [DptController::class, 'store'])->name('pemilih-store');
+    Route::get('/{id}', [DptController::class, 'show'])->name('pemilih-show');
+    Route::put('/{id}', [DptController::class, 'update'])->name('pemilih-update');
+    Route::delete('/{id}', [DptController::class, 'delete'])->name('pemilih-delete');
+});
+
+// ROUTES REKAP DATA DPT MANUAL
+Route::prefix('/agenda')->middleware('auth')->group(function () {
+    Route::get('/', [DptManualController::class, 'index'])->name('agenda');
+    Route::post('/', [DptManualController::class, 'store'])->name('agenda-store');
+    Route::get('/{id}', [DptManualController::class, 'show'])->name('agenda-show');
+    Route::put('/{id}', [DptManualController::class, 'update'])->name('agenda-update');
+    Route::delete('/{id}', [DptManualController::class, 'delete'])->name('agenda-delete');
+});
+
+// ROUTES REKAP DATA TABULASI SUARA
+Route::prefix('/suara')->middleware('auth')->group(function () {
+    Route::get('/', [TabulasiSuaraController::class, 'index'])->name('suara');
+    Route::post('/', [TabulasiSuaraController::class, 'store'])->name('suara-store');
+    Route::get('/{id}', [TabulasiSuaraController::class, 'show'])->name('suara-show');
+    Route::put('/{id}', [TabulasiSuaraController::class, 'update'])->name('suara-update');
+    Route::delete('/{id}', [TabulasiSuaraController::class, 'delete'])->name('suara-delete');
 });
