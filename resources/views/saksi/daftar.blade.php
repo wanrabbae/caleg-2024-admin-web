@@ -73,17 +73,17 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createModalLabel">Tambah Legislatif</h5>
+          <h5 class="modal-title" id="createModalLabel">Tambah Saksi</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="/dashboard/legislatif/" method="POST">
+        <form action="/saksi/daftar/" method="POST">
         <div class="modal-body">
                 @csrf
                 <div class="form-group">
-                  <label for="nama_legislatif">Nama Legislatif</label>
-                  <input type="text" class="form-control" id="nama_legislatif" placeholder="Nama Legislatif" name="nama_legislatif">
+                  <label for="nik">NIK Saksi</label>
+                  <input type="text" class="form-control" id="nik" placeholder="NIK" name="nik">
                 </div>
               </div>
               <div class="modal-footer">
@@ -102,7 +102,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Edit Legislatif</h5>
+          <h5 class="modal-title" id="editModalLabel">Edit NIK saksi</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -112,8 +112,8 @@
                 @method('put')
                 @csrf
                 <div class="form-group">
-                  <label for="nama_legislatif">Nama Legislatif</label>
-                  <input type="text" class="form-control" id="edit_legislatif" placeholder="Nama Legislatif" name="nama_legislatif">
+                  <label for="nama_legislatif">NIK</label>
+                  <input type="text" class="form-control" id="edit_nik" placeholder="NIK" name="nik">
                 </div>
               </div>
               <div class="modal-footer">
@@ -129,9 +129,9 @@
 
   <script>
     function getData(data) {
-        fetch(`/dashboard/legislatif/${data}`).then(resp => resp.json()).then(resp => {
-            document.getElementById("edit_form").action = `/dashboard/legislatif/${data}`
-            document.getElementById("edit_legislatif").value = resp.nama_legislatif
+        fetch(`/saksi/daftar/${data}`).then(resp => resp.json()).then(resp => {
+            document.getElementById("edit_form").action = `/saksi/daftar/${data}`
+            document.getElementById("edit_nik").value = resp.nik
     })
     }
   </script>

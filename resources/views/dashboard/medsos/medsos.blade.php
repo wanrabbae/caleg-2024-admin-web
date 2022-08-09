@@ -130,7 +130,6 @@
         {
             document.getElementById("edit_form").action = `/dashboard/medsos/${data}`
             for (let x in resp) {
-                console.log(x, document.getElementById(`edit_${x}`))
                 document.getElementById(`edit_${x}`).value = resp[x];
             }
         })
