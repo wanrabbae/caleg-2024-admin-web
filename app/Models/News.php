@@ -10,12 +10,9 @@ class News extends Model
     use HasFactory;
 
     protected $tables = 'news';
-
-    public $timestamps = false;
-
     protected $primaryKey = 'id_news';
-
     protected $guarded = [];
+    public $timestamps = false;
 
     public function caleg(){
         return $this->belongsTo(Caleg::class);

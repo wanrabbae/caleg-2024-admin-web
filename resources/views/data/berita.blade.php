@@ -1,9 +1,14 @@
 @extends('layouts.admin')
 @section('content')
-
+{{-- @dd($data) --}}
 <div class="card shadow mb-4">
+    <div class="col-md-3">
+    </div>
     <div class="card-header py-3">
-        <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary"><i class="fas fa-plus"></i>Create</a>
+        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Create
+        </button>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -11,9 +16,9 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Judul Berita</th>
+                        <th>Judul News</th>
                         <th>Isi Berita</th>
-                        <th>Tgl Publish</th>
+                        <th>Tanggal Publish</th>
                         <th>Publish</th>
                         <th>Gambar</th>
                         <th>Action</th>
@@ -28,19 +33,28 @@
                                 <td>{{ $item->isi_berita }}</td>
                                 <td>{{ $item->tgl_publish }}</td>
                                 <td>
-                                    <a href="/infoPolitik/news/publish_news/{{ $item->id_news }}/{{ $item->aktif }}" class="btn btn-primary" onclick="return confirm('Apa Anda Yakin Ingin Menampilkan Berita Ini')">Publish</a>
+                                    @if ($item->aktif == 'Y')
+                                    <a href="/infoPolitik/berita/publish/{{ $item->id }}/{{ $item->aktif }}" class="btn btn-primary">
+                                        publish
+                                    </a>
+                                    @else
+                                    <a href="/infoPolitik/berita/publish/{{ $item->id }}/{{ $item->aktif }}" class="btn btn-primary">
+                                        unpublish
+                                    </a>
+                                    @endif
                                 </td>
-                                <td>{{ $item->gambar }}</td>
+                                <td><img src="{{ asset("storage/$item->gambar") }}" alt="{{ $item->gambar }}" width="60" class = "img-fluid d-flex justify-content-center"></td>
                                 <td class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-warning mx-3" onclick="getBerita({{ $item->id_news }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
-                                        <i class="fas fa-edit"></i>
+                                   <button type="button" class="btn btn-warning mx-3" onclick="getBerita({{ $item->id_news }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                       <i class="fas fa-edit"></i>
+                                   </button>
+                                   <form action="/infoPolitik/berita/{{ $item->id_news }}" method="post" class="d-inline">
+                                    @method('delete')
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus kecamatan {{ $item->judul }}')">
+                                        <i class="fas fa-trash-alt"></i>
                                     </button>
-                                    <form action="/infoPolitik/news/{{ $item->id_news }}" method="post" class="d-inline">
-                                     @method('delete')
-                                     @csrf
-                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus desa {{ $item->judul}}')">
-                                         <i class="fas fa-trash-alt"></i>
-                                     </button>
+                                </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -51,24 +65,133 @@
     </div>
 </div>
 
-{{-- Modal Berita --}}
+{{-- Modal Create Berita --}}
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Create News Data</h5>
-          <span aria-hidden="true">&times;</span>
+          <h5 class="modal-title" id="exampleModalLabel">Create Data Berita</h5>
+            <span aria-hidden="true">&times;</span>
         </div>
-        <div class="modal-body">
-          <form action="{{ asset('/infoPolitik/news') }}" method="post" enctype="multipart/form-data">
-
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Create</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <form action="/infoPolitik/berita" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="judul_news" class="form-label">Judul News</label>
+                    <input type="text" name="judul" id="judul" class="form-control" placeholder="Judul news">
+                </div>
+                <div class="form-group">
+                    <label for="isi_berita" class="form-label">Isi Berita</label>
+                    <textarea name="isi_berita" id="isi_berita" rows="2" class="form-control" placeholder="Masukan Isi Berita"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tgl_publish" class="form-label">Tanggal Publish</label>
+                    <input type="date" name="tgl_publish" id="tgl_publish" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="id_caleg" class="form-label" >Calon Legislatif</label>
+                    <select class="form-select form-control" name="id_caleg" id="id_caleg">
+                        <option selected>Open this select menu</option>
+                        @foreach ($caleg as $item)
+                        @if (old('id_caleg')==$item->id_caleg)
+                            <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
+                        @else
+                            <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                        @endif
+                        @endforeach
+                      </select>
+                </div>
+                <div class="form-group">
+                    <label for="gambar" class="form-label">gambar</label>
+                    <input type="file" name="gambar" id="gambar" class="form-control-file">
+                </div>
+                <div class="form-group">
+                    <label for="aktif">publish</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="aktif" id="aktif" value="Y">
+                        <label class="form-check-label" for="aktif">
+                            Y
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="aktif" id="aktif" value="N">
+                        <label class="form-check-label" for="aktif">
+                            N
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
-          </form>
-        </div>
+        </form>
       </div>
     </div>
-  </div>
+</div>
+<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Data Berita</h5>
+            <span aria-hidden="true">&times;</span>
+        </div>
+        <form action="" method="post" enctype="multipart/form-data" id="update_berita">
+            @method('put')
+            @csrf
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="judul_news" class="form-label">Judul News</label>
+                    <input type="text" name="judul" id="update_judul" class="form-control" placeholder="Judul news">
+                </div>
+                <div class="form-group">
+                    <label for="isi_berita" class="form-label">Isi Berita</label>
+                    <textarea name="isi_berita" id="update_isi_berita" rows="2" class="form-control" placeholder="Masukan Isi Berita"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="tgl_publish" class="form-label">Tanggal Publish</label>
+                    <input type="date" name="tgl_publish" id="update_tgl_publish" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="id_caleg" class="form-label" >Calon Legislatif</label>
+                    <select class="form-select form-control" name="id_caleg" id="update_id_caleg">
+                        <option selected>Open this select menu</option>
+                        @foreach ($caleg as $item)
+                        @if (old('id_caleg')==$item->id_caleg)
+                            <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
+                        @else
+                            <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                        @endif
+                        @endforeach
+                      </select>
+                </div>
+                <div class="form-group">
+                    <label for="gambar" class="form-label">gambar</label>
+                    <input type="file" name="gambar" id="update_gambar" class="form-control-file">
+                </div>
+                <div class="form-group">
+                    <label for="aktif">publish</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="aktif" id="update_aktif" value="Y">
+                        <label class="form-check-label" for="aktif">
+                            Y
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="aktif" id="update_aktif" value="N">
+                        <label class="form-check-label" for="aktif">
+                            N
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+<script src="/js/value.js"></script>
 @endsection

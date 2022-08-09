@@ -143,7 +143,7 @@
 
     <script>
     function getData(data) {
-        fetch(`/dashboard/partai/${data}`).then(resp => resp.json()).then(resp => 
+        fetch(`/dashboard/partai/${data}`).then(resp => resp.json()).then(resp =>
         {
             document.getElementById("edit_form").action = `/dashboard/partai/${data}`
             for (let x in resp) {

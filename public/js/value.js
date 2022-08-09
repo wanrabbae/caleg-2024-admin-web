@@ -19,14 +19,24 @@ function getValue(value){
     });
 }
 
+function getBerita(data) {
+    fetch(`/infoPolitik/berita/${data}`).then(response => response.json()).then(response => {
+        document.getElementById("update_berita").action = `/infoPolitik/berita/${data}`
+        document.getElementById("update_judul").value = response.judul
+        document.getElementById("update_isi_berita").value = response.isi_berita
+        document.getElementById("update_tgl_publish").value = response.tgl_publish
+        document.getElementById("update_id_caleg").value = response.id_caleg
+        document.getElementById("update_gambar").value = response.gambar
+        document.getElementById("update_aktif").value = response.aktif
+    })
+}
+
 function getVariable(Var){
     fetch(`/survey/HasilSurvey/${Var}`).then(response => response.json()).then(response => {
         document.getElementById("update_variabel").action = `/survey/HasilSurvey/${Var}`
         document.getElementById("edit_variabel").value = response.nama_variabel
     });
 }
-
-let dateValue = moment(value,'YYY-MM-DD')
 
 function DataSurvey(survey) {
     fetch(`/survey/inputSurvey/${survey}`).then(resp => resp.json()).then(resp =>{
@@ -38,3 +48,5 @@ function DataSurvey(survey) {
         document.getElementById("edit_variabel").value = resp.id_variabel
     });
 }
+
+

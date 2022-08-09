@@ -70,7 +70,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item font-weight-bold" href="/infoPolitik/daftarIsu">Daftar Isu</a>
                         <a class="collapse-item font-weight-bold" href="/infoPolitik/rekapitulasi">Rekapitulasi</a>
-                        <a class="collapse-item font-weight-bold" href="/infoPolitik/news">Berita</a>
+                        <a class="collapse-item font-weight-bold" href="/infoPolitik/berita">Berita</a>
                     </div>
                 </div>
             </li>
