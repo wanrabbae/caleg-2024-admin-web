@@ -14,6 +14,7 @@ use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\VariableController;
 use App\Http\Controllers\SaksiDaftarController;
 use App\Http\Controllers\SaksiMonitoringController;
+use App\Http\Controllers\SimpatisanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,4 +70,14 @@ Route::prefix('/relawan')->middleware('auth')->group(function () {
     Route::get('/{id}', [RelawanController::class, 'show'])->name('relawan-show');
     Route::put('/{id}', [RelawanController::class, 'update'])->name('relawan-update');
     Route::delete('/{id}', [RelawanController::class, 'delete'])->name('relawan-delete');
+});
+
+
+// ROUTES REKAP DATA SIMPATISAN
+Route::prefix('/program')->middleware('auth')->group(function () {
+    Route::get('/', [SimpatisanController::class, 'index'])->name('simpatisan');
+    Route::post('/', [SimpatisanController::class, 'store'])->name('simpatisan-store');
+    Route::get('/{id}', [SimpatisanController::class, 'show'])->name('simpatisan-show');
+    Route::put('/{id}', [SimpatisanController::class, 'update'])->name('simpatisan-update');
+    Route::delete('/{id}', [SimpatisanController::class, 'delete'])->name('simpatisan-delete');
 });

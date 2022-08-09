@@ -82,8 +82,8 @@
                 </a>
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="">Relawan</a>
-                        <a class="collapse-item font-weight-bold" href="">Simpatisan</a>
+                        <a class="collapse-item font-weight-bold" href="/relawan">Relawan</a>
+                        <a class="collapse-item font-weight-bold" href="/program">Simpatisan</a>
                         <a class="collapse-item font-weight-bold" href="">DPT</a>
                         <a class="collapse-item font-weight-bold" href="">DPT Manual</a>
                         <a class="collapse-item font-weight-bold" href="">Tabulasi Suara</a>
