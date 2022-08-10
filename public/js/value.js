@@ -26,8 +26,8 @@ function getBerita(data) {
         document.getElementById("update_isi_berita").value = response.isi_berita
         document.getElementById("update_tgl_publish").value = response.tgl_publish
         document.getElementById("update_id_caleg").value = response.id_caleg
-        document.getElementById("update_gambar").value = response.gambar
         document.getElementById("update_aktif").value = response.aktif
+        document.getElementById("update_gambar").value = response.gambar
     })
 }
 

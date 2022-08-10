@@ -52,6 +52,9 @@ Route::resource("/infoPolitik/daftarIsu", DaftarIsuController::class)->middlewar
 Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
 Route::resource("/infoPolitik/berita", BeritaController::class)->parameters(["berita" => "berita"])->middleware('auth');
 
+Route::get('/infoPolitik/berita/publish/{id}/{aktif}', [BeritaController::class,'publish'] );
+Route::get('/infoPolitik/berita/unpublish/{id}/{aktif}', [BeritaController::class,'unpublish'] );
+
 //Survey Routes
 Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware('auth');
 Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth');

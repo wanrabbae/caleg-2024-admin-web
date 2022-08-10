@@ -33,13 +33,13 @@
                                 <td>{{ $item->isi_berita }}</td>
                                 <td>{{ $item->tgl_publish }}</td>
                                 <td>
-                                    @if ($item->aktif == 'Y')
-                                    <a href="/infoPolitik/berita/publish/{{ $item->id }}/{{ $item->aktif }}" class="btn btn-primary">
-                                        publish
+                                    @if (($item->aktif == 'Y') == $item->id_news)
+                                    <a href="/infoPolitik/berita/unpublish/{{ $item->id_news }}/{{ $item->aktif }}"  class="btn btn-primary">
+                                        unpublish
                                     </a>
                                     @else
-                                    <a href="/infoPolitik/berita/publish/{{ $item->id }}/{{ $item->aktif }}" class="btn btn-primary">
-                                        unpublish
+                                    <a href="/infoPolitik/berita/publish/{{ $item->id_news }}/{{ $item->aktif }}" class="btn btn-primary">
+                                        publish
                                     </a>
                                     @endif
                                 </td>
@@ -102,23 +102,16 @@
                       </select>
                 </div>
                 <div class="form-group">
-                    <label for="gambar" class="form-label">gambar</label>
+                    <label for="gambar" class="form-label">Gambar</label>
                     <input type="file" name="gambar" id="gambar" class="form-control-file">
                 </div>
                 <div class="form-group">
-                    <label for="aktif">publish</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="aktif" id="aktif" value="Y">
-                        <label class="form-check-label" for="aktif">
-                            Y
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="aktif" id="aktif" value="N">
-                        <label class="form-check-label" for="aktif">
-                            N
-                        </label>
-                    </div>
+                    <label for="aktif" class="form-label">Publish</label>
+                    <select class="form-select form-control" name="aktif" id="aktif">
+                        <option selected>Open this select menu</option>
+                        <option value="Y">Y</option>
+                        <option value="N">N</option>
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Create</button>
@@ -171,18 +164,11 @@
                 </div>
                 <div class="form-group">
                     <label for="aktif">publish</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="aktif" id="update_aktif" value="Y">
-                        <label class="form-check-label" for="aktif">
-                            Y
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="aktif" id="update_aktif" value="N">
-                        <label class="form-check-label" for="aktif">
-                            N
-                        </label>
-                    </div>
+                    <select class="form-select form-control" name="aktif" id="update_aktif">
+                        <option selected>Open this select menu</option>
+                        <option value="Y">Y</option>
+                        <option value="N">N</option>
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Update</button>
