@@ -33,15 +33,19 @@
                                 <td>{{ $item->isi_berita }}</td>
                                 <td>{{ $item->tgl_publish }}</td>
                                 <td>
-                                    @if ($item->aktif == 'Y')
-                                    <a href="/infoPolitik/berita/publish/{{ $item->id }}/{{ $item->aktif }}" class="btn btn-primary">
-                                        publish
-                                    </a>
-                                    @else
-                                    <a href="/infoPolitik/berita/publish/{{ $item->id }}/{{ $item->aktif }}" class="btn btn-primary">
-                                        unpublish
-                                    </a>
+                                    <form action="/infoPolitik/berita/{{ $item->id_news }}" method="POST">
+                                        @method('put')
+                                        @csrf
+                                    @if ($item->aktif == 'N')
+                                        <button class="btn btn-primary" type="submit" value="Y" name="publish">
+                                            Publish
+                                        </button>
+                                        @else
+                                        <button class="btn btn-danger" type="submit" value="N" name="publish">
+                                            Unpublish
+                                        </button>
                                     @endif
+                                    </form>
                                 </td>
                                 <td><img src="{{ asset("storage/$item->gambar") }}" alt="{{ $item->gambar }}" width="60" class = "img-fluid d-flex justify-content-center"></td>
                                 <td class="d-flex justify-content-center">

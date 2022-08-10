@@ -52,7 +52,7 @@
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <form action="/saksi/daftar/{{ $data->nik }}" method="POST" class="d-inline">
-                                        @method("delete")
+                                        @method("delete")''
                                         @csrf
                                         <button type="submit" class="btn btn-danger">
                                             <i class="fas fa-trash-alt"></i>

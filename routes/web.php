@@ -15,6 +15,7 @@ use App\Http\Controllers\VariableController;
 use App\Http\Controllers\SaksiDaftarController;
 use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SimpatisanController;
+use App\Http\Controllers\AgendaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,7 @@ Route::resource('/dashboard/medsos', DashboardMedsosController::class)->paramete
 //Info Politik Routes
 Route::resource("/infoPolitik/daftarIsu", DaftarIsuController::class)->middleware('auth');
 Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
+// Route::put("/infoPolitik/berita/{id_news}", [BeritaController::class, "update"])->middleware("auth");
 Route::resource("/infoPolitik/berita", BeritaController::class)->parameters(["berita" => "berita"])->middleware('auth');
 
 //Survey Routes
@@ -86,3 +88,7 @@ Route::prefix('/program')->middleware('auth')->group(function () {
     Route::put('/{id}', [SimpatisanController::class, 'update'])->name('simpatisan-update');
     Route::delete('/{id}', [SimpatisanController::class, 'delete'])->name('simpatisan-delete');
 });
+
+
+
+Route::resource("/agenda", AgendaController::class)->middleware("auth");
