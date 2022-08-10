@@ -93,13 +93,8 @@ Route::prefix('/program')->middleware('auth')->group(function () {
     Route::delete('/{id}', [SimpatisanController::class, 'delete'])->name('simpatisan-delete');
 });
 
-<<<<<<< HEAD
-// ROUTE REKAP DATA DPT
-Route::prefix('/dpt')->middleware('auth')->group(function(){
+Route::prefix('dpt')->middleware('auth')->group(function(){
     Route::get('/', [DPTController::class, 'index'])->name('dpt');
 });
-=======
-
 
 Route::resource("/agenda", AgendaController::class)->middleware("auth");
->>>>>>> 286c777f22e881408919e78447f3859acef99734
