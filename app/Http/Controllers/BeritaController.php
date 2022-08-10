@@ -141,4 +141,29 @@ class BeritaController extends Controller
         }
        return back()->with('error', "Failed Deleting Data News");
     }
+
+    public function publish($id_news){
+
+        $aktif = News::firstWhere("id_news", $id_news)->aktif;
+        $judul = News::firstWhere("id_news", $id_news)->judul;
+
+        if($aktif == "Y"){
+            if(News::where("id_news", $id_news)->update($aktif === "N")){
+                News::where("id_news", $id_news)->delete($aktif);
+            }
+            return redirect('/infoPolitik/berita')->with('success', "Success Publish Berita $judul");
+        }
+        return redirect('/infoPolitik/berita')->with('error', "Failed Publish Berita $judul");
+    }
+
+    public function unpublish($id_news){
+        $aktif = News::firstWhere("id_news", $id_news)->aktif;
+        $judul = News::firstWhere("id_news", $id_news)->judul;
+
+        if($aktif == "N"){
+            // if(){
+
+            // }
+        }
+    }
 }
