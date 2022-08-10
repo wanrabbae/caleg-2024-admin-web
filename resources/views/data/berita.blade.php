@@ -33,15 +33,19 @@
                                 <td>{{ $item->isi_berita }}</td>
                                 <td>{{ $item->tgl_publish }}</td>
                                 <td>
-                                    @if ($item->aktif == 'Y')
-                                    <a href="/infoPolitik/berita/publish/{{ $item->id }}/{{ $item->aktif }}" class="btn btn-primary">
-                                        publish
-                                    </a>
-                                    @else
-                                    <a href="/infoPolitik/berita/publish/{{ $item->id }}/{{ $item->aktif }}" class="btn btn-primary">
-                                        unpublish
-                                    </a>
+                                    <form action="/infoPolitik/berita/{{ $item->id_news }}" method="POST">
+                                        @method('put')
+                                        @csrf
+                                    @if ($item->aktif == 'N')
+                                        <button class="btn btn-primary" type="submit" value="Y" name="publish">
+                                            Publish
+                                        </button>
+                                        @else
+                                        <button class="btn btn-danger" type="submit" value="N" name="publish">
+                                            Unpublish
+                                        </button>
                                     @endif
+                                    </form>
                                 </td>
                                 <td><img src="{{ asset("storage/$item->gambar") }}" alt="{{ $item->gambar }}" width="60" class = "img-fluid d-flex justify-content-center"></td>
                                 <td class="d-flex justify-content-center">
@@ -102,23 +106,16 @@
                       </select>
                 </div>
                 <div class="form-group">
-                    <label for="gambar" class="form-label">gambar</label>
+                    <label for="gambar" class="form-label">Gambar</label>
                     <input type="file" name="gambar" id="gambar" class="form-control-file">
                 </div>
                 <div class="form-group">
-                    <label for="aktif">publish</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="aktif" id="aktif" value="Y">
-                        <label class="form-check-label" for="aktif">
-                            Y
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="aktif" id="aktif" value="N">
-                        <label class="form-check-label" for="aktif">
-                            N
-                        </label>
-                    </div>
+                    <label for="aktif" class="form-label">Publish</label>
+                    <select class="form-select form-control" name="aktif" id="aktif">
+                        <option selected>Open this select menu</option>
+                        <option value="Y">Y</option>
+                        <option value="N">N</option>
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Create</button>
@@ -171,18 +168,11 @@
                 </div>
                 <div class="form-group">
                     <label for="aktif">publish</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="aktif" id="update_aktif" value="Y">
-                        <label class="form-check-label" for="aktif">
-                            Y
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="aktif" id="update_aktif" value="N">
-                        <label class="form-check-label" for="aktif">
-                            N
-                        </label>
-                    </div>
+                    <select class="form-select form-control" name="aktif" id="update_aktif">
+                        <option selected>Open this select menu</option>
+                        <option value="Y">Y</option>
+                        <option value="N">N</option>
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Update</button>

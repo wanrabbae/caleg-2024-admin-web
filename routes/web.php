@@ -9,15 +9,14 @@ use App\Http\Controllers\DashboardLegislatifController;
 use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\DashboardMedsosController;
 use App\Http\Controllers\DataSurveyController;
-use App\Http\Controllers\DptController;
-use App\Http\Controllers\DptManualController;
+use App\Http\Controllers\DPTController;
 use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\VariableController;
 use App\Http\Controllers\SaksiDaftarController;
 use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SimpatisanController;
-use App\Http\Controllers\TabulasiSuaraController;
+use App\Http\Controllers\AgendaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +52,11 @@ Route::resource('/dashboard/medsos', DashboardMedsosController::class)->paramete
 //Info Politik Routes
 Route::resource("/infoPolitik/daftarIsu", DaftarIsuController::class)->middleware('auth');
 Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
+// Route::put("/infoPolitik/berita/{id_news}", [BeritaController::class, "update"])->middleware("auth");
 Route::resource("/infoPolitik/berita", BeritaController::class)->parameters(["berita" => "berita"])->middleware('auth');
+
+Route::get('/infoPolitik/berita/publish/{id}/{aktif}', [BeritaController::class, 'publish']);
+Route::get('/infoPolitik/berita/unpublish/{id}/{aktif}', [BeritaController::class, 'unpublish']);
 
 //Survey Routes
 Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware('auth');
@@ -116,3 +119,8 @@ Route::prefix('/suara')->middleware('auth')->group(function () {
     Route::put('/{id}', [TabulasiSuaraController::class, 'update'])->name('suara-update');
     Route::delete('/{id}', [TabulasiSuaraController::class, 'delete'])->name('suara-delete');
 });
+Route::prefix('dpt')->middleware('auth')->group(function () {
+    Route::get('/', [DPTController::class, 'index'])->name('dpt');
+});
+
+Route::resource("/agenda", AgendaController::class)->middleware("auth");

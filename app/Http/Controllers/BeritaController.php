@@ -91,14 +91,23 @@ class BeritaController extends Controller
      */
     public function update(Request $request, News $news, $id_news)
     {
-        $rules = [
-            'judul' => 'unique:news',
-            'isi_berita' => 'max:255',
-            'tgl_publish' =>  'date',
-            'id_caleg' => 'required',
-            'gambar' => 'image|file|max:5000',
-            'aktif' => 'required'
-        ];
+        if ($request->publish) {
+            if(News::where('id_news', $id_news)->update(["aktif" => $request->publish])){
+                return redirect('/infoPolitik/berita')->with('success', 'Success Updating Data News');
+            }
+
+            return redirect('/infoPolitik/berita')->with('error', 'Failed Updating Data News');
+
+        } else {
+            $rules = [
+                'judul' => 'unique:news',
+                'isi_berita' => 'max:255',
+                'tgl_publish' =>  'date',
+                'id_caleg' => 'required',
+                'gambar' => 'image|file|max:5000',
+                'aktif' => 'required'
+            ];
+
 
         $data = $request->validate($rules);
 
@@ -108,6 +117,8 @@ class BeritaController extends Controller
             Storage::delete($img);
             $data["gambar"] = $request->file("gambar")->store('/images');
         }
+
+    }
 
         if(News::where('id_news', $id_news)->update($data)){
             return redirect('/infoPolitik/berita')->with('success', 'Success Updating Data News');
@@ -130,4 +141,19 @@ class BeritaController extends Controller
         }
        return back()->with('error', "Failed Deleting Data News");
     }
+
+    public function publish($id_news){
+
+        $aktif = News::firstWhere("id_news", $id_news)->aktif;
+        $judul = News::firstWhere("id_news", $id_news)->judul;
+
+        if($aktif == "Y"){
+            if(News::where("id_news", $id_news)->update($aktif === "N")){
+                News::where("id_news", $id_news)->delete($aktif);
+            }
+            return redirect('/infoPolitik/berita')->with('success', "Success Publish Berita $judul");
+        }
+        return redirect('/infoPolitik/berita')->with('error', "Failed Publish Berita $judul");
+    }
+
 }

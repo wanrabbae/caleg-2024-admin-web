@@ -84,8 +84,8 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item font-weight-bold" href="/relawan">Relawan</a>
                         <a class="collapse-item font-weight-bold" href="/program">Simpatisan</a>
-                        <a class="collapse-item font-weight-bold" href="/pemilih">DPT</a>
-                        <a class="collapse-item font-weight-bold" href="">DPT Manual</a>
+                        <a class="collapse-item font-weight-bold" href="/dpt">DPT</a>
+                        <a class="collapse-item font-weight-bold" href="/agenda">DPT Manual</a>
                         <a class="collapse-item font-weight-bold" href="">Tabulasi Suara</a>
                     </div>
                 </div>
