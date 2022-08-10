@@ -95,6 +95,10 @@ Route::prefix('/program')->middleware('auth')->group(function () {
 
 Route::prefix('dpt')->middleware('auth')->group(function(){
     Route::get('/', [DPTController::class, 'index'])->name('dpt');
+    Route::post('/', [DPTController::class, 'store'])->name('dpt-store');
+    Route::get('/{id}', [DPTController::class, 'show'])->name('dpt-show');
+    Route::put('/{id}',[DPTController::class, 'update'])->name('dpt-update');
+    Route::delete('/{id}', [DPTController::class, 'delete'])->name('dpt-delete');
 });
 
 Route::resource("/agenda", AgendaController::class)->middleware("auth");

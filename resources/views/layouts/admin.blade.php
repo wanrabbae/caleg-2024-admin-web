@@ -84,14 +84,9 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item font-weight-bold" href="/relawan">Relawan</a>
                         <a class="collapse-item font-weight-bold" href="/program">Simpatisan</a>
-<<<<<<< HEAD
                         <a class="collapse-item font-weight-bold" href="/dpt">DPT</a>
                         <a class="collapse-item font-weight-bold" href="">DPT Manual</a>
-=======
-                        <a class="collapse-item font-weight-bold" href="">DPT</a>
-                        <a class="collapse-item font-weight-bold" href="/agenda">DPT Manual</a>
->>>>>>> 286c777f22e881408919e78447f3859acef99734
-                        <a class="collapse-item font-weight-bold" href="">Tabulasi Suara</a>
+                        <a class="collapse-item font-weight-bold" href="/suara">Tabulasi Suara</a>
                     </div>
                 </div>
             </li>
