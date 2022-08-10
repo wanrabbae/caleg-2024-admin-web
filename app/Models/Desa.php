@@ -26,4 +26,9 @@ class Desa extends Model
     {
         return $this->hasMany(Relawan::class);
     }
+
+    public function rk_pemilih()
+    {
+        return $this->hasMany(Rk_pemilih::class);
+    }
 }
