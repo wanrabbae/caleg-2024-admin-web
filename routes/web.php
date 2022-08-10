@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardLegislatifController;
 use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\DashboardMedsosController;
 use App\Http\Controllers\DataSurveyController;
+use App\Http\Controllers\DPTController;
 use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\VariableController;
@@ -92,6 +93,8 @@ Route::prefix('/program')->middleware('auth')->group(function () {
     Route::delete('/{id}', [SimpatisanController::class, 'delete'])->name('simpatisan-delete');
 });
 
-
+Route::prefix('dpt')->middleware('auth')->group(function(){
+    Route::get('/', [DPTController::class, 'index'])->name('dpt');
+});
 
 Route::resource("/agenda", AgendaController::class)->middleware("auth");

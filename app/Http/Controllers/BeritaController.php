@@ -107,17 +107,17 @@ class BeritaController extends Controller
                 'gambar' => 'image|file|max:5000',
                 'aktif' => 'required'
             ];
-            
-            
+
+
         $data = $request->validate($rules);
 
         $img = News::firstWhere("id_news", $id_news)->gambar;
-        
+
         if($request->file('gambar')){
             Storage::delete($img);
             $data["gambar"] = $request->file("gambar")->store('/images');
         }
-        
+
     }
 
         if(News::where('id_news', $id_news)->update($data)){
@@ -156,14 +156,4 @@ class BeritaController extends Controller
         return redirect('/infoPolitik/berita')->with('error', "Failed Publish Berita $judul");
     }
 
-    public function unpublish($id_news){
-        $aktif = News::firstWhere("id_news", $id_news)->aktif;
-        $judul = News::firstWhere("id_news", $id_news)->judul;
-
-        if($aktif == "N"){
-            // if(){
-
-            // }
-        }
-    }
 }
