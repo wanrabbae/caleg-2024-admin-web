@@ -16,6 +16,7 @@ use App\Http\Controllers\VariableController;
 use App\Http\Controllers\SaksiDaftarController;
 use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SimpatisanController;
+use App\Http\Controllers\AgendaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,7 @@ Route::resource('/dashboard/medsos', DashboardMedsosController::class)->paramete
 //Info Politik Routes
 Route::resource("/infoPolitik/daftarIsu", DaftarIsuController::class)->middleware('auth');
 Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
+// Route::put("/infoPolitik/berita/{id_news}", [BeritaController::class, "update"])->middleware("auth");
 Route::resource("/infoPolitik/berita", BeritaController::class)->parameters(["berita" => "berita"])->middleware('auth');
 
 Route::get('/infoPolitik/berita/publish/{id}/{aktif}', [BeritaController::class,'publish'] );
@@ -91,7 +93,13 @@ Route::prefix('/program')->middleware('auth')->group(function () {
     Route::delete('/{id}', [SimpatisanController::class, 'delete'])->name('simpatisan-delete');
 });
 
+<<<<<<< HEAD
 // ROUTE REKAP DATA DPT
 Route::prefix('/dpt')->middleware('auth')->group(function(){
     Route::get('/', [DPTController::class, 'index'])->name('dpt');
 });
+=======
+
+
+Route::resource("/agenda", AgendaController::class)->middleware("auth");
+>>>>>>> 286c777f22e881408919e78447f3859acef99734
