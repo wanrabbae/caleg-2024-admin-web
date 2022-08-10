@@ -85,8 +85,8 @@
                         <a class="collapse-item font-weight-bold" href="/relawan">Relawan</a>
                         <a class="collapse-item font-weight-bold" href="/program">Simpatisan</a>
                         <a class="collapse-item font-weight-bold" href="/dpt">DPT</a>
-                        <a class="collapse-item font-weight-bold" href="">DPT Manual</a>
-                        <a class="collapse-item font-weight-bold" href="/suara">Tabulasi Suara</a>
+                        <a class="collapse-item font-weight-bold" href="/agenda">DPT Manual</a>
+                        <a class="collapse-item font-weight-bold" href="">Tabulasi Suara</a>
                     </div>
                 </div>
             </li>

@@ -45,6 +45,8 @@ class AgendaController extends Controller
             "lokasi" => "required|max:255"
     ]);
 
+        $data["id_caleg"] = auth()->user()->id_users;
+    
         if (Agenda::create($data)) {
             return back()->with("success", "Success Create New Agenda");
         }
@@ -59,7 +61,7 @@ class AgendaController extends Controller
      */
     public function show(Agenda $agenda)
     {
-        //
+        return response()->json($agenda->makeHidden(["id_agenda", "id_caleg"]));
     }
 
     /**
@@ -82,7 +84,24 @@ class AgendaController extends Controller
      */
     public function update(Request $request, Agenda $agenda)
     {
-        //
+        $rules = [
+            "tanggal" => "required",
+            "jam" => "required",
+            "lokasi" => "required|max:255"
+        ];
+
+        if ($request->nama_agenda != $agenda->nama_agenda) {
+            $rules["nama_agenda"] = "max:255|required|unique:agenda";
+        }
+
+        $data = $request->validate($rules);
+
+        $data["id_caleg"] = auth()->user()->id_users;
+        
+        if (Agenda::where("id_agenda", $agenda->id_agenda)->update($data)) {
+            return back()->with("success", "Success Edit $agenda->nama_agenda Agenda");
+        }
+        return back()->with("error", "Error, Can't Edit $agenda->nama_agenda Agenda");
     }
 
     /**
@@ -93,6 +112,9 @@ class AgendaController extends Controller
      */
     public function destroy(Agenda $agenda)
     {
-        //
+        if (Agenda::destroy($agenda->id_agenda)) {
+            return back()->with("success", "Success delete $agenda->nama_agenda Agenda");
+        }
+        return back()->with("error", "Error, Can't delete $agenda->nama_agenda Agenda");
     }
 }

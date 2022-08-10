@@ -90,7 +90,8 @@ class DashboardMedsosController extends Controller
         $rules = [
             "logo" => "max:2024|image",
         ];
-    
+   
+
         if ($request->nama_medsos != $medsos->nama_medsos) {
             $rules["nama_medsos"] = "required|max:255|unique:medsos";
         }
@@ -106,7 +107,7 @@ class DashboardMedsosController extends Controller
         
         
     if (Medsos::where("id_medsos", $medsos->id_medsos)->update($data)) {
-            return redirect("/dashboard/medsos")->with("success", "Success Edit $medsos->nama_medsos");
+            return back()->with("success", "Success Edit $medsos->nama_medsos");
         }
         
         return back()->with("error", "Error, Can't Edit $medsos->nama_medsos");

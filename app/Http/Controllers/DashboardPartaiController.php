@@ -97,7 +97,7 @@ class DashboardPartaiController extends Controller
         $data = $request->validate($rules);
 
         if ($request->file("logo")) {
-            if (!Storage::exists($partai->logo)) {
+            if (Storage::exists($partai->logo)) {
                 Storage::delete($partai->logo);
             }
             $data["logo"] = $request->file("logo")->store("/image");

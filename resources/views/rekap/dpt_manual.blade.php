@@ -140,7 +140,7 @@
     function getData(data) {
         fetch(`/agenda/${data}`).then(resp => resp.json()).then(resp => {
             document.getElementById("edit_form").action = `/agenda/${data}`
-            for (let x in data) {
+            for (let x in resp) {
                 document.getElementById(`edit_${x}`).value = resp[x]
             }
     })
