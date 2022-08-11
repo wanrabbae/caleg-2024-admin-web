@@ -17,6 +17,8 @@ use App\Http\Controllers\SaksiDaftarController;
 use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SimpatisanController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\EmailBlasController;
+use App\Http\Controllers\WaBlasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,6 +123,28 @@ Route::prefix('/suara')->middleware('auth')->group(function () {
 });
 Route::prefix('dpt')->middleware('auth')->group(function () {
     Route::get('/', [DPTController::class, 'index'])->name('dpt');
+    Route::post('/', [DPTController::class, 'store'])->name('dpt-store');
+    Route::get('/{id}', [DPTController::class, 'show'])->name('dpt-show');
+    Route::put('/{id}', [DPTController::class, 'update'])->name('dpt-update');
+    Route::delete('/{id}', [DPTController::class, 'delete'])->name('dpt-delete');
 });
 
 Route::resource("/agenda", AgendaController::class)->middleware("auth");
+
+// ROUTES WA BLAS
+Route::prefix('whatsapp')->middleware('auth')->group(function () {
+    Route::get('/', [WaBlasController::class, 'index'])->name('wa');
+    // Route::post('/', [WaBlasController::class, 'store'])->name('wa-store');
+    // Route::get('/{id}', [WaBlasController::class, 'show'])->name('wa-show');
+    // Route::put('/{id}', [WaBlasController::class, 'update'])->name('wa-update');
+    // Route::delete('/{id}', [WaBlasController::class, 'delete'])->name('wa-delete');
+});
+
+// ROUTES EMAIL BLAS
+Route::prefix('email')->middleware('auth')->group(function () {
+    Route::get('/', [EmailBlasController::class, 'index'])->name('email');
+    // Route::post('/', [WaBlasController::class, 'store'])->name('email-store');
+    // Route::get('/{id}', [WaBlasController::class, 'show'])->name('email-show');
+    // Route::put('/{id}', [WaBlasController::class, 'update'])->name('email-update');
+    // Route::delete('/{id}', [WaBlasController::class, 'delete'])->name('email-delete');
+});
