@@ -1,15 +1,15 @@
-{{-- DATA RELAWAN --}}
+{{-- WA BLAS --}}
 @extends('layouts.admin')
 
 @section('content')
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
+        {{-- <div class="card-header py-3">
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
                 <i class="fas fa-plus"></i>
                 Relawan
             </button>
-        </div>
+        </div> --}}
 
         <div class="card-body">
             <div class="table-responsive">
@@ -17,16 +17,12 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nik</th>
                             <th>Nama Relawan</th>
-                            <th>Desa</th>
-                            <th>KTP</th>
-                            <th>Caleg</th>
-                            <th>Status</th>
                             <th>No Hp</th>
-                            <th>E-mail</th>
-                            <th>Username</th>
-                            <th>Blokir</th>
+                            <th>Desa</th>
+                            <th>Kecamatan</th>
+                            <th>Koordinator</th>
+                            <th>Foto</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -34,10 +30,16 @@
                         @if ($relawan->count())
                             @foreach ($relawan as $data)
                                 <tr>
-                                    <td>{{ $data->id_relawan }}</td>
-                                    <td>{{ $data->nik }}</td>
+                                    <td>
+                                        <input type="checkbox" name="check" id="check" class="form-control w-50">
+                                    </td>
                                     <td>{{ $data->nama_relawan }}</td>
-                                    <td>{{ $data->desa->nama_desa }}</td>
+                                    <td>{{ $data->no_hp }}</td>
+                                    <td>{{ $data->desa->nama_desa ?? '' }}</td>
+                                    <td>
+                                        {{ $data->desa->kecamatan->nama_kecamatan ?? '' }}
+                                    </td>
+                                    <td></td>
                                     <td>
                                         @if (Storage::exists($data->foto_ktp))
                                             <img src="{{ asset('storage/' . $data->foto_ktp) }}" alt="" style="width: 200px">
@@ -46,22 +48,11 @@
                                             <span>Image Not Found</span>
                                         @endif
                                     </td>
-                                    <td>{{ $data->caleg->nama_lengkap ?? ' ' }}</td>
-                                    <td>{{ $data->status }}</td>
-                                    <td>{{ $data->no_hp }}</td>
-                                    <td>{{ $data->email }}</td>
-                                    <td>{{ $data->username }}</td>
-                                    <td>{{ $data->blokir }}</td>
-                                    <td>
-                                        <button class="btn btn-primary" onclick="getData({{ $data->id_relawan }})" data-toggle="modal" data-target="#editModal">
-                                            <i class="fas fa-edit"></i>
+
+                                    <td id="sendColumn">
+                                        <button class="btn btn-success" data-toggle="modal" data-target="#createModal" onclick="getData({{ $data->id_relawan }})" id="send">
+                                            <i class="fas fa-bell"></i>
                                         </button>
-                                        <form action="/relawan/{{ $data->id_relawan }}" method="POST">
-                                            @method('delete')
-                                            @csrf
-                                            <button type="submit" onclick="return confirm('Anda yakin ingin menghapus data ini ?')" class="btn btn-danger">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -83,68 +74,27 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="/relawan" method="POST" enctype="multipart/form-data">
+                <form action="/whatsapp" method="POST" id="sendForm">
                     @csrf
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
-                            <label for="nik">Nik</label>
-                            <input required value="{{ old('nik') }}" type="number" class="form-control" id="nik" placeholder="Nik" name="nik">
-                        </div>
-                        <div class="form-group">
                             <label for="nama_relawan">Nama Relawan</label>
                             <input required value="{{ old('nama_relawan') }}" type="text" class="form-control" id="nama_relawan" placeholder="Nama Relawan" name="nama_relawan">
-                        </div>
-                        <div class="form-group">
-                            <label for="id_desa">Pilih Desa</label>
-                            <select class="form-control" name="id_desa" id="id_desa">
-                                @foreach ($desa as $item)
-                                    <option value="{{ $item->id_desa }}">{{ $item->nama_desa }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="foto_ktp">Upload Foto KTP</label>
-                            <input required value="{{ old('foto_ktp') }}" type="file" class="form-control" id="foto_ktp" name="foto_ktp">
-                        </div>
-                        <div class="form-group">
-                            <label for="id_caleg">Pilih Caleg</label>
-                            <select class="form-control" name="id_caleg" id="id_caleg">
-                                @foreach ($caleg as $item)
-                                    <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="status">Status</label>
-                            <select class="form-control" name="status" id="status">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                            </select>
                         </div>
                         <div class="form-group">
                             <label for="no_hp">No Hp</label>
                             <input required value="{{ old('no_hp') }}" type="number" class="form-control" id="no_hp" placeholder="No Hp" name="no_hp">
                         </div>
                         <div class="form-group">
-                            <label for="email">E-mail</label>
-                            <input required value="{{ old('email') }}" type="text" class="form-control" id="email" placeholder="Email" name="email">
-                        </div>
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input required value="{{ old('username') }}" type="text" class="form-control" id="username" placeholder="Username" name="username">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input required value="{{ old('password') }}" type="password" class="form-control" id="password" placeholder="Password" name="password">
+                            <label for="no_hp">Pesan Japri</label>
+                            <textarea name="pesan" id="pesan" cols="30" rows="4" placeholder="Pesan..." class="form-control"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <a href="">
-                            <button type="submit" class="btn btn-primary">Tambah</button>
-                        </a>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Kirim</button>
+
                     </div>
                 </form>
             </div>
@@ -152,7 +102,7 @@
     </div>
 
     {{-- Edit Modal --}}
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -224,17 +174,13 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <script>
         function getData(data) {
             fetch(`/relawan/${data}`).then(resp => resp.json()).then(resp => {
-                document.getElementById("edit_form").action = `/relawan/${data}`
-                document.getElementById("edit_nama_relawan").value = resp.nama_relawan
-                document.getElementById("nik_edit").value = resp.nik
-                document.getElementById("edit_email").value = resp.email
-                document.getElementById("edit_username").value = resp.username
-                document.getElementById("edit_no_hp").value = resp.no_hp
+                document.getElementById("nama_relawan").value = resp.nama_relawan
+                document.getElementById("no_hp").value = resp.no_hp
             })
         }
     </script>

@@ -136,8 +136,8 @@
                 </a>
                 <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="">Wa Blas</a>
-                        <a class="collapse-item font-weight-bold" href="">Email Blas</a>
+                        <a class="collapse-item font-weight-bold" href="/whatsapp">Wa Blas</a>
+                        <a class="collapse-item font-weight-bold" href="/email">Email Blas</a>
                         <a class="collapse-item font-weight-bold" href="">Info Mobile</a>
                     </div>
                 </div>
