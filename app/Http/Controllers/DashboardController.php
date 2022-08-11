@@ -11,6 +11,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('home.dashboard');
+        return view('home.dashboard', [
+            'title' => 'Dashboard Caleg'
+        ]);
     }
 }

@@ -19,7 +19,6 @@ use App\Http\Controllers\SimpatisanController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\EmailBlasController;
 use App\Http\Controllers\WaBlasController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
