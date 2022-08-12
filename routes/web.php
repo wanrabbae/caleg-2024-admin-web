@@ -111,14 +111,14 @@ Route::prefix('dpt')->middleware('auth')->group(function () {
     Route::delete('/{id}', [DPTController::class, 'delete'])->name('dpt-delete');
 });
 
-// ROUTES REKAP DATA DPT MANUAL
-Route::prefix('/agenda')->middleware('auth')->group(function () {
-    Route::get('/', [DptManualController::class, 'index'])->name('agenda');
-    Route::post('/', [DptManualController::class, 'store'])->name('agenda-store');
-    Route::get('/{id}', [DptManualController::class, 'show'])->name('agenda-show');
-    Route::put('/{id}', [DptManualController::class, 'update'])->name('agenda-update');
-    Route::delete('/{id}', [DptManualController::class, 'delete'])->name('agenda-delete');
-});
+// // ROUTES REKAP DATA DPT MANUAL
+// Route::prefix('/agenda')->middleware('auth')->group(function () {
+//     Route::get('/', [DptManualController::class, 'index'])->name('agenda');
+//     Route::post('/', [DptManualController::class, 'store'])->name('agenda-store');
+//     Route::get('/{id}', [DptManualController::class, 'show'])->name('agenda-show');
+//     Route::put('/{id}', [DptManualController::class, 'update'])->name('agenda-update');
+//     Route::delete('/{id}', [DptManualController::class, 'delete'])->name('agenda-delete');
+// });
 
 // ROUTES REKAP DATA TABULASI SUARA
 Route::prefix('/suara')->middleware('auth')->group(function () {

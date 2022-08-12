@@ -160,7 +160,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link" href="/backup">
                     <i class="far fa-save"></i>
                     <span>Backup</span>
                 </a>
