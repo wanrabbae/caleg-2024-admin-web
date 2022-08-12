@@ -9,8 +9,6 @@ class Rk_pemilih extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql2';
-
     protected $table = "rk_pemilih";
 
     protected $primaryKey = "id_pemilih";

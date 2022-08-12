@@ -144,7 +144,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed" href="/documentation"  >
                     <i class="fas fa-book"></i>
                     <span>Documentation</span>
                 </a>

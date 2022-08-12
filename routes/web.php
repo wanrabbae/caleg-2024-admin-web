@@ -17,6 +17,7 @@ use App\Http\Controllers\SaksiDaftarController;
 use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SimpatisanController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\EmailBlasController;
 use App\Http\Controllers\WaBlasController;
 /*
@@ -148,3 +149,6 @@ Route::prefix('email')->middleware('auth')->group(function () {
     // Route::put('/{id}', [WaBlasController::class, 'update'])->name('email-update');
     // Route::delete('/{id}', [WaBlasController::class, 'delete'])->name('email-delete');
 });
+
+// ROUTE DOCUMENTATION
+Route::get('/documentation', [DocumentationController::class, 'index']);
