@@ -151,4 +151,4 @@ Route::prefix('email')->middleware('auth')->group(function () {
 });
 
 // ROUTE DOCUMENTATION
-Route::get('/documentation', [DocumentationController::class, 'index']);
+Route::get('/documentation', [DocumentationController::class, 'index'])->middleware('auth');
