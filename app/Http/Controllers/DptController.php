@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Desa;
 use App\Models\Rk_pemilih;
+use App\Models\Rk_pemilih_2;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -30,16 +31,16 @@ class DptController extends Controller
             'nama' => 'required|max:100',
             'tempat_lahir' => 'required|max:50',
             'tgl_lahir' => 'required|date',
-            'tgl_data' => 'required|date|after_or_equal:today',
+            // 'tgl_data' => 'required|date|after_or_equal:today',
             'jk' => 'required|max:10',
-            'tps' => 'required|integer|',
+            'tps' => 'required|integer',
             'id_desa' => 'required|max:4',
             'relawan' => 'required',
             'saksi' => 'required',
             'id_users' => 'required|max:4'
         ]);
 
-        if(Rk_pemilih::create($data)){
+        if(Rk_pemilih::create($data) && Rk_pemilih_2::create($data)){
             return back()->with("success", "Success Create New Data DPT");
         }
         return back()->with("error", "Error, Can't Create New Data DPT");
@@ -47,31 +48,28 @@ class DptController extends Controller
     public function update(Request $request, $id)
     {
         $pemilih = Rk_pemilih::find($id);
-
         $data = $request->validate([
             'nik' => 'max:100',
             'nama' => 'max:100',
             'tempat_lahir' => 'max:50',
             'tgl_lahir' => 'date',
-            'tgl_data' => 'date|after_or_equal:today',
+            // 'tgl_data' => 'date|after_or_equal:today',
             'jk' => 'max:10',
-            'tps' => 'integer|',
+            'tps' => 'integer',
             'id_desa' => 'max:4',
-            'relawan' => 'max:1',
-            'saksi' => 'max:1',
-            'id_users' => 'max:4'
+            'relawan' => 'required',
+            'saksi' => 'required',
+            'id_users' => 'required'
         ]);
-
-        if($pemilih->update($data)){
+        
+        if($pemilih->update($data) && Rk_pemilih_2::find($id)->update($data)){
             return back()->with("success", "Success Update New Data DPT");
         }
         return back()->with("error", "Error, Can't Update New Data DPT");
     }
     public function delete($id)
     {
-        $pemilih = Rk_pemilih::find($id);
-
-        if($pemilih->delete()){
+        if(Rk_pemilih::destroy($id) && Rk_pemilih_2::destroy($id)){
             return back()->with("success", "Success Delete Data DPT");
         }
         return back()->with("error", "Error, Can't Delete Data DPT");

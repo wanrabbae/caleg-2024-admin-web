@@ -36,7 +36,7 @@
                                     <td>{{ $item->tempat_lahir }}</td>
                                     <td>{{ $item->tgl_lahir }}</td>
                                     <td>{{ $item->jk }}</td>
-                                    <td>{{ $item->id_desa }}</td>
+                                    <td>{{ $item->desa->nama_desa }}</td>
                                     <td>{{ $item->tps }}</td>
                                     <td class="d-flex justify-content-center">
                                         <button type="button" class="btn btn-warning mx-3" onclick="getData({{ $item->id_pemilih }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
@@ -86,14 +86,13 @@
                             <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
                             <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" placeholder="Masukan Tanggal Lahir">
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="tgl_data" class="form-label">Tanggal Data Ditambahkan</label>
                             <input type="datetime-local" class="form-control" id="tgl_data" name="tgl_data" placeholder="Masukan Tanggal Lahir">
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="jk" class="form-label">Jenis Kelamin</label>
                             <select name="jk" id="jk" class="form-control form-select">
-                                <option selected>Open this select menu</option>
                                 <option value="Laki-Laki">Laki-Laki</option>
                                 <option value="Perempuan">Perempuan</option>
                             </select>
@@ -105,7 +104,6 @@
                         <div class="form-group">
                             <label for="desa" class="form-label">Desa</label>
                             <select class=" form-control form-select" name="id_desa" id="id_desa">
-                                <option selected>Open this select menu</option>
                                 @foreach ($desas as $item)
                                     @if (old('id_desa') == $item->id_desa)
                                         <option value="{{ $item->id_desa }}" selected>{{ $item->nama_desa }}</option>
@@ -118,7 +116,6 @@
                         <div class="form-group">
                             <label for="relawan" class="form-label">Relawan</label>
                             <select name="relawan" id="relawan" class="form-control form-select">
-                                <option selected>Open this select menu</option>
                                 <option value="Y">Ya</option>
                                 <option value="T">Tidak</option>
                             </select>
@@ -126,7 +123,6 @@
                         <div class="form-group">
                             <label for="saksi" class="form-label">Saksi</label>
                             <select name="saksi" id="saksi" class="form-control form-select">
-                                <option selected>Open this select menu</option>
                                 <option value="Y">Ya</option>
                                 <option value="T">Tidak</option>
                             </select>
@@ -134,7 +130,6 @@
                         <div class="form-group">
                             <label for="user" class="form-label">User</label>
                             <select class=" form-control form-select" name="id_users" id="id_users">
-                                <option selected>Open this select menu</option>
                                 @foreach ($users as $item)
                                     @if (old('id_users') == $item->id_users)
                                         <option value="{{ $item->id_users }}">{{ $item->username }}</option>
@@ -180,14 +175,13 @@
                             <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
                             <input type="date" class="form-control" id="edit_tgl_lahir" name="tgl_lahir" placeholder="Masukan Tanggal Lahir">
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="tgl_data" class="form-label">Tanggal Data Ditambahkan</label>
                             <input type="datetime-local" class="form-control" id="edit_tgl_data" name="tgl_data" placeholder="Masukan Tanggal Lahir">
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="jk" class="form-label">Jenis Kelamin</label>
                             <select name="jk" id="edit_jk" class="form-control form-select">
-                                <option selected>Open this select menu</option>
                                 <option value="Laki-Laki">Laki-Laki</option>
                                 <option value="Perempuan">Perempuan</option>
                             </select>
@@ -199,7 +193,6 @@
                         <div class="form-group">
                             <label for="desa" class="form-label">Desa</label>
                             <select class=" form-control form-select" name="id_desa" id="edit_id_desa">
-                                <option selected>Open this select menu</option>
                                 @foreach ($desas as $item)
                                     @if (old('id_desa') == $item->id_desa)
                                         <option value="{{ $item->id_desa }}" selected>{{ $item->nama_desa }}</option>
@@ -212,7 +205,6 @@
                         <div class="form-group">
                             <label for="relawan" class="form-label">Relawan</label>
                             <select name="relawan" id="edit_relawan" class="form-control form-select">
-                                <option selected>Open this select menu</option>
                                 <option value="Y">Ya</option>
                                 <option value="T">Tidak</option>
                             </select>
@@ -220,7 +212,6 @@
                         <div class="form-group">
                             <label for="saksi" class="form-label">Saksi</label>
                             <select name="saksi" id="edit_saksi" class="form-control form-select">
-                                <option selected>Open this select menu</option>
                                 <option value="Y">Ya</option>
                                 <option value="T">Tidak</option>
                             </select>
@@ -228,7 +219,6 @@
                         <div class="form-group">
                             <label for="user" class="form-label">User</label>
                             <select class=" form-control form-select" name="id_users" id="edit_id_users">
-                                <option selected>Open this select menu</option>
                                 @foreach ($users as $item)
                                     @if (old('id_users') == $item->id_users)
                                         <option value="{{ $item->id_users }}">{{ $item->username }}</option>
