@@ -11,6 +11,7 @@ class DashboardController extends Controller
     public function index()
     {
         return view('home.dashboard', [
+            'title' => 'Dashboard Caleg',
             "relawan" => Relawan::all()->count(),
             "pemilih" => Rk_pemilih::all()->count()
         ]);
