@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d85be56875da230bceca6aa214faf51",
+    "content-hash": "c6fd83c42438335e207706d4bd869066",
     "packages": [
         {
             "name": "brick/math",
@@ -915,6 +915,60 @@
                 }
             ],
             "time": "2022-06-20T21:43:11+00:00"
+        },
+        {
+            "name": "haruncpi/laravel-db-backup",
+            "version": "v0.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/haruncpi/laravel-db-backup.git",
+                "reference": "dc312a145afc4df830ae37bf7b8b01d22a501fe6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/haruncpi/laravel-db-backup/zipball/dc312a145afc4df830ae37bf7b8b01d22a501fe6",
+                "reference": "dc312a145afc4df830ae37bf7b8b01d22a501fe6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Haruncpi\\LaravelDbBackup\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Haruncpi\\LaravelDbBackup\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "cc-by-4.0"
+            ],
+            "authors": [
+                {
+                    "name": "MD.HARUN-UR-RASHID",
+                    "email": "harun.cox@gmail.com"
+                }
+            ],
+            "description": "Easily backup your laravel application database!",
+            "keywords": [
+                "backup",
+                "database",
+                "database backup",
+                "laravel",
+                "laravel backup"
+            ],
+            "support": {
+                "issues": "https://github.com/haruncpi/laravel-db-backup/issues",
+                "source": "https://github.com/haruncpi/laravel-db-backup/tree/v0.0.1"
+            },
+            "time": "2020-12-12T17:15:29+00:00"
         },
         {
             "name": "laravel/framework",

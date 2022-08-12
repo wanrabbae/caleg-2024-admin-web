@@ -17,6 +17,7 @@ use App\Http\Controllers\SaksiDaftarController;
 use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SimpatisanController;
 use App\Http\Controllers\AgendaController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\EmailBlasController;
 use App\Http\Controllers\WaBlasController;
@@ -152,3 +153,6 @@ Route::prefix('email')->middleware('auth')->group(function () {
 
 // ROUTE DOCUMENTATION
 Route::get('/documentation', [DocumentationController::class, 'index'])->middleware('auth');
+
+// Backup Route
+Route::get('/backup', [BackupController::class, 'index'])->middleware('auth');
