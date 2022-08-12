@@ -95,12 +95,19 @@ Route::prefix('/program')->middleware('auth')->group(function () {
 });
 
 // ROUTES REKAP DATA DPT / PEMILIH
-Route::prefix('/pemilih')->middleware('auth')->group(function () {
-    Route::get('/', [DptController::class, 'index'])->name('pemilih');
-    Route::post('/', [DptController::class, 'store'])->name('pemilih-store');
-    Route::get('/{id}', [DptController::class, 'show'])->name('pemilih-show');
-    Route::put('/{id}', [DptController::class, 'update'])->name('pemilih-update');
-    Route::delete('/{id}', [DptController::class, 'delete'])->name('pemilih-delete');
+// Route::prefix('/pemilih')->middleware('auth')->group(function () {
+//     Route::get('/', [DptController::class, 'index'])->name('pemilih');
+//     Route::post('/', [DptController::class, 'store'])->name('pemilih-store');
+//     Route::get('/{id}', [DptController::class, 'show'])->name('pemilih-show');
+//     Route::put('/{id}', [DptController::class, 'update'])->name('pemilih-update');
+//     Route::delete('/{id}', [DptController::class, 'delete'])->name('pemilih-delete');
+// });
+Route::prefix('dpt')->middleware('auth')->group(function () {
+    Route::get('/', [DPTController::class, 'index'])->name('dpt');
+    Route::post('/', [DPTController::class, 'store'])->name('dpt-store');
+    Route::get('/{id}', [DPTController::class, 'show'])->name('dpt-show');
+    Route::put('/{id}', [DPTController::class, 'update'])->name('dpt-update');
+    Route::delete('/{id}', [DPTController::class, 'delete'])->name('dpt-delete');
 });
 
 // ROUTES REKAP DATA DPT MANUAL
@@ -120,13 +127,7 @@ Route::prefix('/suara')->middleware('auth')->group(function () {
     Route::put('/{id}', [TabulasiSuaraController::class, 'update'])->name('suara-update');
     Route::delete('/{id}', [TabulasiSuaraController::class, 'delete'])->name('suara-delete');
 });
-Route::prefix('dpt')->middleware('auth')->group(function () {
-    Route::get('/', [DPTController::class, 'index'])->name('dpt');
-    Route::post('/', [DPTController::class, 'store'])->name('dpt-store');
-    Route::get('/{id}', [DPTController::class, 'show'])->name('dpt-show');
-    Route::put('/{id}', [DPTController::class, 'update'])->name('dpt-update');
-    Route::delete('/{id}', [DPTController::class, 'delete'])->name('dpt-delete');
-});
+
 
 Route::resource("/agenda", AgendaController::class)->middleware("auth");
 

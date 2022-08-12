@@ -47,7 +47,7 @@ class RelawanController extends Controller
             return back()->with("success", "Success Create New Relawan");
         }
 
-        return back()->with("error", "Error, Can't Create New Partai");
+        return back()->with("error", "Error, Can't Create New Relawan");
     }
 
     public function delete($id)
