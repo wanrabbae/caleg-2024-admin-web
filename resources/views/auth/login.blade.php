@@ -6,16 +6,14 @@
         <!-- Outer Row -->
         <div class="row justify-content-center">
 
-            <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="col-xl-4 col-lg-4 col-md-6">
 
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block">
-                                <img src="{{ asset('images/PKS.png') }}" alt="PKS" class="img-fluid d-block mx-auto w-100" width="">
-                            </div>
-                            <div class="col-lg-6">
+                        <div class="row justify-content-center">
+
+                            <div class="col-lg-12">
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Sign in to start your session</h1>
