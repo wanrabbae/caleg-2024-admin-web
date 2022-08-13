@@ -353,7 +353,7 @@
                                     Settings
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/logout">
+                                <a class="dropdown-item" onclick="return confirm('Anda yaking ingin logout ?')" href="/logout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Sign out
                                 </a>
@@ -398,7 +398,9 @@
                     </div>
                 @endif
                 <!-- Begin Page Content -->
-                @yield('content')
+                <div class="container">
+                    @yield('content')
+                </div>
                 <!-- /.container-fluid -->
 
             </div>
@@ -444,6 +446,7 @@
     <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+
 </body>
 
 </html>
