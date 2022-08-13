@@ -20,7 +20,9 @@
 
 </head>
 
-<body class="bg-gradient-primary">
+<body style="background-image: url({{ asset('images/bg_login.jpg') }}); background-position: center;
+background-repeat: no-repeat;
+background-size: cover;">
 
     @yield('content')
 

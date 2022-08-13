@@ -144,7 +144,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/documentation"  >
+                <a class="nav-link collapsed" href="/documentation">
                     <i class="fas fa-book"></i>
                     <span>Documentation</span>
                 </a>
@@ -353,7 +353,7 @@
                                     Settings
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/logout">
+                                <a class="dropdown-item" onclick="return confirm('Anda yaking ingin logout ?')" href="/logout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Sign out
                                 </a>
@@ -367,10 +367,13 @@
 
                 {{-- Session Modal --}}
                 @if (session()->has('success'))
-                    <div class="col-md-6 text-center">
+                    <div class="col-md-12 text-center">
                         <div class="alert alert-success alert-dismissible fade show py-2" role="alert">
                             {{ session()->get('success') }}
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="alert" aria-label="Close"> <i class="fas fa-times"></i></button>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+
                         </div>
                     </div>
                 @endif
@@ -378,7 +381,9 @@
                     <div class="col-md-6 text-center">
                         <div class="alert alert-danger alert-dismissible fade show py-2" role="alert">
                             {{ session()->get('error') }}
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="alert" aria-label="Close"> <i class="fas fa-times"></i></button>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                     </div>
                 @endif
@@ -393,7 +398,9 @@
                     </div>
                 @endif
                 <!-- Begin Page Content -->
-                @yield('content')
+                <div class="container">
+                    @yield('content')
+                </div>
                 <!-- /.container-fluid -->
 
             </div>
@@ -439,6 +446,7 @@
     <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+
 </body>
 
 </html>
