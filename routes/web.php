@@ -43,7 +43,7 @@ Route::get('/register', [AuthController::class, 'registerView'])->name('register
 Route::post('/register-action', [AuthController::class, 'registerAction'])->name('register_action');
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
-
+Route::post("/update", [AuthController::class, "update"])->middleware("auth");
 
 // Route::get('/', ['middleware' => 'auth', 'uses' => 'DashboardController@index']);
 

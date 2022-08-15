@@ -27,10 +27,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar">
-            <script>
-                document.getElementById("accordionSidebar").classList.add(`bg-${localStorage.getItem("color")}`)
-            </script>
+        <ul class="navbar-nav sidebar sidebar-dark accordion {{ auth()->user()->warna }}" id="accordionSidebar">
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
                 <div class="sidebar-brand-icon rotate-n-15">

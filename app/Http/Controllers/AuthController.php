@@ -79,4 +79,11 @@ class AuthController extends Controller
         Auth::logout();
         return redirect()->route('login')->with('success', 'You are now logged out!');
     }
+
+    public function update(Request $request) {
+        if (User::where("id_users", auth()->user()->id_users)->update(["warna" => $request->warna])) {
+            return back()->with("success", "Berhasil mengubah warna tema ke $request->warna");
+        }
+        return back()->with("error", "Gagal mengubah warna tema");
+    }
 }
