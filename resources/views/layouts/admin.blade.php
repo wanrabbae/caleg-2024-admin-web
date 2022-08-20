@@ -135,9 +135,9 @@
                 </a>
                 <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/whatsapp">Wa Blas</a>
-                        <a class="collapse-item font-weight-bold" href="/email">Email Blas</a>
-                        <a class="collapse-item font-weight-bold" href="">Info Mobile</a>
+                        <a class="collapse-item font-weight-bold" href="/whatsapp"><i class="fas fa-comments"></i>Wa Blas</a>
+                        <a class="collapse-item font-weight-bold" href="/email"><i class="fas fa-envelope"></i>Email Blas</a>
+                        <a class="collapse-item font-weight-bold" href=""><i class="fas fa-mobile"></i>Info Mobile</a>
                     </div>
                 </div>
             </li>
