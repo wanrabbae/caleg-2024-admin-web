@@ -52,9 +52,9 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/dashboard/legislatif">Legislatif</a>
-                        <a class="collapse-item font-weight-bold" href="/dashboard/partai">Partai</a>
-                        <a class="collapse-item font-weight-bold" href="/dashboard/medsos">Medsos</a>
+                        <a class="collapse-item font-weight-bold" href="/dashboard/legislatif"><i class="fas fa-gavel"></i>Legislatif</a>
+                        <a class="collapse-item font-weight-bold" href="/dashboard/partai"><i class="fas fa-university"></i>Partai</a>
+                        <a class="collapse-item font-weight-bold" href="/dashboard/medsos"><i class="fas fa-hashtag"></i>Medsos</a>
                     </div>
                 </div>
             </li>
@@ -67,9 +67,9 @@
                 </a>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/infoPolitik/daftarIsu">Daftar Isu</a>
-                        <a class="collapse-item font-weight-bold" href="/infoPolitik/rekapitulasi">Rekapitulasi</a>
-                        <a class="collapse-item font-weight-bold" href="/infoPolitik/berita">Berita</a>
+                        <a class="collapse-item font-weight-bold" href="/infoPolitik/daftarIsu"><i class="fas fa-book-open"></i>Daftar Isu</a>
+                        <a class="collapse-item font-weight-bold" href="/infoPolitik/rekapitulasi"><i class="fas fa-house-user"></i>Rekapitulasi</a>
+                        <a class="collapse-item font-weight-bold" href="/infoPolitik/berita"><i class="fas fa-newspaper"></i>Berita</a>
                     </div>
                 </div>
             </li>
@@ -81,11 +81,11 @@
                 </a>
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/relawan">Relawan</a>
-                        <a class="collapse-item font-weight-bold" href="/program">Simpatisan</a>
-                        <a class="collapse-item font-weight-bold" href="/dpt">DPT</a>
-                        <a class="collapse-item font-weight-bold" href="/agenda">DPT Manual</a>
-                        <a class="collapse-item font-weight-bold" href="">Tabulasi Suara</a>
+                        <a class="collapse-item font-weight-bold" href="/relawan"><i class="fas fa-hands-helping"></i>Relawan</a>
+                        <a class="collapse-item font-weight-bold" href="/program"><i class="fas fa-user-friends"></i>Simpatisan</a>
+                        <a class="collapse-item font-weight-bold" href="/dpt"><i class="fas fa-clipboard-list"></i>DPT</a>
+                        <a class="collapse-item font-weight-bold" href="/agenda"><i class="fas fa-calendar"></i>DPT Manual</a>
+                        <a class="collapse-item font-weight-bold" href=""><i class="fas fa-vote-yea"></i>Tabulasi Suara</a>
                     </div>
                 </div>
             </li>
@@ -97,8 +97,8 @@
                 </a>
                 <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/survey/inputSurvey">Input Data</a>
-                        <a class="collapse-item font-weight-bold" href="/survey/HasilSurvey">Hasil Survey</a>
+                        <a class="collapse-item font-weight-bold" href="/survey/inputSurvey"><i class="fas fa-plus-square"></i>Input Data</a>
+                        <a class="collapse-item font-weight-bold" href="/survey/HasilSurvey"><i class="fas fa-poll"></i>Hasil Survey</a>
                     </div>
                 </div>
             </li>
@@ -110,8 +110,8 @@
                 </a>
                 <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/saksi/daftar">Daftar Saksi</a>
-                        <a class="collapse-item font-weight-bold" href="/saksi/monitoring">Monitoring</a>
+                        <a class="collapse-item font-weight-bold" href="/saksi/daftar"><i class="fas fa-list-ul"></i>Daftar Saksi</a>
+                        <a class="collapse-item font-weight-bold" href="/saksi/monitoring"><i class="fas fa-desktop"></i>Monitoring</a>
                     </div>
                 </div>
             </li>
@@ -123,7 +123,7 @@
                 </a>
                 <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/relawan">Daftar Relawan</a>
+                        <a class="collapse-item font-weight-bold" href="/relawan"><i class="fas fa-handshake"></i>Daftar Relawan</a>
                     </div>
                 </div>
             </li>
