@@ -18,7 +18,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Relawan</th>
-                            <th>No Hp</th>
+                            <th>Email</th>
                             <th>Desa</th>
                             <th>Kecamatan</th>
                             <th>Koordinator</th>
@@ -34,7 +34,7 @@
                                         <input type="checkbox" name="check" id="check" class="form-control w-50">
                                     </td>
                                     <td>{{ $data->nama_relawan }}</td>
-                                    <td>{{ $data->no_hp }}</td>
+                                    <td>{{ $data->email }}</td>
                                     <td>{{ $data->desa->nama_desa ?? '' }}</td>
                                     <td>
                                         {{ $data->desa->kecamatan->nama_kecamatan ?? '' }}
@@ -69,7 +69,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createModalLabel">Tambah Relawan</h5>
+                    <h5 class="modal-title" id="createModalLabel">Send Email</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -83,8 +83,8 @@
                             <input required value="{{ old('nama_relawan') }}" type="text" class="form-control" id="nama_relawan" placeholder="Nama Relawan" name="nama_relawan">
                         </div>
                         <div class="form-group">
-                            <label for="no_hp">No Hp</label>
-                            <input required value="{{ old('no_hp') }}" type="number" class="form-control" id="no_hp" placeholder="No Hp" name="no_hp">
+                            <label for="email">Email</label>
+                            <input required value="{{ old('email') }}" type="email" class="form-control" id="emailForm" placeholder="Email" name="email">
                         </div>
                         <div class="form-group">
                             <label for="no_hp">Pesan Japri</label>
@@ -180,7 +180,7 @@
         function getData(data) {
             fetch(`/relawan/${data}`).then(resp => resp.json()).then(resp => {
                 document.getElementById("nama_relawan").value = resp.nama_relawan
-                document.getElementById("no_hp").value = resp.no_hp
+                document.getElementById("emailForm").value = resp.email
             })
         }
     </script>
