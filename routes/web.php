@@ -107,6 +107,7 @@ Route::prefix('/program')->middleware('auth')->group(function () {
 Route::prefix('dpt')->middleware('auth')->group(function () {
     Route::get('/', [DPTController::class, 'index'])->name('dpt');
     Route::post('/', [DPTController::class, 'store'])->name('dpt-store');
+    Route::get('/fetch', [DPTController::class, 'fetch'])->name('dpt-fetch');
     Route::get('/{id}', [DPTController::class, 'show'])->name('dpt-show');
     Route::put('/{id}', [DPTController::class, 'update'])->name('dpt-update');
     Route::delete('/{id}', [DPTController::class, 'delete'])->name('dpt-delete');
@@ -122,13 +123,13 @@ Route::prefix('dpt')->middleware('auth')->group(function () {
 // });
 
 // ROUTES REKAP DATA TABULASI SUARA
-Route::prefix('/suara')->middleware('auth')->group(function () {
-    Route::get('/', [TabulasiSuaraController::class, 'index'])->name('suara');
-    Route::post('/', [TabulasiSuaraController::class, 'store'])->name('suara-store');
-    Route::get('/{id}', [TabulasiSuaraController::class, 'show'])->name('suara-show');
-    Route::put('/{id}', [TabulasiSuaraController::class, 'update'])->name('suara-update');
-    Route::delete('/{id}', [TabulasiSuaraController::class, 'delete'])->name('suara-delete');
-});
+// Route::prefix('/suara')->middleware('auth')->group(function () {
+//     Route::get('/', [TabulasiSuaraController::class, 'index'])->name('suara');
+//     Route::post('/', [TabulasiSuaraController::class, 'store'])->name('suara-store');
+//     Route::get('/{id}', [TabulasiSuaraController::class, 'show'])->name('suara-show');
+//     Route::put('/{id}', [TabulasiSuaraController::class, 'update'])->name('suara-update');
+//     Route::delete('/{id}', [TabulasiSuaraController::class, 'delete'])->name('suara-delete');
+// });
 
 
 Route::resource("/agenda", AgendaController::class)->middleware("auth");

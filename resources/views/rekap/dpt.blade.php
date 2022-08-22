@@ -22,6 +22,7 @@
                             <th>Tanggal Lahir</th>
                             <th>JK</th>
                             <th>Desa</th>
+                            <th>Kecamatan</th>
                             <th>TPS</th>
                             <th>Action</th>
                         </tr>
@@ -37,6 +38,7 @@
                                     <td>{{ $item->tgl_lahir }}</td>
                                     <td>{{ $item->jk }}</td>
                                     <td>{{ $item->desa->nama_desa }}</td>
+                                    <td>{{ $item->desa->kecamatan->nama_kecamatan }}</td>
                                     <td>{{ $item->tps }}</td>
                                     <td class="d-flex justify-content-center">
                                         <button type="button" class="btn btn-warning mx-3" onclick="getData({{ $item->id_pemilih }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">

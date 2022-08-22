@@ -98,36 +98,80 @@
 
         <!-- Content Row -->
         <div class="row">
-
-            <!-- Content Column -->
-            <div class="col-lg-6 mb-4">
+            <div class="col-lg-12 mb-4">
 
                 <!-- Project Card Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">
-                            <i class="far fa-comments"></i>
-                            Chat
+                            <i class="fas fa-chart-bar text-lg"></i>
+                            Perolehan Suara
                         </h6>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" id="chart">
+                        <script>
+                            
+                            // anychart.onDocumentReady(function() {
+                            //     fetch("/dpt/fetch").then(resp => resp.json()).then(resp => {
+                            //         console.log(resp)
+                            //         let myArr = [];
+                            //         // resp.forEach((v, i) => {
+                            //         //     if (myArr.some(e => e[0].kecamatan == v.desa.kecamatan.nama_kecamatan)) {
+                            //         //         v.jk == "Perempuan" ? myArr.find(e => e[0].kecamatan == v.desa.kecamatan.nama_kecamatan)[0].data[1][0]++ : myArr.find(e => e[0].kecamatan == v.desa.kecamatan.nama_kecamatan)[0].data[0][0]++
+                            //         //     } else {
+                            //         //         myArr.push([{kecamatan: v.desa.kecamatan.nama_kecamatan, data: [[v.jk === "Laki-Laki" ? 1 : 0], [v.jk === "Perempuan" ? 1 : 0]]}])
+                            //         //     }
+                            //         // })
+                            //         // resp.forEach((v, i) => {
+                            //         //     if (myArr.some(e => e[0] == v.desa.kecamatan.nama_kecamatan)) {
+                            //         //         v.jk == "Laki-Laki" ? myArr.find(e => e[0] == v.desa.kecamatan.nama_kecamatan)[1]++ : myArr.find(e => e[0] == v.desa.kecamatan.nama_kecamatan)[2]++
+                            //         //     } else {
+                            //         //         myArr.push([v.desa.kecamatan.nama_kecamatan, v.jk === "Laki-Laki" ? 1 : 0, v.jk === "Perempuan" ? 1 : 0])
+                            //         //     }
+                            //         // })
+                            //         // console.log(myArr);
+                            //         // var data = {
+                            //         //     rows: myArr
+                            //         // }
 
-                    </div>
-                </div>
+                            //         // var chart = anychart.column()
+                            //         // chart.data(data)
+                            //         // chart.container("chart");
+                            //         // chart.draw()
+                            //     })
+                            // })
+                            fetch("/dpt/fetch").then(resp => resp.json()).then(resp => {
+                                console.log(resp)
+                                let myArr = [];
+                                resp.forEach((v, i) => {
+                                    if (myArr.some(e => e[0] == v.desa.kecamatan.nama_kecamatan)) {
+                                        myArr.find(e => e[0] == v.desa.kecamatan.nama_kecamatan)
+                                    }
+                                })
 
-            </div>
-            <div class="col-lg-6 mb-4">
+                            let w = 500;
+                            let h = 150;
 
-                <!-- Project Card Example -->
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
-                            <i class="fas fa-list-ul"></i>
-                            To Do Lists
-                        </h6>
-                    </div>
-                    <div class="card-body">
+                            let svg = d3.select("#chart")
+                            .append("svg")
+                            .attr("width", w)
+                            .attr("height", h)
+                            .selectAll("rect")
 
+                            myArr.forEach((v, i) => {
+                                console.log(v)
+                                let rect = svg.data(v[0].data)
+                                .enter()
+                                .append("rect")
+                                .attr("width", 50)
+                                .attr("height", d => d * 30)
+                                .attr("x", (d, i) => i * 60)
+                                .attr("y", (d, i) => h - 3 * d)
+                                .attr("fill", (d, i) => i == 0 ? "red" : "pink")
+                            })
+                            });
+
+                        </script>
                     </div>
                 </div>
 

@@ -21,5 +21,5 @@ class Rk_pemilih extends Model
     {
         return $this->belongsTo(Desa::class, 'id_desa');
     }
-
+    
 }
