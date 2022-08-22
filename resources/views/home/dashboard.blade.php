@@ -88,13 +88,14 @@
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
                             </div>
                             <div class="col-auto">
-                                <i class="fas fa-chart-pie"></i>
+                                <i class="fas fa-chart-pie text-gray-300"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Content Row -->
         <div class="row">
@@ -109,69 +110,6 @@
                         </h6>
                     </div>
                     <div class="card-body" id="chart">
-                        <script>
-                            
-                            // anychart.onDocumentReady(function() {
-                            //     fetch("/dpt/fetch").then(resp => resp.json()).then(resp => {
-                            //         console.log(resp)
-                            //         let myArr = [];
-                            //         // resp.forEach((v, i) => {
-                            //         //     if (myArr.some(e => e[0].kecamatan == v.desa.kecamatan.nama_kecamatan)) {
-                            //         //         v.jk == "Perempuan" ? myArr.find(e => e[0].kecamatan == v.desa.kecamatan.nama_kecamatan)[0].data[1][0]++ : myArr.find(e => e[0].kecamatan == v.desa.kecamatan.nama_kecamatan)[0].data[0][0]++
-                            //         //     } else {
-                            //         //         myArr.push([{kecamatan: v.desa.kecamatan.nama_kecamatan, data: [[v.jk === "Laki-Laki" ? 1 : 0], [v.jk === "Perempuan" ? 1 : 0]]}])
-                            //         //     }
-                            //         // })
-                            //         // resp.forEach((v, i) => {
-                            //         //     if (myArr.some(e => e[0] == v.desa.kecamatan.nama_kecamatan)) {
-                            //         //         v.jk == "Laki-Laki" ? myArr.find(e => e[0] == v.desa.kecamatan.nama_kecamatan)[1]++ : myArr.find(e => e[0] == v.desa.kecamatan.nama_kecamatan)[2]++
-                            //         //     } else {
-                            //         //         myArr.push([v.desa.kecamatan.nama_kecamatan, v.jk === "Laki-Laki" ? 1 : 0, v.jk === "Perempuan" ? 1 : 0])
-                            //         //     }
-                            //         // })
-                            //         // console.log(myArr);
-                            //         // var data = {
-                            //         //     rows: myArr
-                            //         // }
-
-                            //         // var chart = anychart.column()
-                            //         // chart.data(data)
-                            //         // chart.container("chart");
-                            //         // chart.draw()
-                            //     })
-                            // })
-                            fetch("/dpt/fetch").then(resp => resp.json()).then(resp => {
-                                console.log(resp)
-                                let myArr = [];
-                                resp.forEach((v, i) => {
-                                    if (myArr.some(e => e[0] == v.desa.kecamatan.nama_kecamatan)) {
-                                        myArr.find(e => e[0] == v.desa.kecamatan.nama_kecamatan)
-                                    }
-                                })
-
-                            let w = 500;
-                            let h = 150;
-
-                            let svg = d3.select("#chart")
-                            .append("svg")
-                            .attr("width", w)
-                            .attr("height", h)
-                            .selectAll("rect")
-
-                            myArr.forEach((v, i) => {
-                                console.log(v)
-                                let rect = svg.data(v[0].data)
-                                .enter()
-                                .append("rect")
-                                .attr("width", 50)
-                                .attr("height", d => d * 30)
-                                .attr("x", (d, i) => i * 60)
-                                .attr("y", (d, i) => h - 3 * d)
-                                .attr("fill", (d, i) => i == 0 ? "red" : "pink")
-                            })
-                            });
-
-                        </script>
                     </div>
                 </div>
 
@@ -247,7 +185,70 @@
                 </button>
         </div>
     </form>
-
-
     </div>
+    <script>
+
+        anychart.onDocumentReady(function () {
+            // create data set on our data
+            fetch("/api/getChart").then(resp => resp.json()).then(resp => {
+                
+                var dataSet = anychart.data.set(resp);
+                
+                // map data for the first series, take x from the zero column and value from the first column of data set
+            var firstSeriesData = dataSet.mapAs({ x: 0, value: 1 });
+            
+            // map data for the second series, take x from the zero column and value from the second column of data set
+            var secondSeriesData = dataSet.mapAs({ x: 0, value: 2 });
+            
+            // create column chart
+            var chart = anychart.column3d();
+            
+            // turn on chart animation
+            // chart.animation(true);
+            
+            // set chart title text settings
+            // chart.title('');
+            
+            // temp variable to store series instance
+            var series;
+            
+            // helper function to setup label settings for all series
+            var setupSeries = function (series, name) {
+                series.name(name);
+                series.selected().fill('#f48fb1 0.8').stroke('1.5 #c2185b');
+            };
+
+            // create first series with mapped data
+            series = chart.column(firstSeriesData);
+            series.xPointPosition(0.25);
+            setupSeries(series, 'Laki-Laki');
+
+            // create second series with mapped data
+            series = chart.column(secondSeriesData);
+            series.xPointPosition(0.45);
+            setupSeries(series, 'Perempuan');
+            
+            chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+
+            // set titles for Y-axis
+            // chart.yAxis().title('Revenue in Dollars');
+
+            // set chart title text settings
+            chart.barGroupsPadding(0.3);
+            
+            // turn on legend
+            chart.legend().enabled(true).fontSize(13).padding([0, 0, 20, 0]);
+
+            chart.interactivity().hoverMode('single');
+            
+            // chart.tooltip().valuePrefix('$');
+            
+            // set container id for the chart
+            chart.container('chart');
+            
+            // initiate chart drawing
+            chart.draw();
+            });
+        })
+            </script>
 @endsection
