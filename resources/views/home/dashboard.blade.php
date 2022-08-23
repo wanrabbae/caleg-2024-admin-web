@@ -193,7 +193,7 @@
         anychart.onDocumentReady(function () {
             // create data set on our data
             fetch("/api/getChart").then(resp => resp.json()).then(resp => {
-            if (resp) {
+            if (resp.length > 0) {
             document.getElementsByClassName("spinner-border")[0].style.display = "none";
             var dataSet = anychart.data.set(resp);
                 
@@ -251,9 +251,13 @@
             
             // initiate chart drawing
             chart.draw();
+        } else if (resp.length == 0) {
+            document.getElementById("chart").innerHTML = "Tidak Ada Suara Untuk Saat Ini";
         } else {
             document.getElementById("chart").innerHTML = "Error When Getting Data";
         }
+
+
 
             });
         })

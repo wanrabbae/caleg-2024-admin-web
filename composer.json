@@ -9,6 +9,7 @@
         "datatables/datatables": "^1.10",
         "guzzlehttp/guzzle": "^7.2",
         "haruncpi/laravel-db-backup": "^0.0.1",
+        "itsgoingd/clockwork": "^5.1",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7"

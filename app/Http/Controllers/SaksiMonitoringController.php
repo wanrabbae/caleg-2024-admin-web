@@ -14,7 +14,10 @@ class SaksiMonitoringController extends Controller
      */
     public function index()
     {
-        //
+        return view("saksi.monitoring", [
+            "title" => "Monitoring Suara",
+            "dataArr" => Monitoring_Saksi::all()
+    ]);
     }
 
     /**
@@ -81,5 +84,28 @@ class SaksiMonitoringController extends Controller
     public function destroy(Monitoring_Saksi $monitoring_Saksi)
     {
         //
+    }
+
+
+    public function desa() {
+        $desa = Monitoring_Saksi::with("desa")->get();
+        $myArr = [];
+        $found = true;
+
+        foreach ($desa as $data) {
+            for ($i = 0; $i < count($myArr); $i++) {
+                if (in_array($data->desa->nama_desa, $myArr[$i])) {
+                    $myArr[$i][1] += $data->suara_2024;
+                    $found = false;
+                    break;
+                }
+            }
+            if ($found) {
+                array_push($myArr, [$data->desa->nama_desa, $data->suara_2024]);
+            }
+            $found = true;
+        }
+
+        return $myArr;
     }
 }

@@ -76,11 +76,6 @@ class DptController extends Controller
         return back()->with('error', "Error, Can't Delete Data DPT");
     }
 
-    // public function fetch()
-    // {
-    //     return response()->json(Rk_pemilih::with('desa.kecamatan')->get());
-    // }
-    
     public function getChart()
     {
         $pemilih = Rk_pemilih::with("desa.kecamatan")->get();
