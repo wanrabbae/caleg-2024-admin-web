@@ -164,7 +164,7 @@
                             <i class="fas fa-list-ul"></i>
                             <span>Daftar Saksi</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="/saksi/monitoring">
+                        <a class="collapse-item font-weight-bold" href="/saksi/monitoring?table=desa">
                             <i class="fas fa-desktop"></i>
                             <span>Monitoring</span>
                         </a>

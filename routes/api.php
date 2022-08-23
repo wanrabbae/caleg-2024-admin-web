@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/getChart', [DPTController::class, 'getChart']);
-Route::get("/getChartDesa", [SaksiMonitoringController::class, "desa"]);
+Route::get("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);

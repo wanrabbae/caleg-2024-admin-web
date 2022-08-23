@@ -11,7 +11,7 @@ class Kabupaten extends Model
 
     protected $table = 'kabupaten';
 
-    protected $primary_key = 'id_kabupaten';
+    protected $primaryKey = 'id_kabupaten';
 
     protected $guarded = [];
 
