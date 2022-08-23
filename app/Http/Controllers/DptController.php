@@ -92,6 +92,7 @@ class DptController extends Controller
                 if (in_array($data->desa->kecamatan->nama_kecamatan, $myArr[$i])) {
                     $data->jk == "Laki-Laki" ? $myArr[$i][1]++ : $myArr[$i][2]++;
                     $found = false;
+                    break;
                 }
             }
             if ($found) {

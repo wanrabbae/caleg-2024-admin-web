@@ -188,15 +188,13 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeven1" aria-expanded="true" aria-controls="collapseSeven1">
                     <i class="fas fa-user-friends"></i>
                     <span>Perolehan Suara</span>
                 </a>
-                <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionSidebar">
+                <div id="collapseSeven1" class="collapse" aria-labelledby="headingSeven1" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item font-weight-bold" href="/relawan">
-                            
-                            <span>Daftar Relawan</span>
                         </a>
                     </div>
                 </div>

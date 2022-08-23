@@ -109,7 +109,9 @@
                             Perolehan Suara
                         </h6>
                     </div>
-                    <div class="card-body" id="chart">
+                    <div class="card-body d-flex justify-content-center align-items-center" id="chart">
+                        <div class="spinner-border" role="status">
+                        </div>
                     </div>
                 </div>
 
@@ -191,8 +193,9 @@
         anychart.onDocumentReady(function () {
             // create data set on our data
             fetch("/api/getChart").then(resp => resp.json()).then(resp => {
-                
-                var dataSet = anychart.data.set(resp);
+            if (resp) {
+            document.getElementsByClassName("spinner-border")[0].style.display = "none";
+            var dataSet = anychart.data.set(resp);
                 
                 // map data for the first series, take x from the zero column and value from the first column of data set
             var firstSeriesData = dataSet.mapAs({ x: 0, value: 1 });
@@ -204,7 +207,7 @@
             var chart = anychart.column3d();
             
             // turn on chart animation
-            // chart.animation(true);
+            chart.animation(true);
             
             // set chart title text settings
             // chart.title('');
@@ -248,6 +251,10 @@
             
             // initiate chart drawing
             chart.draw();
+        } else {
+            document.getElementById("chart").innerHTML = "Error When Getting Data";
+        }
+
             });
         })
             </script>
