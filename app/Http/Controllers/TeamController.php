@@ -31,7 +31,6 @@ class TeamController extends Controller
         $data = $request->validate([
             "nik" => "required|integer|unique:relawan",
             "nama_relawan" => "required|max:255",
-            "jabatan" => "required",
             "id_desa" => "required|integer",
             "id_caleg" => "required|integer",
             "status" => "required|integer",
@@ -77,7 +76,7 @@ class TeamController extends Controller
             if (
                 ($request->jabatan == 1 || $request->jabatan == 2)
                 && 
-                (Relawan::with("desa")->where("id_desa", $request->jabatan)->where("jabatan", $request->jabatan)->first())
+                (Relawan::with("desa")->where("id_desa", $request->desa)->where("jabatan", $request->jabatan)->first())
                 ) 
             {
                 return back()->with("error", "Jabatan ini sudah diambil oleh orang lain!");

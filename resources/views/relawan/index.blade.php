@@ -311,6 +311,7 @@
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
+                            <input type="hidden" name="desa" id="edit_desa">
                             <label for="id_desa">Ganti Jabatan</label>
                             <select class="form-control" name="jabatan" id="edit_jabatan">
                                 <option value="0">Simpatisan</option>
@@ -353,6 +354,7 @@
             fetch(`/team/${data}`).then(resp => resp.json()).then(resp => {
                 document.getElementById("edit_form_jabatan").action = `/team/${data}`
                 document.getElementById("edit_jabatan").value = resp.jabatan
+                document.getElementById("edit_desa").value = resp.desa
             })
         }
     </script>    
