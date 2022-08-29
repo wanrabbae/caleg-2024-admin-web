@@ -352,7 +352,6 @@
 
         function getJabatan(data) {
             fetch(`/team/${data}`).then(resp => resp.json()).then(resp => {
-                console.log(resp)
                 document.getElementById("edit_form_jabatan").action = `/team/${data}`
                 document.getElementById("edit_jabatan").value = resp.jabatan
                 document.getElementById("edit_desa").value = resp.id_desa

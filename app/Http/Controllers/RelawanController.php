@@ -84,9 +84,9 @@ class RelawanController extends Controller
 
     public function fetch() {
         $arr = Relawan::with("desa.kecamatan")->get();
-        $data = [];
         $found = true;
-
+        $data = [];
+        
         foreach ($arr as $arr) {
             for ($i = 0; $i < count($data); $i++) {
                 if (in_array($arr->desa->kecamatan->nama_kecamatan, $data[$i])) {

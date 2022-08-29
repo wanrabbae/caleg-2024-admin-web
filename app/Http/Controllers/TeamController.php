@@ -73,23 +73,31 @@ class TeamController extends Controller
             return back()->with("error", "Error, Can't Update Loyalis");
 
         } else if ($request->has("jabatan")) {
+            if ($request->jabatan == $relawan->jabatan) {
+                return back()->with("success", "Tidak ada yang diubah");
+            }
+
             if (
-                ($request->jabatan == 1 || $request->jabatan == 2)
+                ($request->jabatan != 0)
                 && 
-                (Relawan::with("desa")->where("id_desa", $request->desa)->where("jabatan", $request->jabatan)->first())
+                (Relawan::with("desa")->where("id_desa", $request->desa)->where("jabatan", $request->jabatan)->first()
+                ||
+                Relawan::with("desa.kecamatan")->get()->filter(function($value, $i) use ($relawan) {
+                    return $value->desa->kecamatan->nama_kecamatan == $relawan->desa->kecamatan->nama_kecamatan;
+                })->search(function($value, $i) use ($request) {
+                    return $value->jabatan == $request->jabatan;
+                })
+                )
                 ) 
             {
-                return back()->with("error", "Jabatan ini sudah diambil oleh orang lain!");
+                return back()->with("error", "Jabatan untuk daerah ini sudah diambil oleh orang lain!");
             }
             
             if ($relawan->update(["jabatan" => $request->jabatan])) {
                 return back()->with("success", "Success Update Jabatan");
             }
             return back()->with("error", "Error, Can't Update Jabatan");
-        
-        }
-
-        else {
+        } else {
         // update data relawan
     $data = $request->validate([
         "nik" => "integer",
@@ -109,6 +117,7 @@ class TeamController extends Controller
         $data['foto_ktp'] = $request->file("foto_ktp")->store("/image");
     }
     $data['password'] = bcrypt($data['password']);
+    $data["jabatan"] = "0";
     if ($relawan->update($data)) {
         return back()->with("success", "Success Update Relawan");
     }
