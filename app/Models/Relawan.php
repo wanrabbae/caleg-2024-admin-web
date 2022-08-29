@@ -23,10 +23,10 @@ class Relawan extends Model
         return $this->belongsTo(Desa::class, 'id_desa');
     }
 
-    public function kecamatan()
-    {
-        return $this->belongsTo(Kecamatan::class, "id_kecamatan");
-    }
+    // public function kecamatan()
+    // {
+    //     return $this->belongsTo(Kecamatan::class, "id_kecamatan");
+    // }
 
     public function caleg()
     {

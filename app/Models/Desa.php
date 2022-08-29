@@ -16,7 +16,7 @@ class Desa extends Model
     public $timestamps = false;
 
     protected $guarded = [];
-
+    
     public function kecamatan()
     {
         return $this->belongsTo(Kecamatan::class, 'id_kecamatan');
@@ -24,7 +24,7 @@ class Desa extends Model
 
     public function relawan()
     {
-        return $this->hasMany(Relawan::class);
+        return $this->hasMany(Relawan::class, "id_desa");
     }
 
     public function rk_pemilih()

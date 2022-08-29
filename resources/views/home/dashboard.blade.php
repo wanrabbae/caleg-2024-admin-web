@@ -106,7 +106,7 @@
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">
                             <i class="fas fa-chart-bar text-lg"></i>
-                            Perolehan Suara
+                            Perolehan Suara Kecamatan
                         </h6>
                     </div>
                     <div class="card-body d-flex justify-content-center align-items-center" id="chart">
@@ -192,7 +192,7 @@
 
         anychart.onDocumentReady(function () {
             // create data set on our data
-            fetch("/api/getChart").then(resp => resp.json()).then(resp => {
+            fetch("{{ asset('api/getChart') }}").then(resp => resp.json()).then(resp => {
             if (resp.length > 0) {
             document.getElementsByClassName("spinner-border")[0].style.display = "none";
             var dataSet = anychart.data.set(resp);

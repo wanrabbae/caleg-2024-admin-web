@@ -28,12 +28,13 @@ class SaksiMonitoringController extends Controller
             for ($i = 0; $i < count($data); $i++) {
                 if (in_array($arr->desa->kecamatan->nama_kecamatan, $data[$i])) {
                     $data[$i][1] += $arr->suara_2024;
+                    $data[$i][2] += $arr->suara_2019;
                     $found = false;
                     break;
                 }
             }
             if ($found) {
-                array_push($data, [$arr->desa->kecamatan->nama_kecamatan, $arr->suara_2024]);
+                array_push($data, [$arr->desa->kecamatan->nama_kecamatan, $arr->suara_2024, $arr->suara_2019]);
             }
             $found = true;
         }
@@ -49,12 +50,13 @@ class SaksiMonitoringController extends Controller
             for ($i = 0; $i < count($data); $i++) {
                 if (in_array($arr->desa->kecamatan->kabupaten->nama_kabupaten, $data[$i])) {
                     $data[$i][1] += $arr->suara_2024;
+                    $data[$i][2] += $arr->suara_2019;
                     $found = false;
                     break;
                 }
             }
             if ($found) {
-                array_push($data, [$arr->desa->kecamatan->kabupaten->nama_kabupaten, $arr->suara_2024]);
+                array_push($data, [$arr->desa->kecamatan->kabupaten->nama_kabupaten, $arr->suara_2024, $arr->suara_2019]);
             }
             $found = true;
         }
@@ -143,12 +145,13 @@ class SaksiMonitoringController extends Controller
             for ($i = 0; $i < count($myArr); $i++) {
                 if (in_array($data->desa->nama_desa, $myArr[$i])) {
                     $myArr[$i][1] += $data->suara_2024;
+                    $myArr[$i][2] += $data->suara_2019;
                     $found = false;
                     break;
                 }
             }
             if ($found) {
-                array_push($myArr, [$data->desa->nama_desa, $data->suara_2024]);
+                array_push($myArr, [$data->desa->nama_desa, $data->suara_2024, $data->suara_2019]);
             }
             $found = true;
         }

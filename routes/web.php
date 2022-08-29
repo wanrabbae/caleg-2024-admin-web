@@ -18,6 +18,7 @@ use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SimpatisanController;
 use App\Http\Controllers\AgendaController;
 use App\Http\Controllers\BackupController;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\EmailBlasController;
 use App\Http\Controllers\WaBlasController;
@@ -88,14 +89,15 @@ Route::resource('/saksi/monitoring', SaksiMonitoringController::class)->middlewa
 // Route::get('');
 
 // RELAWAN ROUTES (KALO CONFLICT SAMA ROUTE LAIN, BISA TARO INI DI PALING BAWAH)
-Route::prefix('/relawan')
+Route::prefix('/team')
     ->middleware('auth')
     ->group(function () {
-        Route::get('/', [RelawanController::class, 'index'])->name('relawan');
-        Route::post('/', [RelawanController::class, 'store'])->name('relawan-store');
-        Route::get('/{id}', [RelawanController::class, 'show'])->name('relawan-show');
-        Route::put('/{id}', [RelawanController::class, 'update'])->name('relawan-update');
-        Route::delete('/{id}', [RelawanController::class, 'delete'])->name('relawan-delete');
+        Route::get('/', [TeamController::class, 'index'])->name('team');
+        Route::post('/', [TeamController::class, 'store'])->name('team-store');
+        Route::get('/{id}', [TeamController::class, 'show'])->name('team-show');
+        Route::put('/{id}', [TeamController::class, 'update'])->name('team-update');
+        Route::delete('/{id}', [TeamController::class, 'delete'])->name('team-delete');
+        route::get("/upline/{id}", [TeamController::class, "upline"])->name("team-upline");
     });
 
 // ROUTES REKAP DATA SIMPATISAN
@@ -147,6 +149,9 @@ Route::prefix('dpt')
 // });
 
 Route::resource('/agenda', AgendaController::class)->middleware('auth');
+
+//Route team Relawan
+Route::get("/relawan", [RelawanController::class, "index"])->middleware("auth");
 
 // ROUTES WA BLAS
 Route::prefix('whatsapp')
