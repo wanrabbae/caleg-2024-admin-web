@@ -93,10 +93,10 @@
                             <i class="fas fa-book-open"></i>
                             <span>Daftar Isu</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="{{ asset('infoPolitik/rekapitulasi') }}">
+                        {{-- <a class="collapse-item font-weight-bold" href="{{ asset('infoPolitik/rekapitulasi') }}">
                             <i class="fas fa-house-user"></i>
                             <span>Rekapitulasi</span>
-                        </a>
+                        </a> --}}
                         <a class="collapse-item font-weight-bold" href="{{ asset('infoPolitik/berita') }}">
                             <i class="fas fa-newspaper"></i>
                             <span>Berita</span>
@@ -128,10 +128,10 @@
                             <i class="fas fa-calendar"></i>
                             <span>DPT Manual</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="">
+                        {{-- <a class="collapse-item font-weight-bold" href="">
                             <i class="fas fa-vote-yea"></i>
                             <span>Tabulasi Suara</span>
-                        </a>
+                        </a> --}}
                     </div>
                 </div>
             </li>

@@ -156,6 +156,6 @@ class SaksiMonitoringController extends Controller
             $found = true;
         }
 
-        return $myArr;
+        return response()->json($myArr);
     }
 }

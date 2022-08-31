@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kabupaten;
-use App\Models\Kecamatan;
+use App\Models\Daftar_Isu;
 use Illuminate\Http\Request;
 
 class DaftarIsuController extends Controller
@@ -15,12 +14,9 @@ class DaftarIsuController extends Controller
      */
     public function index()
     {
-        return view('data.daftarIsu',[
-            'title' => 'Daftar Isu Page',
-            'data' => Kecamatan::all(),
-            'datas' => Kabupaten::all()
-        ]);
-
+        return view("data.daftarIsu", [
+            "dataArr" => Daftar_Isu::all()
+    ]);
     }
 
     /**
