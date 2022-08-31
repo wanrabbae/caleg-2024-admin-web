@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DPTController;
+use App\Http\Controllers\DptController;
 use App\Http\Controllers\SaksiMonitoringController;
 
 /*
