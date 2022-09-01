@@ -188,7 +188,7 @@
                     </div>
                 </div>
             </li>
-
+{{-- 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeven1" aria-expanded="true" aria-controls="collapseSeven1">
                     <i class="fas fa-user-friends"></i>
@@ -200,7 +200,7 @@
                         </a>
                     </div>
                 </div>
-            </li>
+            </li> --}}
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseEight">

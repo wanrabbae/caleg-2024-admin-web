@@ -14,7 +14,6 @@ class DashboardController extends Controller
             'title' => 'Dashboard Caleg',
             "relawan" => Relawan::all()->count(),
             "pemilih" => Rk_pemilih::all()->count(),
-            
         ]);
     }
 }

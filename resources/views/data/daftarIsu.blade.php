@@ -5,10 +5,10 @@
     <div class="col-md-3">
     </div>
     <div class="card-header py-3">
-        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">
+        {{-- <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">
             <i class="fas fa-plus"></i>
             Isu
-        </button>
+        </button> --}}
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -51,8 +51,18 @@
                                 {{ $data->keterangan }}
                             </td>
                             <td>
-                                {{ $data->tanggapi }}
-                            </td>
+                                @if ($data->tanggapi == "0000-00-00")
+                                <form action="/infoPolitik/daftarIsu/{{ $data->id_isu }}" method="POST">
+                                    @method("put")
+                                    @csrf
+                                    <button class="btn btn-primary" type="submit" name="tanggapi">
+                                        Tanggapi
+                                    </button>
+                                </form>
+                                @else
+                                    {{ $data->tanggapi }}
+                                @endif
+                        </td>
                             <td>
                                 {{ $data->tanggapan }}
                             </td>

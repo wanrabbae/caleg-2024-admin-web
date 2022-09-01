@@ -219,7 +219,7 @@
           
           // initiate chart drawing
           chart.draw();
-      @elseif ($dataArr->count()) 
+      @else 
           document.getElementById("chart").innerHTML = "Tidak Ada Suara Untuk Saat Ini";
       @endif
       @endif
