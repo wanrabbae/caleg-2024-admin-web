@@ -100,6 +100,6 @@ class RelawanController extends Controller
             }
             $found = true;
         }
-        return $data;
+        return response()->json($data);
     }
 }

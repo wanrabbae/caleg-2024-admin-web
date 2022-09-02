@@ -16,7 +16,7 @@ class SaksiMonitoringController extends Controller
     public function index()
     {
         if (request("table") == "desa") {
-            $data = Monitoring_Saksi::with("desa")->get();
+            $data = Monitoring_Saksi::with(["desa", "caleg", "partai"])->get();
         }
         
         if (request("table") == "kecamatan") {
@@ -156,6 +156,6 @@ class SaksiMonitoringController extends Controller
             $found = true;
         }
 
-        return $myArr;
+        return response()->json($myArr);
     }
 }

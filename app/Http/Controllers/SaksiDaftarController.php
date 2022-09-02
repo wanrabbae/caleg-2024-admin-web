@@ -17,7 +17,7 @@ class SaksiDaftarController extends Controller
     {
         return view("saksi.daftar", [
             "title" => "Daftar Saksi",
-            "dataArr" => Daftar_Saksi::all()
+            "dataArr" => Daftar_Saksi::with("relawan")->get()
     ]);
     }
 
