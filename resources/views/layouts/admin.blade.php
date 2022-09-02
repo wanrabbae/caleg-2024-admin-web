@@ -43,7 +43,7 @@
         <!-- Sidebar -->
         <ul class="navbar-nav sidebar sidebar-dark accordion {{ auth()->user()->warna }}" id="accordionSidebar">
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ asset('/') }}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -66,15 +66,17 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/dashboard/legislatif">
+                        <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/legislatif") }}">
                             <i class="fas fa-gavel"></i>
                             <span>Legislatif</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="/dashboard/partai">
+                        <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/partai") }}">
                             <i class="fas fa-university"></i>
                             <span>Partai</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="/dashboard/medsos"><i class="fas fa-hashtag"></i>Medsos</a>
+                        <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/medsos") }}"><i class="fas fa-hashtag"></i>
+                        <span>Medsos</span>
+                        </a>
                     </div>
                 </div>
             </li>
@@ -87,15 +89,15 @@
                 </a>
                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/infoPolitik/daftarIsu">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('infoPolitik/daftarIsu') }}">
                             <i class="fas fa-book-open"></i>
                             <span>Daftar Isu</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="/infoPolitik/rekapitulasi">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('infoPolitik/rekapitulasi') }}">
                             <i class="fas fa-house-user"></i>
                             <span>Rekapitulasi</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="/infoPolitik/berita">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('infoPolitik/berita') }}">
                             <i class="fas fa-newspaper"></i>
                             <span>Berita</span>
                         </a>
@@ -110,19 +112,19 @@
                 </a>
                 <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/relawan">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('relawan') }}">
                             <i class="fas fa-hands-helping"></i>
                             <span>Relawan</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="/program">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('program') }}">
                             <i class="fas fa-user-friends"></i>
                             <span>Simpatisan</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="/dpt">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('dpt') }}">
                             <i class="fas fa-clipboard-list"></i>
                             <span>DPT</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="/agenda">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('agenda') }}">
                             <i class="fas fa-calendar"></i>
                             <span>DPT Manual</span>
                         </a>
@@ -141,11 +143,11 @@
                 </a>
                 <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/survey/inputSurvey">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('survey/inputSurvey') }}">
                             <i class="fas fa-plus-square"></i>
                             <span>Input Data</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="/survey/HasilSurvey">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('survey/HasilSurvey') }}">
                             <i class="fas fa-poll"></i>
                             <span>Hasil Survey</span>
                         </a>
@@ -160,11 +162,11 @@
                 </a>
                 <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/saksi/daftar">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('saksi/daftar') }}">
                             <i class="fas fa-list-ul"></i>
                             <span>Daftar Saksi</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="/saksi/monitoring?table=desa">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('saksi/monitoring?table=desa') }}">
                             <i class="fas fa-desktop"></i>
                             <span>Monitoring</span>
                         </a>
@@ -179,7 +181,7 @@
                 </a>
                 <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/relawan">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('team') }}">
                             <i class="fas fa-handshake"></i>
                             <span>Daftar Relawan</span>
                         </a>
@@ -194,7 +196,7 @@
                 </a>
                 <div id="collapseSeven1" class="collapse" aria-labelledby="headingSeven1" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/relawan">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('') }}">
                         </a>
                     </div>
                 </div>
@@ -215,7 +217,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/documentation">
+                <a class="nav-link collapsed" href="{{ asset('documentation') }}">
                     <i class="fas fa-book"></i>
                     <span>Documentation</span>
                 </a>
@@ -231,7 +233,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="/backup">
+                <a class="nav-link" href="{{ asset('backup') }}">
                     <i class="far fa-save"></i>
                     <span>Backup</span>
                 </a>
@@ -296,115 +298,6 @@
                             </div>
                         </li>
 
-                        <!-- Nav Item - Alerts -->
-                        {{-- <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header">
-                                    Alerts Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 7, 2019</div>
-                                        $290.29 has been deposited into your account!
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 2, 2019</div>
-                                        Spending Alert: We've noticed unusually high spending for your account.
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-                        </li> --}}
-
-                        <!-- Nav Item - Messages -->
-                        {{-- <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Message Center
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="{{ asset('img/undraw_profile_1.svg') }}" alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div class="font-weight-bold">
-                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                            problem I've been having.</div>
-                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="{{ asset('img/undraw_profile_2.svg') }}" alt="...">
-                                        <div class="status-indicator"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">I have the photos that you ordered last month, how
-                                            would you like them sent to you?</div>
-                                        <div class="small text-gray-500">Jae Chun · 1d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="{{ asset('img/undraw_profile_3.svg') }}" alt="...">
-                                        <div class="status-indicator bg-warning"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
-                                            the progress so far, keep up the good work!</div>
-                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li> --}}
-
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -424,7 +317,7 @@
                                     Settings
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" onclick="return confirm('Anda yaking ingin logout ?')" href="/logout">
+                                <a class="dropdown-item" onclick="return confirm('Anda yaking ingin logout ?')" href="{{ asset('logout') }}">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Sign out
                                 </a>
@@ -469,7 +362,7 @@
                     </div>
                 @endif
                 <!-- Begin Page Content -->
-                <div class="">
+                <div>
                     @yield('content')
                 </div>
                 <!-- /.container-fluid -->

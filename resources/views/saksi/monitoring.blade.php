@@ -35,20 +35,19 @@
               <tr>
                 <th>No</th>
                 @if (request("table") == "desa")
+                <th>Penanggung Jawab</th>
                 <th>Desa</th>
                 <th>Caleg</th>
                 <th>Partai</th>
-                <th>Suara 2024</th>
-                <th>Suara 2019</th>
                 @endif
                 @if (request("table") == "kecamatan")
                 <th>Kecamatan</th>
-                <th>Total Suara</th>
-                @endif
-                @if (request("table") == "kabupaten")
+                <th>Penanggung Jawab</th>
+                @elseif (request("table") == "kabupaten")
                 <th>Kabupaten</th>
-                <th>Total Suara</th>
                 @endif
+                <th>Total Suara 2024</th>
+                <th>Total Suara 2019</th>
               </tr>
             </thead>
             <tbody>
@@ -70,6 +69,7 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $data[0] }}</td>
                     <td>{{ $data[1] }}</td>
+                    <td>{{ $data[2] }}</td>
                   </tr>
               @endforeach
               @endif
@@ -79,6 +79,7 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $data[0] }}</td>
                     <td>{{ $data[1] }}</td>
+                    <td>{{ $data[2] }}</td>
                   </tr>
               @endforeach
               @endif
@@ -94,7 +95,7 @@
       anychart.onDocumentReady(function () {
           // create data set on our data
           @if (request("table") == "desa")
-          fetch("/api/getChartDesa").then(resp => resp.json()).then(resp => {
+          fetch("{{ asset('api/getChartDesa') }}").then(resp => resp.json()).then(resp => {
           if (resp.length > 0) {
           document.getElementsByClassName("spinner-border")[0].style.display = "none";
           var dataSet = anychart.data.set(resp);
@@ -126,12 +127,12 @@
           // create first series with mapped data
           series = chart.column(firstSeriesData);
           series.xPointPosition(0.25);
-          setupSeries(series, 'Pemilih');
+          setupSeries(series, 'Pemilih 2024');
 
           // create second series with mapped data
-          // series = chart.column(secondSeriesData);
-          // series.xPointPosition(0.45);
-          // setupSeries(series, 'Perempuan');
+          series = chart.column(secondSeriesData);
+          series.xPointPosition(0.45);
+          setupSeries(series, 'Pemilih 2019');
           
           chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
 
@@ -159,6 +160,7 @@
 
       }).catch(err => document.getElementById("chart").innerHTML = "Error When Getting Data");
       @else
+
       @if ($dataArr->count()) 
           document.getElementsByClassName("spinner-border")[0].style.display = "none";
           var dataSet = anychart.data.set({!! $dataArr !!});
@@ -190,12 +192,12 @@
           // create first series with mapped data
           series = chart.column(firstSeriesData);
           series.xPointPosition(0.25);
-          setupSeries(series, 'Pemilih');
+          setupSeries(series, 'Pemilih 2024');
 
           // create second series with mapped data
-          // series = chart.column(secondSeriesData);
-          // series.xPointPosition(0.45);
-          // setupSeries(series, 'Perempuan');
+          series = chart.column(secondSeriesData);
+          series.xPointPosition(0.45);
+          setupSeries(series, 'Pemilih 2019');
           
           chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
 
