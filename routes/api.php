@@ -28,3 +28,6 @@ Route::get("getGalery", [ApiController::class, "getGalery"]);
 Route::get("getVariabel", [ApiController::class, "getVariabel"]);
 Route::get("getSurvey", [ApiController::class, "getSurvey"]);
 Route::post("login", [ApiController::class, "login"]);
+Route::get("getKabupaten", [ApiController::class, "getKabupaten"]);
+Route::get("getKecamatan", [ApiController::class, "getKecamatan"]);
+Route::get("getDesa", [ApiController::class, "getDesa"]);
