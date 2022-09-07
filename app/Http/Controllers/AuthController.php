@@ -6,6 +6,7 @@ use App\Models\Caleg;
 use App\Models\Legislatif;
 use App\Models\Partai;
 use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +30,7 @@ class AuthController extends Controller
     {
         $request->password = bcrypt($request->password);
         $credentials = $request->only('username', 'password');
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials) || Auth::guard('caleg')->attempt($credentials)) {
             return redirect()->route('dashboard')->with('success', 'You are now logged in!');
         }
         return redirect()->route('login')->with('error', 'Username atau Password salah!');

@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        "caleg" => [
+            "driver" => "session",
+            "provider" => "caleg"
+        ]
     ],
 
     /*
@@ -65,10 +70,10 @@ return [
             'model' => App\Models\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'caleg' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Calegs::class,
+        ],
     ],
 
     /*

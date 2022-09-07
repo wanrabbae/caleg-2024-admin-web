@@ -3,10 +3,12 @@
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header py-3">
+        @if (Auth::guard("web")->check())
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
                 <i class="fas fa-plus"></i>
                 Caleg
             </button>
+        @endif
         </div>
         <div class="card-body">
             <div class="table-responsive">
