@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kabupaten;
-use App\Models\Kecamatan;
+use App\Models\Daftar_Isu;
 use Illuminate\Http\Request;
 
 class DaftarIsuController extends Controller
@@ -15,12 +14,10 @@ class DaftarIsuController extends Controller
      */
     public function index()
     {
-        return view('data.daftarIsu',[
-            'title' => 'Daftar Isu Page',
-            'data' => Kecamatan::all(),
-            'datas' => Kabupaten::all()
-        ]);
-
+        return view("data.daftarIsu", [
+            "title" => "Daftar Isu",
+            "dataArr" => Daftar_Isu::all()
+    ]);
     }
 
     /**
@@ -41,17 +38,6 @@ class DaftarIsuController extends Controller
      */
     public function store(Request $request)
     {
-        $data =  $request->validate([
-            'nama_kecamatan' => 'required|unique:kecamatan',
-            'wilayah' => 'required|unique:kecamatan',
-            'id_kabupaten' => 'required'
-        ]);
-
-        if(Kecamatan::create($data)){
-            return back()->with('success', "Success Create Data Daftar Isu");
-        }
-
-        return back()->with('error', "Failed Create Data Daftar Isu");
     }
 
     /**
@@ -83,19 +69,15 @@ class DaftarIsuController extends Controller
      * @param  \App\Models\Kecamatan  $kecamatan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Kecamatan $kecamatan, $id_kecamatan)
+    public function update(Request $request, Daftar_Isu $daftar_Isu)
     {
-        $data = $request->validate([
-            'nama_kecamatan' => 'required|unique:kecamatan',
-            'wilayah' => 'required|unique:kecamatan',
-            'id_kabupaten' => 'required',
-        ]);
-
-        if(Kecamatan::where('id_kecamatan', $id_kecamatan)->update($data)){
-            return redirect('/infoPolitik/daftarIsu')->with('success', "Success Update Data Daftar Isu Kecamatan $kecamatan->nama_kecamatan");
-        }
-
-        return redirect('/infoPolitik/daftarIsu')->with('error', "Failed Update Data Daftar Isu Kecamatan $kecamatan->nama_kecamatan");
+        // return $daftar_Isu;
+        // if ($request->has("tanggapi")) {
+        //     if (Daftar_Isu::where("id_isu", $daftar_Isu->id_isu)->update(["tanggapi" => date("Y-m-d")])) {
+        //         return back()->with("success", "Berhasil Ditanggapi");
+        //     }
+        //     return back()->with("error", "Error, Gagal Menanggapi");
+        // }
     }
 
     /**
@@ -106,10 +88,5 @@ class DaftarIsuController extends Controller
      */
     public function destroy(Kecamatan $kecamatan, $id_kecamatan)
     {
-       if(Kecamatan::where('id_kecamatan', $id_kecamatan)->delete()){
-            return back()->with('success', "Success Deleting Data Daftar Isu");
-       }
-
-       return back()->with('error', "Failed Deleting Data Daftar Isu");
     }
 }

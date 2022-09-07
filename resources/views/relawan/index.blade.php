@@ -22,6 +22,7 @@
                             <th>Jabatan</th>
                             <th>Upline</th>
                             <th>Desa</th>
+                            <th>Saksi</th>
                             <th>Kecamatan</th>
                             <th>KTP</th>
                             <th>Caleg</th>
@@ -61,10 +62,19 @@
                                         {{ $data->upline }}
                                     </td>
                                     <td>{{ $data->desa->nama_desa }}</td>
+                                    <td>
+                                        <form action="/team/{{ $data->id_relawan }}" method="POST">
+                                            @method("put")
+                                            @csrf
+                                            <button class="btn @if ($data->saksi == 'Y') btn-success @else btn-danger @endif" type="submit" value="{{ $data->saksi }}" name="saksi">
+                                                {{ $data->saksi }}
+                                            </button>
+                                        </form>
+                                    </td>
                                     <td>{{ $data->desa->kecamatan->nama_kecamatan }}</td>
                                     <td>
                                         @if (Storage::exists($data->foto_ktp))
-                                            <img src="{{ asset('storage/' . $data->foto_ktp) }}" alt="" style="width: 200px">
+                                            <img src="{{ asset('storage/' . $data->foto_ktp) }}" alt="" style="width: 75px">
                                         @else
                                             <i class="fas fa-image"></i>
                                             <span>Image Not Found</span>
@@ -75,7 +85,15 @@
                                     <td>{{ $data->no_hp }}</td>
                                     <td>{{ $data->email }}</td>
                                     <td>{{ $data->username }}</td>
-                                    <td>{{ $data->blokir }}</td>
+                                    <td>
+                                        <form action="/team/{{ $data->id_relawan }}" method="POST">
+                                        @method("put")
+                                        @csrf
+                                            <button type="submit" value="{{ $data->blokir }}" class="btn @if ($data->blokir == 'Y') btn-danger @else btn-success @endif" name="blokir">
+                                                {{ $data->blokir }}
+                                            </button>
+                                        </form>
+                                    </td>
                                     <td>
                                         <a href="{{ asset("team/upline/$data->id_relawan") }}">
                                             <button class="btn btn-warning">
@@ -297,7 +315,8 @@
     </div>
 </div>
 
-    <div class="modal fade" id="editJabatanModal" tabindex="-1" role="dialog" aria-labelledby="createJabatanLabel" aria-hidden="true">
+{{-- Jabatan Modal --}}
+<div class="modal fade" id="editJabatanModal" tabindex="-1" role="dialog" aria-labelledby="createJabatanLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -329,8 +348,9 @@
             </div>
         </div>
     </div>
+</div>
 
-    <script>
+<script>
         function getData(data) {
             fetch(`/team/${data}`).then(resp => resp.json()).then(resp => {
                 document.getElementById("edit_form").action = `/team/${data}`
@@ -357,5 +377,6 @@
                 document.getElementById("edit_desa").value = resp.id_desa
             })
         }
+
     </script>    
 @endsection

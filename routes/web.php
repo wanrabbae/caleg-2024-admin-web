@@ -10,7 +10,7 @@ use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\DashboardMedsosController;
 use App\Http\Controllers\DataSurveyController;
 use App\Http\Controllers\DPTController;
-use App\Http\Controllers\RekapitulasiController;
+// use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\VariableController;
 use App\Http\Controllers\SaksiDaftarController;
@@ -63,7 +63,7 @@ Route::resource('/dashboard/medsos', DashboardMedsosController::class)
 
 //Info Politik Routes
 Route::resource('/infoPolitik/daftarIsu', DaftarIsuController::class)->middleware('auth');
-Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
+// Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
 // Route::put("/infoPolitik/berita/{id_news}", [BeritaController::class, "update"])->middleware("auth");
 Route::resource('/infoPolitik/berita', BeritaController::class)
     ->parameters(['berita' => 'berita'])

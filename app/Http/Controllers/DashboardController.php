@@ -13,7 +13,7 @@ class DashboardController extends Controller
         return view('home.dashboard', [
             'title' => 'Dashboard Caleg',
             "relawan" => Relawan::all()->count(),
-            "pemilih" => Rk_pemilih::all()->count()
+            "pemilih" => Rk_pemilih::all()->count(),
         ]);
     }
 }
