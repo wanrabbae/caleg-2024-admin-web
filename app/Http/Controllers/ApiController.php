@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Caleg;
+use App\Models\Desa;
 use App\Models\Galery;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
 use App\Models\Program;
 use App\Models\Survey;
 use App\Models\User;
@@ -303,5 +306,26 @@ class ApiController extends Controller
         ])->orderBy('id_survey', 'DESC')->get();
 
         return response()->json(['survey' => $survey]);
+    }
+
+    public function getKabupaten()
+    {
+        $kabupaten = Kabupaten::orderBy('id_kabupaten', 'DESC')->get();
+
+        return response()->json(['kabupaten' => $kabupaten]);
+    }
+
+    public function getKecamatan(request $request)
+    {
+        $kecamatan = Kecamatan::where('id_kabupaten', $request->id_kabupaten)->get();
+
+        return response()->json(['kecamatan' => $kecamatan]);
+    }
+
+    public function getDesa(request $request)
+    {
+        $desa = Desa::where('id_kecamatan', $request->id_kecamatan)->get();
+
+        return response()->json(['desa' => $desa]);
     }
 }
