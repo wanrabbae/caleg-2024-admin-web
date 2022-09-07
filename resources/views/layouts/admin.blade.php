@@ -117,8 +117,8 @@
                             <span>Relawan</span>
                         </a>
                         <a class="collapse-item font-weight-bold" href="{{ asset('program') }}">
-                            <i class="fas fa-user-friends"></i>
-                            <span>Simpatisan</span>
+                            <i class="fas fa-tasks"></i>
+                            <span>Program</span>
                         </a>
                         <a class="collapse-item font-weight-bold" href="{{ asset('dpt') }}">
                             <i class="fas fa-clipboard-list"></i>
@@ -126,7 +126,7 @@
                         </a>
                         <a class="collapse-item font-weight-bold" href="{{ asset('agenda') }}">
                             <i class="fas fa-calendar"></i>
-                            <span>DPT Manual</span>
+                            <span>Agenda</span>
                         </a>
                         {{-- <a class="collapse-item font-weight-bold" href="">
                             <i class="fas fa-vote-yea"></i>
@@ -149,7 +149,7 @@
                         </a>
                         <a class="collapse-item font-weight-bold" href="{{ asset('survey/HasilSurvey') }}">
                             <i class="fas fa-poll"></i>
-                            <span>Hasil Survey</span>
+                            <span>Variable Survey</span>
                         </a>
                     </div>
                 </div>

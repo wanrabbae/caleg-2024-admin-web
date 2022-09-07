@@ -55,7 +55,7 @@
                                    <form action="/infoPolitik/berita/{{ $item->id_news }}" method="post" class="d-inline">
                                     @method('delete')
                                     @csrf
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus kecamatan {{ $item->judul }}')">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus {{ $item->judul }}')">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
@@ -74,19 +74,19 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Create Data Berita</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Create Berita</h5>
             <span aria-hidden="true">&times;</span>
         </div>
         <form action="/infoPolitik/berita" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="judul_news" class="form-label">Judul News</label>
-                    <input type="text" name="judul" id="judul" class="form-control" placeholder="Judul news">
+                    <label for="judul" class="form-label">Judul Berita</label>
+                    <input type="text" name="judul" id="judul" class="form-control" placeholder="Judul Berita">
                 </div>
                 <div class="form-group">
                     <label for="isi_berita" class="form-label">Isi Berita</label>
-                    <textarea name="isi_berita" id="isi_berita" rows="2" class="form-control" placeholder="Masukan Isi Berita"></textarea>
+                    <textarea name="isi_berita" id="isi_berita" rows="5" class="form-control" placeholder="Masukan Isi Berita" style="resize: none;"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tgl_publish" class="form-label">Tanggal Publish</label>
@@ -95,7 +95,6 @@
                 <div class="form-group">
                     <label for="id_caleg" class="form-label" >Calon Legislatif</label>
                     <select class="form-select form-control" name="id_caleg" id="id_caleg">
-                        <option selected>Open this select menu</option>
                         @foreach ($caleg as $item)
                         @if (old('id_caleg')==$item->id_caleg)
                             <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
@@ -112,9 +111,8 @@
                 <div class="form-group">
                     <label for="aktif" class="form-label">Publish</label>
                     <select class="form-select form-control" name="aktif" id="aktif">
-                        <option selected>Open this select menu</option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
+                        <option value="Y">Publish</option>
+                        <option value="N">Unpublish</option>
                     </select>
                 </div>
                 <div class="modal-footer">
@@ -152,7 +150,6 @@
                 <div class="form-group">
                     <label for="id_caleg" class="form-label" >Calon Legislatif</label>
                     <select class="form-select form-control" name="id_caleg" id="update_id_caleg">
-                        <option selected>Open this select menu</option>
                         @foreach ($caleg as $item)
                         @if (old('id_caleg')==$item->id_caleg)
                             <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
@@ -169,7 +166,6 @@
                 <div class="form-group">
                     <label for="aktif">publish</label>
                     <select class="form-select form-control" name="aktif" id="update_aktif">
-                        <option selected>Open this select menu</option>
                         <option value="Y">Y</option>
                         <option value="N">N</option>
                     </select>

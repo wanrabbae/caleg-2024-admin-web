@@ -53,7 +53,6 @@ function DataSurvey(survey) {
 //UPDATE REKAP DATA
 function getData(params) {
     fetch(`/dpt/${params}`).then(response => response.json()).then(response => {
-        console.log(response);
         document.getElementById("edit_form").action = `/dpt/${params}`
         document.getElementById("edit_nik").value = response.nik
         document.getElementById("edit_nama").value = response.nama

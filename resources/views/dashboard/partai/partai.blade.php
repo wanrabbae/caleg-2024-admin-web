@@ -25,13 +25,14 @@
                         @if ($dataArr->count())
                             @foreach ($dataArr as $data)
                                 <tr>
-                                    <td>{{ $data->id_partai }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $data->nama_partai }}</td>
                                     <td>{{ $data->no_urut }}</td>
-                                    <td>{{ $data->warna }}</td>
+                                    <td style="background: {{ $data->warna }}">
+                                    </td>
                                     <td>
                                         @if (Storage::exists($data->logo))
-                                            <img src="{{ asset('storage/' . $data->logo) }}" alt="" style="width: 200px">
+                                            <img src="{{ asset('storage/' . $data->logo) }}" alt="" class="mx-auto d-block" style="width: 75px">
                                         @else
                                             <i class="fas fa-image"></i>
                                             <span>Image Not Found</span>

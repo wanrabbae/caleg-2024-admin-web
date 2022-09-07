@@ -49,19 +49,24 @@ class DptController extends Controller
     public function update(Request $request, $id)
     {
         $pemilih = Rk_pemilih::find($id);
-        $data = $request->validate([
-            'nik' => 'max:100',
-            'nama' => 'max:100',
-            'tempat_lahir' => 'max:50',
-            'tgl_lahir' => 'date',
-            // 'tgl_data' => 'date|after_or_equal:today',
-            'jk' => 'max:10',
-            'tps' => 'integer',
-            'id_desa' => 'max:4',
+        $rules = [
+            'nama' => 'required|max:100',
+            'tempat_lahir' => 'required|max:50',
+            'tgl_lahir' => 'required|date',
+            // 'tgl_data' => 'required|date|after_or_equal:today',
+            'jk' => 'required|max:10',
+            'tps' => 'required|integer',
+            'id_desa' => 'required|max:4',
             'relawan' => 'required',
             'saksi' => 'required',
             'id_users' => 'required',
-        ]);
+    ];
+
+        if ($request->nik !== $pemilih->nik) {
+            $rules["nik"] = "required|unique:rk_pemilih";
+        }
+
+        $data = $request->validate($rules);
 
         if ($pemilih->update($data) && Rk_pemilih_2::find($id)->update($data)) {
             return back()->with('success', 'Success Update New Data DPT');

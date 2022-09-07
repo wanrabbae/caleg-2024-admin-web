@@ -7,6 +7,7 @@ use App\Models\Desa;
 use App\Models\Kecamatan;
 use App\Models\Relawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class TeamController extends Controller
@@ -29,13 +30,13 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            "nik" => "required|integer|unique:relawan",
+            "nik" => "required|unique:relawan",
             "nama_relawan" => "required|max:255",
-            "id_desa" => "required|integer",
-            "id_caleg" => "required|integer",
-            "status" => "required|integer",
-            "loyalis" => "required|integer",
-            "status" => "required|integer",
+            "id_desa" => "required",
+            "id_caleg" => "required",
+            "status" => "required",
+            "loyalis" => "required",
+            "status" => "required",
             "no_hp" => "required|min:11",
             "email" => "required|email:dns|max:255|unique:relawan",
             "username" => "required|max:255|unique:relawan",
@@ -124,34 +125,38 @@ class TeamController extends Controller
 
         }
 
-        // update data relawan
-    $data = $request->validate([
-        "nik" => "integer",
-        "nama_relawan" => "max:255",
-        "id_desa" => "integer",
-        "id_caleg" => "integer",
-        "status" => "integer",
-        "no_hp" => "min:11",
-        "email" => "email|max:255",
-        "username" => "max:255",
-        "password" => "max:255",
-        "foto_ktp" => "image|max:2048"
-    ]);
+        $rules = [
+            "nama_relawan" => "required|max:255",
+            "id_desa" => "required",
+            "id_caleg" => "required",
+            "status" => "required",
+            "no_hp" => "required|min:11",
+            "email" => "email|max:255|required",
+            "username" => "required|max:255",
+            "foto_ktp" => "image|max:2048"
+    ];
+
+    if ($request->nik !== $relawan->nik) {
+        $rules["nik"] = "required|unique:relawan";
+    }
+
+    $data = $request->validate($rules);
     
     if ($request->hasFile("foto_ktp")) {
         Storage::delete($relawan->foto_ktp);
         $data['foto_ktp'] = $request->file("foto_ktp")->store("/image");
     }
 
-    $data['password'] = bcrypt($data['password']);
-    $data["jabatan"] = "0";
-    $data["saksi"] = "N";
+    if ($request->password) {
+        $data["password"] = bcrypt($request->password);
+    }
 
     if ($relawan->update($data)) {
         return back()->with("success", "Success Update Relawan");
     }
     return back()->with("error", "Error, Can't Update Relawan");
     }
+
     public function upline($id) {
         return view("relawan.upline", [
             "title" => "Upline " . Relawan::where("id_relawan", $id)->first()->nama_relawan,

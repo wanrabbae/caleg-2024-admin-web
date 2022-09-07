@@ -43,7 +43,7 @@ class DataSurveyController extends Controller
     public function store(Request $request)
     {
         $data =  $request->validate([
-            'nama_survey' => 'required|unique:survey',
+            'nama_survey' => 'required',
             'mulai_tanggal' => 'required|date',
             'sampai_tanggal' => 'required|date',
             'id_caleg' => 'required',
@@ -88,9 +88,9 @@ class DataSurveyController extends Controller
     public function update(Request $request,$id_survey )
     {
         $data = $request->validate([
-            'nama_survey' => 'unique:survey',
-            'mulai_tanggal' => 'date',
-            'sampai_tanggal' => 'date',
+            'nama_survey' => 'required',
+            'mulai_tanggal' => 'required|date',
+            'sampai_tanggal' => 'required|date',
             'id_caleg' => 'required',
             'id_variabel' => 'required'
         ]);
