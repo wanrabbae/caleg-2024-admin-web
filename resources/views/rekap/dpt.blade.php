@@ -1,6 +1,5 @@
 @extends('layouts.admin')
 @section('content')
-    {{-- @dd($datas) --}}
     <div class="card shadow mb-4">
         <div class="col-md-3">
         </div>
@@ -105,7 +104,7 @@
                         </div>
                         <div class="form-group">
                             <label for="desa" class="form-label">Desa</label>
-                            <select class=" form-control form-select" name="id_desa" id="id_desa">
+                            <select class="form-control form-select" name="id_desa" id="id_desa">
                                 @foreach ($desas as $item)
                                     @if (old('id_desa') == $item->id_desa)
                                         <option value="{{ $item->id_desa }}" selected>{{ $item->nama_desa }}</option>

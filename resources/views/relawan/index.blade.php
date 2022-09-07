@@ -38,7 +38,7 @@
                         @if ($data->count())
                             @foreach ($data as $data)
                                 <tr>
-                                    <td>{{ $data->id_relawan }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $data->nik }}</td>
                                     <td>
                                         <button class="text-nowrap btn @if ($data->loyalis == 1) btn-success @elseif ($data->loyalis == 2) btn-warning @else btn-danger @endif" data-toggle="modal" data-target="#editLoyalModal"

@@ -42,8 +42,8 @@ class BeritaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'judul' => 'required|unique:news',
-            'isi_berita' => 'required|max:255',
+            'judul' => 'required',
+            'isi_berita' => 'required',
             'tgl_publish' =>  'required|date',
             'id_caleg' => 'required',
             'gambar' => 'required|image|file|max:5000',
@@ -97,17 +97,19 @@ class BeritaController extends Controller
             }
 
             return redirect('/infoPolitik/berita')->with('error', 'Failed Updating Data News');
+        }
+        
+        $rules = [
+            'isi_berita' => 'required',
+            'tgl_publish' =>  'required|date',
+            'id_caleg' => 'required',
+            'gambar' => 'image|file|max:5000',
+            'aktif' => 'required'
+        ];
 
-        } else {
-            $rules = [
-                'judul' => 'unique:news',
-                'isi_berita' => 'max:255',
-                'tgl_publish' =>  'date',
-                'id_caleg' => 'required',
-                'gambar' => 'image|file|max:5000',
-                'aktif' => 'required'
-            ];
-
+        if ($request->judul !== News::find($id_news)->judul) {
+            $rules["judul"] = "required";
+        }
 
         $data = $request->validate($rules);
 
@@ -117,8 +119,6 @@ class BeritaController extends Controller
             Storage::delete($img);
             $data["gambar"] = $request->file("gambar")->store('/images');
         }
-
-    }
 
         if(News::where('id_news', $id_news)->update($data)){
             return redirect('/infoPolitik/berita')->with('success', 'Success Updating Data News');

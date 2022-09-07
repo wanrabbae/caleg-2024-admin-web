@@ -26,11 +26,11 @@
                     @if ($dataArr->count())
                         @foreach($dataArr as $data)
                             <tr>
-                                <td>{{ $data->id_medsos }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->nama_medsos }}</td>
                                 <td>
                                     @if (Storage::exists($data->logo))
-                                    <img src="{{ asset('storage/' . $data->logo) }}" alt="" style="width: 200px">
+                                    <img src="{{ asset('storage/' . $data->logo) }}" alt="" class="mx-auto d-block" style="width: 75px">
                                     @else
                                     <i class="fas fa-image"></i>
                                     <span>Image Not Found</span>
@@ -95,7 +95,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Edit Partai</h5>
+          <h5 class="modal-title" id="editModalLabel">Edit Medsos</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

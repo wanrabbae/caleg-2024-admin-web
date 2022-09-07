@@ -15,7 +15,7 @@ class VariableController extends Controller
     public function index()
     {
         return view('data.variable', [
-            'title' => 'Hasil Survey Page',
+            'title' => 'Variable Survey Page',
             'data' => Variabel::all()
         ]);
     }
@@ -83,7 +83,7 @@ class VariableController extends Controller
     public function update(Request $request, Variabel $variabel,$id_variabel )
     {
        $rule = [
-        'nama_variabel' => 'required'
+        'nama_variabel' => 'required|unique:variabel'
        ];
 
        $data = $request->validate($rule);

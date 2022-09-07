@@ -12,7 +12,7 @@ class SimpatisanController extends Controller
     {
         return view('rekap.simpatisan', [
             'program' => Program::all(),
-            'title' => 'Program / Simpatisan'
+            'title' => 'Program'
         ]);
     }
 
@@ -51,14 +51,17 @@ class SimpatisanController extends Controller
 
     public function update(Request $request, $id)
     {
-        // update data
         $program = Program::find($id);
-
-        $data = $request->validate([
-            "judul_program" => "max:255",
+        $rules = [
             "deskripsi" => "required",
             "foto" => "image|max:2048"
-        ]);
+        ];
+
+        if ($request->judul_program !== $program->judul_program) {
+            $rules["judul_program"] = "required";
+        }
+    
+        $data = $request->validate($rules);
 
         if ($request->hasFile("foto")) {
             Storage::delete($program->foto);

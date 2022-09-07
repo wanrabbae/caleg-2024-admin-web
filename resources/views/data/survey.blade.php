@@ -79,7 +79,6 @@
                 <div class="mb-3">
                     <label for="legislatif" class="form-label">Calon Legislatif</label>
                     <select class="form-select form-control" name="id_caleg" id="id_caleg">
-                        <option selected>Open this select menu</option>
                         @foreach ($caleg as $item)
                         @if (old('id_caleg')==$item->id_caleg)
                             <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
@@ -92,7 +91,6 @@
                 <div class="mb-3">
                     <label for="indikator" class="form-label">Indikator</label>
                     <select class="form-select form-control" name="id_variabel" id="indikator">
-                        <option selected>Open this select menu</option>
                         @foreach ($variabel as $item)
                         @if (old('id_variabel')==$item->id_variabel)
                             <option value="{{ $item->id_variabel }}" selected>{{ $item->nama_variabel}}</option>
@@ -134,12 +132,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="sampai_tangal" class="form-label">Sampai Tanggal</label>
-                    <input type="date" name="sampai_tangal" id="edit_sampai" class="form-control" value="{}">
+                    <input type="date" name="sampai_tanggal" id="edit_sampai" class="form-control" value="{}">
                 </div>
                 <div class="mb-3">
                     <label for="id_caleg" class="form-label">Calon Legislatif</label>
                     <select name="id_caleg" id="edit_caleg" class="form-select form-control">
-                        <option selected>Open this select menu</option>
                         @foreach ($caleg as $item)
                         @if (old('id_caleg')==$item->id_caleg)
                             <option value="{{ $item->id_caleg }}" selected >{{ $item->nama_caleg }}</option>
@@ -152,7 +149,6 @@
                 <div class="mb-3">
                     <label for="id_variabel" class="form-label">Indikator</label>
                     <select name="id_variabel" id="edit_variabel" class="form-select form-control">
-                        <option selected>Open this select menu</option>
                         @foreach ($variabel as $item)
                         @if (old('id_variabel')==$item->id_variabel)
                             <option value="{{ $item->id_variabel }}" selected >{{ $item->nama_variabel }}</option>
