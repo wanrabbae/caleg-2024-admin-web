@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CalegController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
@@ -53,6 +54,9 @@ Route::get('/logout', [AuthController::class, 'logout'])
 Route::post('/update', [AuthController::class, 'update'])->middleware('auth');
 
 // Route::get('/', ['middleware' => 'auth', 'uses' => 'DashboardController@index']);
+
+// Caleg Routes
+Route::resource('/caleg', CalegController::class)->middleware('auth');
 
 //Dashboard Routes
 Route::resource('/dashboard/legislatif', DashboardLegislatifController::class)->middleware('auth');

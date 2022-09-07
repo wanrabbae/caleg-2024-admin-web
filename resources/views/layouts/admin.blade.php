@@ -60,6 +60,21 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCaleg" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Caleg</span>
+                </a>
+                <div id="collapseCaleg" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item font-weight-bold" href="{{ asset("caleg") }}">
+                            <i class="fas fa-user-tie"></i>
+                            <span>Caleg</span>
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-th-large"></i>
                     <span>Dashboard</span>
