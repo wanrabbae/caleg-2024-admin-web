@@ -18,7 +18,7 @@ class BeritaController extends Controller
     {
         return view('data.berita',[
             'title' => 'Berita Page',
-            'data' => News::all(),
+            'data' => auth("web")->check() ? News::all() : News::where("id_caleg", auth()->user()->id_caleg)->get(),
             'caleg' => Caleg::all()
         ]);
     }
@@ -41,13 +41,16 @@ class BeritaController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         $data = $request->validate([
             'judul' => 'required',
             'isi_berita' => 'required',
             'tgl_publish' =>  'required|date',
             'id_caleg' => 'required',
             'gambar' => 'required|image|file|max:5000',
-            'aktif' => 'required'
         ]);
 
          if($request->file('gambar')){
@@ -98,13 +101,16 @@ class BeritaController extends Controller
 
             return redirect('/infoPolitik/berita')->with('error', 'Failed Updating Data News');
         }
-        
+
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         $rules = [
             'isi_berita' => 'required',
             'tgl_publish' =>  'required|date',
             'id_caleg' => 'required',
             'gambar' => 'image|file|max:5000',
-            'aktif' => 'required'
         ];
 
         if ($request->judul !== News::find($id_news)->judul) {

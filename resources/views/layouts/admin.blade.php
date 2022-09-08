@@ -36,17 +36,16 @@
             padding: 0;
         }
     </style>
-
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
-        <ul class="navbar-nav sidebar sidebar-dark accordion {{ auth()->guard('caleg')->user()->warna ?? auth()->user()->warna }}" id="accordionSidebar">
+        <ul class="navbar-nav sidebar sidebar-dark accordion" style="background: {{ auth("web")->check() ? auth()->user()->warna : auth("caleg")->user()->partai->warna }};" id="accordionSidebar">
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ asset('/') }}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">JagatTbk</div>
+                <div class="sidebar-brand-text mx-3">{{ auth()->guard("web")->check() ? "JagatTbk" : auth()->guard("caleg")->user()->partai->nama_partai }}</div>
             </a>
 
             <!-- Divider -->

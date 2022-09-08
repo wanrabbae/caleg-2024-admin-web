@@ -52,4 +52,29 @@ class Calegs extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function legislatif()
+    {
+        return $this->belongsTo(Legislatif::class, 'id_legislatif');
+    }
+
+    public function partai()
+    {
+        return $this->belongsTo(Partai::class, 'id_partai');
+    }
+
+    public function news()
+    {
+        return $this->hasMany(News::class, 'id_caleg');
+    }
+
+    public function relawan()
+    {
+        return $this->hasMany(Relawan::class);
+    }
+
+    public function survey(){
+        return $this->hasMany(Survey::class);
+    }
+
 }

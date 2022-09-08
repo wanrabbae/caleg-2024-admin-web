@@ -3,10 +3,12 @@
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header py-3">
+        @if (auth("web")->check())
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
                 <i class="fas fa-plus"></i>
                 Partai
             </button>
+        @endif
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -18,7 +20,9 @@
                             <th>No Urut</th>
                             <th>Warna</th>
                             <th>Logo</th>
+                            @auth("web")
                             <th>Action</th>
+                            @endauth
                         </tr>
                     </thead>
                     <tbody>
@@ -38,6 +42,7 @@
                                             <span>Image Not Found</span>
                                         @endif
                                     </td>
+                                    @auth("web")
                                     <td class="d-flex justify-content-center">
                                         <button class="btn btn-warning mx-3" data-target="#editModal" data-toggle="modal" onclick="getData({{ $data->id_partai }})">
                                             <i class="fas fa-edit"></i>
@@ -50,6 +55,7 @@
                                             </button>
                                         </form>
                                     </td>
+                                    @endauth
                                 </tr>
                             @endforeach
                         @endif

@@ -16,6 +16,9 @@
                         <tr>
                             <th>No</th>
                             <th>NIK</th>
+                            @auth("web")
+                            <th>Caleg</th>
+                            @endauth
                             <th>Nama Pemilih</th>
                             <th>Tempat Lahir</th>
                             <th>Tanggal Lahir</th>
@@ -32,6 +35,9 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nik }}</td>
+                                    @auth("web")
+                                    <td>{{ $item->caleg->nama_caleg }}</td>
+                                    @endauth
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ $item->tempat_lahir }}</td>
                                     <td>{{ $item->tgl_lahir }}</td>
@@ -75,6 +81,20 @@
                             <label for="nik" class="form-label">NIK</label>
                             <input type="text" class="form-control" id="nik" name="nik" placeholder=" Masukan NIK">
                         </div>
+                        @if (auth("web")->check())
+                        <div class="form-group">
+                            <label for="id_caleg" class="form-label" >Caleg</label>
+                            <select class="form-select form-control" name="id_caleg" id="id_caleg">
+                                @foreach ($caleg as $item)
+                                @if (old('id_caleg')==$item->id_caleg)
+                                    <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
+                                @else
+                                    <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        @endif
                         <div class="form-group">
                             <label for="nama" class="form-label">Nama Pemilih</label>
                             <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukan Nama Pemilih">
@@ -164,6 +184,20 @@
                             <label for="nik" class="form-label">NIK</label>
                             <input type="text" class="form-control" id="edit_nik" name="nik" placeholder=" Masukan NIK">
                         </div>
+                        @if (auth("web")->check())
+                        <div class="form-group">
+                            <label for="id_caleg" class="form-label" >Caleg</label>
+                            <select class="form-select form-control" name="id_caleg" id="edit_id_caleg">
+                                @foreach ($caleg as $item)
+                                @if (old('id_caleg')==$item->id_caleg)
+                                    <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
+                                @else
+                                    <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        @endif
                         <div class="form-group">
                             <label for="nama" class="form-label">Nama Pemilih</label>
                             <input type="text" class="form-control" id="edit_nama" name="nama" placeholder="Masukan Nama Pemilih">
@@ -238,5 +272,24 @@
             </div>
         </div>
     </div>
-    <script src="/js/value.js"></script>
+    <script>
+    function getData(params) {
+    fetch(`/dpt/${params}`).then(response => response.json()).then(response => {
+        document.getElementById("edit_form").action = `/dpt/${params}`
+        document.getElementById("edit_nik").value = response.nik
+        @auth("web")
+        document.getElementById("edit_id_caleg").value = response.id_caleg
+        @endauth
+        document.getElementById("edit_nama").value = response.nama
+        document.getElementById("edit_tempat_lahir").value = response.tempat_lahir
+        document.getElementById("edit_tgl_lahir").value = response.tgl_lahir
+        document.getElementById("edit_jk").value = response.jk
+        document.getElementById("edit_tps").value = response.tps
+        document.getElementById("edit_id_desa").value = response.id_desa
+        document.getElementById("edit_relawan").value = response.relawan
+        document.getElementById("edit_saksi").value = response.saksi
+        document.getElementById("edit_id_users").value = response.id_users
+    })
+}
+</script>
 @endsection

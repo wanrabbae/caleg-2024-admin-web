@@ -3,12 +3,12 @@
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-        @if (Auth::guard("web")->check())
+        @auth("web")
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
                 <i class="fas fa-plus"></i>
                 Caleg
             </button>
-        @endif
+        @endauth
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -26,7 +26,9 @@
                             <th>Aktif</th>
                             <th>Username</th>
                             <th>Foto</th>
+                            @auth("web")
                             <th>Action</th>
+                            @endauth
                         </tr>
                     </thead>
                     <tbody>
@@ -53,6 +55,7 @@
                                             <span>Image Not Found</span>
                                         @endif
                                     </td>
+                                    @auth("web")
                                     <td class="d-flex justify-content-center">
                                         <button class="btn btn-warning mx-3" data-target="#editModal" data-toggle="modal" onclick="getData({{ $data->id_caleg }})">
                                             <i class="fas fa-edit"></i>
@@ -65,6 +68,7 @@
                                             </button>
                                         </form>
                                     </td>
+                                    @endauth
                                 </tr>
                             @endforeach
                         @endif
@@ -227,7 +231,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <a href="">
-                    <button type="submit" class="btn btn-primary">Tambah</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </a>
             </div>
         </form>

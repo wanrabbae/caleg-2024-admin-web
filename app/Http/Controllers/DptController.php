@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Desa;
+use App\Models\Caleg;
 use App\Models\Rk_pemilih;
 use App\Models\Rk_pemilih_2;
 use App\Models\User;
@@ -15,9 +16,10 @@ class DptController extends Controller
     {
         return view('rekap.dpt', [
             'title' => 'DPT / Pemilih Page',
-            'datas' => Rk_pemilih::with('desa')->get(),
+            'datas' => auth("web")->check() ? Rk_pemilih::with(["caleg", "desa"])->get() : Rk_pemilih::with('desa')->where("id_caleg", auth()->user()->id_caleg)->get(),
             'desas' => Desa::all(),
             'users' => User::all(),
+            "caleg" => Caleg::all()
         ]);
     }
 
@@ -27,8 +29,13 @@ class DptController extends Controller
     }
     public function store(Request $request)
     {
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         $data = $request->validate([
             'nik' => 'required|max:100|unique:rk_pemilih',
+            "id_caleg" => "required",
             'nama' => 'required|max:100',
             'tempat_lahir' => 'required|max:50',
             'tgl_lahir' => 'required|date',
@@ -49,7 +56,12 @@ class DptController extends Controller
     public function update(Request $request, $id)
     {
         $pemilih = Rk_pemilih::find($id);
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+        
         $rules = [
+            "id_caleg" => "required",
             'nama' => 'required|max:100',
             'tempat_lahir' => 'required|max:50',
             'tgl_lahir' => 'required|date',

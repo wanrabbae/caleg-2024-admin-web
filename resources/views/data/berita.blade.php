@@ -92,8 +92,9 @@
                     <label for="tgl_publish" class="form-label">Tanggal Publish</label>
                     <input type="date" name="tgl_publish" id="tgl_publish" class="form-control">
                 </div>
+                @if (auth("web")->check())
                 <div class="form-group">
-                    <label for="id_caleg" class="form-label" >Calon Legislatif</label>
+                    <label for="id_caleg" class="form-label" >Caleg</label>
                     <select class="form-select form-control" name="id_caleg" id="id_caleg">
                         @foreach ($caleg as $item)
                         @if (old('id_caleg')==$item->id_caleg)
@@ -104,16 +105,10 @@
                         @endforeach
                       </select>
                 </div>
+                @endif
                 <div class="form-group">
                     <label for="gambar" class="form-label">Gambar</label>
                     <input type="file" name="gambar" id="gambar" class="form-control-file">
-                </div>
-                <div class="form-group">
-                    <label for="aktif" class="form-label">Publish</label>
-                    <select class="form-select form-control" name="aktif" id="aktif">
-                        <option value="Y">Publish</option>
-                        <option value="N">Unpublish</option>
-                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Create</button>
@@ -147,8 +142,9 @@
                     <label for="tgl_publish" class="form-label">Tanggal Publish</label>
                     <input type="date" name="tgl_publish" id="update_tgl_publish" class="form-control">
                 </div>
+                @if (auth("web")->check())
                 <div class="form-group">
-                    <label for="id_caleg" class="form-label" >Calon Legislatif</label>
+                    <label for="id_caleg" class="form-label">Caleg</label>
                     <select class="form-select form-control" name="id_caleg" id="update_id_caleg">
                         @foreach ($caleg as $item)
                         @if (old('id_caleg')==$item->id_caleg)
@@ -159,16 +155,10 @@
                         @endforeach
                       </select>
                 </div>
+                @endif
                 <div class="form-group">
                     <label for="gambar" class="form-label">gambar</label>
                     <input type="file" name="gambar" id="update_gambar" class="form-control-file">
-                </div>
-                <div class="form-group">
-                    <label for="aktif">publish</label>
-                    <select class="form-select form-control" name="aktif" id="update_aktif">
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Update</button>
@@ -179,5 +169,16 @@
       </div>
     </div>
 </div>
-<script src="/js/value.js"></script>
+<script>
+function getBerita(data) {
+    fetch(`/infoPolitik/berita/${data}`).then(response => response.json()).then(response => {
+        document.getElementById("update_berita").action = `/infoPolitik/berita/${data}`
+        @auth("web")
+        document.getElementById("update_id_caleg").value = response.id_caleg
+        @endauth
+        document.getElementById("update_judul").value = response.judul
+        document.getElementById("update_isi_berita").value = response.isi_berita
+        document.getElementById("update_tgl_publish").value = response.tgl_publish
+    })
+}</script>
 @endsection

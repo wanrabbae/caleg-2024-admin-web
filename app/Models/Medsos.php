@@ -14,6 +14,8 @@ class Medsos extends Model
 
     protected $guarded = [];
 
-    
+    public function caleg() {
+        return $this->belongsTo(Caleg::class, "id_caleg");
+    }
 
 }
