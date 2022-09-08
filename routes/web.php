@@ -38,8 +38,8 @@ use App\Http\Controllers\WaBlasController;
 
 //  DASHBOARD ROUTES / HOME
 Route::get('/', [DashboardController::class, 'index'])
-    ->name('dashboard');
-
+    ->name('dashboard')
+    ->middleware("auth:web,caleg");
 // AUTH ROUTES
 Route::get('/login', [AuthController::class, 'loginView'])
     ->name('login')
