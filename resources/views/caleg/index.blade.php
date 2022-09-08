@@ -109,7 +109,7 @@
                         </div>
                         <div class="form-group">
                             <label for="no_hp">Phone</label>
-                            <input type="number" class="form-control" name="no_hp" value="{{ old('no_hp') }}" id="no_hp" placeholder="Nomor HP">
+                            <input type="text" class="form-control" name="no_hp" value="{{ old('no_hp') }}" id="no_hp" placeholder="Nomor HP">
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
@@ -190,7 +190,7 @@
                 </div>
                 <div class="form-group">
                     <label for="no_hp">Phone</label>
-                    <input type="number" class="form-control" name="no_hp" id="edit_no_hp" placeholder="Nomor HP">
+                    <input type="text" class="form-control" name="no_hp" id="edit_no_hp" placeholder="Nomor HP">
                 </div>
                 <div class="form-group">
                     <label for="email">Email</label>

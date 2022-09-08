@@ -79,9 +79,13 @@ class DashboardLegislatifController extends Controller
      */
     public function update(Request $request, Legislatif $legislatif)
     {
-        $data = $request->validate([
-            "nama_legislatif" => "required|max:255|unique:legislatif"
-    ]);
+        $rules = [];
+
+        if ($request->nama_legislatif !== $legislatif->nama_legislatif) {
+            $rules["nama_legislatif"] = "required|max:255|unique:legislatif";
+        }
+
+        $data = $request->validate($rules);
 
         if (Legislatif::where("id_legislatif", $legislatif->id_legislatif)->update($data)) {
             return redirect("/dashboard/legislatif")->with("success", "Success Update $legislatif->nama_legislatif");

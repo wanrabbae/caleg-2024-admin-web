@@ -31,7 +31,7 @@
                     @if ($dataArr->count())
                         @foreach($dataArr as $data)
                             <tr>
-                                <td>{{ $data->relawan->id_relawan }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->relawan->nama_relawan }}</td>
                                 <td>{{ $data->relawan->no_hp }}</td>
                                 <td>{{ $data->relawan->email }}</td>
