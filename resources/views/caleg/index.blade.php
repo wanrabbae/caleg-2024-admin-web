@@ -3,12 +3,10 @@
 @section('content')
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-        @auth("web")
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
                 <i class="fas fa-plus"></i>
                 Caleg
             </button>
-        @endauth
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -26,9 +24,7 @@
                             <th>Aktif</th>
                             <th>Username</th>
                             <th>Foto</th>
-                            @auth("web")
                             <th>Action</th>
-                            @endauth
                         </tr>
                     </thead>
                     <tbody>
@@ -44,7 +40,13 @@
                                     <td>{{ $data->email }}</td>
                                     <td>{{ $data->partai->nama_partai }}</td>
                                     <td>
-                                        {{ $data->aktif == "Y" ? "Aktif" : "Nonaktif" }}
+                                        <form action="/caleg/{{ $data->id_caleg }}" method="POST">
+                                            @method("put")
+                                            @csrf
+                                            <button class="btn @if ($data->aktif == 'Y') btn-success @else btn-danger @endif" type="submit" value="{{ $data->aktif }}" name="aktif">
+                                                {{ $data->aktif }}
+                                            </button>
+                                        </form>
                                     </td>
                                     <td>{{ $data->username }}</td>
                                     <td>
@@ -55,7 +57,6 @@
                                             <span>Image Not Found</span>
                                         @endif
                                     </td>
-                                    @auth("web")
                                     <td class="d-flex justify-content-center">
                                         <button class="btn btn-warning mx-3" data-target="#editModal" data-toggle="modal" onclick="getData({{ $data->id_caleg }})">
                                             <i class="fas fa-edit"></i>
@@ -68,7 +69,6 @@
                                             </button>
                                         </form>
                                     </td>
-                                    @endauth
                                 </tr>
                             @endforeach
                         @endif
@@ -127,13 +127,13 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="aktif">Aktif</label>
                             <select class="form-control" name="aktif" id="aktif" value="{{ old('aktif') }}">
                                 <option value="Y">Aktif</option>
                                 <option value="N">Nonaktif</option>
                             </select>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" class="form-control" name="username" value="{{ old('username') }}" id="username" placeholder="Username">
@@ -208,13 +208,13 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="aktif">Aktif</label>
                     <select class="form-control" name="aktif" id="edit_aktif">
                         <option value="Y">Aktif</option>
                         <option value="N">Nonaktif</option>
                     </select>
-                </div>
+                </div> --}}
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" class="form-control" name="username" id="edit_username" placeholder="Username">

@@ -15,6 +15,8 @@ class Caleg extends Model
 
     protected $guarded = [];
 
+    protected $hidden = ["password"];
+
     public function legislatif()
     {
         return $this->belongsTo(Legislatif::class, 'id_legislatif');

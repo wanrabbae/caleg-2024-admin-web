@@ -36,7 +36,8 @@ Route::post("login", [ApiController::class, "login"]);
 Route::get("getKabupaten", [ApiController::class, "getKabupaten"]);
 Route::get("getKecamatan", [ApiController::class, "getKecamatan"]);
 Route::get("getDesa", [ApiController::class, "getDesa"]);
+
 // Diagram Data
-Route::get('/getChart', [DPTController::class, 'getChart']);
+Route::get('/getChart/{id}', [DPTController::class, 'getChart']);
 Route::get("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);
 Route::get("/getChartRelawan", [RelawanController::class, "fetch"]);

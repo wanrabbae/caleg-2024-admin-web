@@ -16,7 +16,7 @@ class TeamController extends Controller
     {
         return view('relawan.index', [
             'title' => 'Halaman Team Relawan',
-            'data' => Relawan::with(['caleg', 'desa.kecamatan'])->where("id_caleg", auth()->user()->id_caleg)->get(),
+            "data" => auth("web")->check() ? Relawan::with(["caleg", "desa"])->get() : Relawan::with(['caleg', 'desa.kecamatan'])->where("id_caleg", auth()->user()->id_caleg)->get(),
             'desa' => Desa::all(['id_desa', 'nama_desa']),
             'caleg' => Caleg::all(['id_caleg', 'nama_caleg']),
         ]);

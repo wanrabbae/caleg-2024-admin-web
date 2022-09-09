@@ -17,12 +17,12 @@ class Survey extends Model
 
     protected $guarded = [];
 
-    public function caleg(){
-        return $this->hasMany(Caleg::class);
+    public function caleg() {
+        return $this->belongsTo(Caleg::class, "id_caleg");
     }
 
-    public function variable(){
-        return $this->hasMany(Variabel::class);
+    public function variable() {
+        return $this->belongsTo(Variabel::class, "id_variabel");
     }
 
 }

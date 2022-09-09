@@ -187,12 +187,13 @@
                 </button>
         </div>
     </form>
-    </div>
+    </div> 
     <script>
 
         anychart.onDocumentReady(function () {
             // create data set on our data
-            fetch("{{ asset('api/getChart') }}").then(resp => resp.json()).then(resp => {
+            fetch("{{ asset('api/getChart/') }}").then(resp => resp.text()).then(resp => {
+                console.log(resp)
             if (resp.length > 0) {
             document.getElementsByClassName("spinner-border")[0].style.display = "none";
             var dataSet = anychart.data.set(resp);

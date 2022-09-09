@@ -52,7 +52,7 @@ class CalegController extends Controller
             "no_hp" => "required|max:20|min:10|unique:caleg",
             "email" => "required|email:dns|max:100|unique:caleg",
             "id_partai" => "required",
-            "aktif" => "required",
+            //"aktif" => "required",
             "username" => "required|unique:caleg|max:30",
             "password" => "required|min:4",
             "foto" => "required|file|image|max:5120"
@@ -99,13 +99,20 @@ class CalegController extends Controller
      */
     public function update(Request $request, Caleg $caleg)
     {
+        if ($request->aktif) {
+            if (Caleg::where("id_caleg", $caleg->id_caleg)->update(["aktif" => $request->aktif == "Y" ? "N" : "Y"])) {
+                return back()->with("success", "Success Update Aktif Status");
+            }
+            return back()->with("error", "Error, Can't Update Aktif status");
+        }
+
         $rules = [
             "nama_caleg" => "required|max:255",
             "nama_lengkap" => "required|max:255",
             "id_legislatif" => "required",
             "alamat" => "required|max:255",
             "id_partai" => "required",
-            "aktif" => "required",
+            //"aktif" => "required",
             "foto" => "file|image|max:5120"
         ];
 

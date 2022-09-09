@@ -92,7 +92,7 @@
                     <label for="tgl_publish" class="form-label">Tanggal Publish</label>
                     <input type="date" name="tgl_publish" id="tgl_publish" class="form-control">
                 </div>
-                @if (auth("web")->check())
+                @auth("web")
                 <div class="form-group">
                     <label for="id_caleg" class="form-label" >Caleg</label>
                     <select class="form-select form-control" name="id_caleg" id="id_caleg">
@@ -105,7 +105,7 @@
                         @endforeach
                       </select>
                 </div>
-                @endif
+                @endauth
                 <div class="form-group">
                     <label for="gambar" class="form-label">Gambar</label>
                     <input type="file" name="gambar" id="gambar" class="form-control-file">

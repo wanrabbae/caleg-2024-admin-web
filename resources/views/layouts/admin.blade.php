@@ -57,6 +57,7 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
+            @auth("web")
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCaleg" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-tie"></i>
@@ -71,7 +72,7 @@
                     </div>
                 </div>
             </li>
-
+            @endauth
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-th-large"></i>
@@ -79,14 +80,16 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/legislatif") }}">
-                            <i class="fas fa-gavel"></i>
-                            <span>Legislatif</span>
-                        </a>
-                        <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/partai") }}">
-                            <i class="fas fa-university"></i>
-                            <span>Partai</span>
-                        </a>
+                        @auth("web")
+                            <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/legislatif") }}">
+                                <i class="fas fa-gavel"></i>
+                                <span>Legislatif</span>
+                            </a>
+                            <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/partai") }}">
+                                <i class="fas fa-university"></i>
+                                <span>Partai</span>
+                            </a>
+                        @endauth
                         <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/medsos") }}"><i class="fas fa-hashtag"></i>
                         <span>Medsos</span>
                         </a>

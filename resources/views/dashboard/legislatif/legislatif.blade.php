@@ -4,13 +4,11 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-    @auth("web")
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
                 <i class="fas fa-plus"></i>
                 Legislatif
             </button>
-    @endauth
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -19,9 +17,7 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Legislatif</th>
-                        @auth("web")
                         <th>Action</th>
-                        @endauth
                     </tr>
                 </thead>
                 <tbody>
@@ -30,7 +26,6 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->nama_legislatif }}</td>
-                                @auth("web")
                                 <td class="d-flex justify-content-center">
                                     <button class="btn btn-warning mx-3" onclick="getData({{ $data->id_legislatif }})" data-toggle="modal" data-target="#editModal">
                                         <i class="fas fa-edit"></i>
@@ -43,7 +38,6 @@
                                         </button>
                                     </form>
                                 </td>
-                                @endauth
                             </tr>
                         @endforeach
                     @endif
