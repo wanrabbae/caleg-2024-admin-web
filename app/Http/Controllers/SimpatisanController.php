@@ -11,7 +11,7 @@ class SimpatisanController extends Controller
     public function index()
     {
         return view('rekap.simpatisan', [
-            'program' => Program::all(),
+            "program" => auth("web")->check() ? Program::all() : Program::where("id_caleg", auth()->user()->id_caleg)->get(),
             'title' => 'Program'
         ]);
     }
@@ -23,14 +23,18 @@ class SimpatisanController extends Controller
 
     public function store(Request $request)
     {
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         $data = $request->validate([
             "judul_program" => "required|max:255",
+            "id_caleg" => "required",
             "deskripsi" => "required",
             "foto" => "image|max:2048|required"
         ]);
 
         $data["foto"] = $request->file("foto")->store("/image");
-        $data["id_caleg"] = auth()->user()->id_users;
 
         if (Program::create($data)) {
             return back()->with("success", "Success Create New Program");
@@ -52,10 +56,16 @@ class SimpatisanController extends Controller
     public function update(Request $request, $id)
     {
         $program = Program::find($id);
+
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         $rules = [
             "deskripsi" => "required",
-            "foto" => "image|max:2048"
-        ];
+            "foto" => "image|max:2048",
+            "id_caleg" => "required"
+        ];  
 
         if ($request->judul_program !== $program->judul_program) {
             $rules["judul_program"] = "required";

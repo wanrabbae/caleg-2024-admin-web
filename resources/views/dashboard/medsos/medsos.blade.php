@@ -75,6 +75,7 @@
                   <label for="medsos">Nama Medsos</label>
                   <input type="text" class="form-control" id="medsos" placeholder="Nama Medsos" name="nama_medsos">
                 </div>
+                @auth("web")
                 <div class="form-group">
                   <label for="id_caleg">Pilih Caleg</label>
                     <select class="form-control" name="id_caleg" id="id_caleg">
@@ -83,6 +84,7 @@
                       @endforeach
                   </select>
                 </div>
+                @endauth
                 <div class="form-group">
                     <label for="logo">Logo</label>
                     <input type="file" class="form-control-file" id="logo" name="logo">

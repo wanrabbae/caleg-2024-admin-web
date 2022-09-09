@@ -16,6 +16,9 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            @auth("web")
+                            <th>Caleg</th>
+                            @endauth
                             <th>Judul Program</th>
                             <th>Deskripsi</th>
                             <th>Gambar</th>
@@ -24,10 +27,12 @@
                     </thead>
                     <tbody>
                         @if ($program->count())
-                            <?php $i = 1; ?>
                             @foreach ($program as $data)
                                 <tr>
-                                    <td>{{ $i++ }}</td>
+                                    <td>{{ $loop->iteration }}</td>
+                                    @auth("web")
+                                    <td>{{ $data->caleg->nama_caleg }}</td>
+                                    @endauth
                                     <td>{{ $data->judul_program }}</td>
                                     <td>{{ $data->deskripsi }}</td>
                                     <td>
@@ -76,6 +81,16 @@
                             <label for="judul_program">Judul Program</label>
                             <input type="text" class="form-control" id="judul_program" placeholder="Nama Program" name="judul_program">
                         </div>
+                        @auth("web")
+                        <div class="form-group">
+                        <label for="id_caleg">Pilih Caleg</label>
+                            <select class="form-control" name="id_caleg" id="id_caleg">
+                            @foreach ($caleg as $item)
+                                <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                            @endforeach
+                        </select>
+                        </div>
+                        @endauth
                         <div class="form-group">
                             <label for="deskripsi">Deskripsi Program</label>
                             <textarea name="deskripsi" id="deskripsi" class="form-control" cols="30" rows="5" style="resize: none"></textarea>
@@ -114,6 +129,16 @@
                             <label for="edit_judul_program">Judul Program</label>
                             <input type="text" class="form-control" id="edit_judul_program" placeholder="Nama Program" name="judul_program">
                         </div>
+                        @auth("web")
+                        <div class="form-group">
+                        <label for="id_caleg">Pilih Caleg</label>
+                            <select class="form-control" name="id_caleg" id="id_caleg">
+                            @foreach ($caleg as $item)
+                                <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                            @endforeach
+                        </select>
+                        </div>
+                        @endauth
                         <div class="form-group">
                             <label for="edt_deskripsi">Deskripsi Program</label>
                             <textarea name="deskripsi" id="edit_deskripsi" class="form-control" cols="30" rows="5"></textarea>
