@@ -25,7 +25,12 @@
 <script>
     anychart.onDocumentReady(function () {
          // create data set on our data
-         fetch("{{ asset('api/getChartRelawan') }}").then(resp => resp.json()).then(resp => {
+         @if (auth("web")->check())
+            fetch("{{ asset('api/getChartRelawan/0') }}").then(resp => resp.json()).then(resp => {
+        @else
+            fetch("{{ asset('api/getChartRelawan/' . auth()->user()->id_caleg) }}").then(resp => resp.json()).then(resp => {
+          //fetch("{{ asset("api/getChartDesa/" . auth()->user()->id_caleg) }}").then(resp => resp.json()).then(resp => {
+        @endif
             if (resp.length > 0) {
             document.getElementsByClassName("spinner-border")[0].style.display = "none";
             var dataSet = anychart.data.set(resp);

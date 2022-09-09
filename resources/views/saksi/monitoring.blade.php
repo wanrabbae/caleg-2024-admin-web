@@ -34,15 +34,15 @@
             <thead>
               <tr>
                 <th>No</th>
-                @if (request("table") == "desa")
-                <th>Penanggung Jawab</th>
-                <th>Desa</th>
+                @auth("web")
                 <th>Caleg</th>
                 <th>Partai</th>
+                @endauth
+                @if (request("table") == "desa")
+                <th>Desa</th>
                 @endif
                 @if (request("table") == "kecamatan")
                 <th>Kecamatan</th>
-                <th>Penanggung Jawab</th>
                 @elseif (request("table") == "kabupaten")
                 <th>Kabupaten</th>
                 @endif
@@ -56,8 +56,10 @@
                   <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $data->desa->nama_desa }}</td>
+                    @auth("web")
                     <td>{{ $data->caleg->nama_caleg }}</td>
                     <td>{{ $data->partai->nama_partai }}</td>
+                    @endauth
                     <td>{{ $data->suara_2024 }}</td>
                     <td>{{ $data->suara_2019 }}</td>
                   </tr>
@@ -95,7 +97,11 @@
       anychart.onDocumentReady(function () {
           // create data set on our data
           @if (request("table") == "desa")
-          fetch("{{ asset('api/getChartDesa') }}").then(resp => resp.json()).then(resp => {
+          @if (auth("web")->check())
+          fetch("{{ asset('api/getChartDesa/0') }}").then(resp => resp.json()).then(resp => {
+          @else
+          fetch("{{ asset("api/getChartDesa/" . auth()->user()->id_caleg) }}").then(resp => resp.json()).then(resp => {
+          @endif
           if (resp.length > 0) {
           document.getElementsByClassName("spinner-border")[0].style.display = "none";
           var dataSet = anychart.data.set(resp);

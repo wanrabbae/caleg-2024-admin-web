@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Monitoring_Saksi;
 use Illuminate\Support\Facades\DB;
+use App\Models\Relawan;
 use Illuminate\Http\Request;
 
 class SaksiMonitoringController extends Controller
@@ -16,11 +17,12 @@ class SaksiMonitoringController extends Controller
     public function index()
     {
         if (request("table") == "desa") {
-            $data = Monitoring_Saksi::with(["desa", "caleg", "partai"])->get();
+            $data = auth("web")->check() ? Monitoring_Saksi::with(["desa", "caleg", "partai"])->get() : Monitoring_Saksi::with(["desa", "caleg", "partai"])->where("id_caleg", auth()->user()->id_caleg)->get();
         }
         
         if (request("table") == "kecamatan") {
-            $arr = Monitoring_Saksi::with("desa.kecamatan")->get();
+            //$arr = Monitoring_Saksi::with("desa.kecamatan")->get();
+            $arr = auth("web")->check() ? Monitoring_Saksi::with(["desa", "caleg", "partai"])->get() : Monitoring_Saksi::with(["desa"])->where("id_caleg", auth()->user()->id_caleg)->get();
             $data = [];
             $found = true;
 
@@ -42,7 +44,8 @@ class SaksiMonitoringController extends Controller
         }
 
         if (request("table") == "kabupaten") {
-            $arr = Monitoring_Saksi::with("desa.kecamatan.kabupaten")->get();
+            //$arr = Monitoring_Saksi::with("desa.kecamatan.kabupaten")->get();
+            $arr = auth("web")->check() ? Monitoring_Saksi::with(["desa", "caleg", "partai"])->get() : Monitoring_Saksi::with(["desa"])->where("id_caleg", auth()->user()->id_caleg)->get();
             $data = [];
             $found = true;
 
@@ -65,7 +68,7 @@ class SaksiMonitoringController extends Controller
 
         return view("saksi.monitoring", [
             "title" => "Monitoring Suara",
-            "dataArr" => $data
+            "dataArr" => $data,
     ]);
     }
 
@@ -136,8 +139,9 @@ class SaksiMonitoringController extends Controller
     }
 
 
-    public function fetch() {
-        $desa = Monitoring_Saksi::with("desa.kecamatan")->get();
+    public function fetch($id) {
+        //$desa = Monitoring_Saksi::with("desa.kecamatan")->get()
+        $desa = $id == 0 ? Monitoring_Saksi::with("desa.kecamatan")->get() : Monitoring_Saksi::with("desa.kecamatan")->where("id_caleg", $id)->get();
         $myArr = [];
         $found = true;
 

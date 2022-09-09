@@ -95,8 +95,7 @@ class DptController extends Controller
 
     public function getChart($id)
     {
-        return $id;
-        $pemilih = Rk_pemilih::with("desa.kecamatan")->get();
+        $pemilih = $id == 0 ? Rk_pemilih::with("desa.kecamatan")->get() : Rk_pemilih::with("desa.kecamatan")->where("id_caleg", $id)->get();
         $myArr = [];
         $found = true;
 

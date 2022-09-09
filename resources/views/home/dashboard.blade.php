@@ -192,8 +192,11 @@
 
         anychart.onDocumentReady(function () {
             // create data set on our data
-            fetch("{{ asset('api/getChart/') }}").then(resp => resp.text()).then(resp => {
-                console.log(resp)
+            @if (auth("web")->check())
+              fetch("{{ asset('api/getChart/0') }}").then(resp => resp.json()).then(resp => {
+            @else
+              fetch("{{ asset("api/getChart/" . auth()->user()->id_caleg) }}").then(resp => resp.json()).then(resp => {
+            @endif
             if (resp.length > 0) {
             document.getElementsByClassName("spinner-border")[0].style.display = "none";
             var dataSet = anychart.data.set(resp);

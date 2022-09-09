@@ -29,6 +29,9 @@ class TeamController extends Controller
 
     public function store(Request $request)
     {
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
         $data = $request->validate([
             "nik" => "required|unique:relawan",
             "nama_relawan" => "required|max:255",
@@ -38,8 +41,8 @@ class TeamController extends Controller
             "loyalis" => "required",
             "status" => "required",
             "no_hp" => "required|min:11",
-            "email" => "required|email:dns|max:255|unique:relawan",
-            "username" => "required|max:255|unique:relawan",
+            "email" => "required|email:dns|max:255|unique:relawan,id_caleg",
+            "username" => "required|max:255|unique:relawan,id_caleg",
             "password" => "required|max:255|min:3",
             "foto_ktp" => "image|max:2048|required"
         ]);
@@ -67,6 +70,10 @@ class TeamController extends Controller
     public function update(Request $request, $id)
     {
         $relawan = Relawan::with("desa.kecamatan")->find($id);
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         if ($request->has('loyalis')) {
             if ($request->loyalis == $relawan->loyalis) {
                 return back()->with("success", "Tidak ada yang diubah");
