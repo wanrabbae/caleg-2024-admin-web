@@ -83,7 +83,7 @@ class SaksiMonitoringController extends Controller
         }
 
         if (request("table") == "kabupaten") {
-            $arr = auth("web")->check() ? Rk_pemilih::with(["desa.kecamatan.kabupaten", "caleg", "partai"])->get() : Rk_pemilih::with(["desa.kecamatan.kabupaten"])->where("id_caleg", auth()->user()->id_caleg)->get();
+            $arr = auth("web")->check() ? Rk_pemilih::with(["desa.kecamatan.kabupaten", "caleg"])->get() : Rk_pemilih::with(["desa.kecamatan.kabupaten"])->where("id_caleg", auth()->user()->id_caleg)->get();
             $data = [];
             $found = true;
 
