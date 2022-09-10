@@ -68,8 +68,8 @@ Route::resource('/infoPolitik/berita', BeritaController::class)
     ->parameters(['berita' => 'berita'])
     ->middleware('auth:web,caleg');
 
-Route::get('/infoPolitik/berita/publish/{id}/{aktif}', [BeritaController::class, 'publish']);
-Route::get('/infoPolitik/berita/unpublish/{id}/{aktif}', [BeritaController::class, 'unpublish']);
+Route::get('/infoPolitik/berita/publish/{id}/{aktif}', [BeritaController::class, 'publish'])->middleware("auth:web,caleg");
+Route::get('/infoPolitik/berita/unpublish/{id}/{aktif}', [BeritaController::class, 'unpublish'])->middleware("auth:web,caleg");
 
 //Survey Routes
 Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware('auth:web,caleg');

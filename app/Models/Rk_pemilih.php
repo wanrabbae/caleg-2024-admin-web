@@ -25,5 +25,4 @@ class Rk_pemilih extends Model
     public function caleg() {
         return $this->belongsTo(Caleg::class, 'id_caleg');
     }
-    
 }

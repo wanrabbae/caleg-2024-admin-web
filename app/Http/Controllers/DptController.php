@@ -6,6 +6,7 @@ use App\Models\Desa;
 use App\Models\Caleg;
 use App\Models\Rk_pemilih;
 use App\Models\Rk_pemilih_2;
+use App\Models\Monitoring_Saksi;
 use App\Models\User;
 use App\Models\Kecamatan;
 use Illuminate\Http\Request;
@@ -34,12 +35,11 @@ class DptController extends Controller
         }
 
         $data = $request->validate([
-            'nik' => 'required|max:100|unique:rk_pemilih',
+            'nik' => 'required|max:100|unique:rk_pemilih,id_caleg',
             "id_caleg" => "required",
             'nama' => 'required|max:100',
             'tempat_lahir' => 'required|max:50',
             'tgl_lahir' => 'required|date',
-            // 'tgl_data' => 'required|date|after_or_equal:today',
             'jk' => 'required|max:10',
             'tps' => 'required|integer',
             'id_desa' => 'required|max:4',
@@ -65,7 +65,6 @@ class DptController extends Controller
             'nama' => 'required|max:100',
             'tempat_lahir' => 'required|max:50',
             'tgl_lahir' => 'required|date',
-            // 'tgl_data' => 'required|date|after_or_equal:today',
             'jk' => 'required|max:10',
             'tps' => 'required|integer',
             'id_desa' => 'required|max:4',
@@ -75,7 +74,7 @@ class DptController extends Controller
     ];
 
         if ($request->nik !== $pemilih->nik) {
-            $rules["nik"] = "required|unique:rk_pemilih";
+            $rules["nik"] = "required|unique:rk_pemilih,id_caleg";
         }
 
         $data = $request->validate($rules);

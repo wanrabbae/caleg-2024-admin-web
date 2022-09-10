@@ -34,10 +34,10 @@
             <thead>
               <tr>
                 <th>No</th>
-                @auth("web")
+                {{-- @auth("web")
                 <th>Caleg</th>
                 <th>Partai</th>
-                @endauth
+                @endauth --}}
                 @if (request("table") == "desa")
                 <th>Desa</th>
                 @endif
@@ -55,13 +55,16 @@
               @foreach ($dataArr as $data)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $data->desa->nama_desa }}</td>
-                    @auth("web")
+                    {{-- @auth("web")
                     <td>{{ $data->caleg->nama_caleg }}</td>
-                    <td>{{ $data->partai->nama_partai }}</td>
-                    @endauth
+                    <td>{{ $data->caleg->partai->nama_partai }}</td>
+                    @endauth --}}
+                    {{-- <td>{{ $data->desa->nama_desa }}</td>
                     <td>{{ $data->suara_2024 }}</td>
-                    <td>{{ $data->suara_2019 }}</td>
+                    <td>{{ $data->suara_2019 }}</td> --}}
+                    <td>{{ $data[0] }}</td>
+                    <td>{{ $data[1] }}</td>
+                    <td>{{ $data[2] }}</td>
                   </tr>
               @endforeach
               @endif
@@ -69,6 +72,10 @@
               @foreach ($dataArr as $data)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
+                    {{-- @auth("web")
+                    <td>{{ $data->caleg->nama_caleg }}</td>
+                    <td>{{ $data->caleg->partai->nama_partai }}</td>
+                    @endauth --}}
                     <td>{{ $data[0] }}</td>
                     <td>{{ $data[1] }}</td>
                     <td>{{ $data[2] }}</td>
@@ -79,6 +86,10 @@
               @foreach ($dataArr as $data)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
+                    {{-- @auth("web")
+                    <td>{{ $data->caleg->nama_caleg }}</td>
+                    <td>{{ $data->caleg->partai->nama_partai }}</td>
+                    @endauth --}}
                     <td>{{ $data[0] }}</td>
                     <td>{{ $data[1] }}</td>
                     <td>{{ $data[2] }}</td>
