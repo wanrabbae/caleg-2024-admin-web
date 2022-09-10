@@ -20,7 +20,7 @@
 
 </head>
 
-<body style="background-image: url({{ asset('images/bg_login.jpg') }}); background-position: center;
+<body style="background-image: url({{ asset('images/bg_login.png') }}); background-position: center;
 background-repeat: no-repeat;
 background-size: cover;">
 

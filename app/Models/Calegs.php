@@ -77,4 +77,9 @@ class Calegs extends Authenticatable
         return $this->hasMany(Survey::class);
     }
 
+    public function getRememberTokenName()
+    {
+        return 'id_session';
+    }
+
 }
