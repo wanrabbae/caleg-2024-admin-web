@@ -16,4 +16,8 @@ class Daftar_Saksi extends Model
     public function relawan() {
         return $this->belongsTo(Relawan::class, "nik", "nik");
     }
+
+    public function caleg() {
+        return $this->belongsTo(Caleg::class, "id_caleg");
+    }
 }

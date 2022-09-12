@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Caleg;
+use App\Models\Desa;
 use App\Models\Galery;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
 use App\Models\Program;
 use App\Models\Survey;
 use App\Models\User;
@@ -227,44 +230,23 @@ class ApiController extends Controller
 
     public function register(Request $request)
     {
-        try {
-            if ($request->status == "anggota") {
-                $ktp = $request->ktp;
-                $selfie = $request->selfie;
+        User::insert([
+            "username" => $request->username,
+            "password" => Hash::make($request->password),
+            "nik" => $request->nik,
+            "jabatan" => 1,
+            "no_hp" => $request->no_hp,
+            "email" => $request->email,
+            "upline" => 1,
+            "id_desa" => 1,
+            "id_caleg" => 2,
+            "status" => 1,
+            "nama_relawan" => $request->nama_relawan,
+            "loyalis" => 1,
+            "blokir" => "N",
+        ]);
 
-                $rename1 = time() . rand(11111, 99999) . '.' . $ktp->extension();
-                $rename2 = time() . rand(11111, 99999) . '.' . $selfie->extension();
-
-                $ktp->move('foto_ktp', $rename1);
-                $selfie->move('foto_selfie', $rename2);
-
-                User::insert([
-                    "nik" => $request->nik,
-                    "nama" => $request->nama,
-                    "no_hp" => $request->no_hp,
-                    "email" => $request->email,
-                    "ktp" => $rename1,
-                    "selfie" => $rename2,
-                ]);
-            } else {
-                $ktp = $request->ktp;
-
-                $rename1 = time() . rand(11111, 99999) . '.' . $ktp->extension();
-
-                $ktp->move('foto_ktp', $rename1);
-
-                User::insert([
-                    "nama" => $request->nama,
-                    "no_hp" => $request->no_hp,
-                    "email" => $request->email,
-                    "bidang" => $request->bidang,
-                    "ktp" =>  $rename1,
-                ]);
-            }
-            return response()->json(['message' => 'berhasil']);
-        } catch (\Throwable $th) {
-            return response()->json(['message' => 'gagal']);
-        }
+        return response()->json(['message' => 'berhasil']);
     }
 
     public function login(Request $request)
@@ -303,5 +285,26 @@ class ApiController extends Controller
         ])->orderBy('id_survey', 'DESC')->get();
 
         return response()->json(['survey' => $survey]);
+    }
+
+    public function getKabupaten()
+    {
+        $kabupaten = Kabupaten::orderBy('id_kabupaten', 'DESC')->get();
+
+        return response()->json(['kabupaten' => $kabupaten]);
+    }
+
+    public function getKecamatan(request $request)
+    {
+        $kecamatan = Kecamatan::where('id_kabupaten', $request->id_kabupaten)->get();
+
+        return response()->json(['kecamatan' => $kecamatan]);
+    }
+
+    public function getDesa(request $request)
+    {
+        $desa = Desa::where('id_kecamatan', $request->id_kecamatan)->get();
+
+        return response()->json(['desa' => $desa]);
     }
 }

@@ -27,7 +27,7 @@
                     @if ($dataArr->count())
                         @foreach($dataArr as $data)
                             <tr>
-                                <td>{{ $data->id_agenda }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->tanggal }}</td>
                                 <td>{{ $data->jam }}</td>
                                 <td>{{ $data->nama_agenda }}</td>

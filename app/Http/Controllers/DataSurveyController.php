@@ -18,9 +18,9 @@ class DataSurveyController extends Controller
     {
         return view('data.survey', [
             'title' => 'Data Survey Page',
-            'data' => Survey::all(),
+            'data' => auth("web")->check() ? Survey::with("caleg", "variable")->get() : Survey::with("caleg", "variable")->where("id_caleg", auth()->user()->id_caleg)->get(),
             'caleg' => Caleg::all(),
-            'variabel' => Variabel::all()
+            'variabel' => auth("web")->check() ? Variabel::all() : Variabel::where("id_caleg", auth()->user()->id_caleg)->get(),
         ]);
     }
 
@@ -42,8 +42,12 @@ class DataSurveyController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         $data =  $request->validate([
-            'nama_survey' => 'required|unique:survey',
+            'nama_survey' => 'required',
             'mulai_tanggal' => 'required|date',
             'sampai_tanggal' => 'required|date',
             'id_caleg' => 'required',
@@ -87,10 +91,14 @@ class DataSurveyController extends Controller
      */
     public function update(Request $request,$id_survey )
     {
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         $data = $request->validate([
-            'nama_survey' => 'unique:survey',
-            'mulai_tanggal' => 'date',
-            'sampai_tanggal' => 'date',
+            'nama_survey' => 'required',
+            'mulai_tanggal' => 'required|date',
+            'sampai_tanggal' => 'required|date',
             'id_caleg' => 'required',
             'id_variabel' => 'required'
         ]);

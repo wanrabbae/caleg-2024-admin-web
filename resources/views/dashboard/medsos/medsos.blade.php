@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 
 @section("content")
-
 <div class="card shadow mb-4">
     <div class="card-header py-3">
             <!-- Button trigger modal -->
@@ -18,6 +17,7 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Medsos</th>
+                        <th>Caleg</th>
                         <th>Logo</th>
                         <th>Action</th>
                     </tr>
@@ -26,11 +26,12 @@
                     @if ($dataArr->count())
                         @foreach($dataArr as $data)
                             <tr>
-                                <td>{{ $data->id_medsos }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->nama_medsos }}</td>
+                                <td>{{ $data->caleg->nama_caleg }}</td>
                                 <td>
                                     @if (Storage::exists($data->logo))
-                                    <img src="{{ asset('storage/' . $data->logo) }}" alt="" style="width: 200px">
+                                    <img src="{{ asset('storage/' . $data->logo) }}" alt="" class="mx-auto d-block" style="width: 75px">
                                     @else
                                     <i class="fas fa-image"></i>
                                     <span>Image Not Found</span>
@@ -74,6 +75,16 @@
                   <label for="medsos">Nama Medsos</label>
                   <input type="text" class="form-control" id="medsos" placeholder="Nama Medsos" name="nama_medsos">
                 </div>
+                @auth("web")
+                <div class="form-group">
+                  <label for="id_caleg">Pilih Caleg</label>
+                    <select class="form-control" name="id_caleg" id="id_caleg">
+                      @foreach ($caleg as $item)
+                          <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                      @endforeach
+                  </select>
+                </div>
+                @endauth
                 <div class="form-group">
                     <label for="logo">Logo</label>
                     <input type="file" class="form-control-file" id="logo" name="logo">
@@ -95,7 +106,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Edit Partai</h5>
+          <h5 class="modal-title" id="editModalLabel">Edit Medsos</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -107,6 +118,14 @@
                 <div class="form-group">
                     <label for="nama_partai">Nama Medsos</label>
                     <input type="text" class="form-control edit" id="edit_nama_medsos" placeholder="Nama Partai" name="nama_medsos">
+                </div>
+                <div class="form-group">
+                  <label for="id_caleg">Pilih Caleg</label>
+                    <select class="form-control" name="id_caleg" id="edit_id_caleg">
+                      @foreach ($caleg as $item)
+                          <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                      @endforeach
+                  </select>
                 </div>
                 <div class="form-group">
                     <label for="logo">Logo</label>
@@ -129,9 +148,10 @@
         fetch(`/dashboard/medsos/${data}`).then(resp => resp.json()).then(resp => 
         {
             document.getElementById("edit_form").action = `/dashboard/medsos/${data}`
-            for (let x in resp) {
-                document.getElementById(`edit_${x}`).value = resp[x];
-            }
+                document.getElementById(`edit_nama_medsos`).value = resp.nama_medsos;
+                @auth("web")
+                document.getElementById(`edit_id_caleg`).value = resp.id_caleg;
+                @endauth
         })
     }
   </script>

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Caleg;
 use App\Models\Variabel;
 use Illuminate\Http\Request;
 
@@ -15,8 +15,9 @@ class VariableController extends Controller
     public function index()
     {
         return view('data.variable', [
-            'title' => 'Hasil Survey Page',
-            'data' => Variabel::all()
+            'title' => 'Variable Survey Page',
+            "caleg" => Caleg::all(),
+            'data' => auth("web")->check() ? Variabel::all() : Variabel::where("id_caleg", auth()->user()->id_caleg)->get()
         ]);
     }
 
@@ -38,8 +39,14 @@ class VariableController extends Controller
      */
     public function store(Request $request)
     {
+
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         $rule = [
             'nama_variabel' => 'required|unique:variabel',
+            "id_caleg" => "required"
         ];
 
         $data = $request->validate($rule);
@@ -82,8 +89,12 @@ class VariableController extends Controller
      */
     public function update(Request $request, Variabel $variabel,$id_variabel )
     {
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
        $rule = [
-        'nama_variabel' => 'required'
+        'nama_variabel' => 'required|unique:variabel'
        ];
 
        $data = $request->validate($rule);

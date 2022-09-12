@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CalegController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
@@ -10,7 +11,7 @@ use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\DashboardMedsosController;
 use App\Http\Controllers\DataSurveyController;
 use App\Http\Controllers\DPTController;
-use App\Http\Controllers\RekapitulasiController;
+// use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\VariableController;
 use App\Http\Controllers\SaksiDaftarController;
@@ -38,8 +39,7 @@ use App\Http\Controllers\WaBlasController;
 //  DASHBOARD ROUTES / HOME
 Route::get('/', [DashboardController::class, 'index'])
     ->name('dashboard')
-    ->middleware('auth');
-
+    ->middleware("auth:web,caleg");
 // AUTH ROUTES
 Route::get('/login', [AuthController::class, 'loginView'])
     ->name('login')
@@ -49,48 +49,42 @@ Route::post('/register-action', [AuthController::class, 'registerAction'])->name
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::get('/logout', [AuthController::class, 'logout'])
     ->name('logout')
-    ->middleware('auth');
-Route::post('/update', [AuthController::class, 'update'])->middleware('auth');
+    ->middleware('auth:web,caleg');
+Route::post('/update', [AuthController::class, 'update'])->middleware('auth:web,caleg');
 
-// Route::get('/', ['middleware' => 'auth', 'uses' => 'DashboardController@index']);
+// Caleg Routes
+Route::resource('/caleg', CalegController::class)->middleware('auth:web,caleg');
 
 //Dashboard Routes
-Route::resource('/dashboard/legislatif', DashboardLegislatifController::class)->middleware('auth');
-Route::resource('/dashboard/partai', DashboardPartaiController::class)->middleware('auth');
+Route::resource('/dashboard/legislatif', DashboardLegislatifController::class)->middleware('auth:web,caleg');
+Route::resource('/dashboard/partai', DashboardPartaiController::class)->middleware('auth:web,caleg');
 Route::resource('/dashboard/medsos', DashboardMedsosController::class)
     ->parameters(['medsos' => 'medsos'])
-    ->middleware('auth');
+    ->middleware('auth:web,caleg');
 
 //Info Politik Routes
-Route::resource('/infoPolitik/daftarIsu', DaftarIsuController::class)->middleware('auth');
-Route::resource('/infoPolitik/rekapitulasi', RekapitulasiController::class)->middleware('auth');
-// Route::put("/infoPolitik/berita/{id_news}", [BeritaController::class, "update"])->middleware("auth");
+Route::resource('/infoPolitik/daftarIsu', DaftarIsuController::class)->middleware('auth:web,caleg');
 Route::resource('/infoPolitik/berita', BeritaController::class)
     ->parameters(['berita' => 'berita'])
-    ->middleware('auth');
+    ->middleware('auth:web,caleg');
 
-Route::get('/infoPolitik/berita/publish/{id}/{aktif}', [BeritaController::class, 'publish']);
-Route::get('/infoPolitik/berita/unpublish/{id}/{aktif}', [BeritaController::class, 'unpublish']);
+Route::get('/infoPolitik/berita/publish/{id}/{aktif}', [BeritaController::class, 'publish'])->middleware("auth:web,caleg");
+Route::get('/infoPolitik/berita/unpublish/{id}/{aktif}', [BeritaController::class, 'unpublish'])->middleware("auth:web,caleg");
 
 //Survey Routes
-Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware('auth');
-Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth');
+Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware('auth:web,caleg');
+Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth:web,caleg');
 
 //Data Saksi Routes
-Route::get('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'show'])->middleware('auth');
-Route::put('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'update'])->middleware('auth');
-Route::delete('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'destroy'])->middleware('auth');
-Route::resource('/saksi/daftar', SaksiDaftarController::class)->middleware('auth');
-Route::resource('/saksi/monitoring', SaksiMonitoringController::class)->middleware('auth');
-
-// Route::get('/infoPolitik/berita/publish/{news:id_news}/{aktif}', function() {
-
-// });
-// Route::get('');
+Route::get('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'show'])->middleware('auth:web,caleg');
+Route::put('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'update'])->middleware('auth:web,caleg');
+Route::delete('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'destroy'])->middleware('auth:web,caleg');
+Route::resource('/saksi/daftar', SaksiDaftarController::class)->middleware('auth:web,caleg');
+Route::resource('/saksi/monitoring', SaksiMonitoringController::class)->middleware('auth:web,caleg');
 
 // RELAWAN ROUTES (KALO CONFLICT SAMA ROUTE LAIN, BISA TARO INI DI PALING BAWAH)
 Route::prefix('/team')
-    ->middleware('auth')
+    ->middleware('auth:web,caleg')
     ->group(function () {
         Route::get('/', [TeamController::class, 'index'])->name('team');
         Route::post('/', [TeamController::class, 'store'])->name('team-store');
@@ -102,7 +96,7 @@ Route::prefix('/team')
 
 // ROUTES REKAP DATA SIMPATISAN
 Route::prefix('/program')
-    ->middleware('auth')
+    ->middleware('auth:web,caleg')
     ->group(function () {
         Route::get('/', [SimpatisanController::class, 'index'])->name('simpatisan');
         Route::post('/', [SimpatisanController::class, 'store'])->name('simpatisan-store');
@@ -111,16 +105,8 @@ Route::prefix('/program')
         Route::delete('/{id}', [SimpatisanController::class, 'delete'])->name('simpatisan-delete');
     });
 
-// ROUTES REKAP DATA DPT / PEMILIH
-// Route::prefix('/pemilih')->middleware('auth')->group(function () {
-//     Route::get('/', [DptController::class, 'index'])->name('pemilih');
-//     Route::post('/', [DptController::class, 'store'])->name('pemilih-store');
-//     Route::get('/{id}', [DptController::class, 'show'])->name('pemilih-show');
-//     Route::put('/{id}', [DptController::class, 'update'])->name('pemilih-update');
-//     Route::delete('/{id}', [DptController::class, 'delete'])->name('pemilih-delete');
-// });
 Route::prefix('dpt')
-    ->middleware('auth')
+    ->middleware('auth:web,caleg')
     ->group(function () {
         Route::get('/', [DPTController::class, 'index'])->name('dpt');
         Route::post('/', [DPTController::class, 'store'])->name('dpt-store');
@@ -130,32 +116,14 @@ Route::prefix('dpt')
         Route::delete('/{id}', [DPTController::class, 'delete'])->name('dpt-delete');
     });
 
-// // ROUTES REKAP DATA DPT MANUAL
-// Route::prefix('/agenda')->middleware('auth')->group(function () {
-//     Route::get('/', [DptManualController::class, 'index'])->name('agenda');
-//     Route::post('/', [DptManualController::class, 'store'])->name('agenda-store');
-//     Route::get('/{id}', [DptManualController::class, 'show'])->name('agenda-show');
-//     Route::put('/{id}', [DptManualController::class, 'update'])->name('agenda-update');
-//     Route::delete('/{id}', [DptManualController::class, 'delete'])->name('agenda-delete');
-// });
-
-// ROUTES REKAP DATA TABULASI SUARA
-// Route::prefix('/suara')->middleware('auth')->group(function () {
-//     Route::get('/', [TabulasiSuaraController::class, 'index'])->name('suara');
-//     Route::post('/', [TabulasiSuaraController::class, 'store'])->name('suara-store');
-//     Route::get('/{id}', [TabulasiSuaraController::class, 'show'])->name('suara-show');
-//     Route::put('/{id}', [TabulasiSuaraController::class, 'update'])->name('suara-update');
-//     Route::delete('/{id}', [TabulasiSuaraController::class, 'delete'])->name('suara-delete');
-// });
-
-Route::resource('/agenda', AgendaController::class)->middleware('auth');
+Route::resource('/agenda', AgendaController::class)->middleware('auth:web,caleg');
 
 //Route team Relawan
-Route::get("/relawan", [RelawanController::class, "index"])->middleware("auth");
+Route::get("/relawan", [RelawanController::class, "index"])->middleware("auth:web,caleg");
 
 // ROUTES WA BLAS
 Route::prefix('whatsapp')
-    ->middleware('auth')
+    ->middleware('auth:web,caleg')
     ->group(function () {
         Route::get('/', [WaBlasController::class, 'index'])->name('wa');
         // Route::post('/', [WaBlasController::class, 'store'])->name('wa-store');
@@ -166,7 +134,7 @@ Route::prefix('whatsapp')
 
 // ROUTES EMAIL BLAS
 Route::prefix('email')
-    ->middleware('auth')
+    ->middleware('auth:web,caleg')
     ->group(function () {
         Route::get('/', [EmailBlasController::class, 'index'])->name('email');
         // Route::post('/', [WaBlasController::class, 'store'])->name('email-store');
@@ -176,7 +144,7 @@ Route::prefix('email')
     });
 
 // ROUTE DOCUMENTATION
-Route::get('/documentation', [DocumentationController::class, 'index'])->middleware('auth');
+Route::get('/documentation', [DocumentationController::class, 'index'])->middleware('auth:web,caleg');
 
 // Backup Route
-Route::get('/backup', [BackupController::class, 'index'])->middleware('auth');
+Route::get('/backup', [BackupController::class, 'index'])->middleware('auth:web,caleg');

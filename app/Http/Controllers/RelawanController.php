@@ -82,8 +82,8 @@ class RelawanController extends Controller
     //     return back()->with("error", "Error, Can't Update Relawan");
     // }
 
-    public function fetch() {
-        $arr = Relawan::with("desa.kecamatan")->get();
+    public function fetch($id) {
+        $arr = $id == 0 ? Relawan::with("desa.kecamatan")->get() : Relawan::with("desa.kecamatan")->where("id_caleg", $id)->get();
         $found = true;
         $data = [];
         
@@ -100,6 +100,6 @@ class RelawanController extends Controller
             }
             $found = true;
         }
-        return $data;
+        return response()->json($data);
     }
 }
