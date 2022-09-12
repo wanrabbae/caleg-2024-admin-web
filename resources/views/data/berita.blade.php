@@ -55,7 +55,7 @@
                                    <form action="/infoPolitik/berita/{{ $item->id_news }}" method="post" class="d-inline">
                                     @method('delete')
                                     @csrf
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus kecamatan {{ $item->judul }}')">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus {{ $item->judul }}')">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
@@ -74,28 +74,28 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Create Data Berita</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Create Berita</h5>
             <span aria-hidden="true">&times;</span>
         </div>
         <form action="/infoPolitik/berita" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="judul_news" class="form-label">Judul News</label>
-                    <input type="text" name="judul" id="judul" class="form-control" placeholder="Judul news">
+                    <label for="judul" class="form-label">Judul Berita</label>
+                    <input type="text" name="judul" id="judul" class="form-control" placeholder="Judul Berita">
                 </div>
                 <div class="form-group">
                     <label for="isi_berita" class="form-label">Isi Berita</label>
-                    <textarea name="isi_berita" id="isi_berita" rows="2" class="form-control" placeholder="Masukan Isi Berita"></textarea>
+                    <textarea name="isi_berita" id="isi_berita" rows="5" class="form-control" placeholder="Masukan Isi Berita" style="resize: none;"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tgl_publish" class="form-label">Tanggal Publish</label>
                     <input type="date" name="tgl_publish" id="tgl_publish" class="form-control">
                 </div>
+                @auth("web")
                 <div class="form-group">
-                    <label for="id_caleg" class="form-label" >Calon Legislatif</label>
+                    <label for="id_caleg" class="form-label" >Caleg</label>
                     <select class="form-select form-control" name="id_caleg" id="id_caleg">
-                        <option selected>Open this select menu</option>
                         @foreach ($caleg as $item)
                         @if (old('id_caleg')==$item->id_caleg)
                             <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
@@ -105,17 +105,10 @@
                         @endforeach
                       </select>
                 </div>
+                @endauth
                 <div class="form-group">
                     <label for="gambar" class="form-label">Gambar</label>
                     <input type="file" name="gambar" id="gambar" class="form-control-file">
-                </div>
-                <div class="form-group">
-                    <label for="aktif" class="form-label">Publish</label>
-                    <select class="form-select form-control" name="aktif" id="aktif">
-                        <option selected>Open this select menu</option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Create</button>
@@ -149,10 +142,10 @@
                     <label for="tgl_publish" class="form-label">Tanggal Publish</label>
                     <input type="date" name="tgl_publish" id="update_tgl_publish" class="form-control">
                 </div>
+                @if (auth("web")->check())
                 <div class="form-group">
-                    <label for="id_caleg" class="form-label" >Calon Legislatif</label>
+                    <label for="id_caleg" class="form-label">Caleg</label>
                     <select class="form-select form-control" name="id_caleg" id="update_id_caleg">
-                        <option selected>Open this select menu</option>
                         @foreach ($caleg as $item)
                         @if (old('id_caleg')==$item->id_caleg)
                             <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
@@ -162,17 +155,10 @@
                         @endforeach
                       </select>
                 </div>
+                @endif
                 <div class="form-group">
                     <label for="gambar" class="form-label">gambar</label>
                     <input type="file" name="gambar" id="update_gambar" class="form-control-file">
-                </div>
-                <div class="form-group">
-                    <label for="aktif">publish</label>
-                    <select class="form-select form-control" name="aktif" id="update_aktif">
-                        <option selected>Open this select menu</option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Update</button>
@@ -183,5 +169,16 @@
       </div>
     </div>
 </div>
-<script src="/js/value.js"></script>
+<script>
+function getBerita(data) {
+    fetch(`/infoPolitik/berita/${data}`).then(response => response.json()).then(response => {
+        document.getElementById("update_berita").action = `/infoPolitik/berita/${data}`
+        @auth("web")
+        document.getElementById("update_id_caleg").value = response.id_caleg
+        @endauth
+        document.getElementById("update_judul").value = response.judul
+        document.getElementById("update_isi_berita").value = response.isi_berita
+        document.getElementById("update_tgl_publish").value = response.tgl_publish
+    })
+}</script>
 @endsection

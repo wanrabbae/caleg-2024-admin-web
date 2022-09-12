@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Desa;
+use App\Models\Caleg;
 use App\Models\Rk_pemilih;
 use App\Models\Rk_pemilih_2;
+use App\Models\Monitoring_Saksi;
 use App\Models\User;
 use App\Models\Kecamatan;
 use Illuminate\Http\Request;
@@ -15,9 +17,10 @@ class DptController extends Controller
     {
         return view('rekap.dpt', [
             'title' => 'DPT / Pemilih Page',
-            'datas' => Rk_pemilih::with('desa')->get(),
+            'datas' => auth("web")->check() ? Rk_pemilih::with(["caleg", "desa"])->get() : Rk_pemilih::with('desa')->where("id_caleg", auth()->user()->id_caleg)->get(),
             'desas' => Desa::all(),
             'users' => User::all(),
+            "caleg" => Caleg::all()
         ]);
     }
 
@@ -27,12 +30,16 @@ class DptController extends Controller
     }
     public function store(Request $request)
     {
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         $data = $request->validate([
-            'nik' => 'required|max:100|unique:rk_pemilih',
+            'nik' => 'required|max:100|unique:rk_pemilih,id_caleg',
+            "id_caleg" => "required",
             'nama' => 'required|max:100',
             'tempat_lahir' => 'required|max:50',
             'tgl_lahir' => 'required|date',
-            // 'tgl_data' => 'required|date|after_or_equal:today',
             'jk' => 'required|max:10',
             'tps' => 'required|integer',
             'id_desa' => 'required|max:4',
@@ -49,19 +56,28 @@ class DptController extends Controller
     public function update(Request $request, $id)
     {
         $pemilih = Rk_pemilih::find($id);
-        $data = $request->validate([
-            'nik' => 'max:100',
-            'nama' => 'max:100',
-            'tempat_lahir' => 'max:50',
-            'tgl_lahir' => 'date',
-            // 'tgl_data' => 'date|after_or_equal:today',
-            'jk' => 'max:10',
-            'tps' => 'integer',
-            'id_desa' => 'max:4',
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+        
+        $rules = [
+            "id_caleg" => "required",
+            'nama' => 'required|max:100',
+            'tempat_lahir' => 'required|max:50',
+            'tgl_lahir' => 'required|date',
+            'jk' => 'required|max:10',
+            'tps' => 'required|integer',
+            'id_desa' => 'required|max:4',
             'relawan' => 'required',
             'saksi' => 'required',
             'id_users' => 'required',
-        ]);
+    ];
+
+        if ($request->nik !== $pemilih->nik) {
+            $rules["nik"] = "required|unique:rk_pemilih,id_caleg";
+        }
+
+        $data = $request->validate($rules);
 
         if ($pemilih->update($data) && Rk_pemilih_2::find($id)->update($data)) {
             return back()->with('success', 'Success Update New Data DPT');
@@ -76,9 +92,9 @@ class DptController extends Controller
         return back()->with('error', "Error, Can't Delete Data DPT");
     }
 
-    public function getChart()
+    public function getChart($id)
     {
-        $pemilih = Rk_pemilih::with("desa.kecamatan")->get();
+        $pemilih = $id == 0 ? Rk_pemilih::with("desa.kecamatan")->get() : Rk_pemilih::with("desa.kecamatan")->where("id_caleg", $id)->get();
         $myArr = [];
         $found = true;
 

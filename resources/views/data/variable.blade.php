@@ -51,7 +51,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createModalLabel">Create Data Hasil Survey</h5>
+          <h5 class="modal-title" id="createModalLabel">Create Data Variable Survey</h5>
           <span aria-hidden="true">&times;</span>
         </div>
         <form action="{{ asset('survey/HasilSurvey') }}" method="POST">
@@ -61,6 +61,20 @@
                     <label for="nama_variabel" class="form-label">Nama Variable</label>
                     <input type="text" class="form-control" id="nama_variabel" name="nama_variabel" id="nama_variabel" placeholder="Nama Variabel">
                 </div>
+            @auth("web")
+                <div class="mb-3">
+                    <label for="legislatif" class="form-label">Calon Legislatif</label>
+                    <select class="form-select form-control" name="id_caleg" id="id_caleg">
+                        @foreach ($caleg as $item)
+                        @if (old('id_caleg')==$item->id_caleg)
+                            <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
+                        @else
+                            <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                        @endif
+                        @endforeach
+                      </select>
+                </div>
+                @endauth
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Create</button>
@@ -76,7 +90,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Update Data Hasil Survey</h5>
+          <h5 class="modal-title" id="editModalLabel">Update Data Variable Survey</h5>
           <span aria-hidden="true">&times;</span>
         </div>
         <form action="" method="POST" id="update_variabel">
@@ -87,6 +101,20 @@
                     <label for="nama_variabel" class="form-label">Nama Variable</label>
                     <input type="text" class="form-control" name="nama_variabel" id="edit_variabel" placeholder="Nama Variable">
                 </div>
+            @auth("web")
+                <div class="mb-3">
+                    <label for="legislatif" class="form-label">Calon Legislatif</label>
+                    <select class="form-select form-control" name="id_caleg" id="id_caleg">
+                        @foreach ($caleg as $item)
+                        @if (old('id_caleg')==$item->id_caleg)
+                            <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
+                        @else
+                            <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                        @endif
+                        @endforeach
+                      </select>
+                </div>
+                @endauth
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Update</button>

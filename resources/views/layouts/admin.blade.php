@@ -36,18 +36,16 @@
             padding: 0;
         }
     </style>
-
     <!-- Page Wrapper -->
     <div id="wrapper">
-
         <!-- Sidebar -->
-        <ul class="navbar-nav sidebar sidebar-dark accordion {{ auth()->user()->warna }}" id="accordionSidebar">
+        <ul class="navbar-nav sidebar sidebar-dark accordion" style="background: {{ auth("web")->check() ? auth()->user()->warna : auth("caleg")->user()->partai->warna }};" id="accordionSidebar">
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ asset('/') }}">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">JagatTbk</div>
+                <div class="sidebar-brand-text mx-3">{{ auth()->guard("web")->check() ? "JagatTbk" : auth()->guard("caleg")->user()->partai->nama_partai }}</div>
             </a>
 
             <!-- Divider -->
@@ -59,6 +57,22 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
+            @auth("web")
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCaleg" aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Caleg</span>
+                </a>
+                <div id="collapseCaleg" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item font-weight-bold" href="{{ asset("caleg") }}">
+                            <i class="fas fa-user-tie"></i>
+                            <span>Caleg</span>
+                        </a>
+                    </div>
+                </div>
+            </li>
+            @endauth
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-th-large"></i>
@@ -66,14 +80,16 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/legislatif") }}">
-                            <i class="fas fa-gavel"></i>
-                            <span>Legislatif</span>
-                        </a>
-                        <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/partai") }}">
-                            <i class="fas fa-university"></i>
-                            <span>Partai</span>
-                        </a>
+                        @auth("web")
+                            <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/legislatif") }}">
+                                <i class="fas fa-gavel"></i>
+                                <span>Legislatif</span>
+                            </a>
+                            <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/partai") }}">
+                                <i class="fas fa-university"></i>
+                                <span>Partai</span>
+                            </a>
+                        @endauth
                         <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/medsos") }}"><i class="fas fa-hashtag"></i>
                         <span>Medsos</span>
                         </a>
@@ -117,8 +133,8 @@
                             <span>Relawan</span>
                         </a>
                         <a class="collapse-item font-weight-bold" href="{{ asset('program') }}">
-                            <i class="fas fa-user-friends"></i>
-                            <span>Simpatisan</span>
+                            <i class="fas fa-tasks"></i>
+                            <span>Program</span>
                         </a>
                         <a class="collapse-item font-weight-bold" href="{{ asset('dpt') }}">
                             <i class="fas fa-clipboard-list"></i>
@@ -126,7 +142,7 @@
                         </a>
                         <a class="collapse-item font-weight-bold" href="{{ asset('agenda') }}">
                             <i class="fas fa-calendar"></i>
-                            <span>DPT Manual</span>
+                            <span>Agenda</span>
                         </a>
                         {{-- <a class="collapse-item font-weight-bold" href="">
                             <i class="fas fa-vote-yea"></i>
@@ -149,7 +165,7 @@
                         </a>
                         <a class="collapse-item font-weight-bold" href="{{ asset('survey/HasilSurvey') }}">
                             <i class="fas fa-poll"></i>
-                            <span>Hasil Survey</span>
+                            <span>Variable Survey</span>
                         </a>
                     </div>
                 </div>
@@ -303,8 +319,8 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Illuminate\Support\Facades\Auth::user()->nama_lengkap }}</span>
-                                <img class="img-profile rounded-circle" src="{{ asset('images/' . Illuminate\Support\Facades\Auth::user()->foto_user) }}">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->nama_lengkap ?? auth()->guard("caleg")->user()->nama_lengkap}}</span>
+                                <img class="img-profile rounded-circle" src="{{ Auth::guard("web")->check() ? asset("images/" . Auth::user()->foto_user) : asset("storage/" . Auth::guard("caleg")->user()->foto) }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

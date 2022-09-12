@@ -17,6 +17,9 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Relawan</th>
+                        @auth("web")
+                        <th>Caleg</th>
+                        @endauth
                         <th>HP</th>
                         <th>Email</th>
                         <th>Desa</th>
@@ -31,8 +34,11 @@
                     @if ($dataArr->count())
                         @foreach($dataArr as $data)
                             <tr>
-                                <td>{{ $data->relawan->id_relawan }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->relawan->nama_relawan }}</td>
+                                @auth("web")
+                                <td>{{ $data->caleg->nama_caleg }}</td>
+                                @endauth
                                 <td>{{ $data->relawan->no_hp }}</td>
                                 <td>{{ $data->relawan->email }}</td>
                                 <td>{{ $data->relawan->desa->nama_desa }}</td>
@@ -52,7 +58,7 @@
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <form action="/saksi/daftar/{{ $data->nik }}" method="POST" class="d-inline">
-                                        @method("delete")''
+                                        @method("delete")
                                         @csrf
                                         <button type="submit" class="btn btn-danger">
                                             <i class="fas fa-trash-alt"></i>
@@ -85,6 +91,20 @@
                   <label for="nik">NIK Saksi</label>
                   <input type="text" class="form-control" id="nik" placeholder="NIK" name="nik">
                 </div>
+                @auth("web")
+                <div class="mb-3">
+                    <label for="legislatif" class="form-label">Calon Legislatif</label>
+                    <select class="form-select form-control" name="id_caleg" id="id_caleg">
+                        @foreach ($caleg as $item)
+                        @if (old('id_caleg')==$item->id_caleg)
+                            <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
+                        @else
+                            <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                        @endif
+                        @endforeach
+                      </select>
+                </div>
+                @endauth
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -115,6 +135,20 @@
                   <label for="nama_legislatif">NIK</label>
                   <input type="text" class="form-control" id="edit_nik" placeholder="NIK" name="nik">
                 </div>
+                @auth("web")
+                <div class="mb-3">
+                    <label for="legislatif" class="form-label">Calon Legislatif</label>
+                    <select class="form-select form-control" name="id_caleg" id="id_caleg">
+                        @foreach ($caleg as $item)
+                        @if (old('id_caleg')==$item->id_caleg)
+                            <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
+                        @else
+                            <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                        @endif
+                        @endforeach
+                      </select>
+                </div>
+                @endauth
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

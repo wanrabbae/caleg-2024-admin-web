@@ -6,6 +6,7 @@ use App\Models\Caleg;
 use App\Models\Legislatif;
 use App\Models\Partai;
 use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -29,7 +30,14 @@ class AuthController extends Controller
     {
         $request->password = bcrypt($request->password);
         $credentials = $request->only('username', 'password');
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->remember == "on" ? true : false) || Auth::guard('caleg')->attempt($credentials, $request->remember == "on" ? true : false)) {
+            if (Auth::guard("caleg")->check()) {
+                if (Caleg::where("username", $request->username)->first()->aktif == "N") {
+                    Auth::logout();
+                    
+                    return redirect()->route("login")->with("error", "Maaf Akun Anda Belum Di Setujui");
+                }
+            }
             return redirect()->route('dashboard')->with('success', 'You are now logged in!');
         }
         return redirect()->route('login')->with('error', 'Username atau Password salah!');
@@ -46,7 +54,7 @@ class AuthController extends Controller
         }
 
         // CREATE USER
-        $user = User::create([
+        /*$user = User::create([
             'username' => $request->username,
             'password' => bcrypt($request->password),
             'nama_lengkap' => $request->nama_lengkap,
@@ -54,7 +62,7 @@ class AuthController extends Controller
             'no_telp' => $request->nohp,
             'id_session' => '1234567',
             'foto_user' => $file,
-        ]);
+        ]);*/
 
         // CREATE CALEG
         $caleg = Caleg::create([
@@ -71,7 +79,7 @@ class AuthController extends Controller
             'foto' => $file
         ]);
 
-        return redirect()->route('login');
+        return redirect()->route('login')->with("error", "Silahkan Tunggu Persetujuan Pembuatan Akun");
     }
 
     public function logout()

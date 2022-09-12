@@ -38,7 +38,7 @@
                         @if ($data->count())
                             @foreach ($data as $data)
                                 <tr>
-                                    <td>{{ $data->id_relawan }}</td>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>{{ $data->nik }}</td>
                                     <td>
                                         <button class="text-nowrap btn @if ($data->loyalis == 1) btn-success @elseif ($data->loyalis == 2) btn-warning @else btn-danger @endif" data-toggle="modal" data-target="#editLoyalModal"
@@ -154,6 +154,7 @@
                             <label for="foto_ktp">Upload Foto KTP</label>
                             <input required value="{{ old('foto_ktp') }}" type="file" class="form-control" id="foto_ktp" name="foto_ktp">
                         </div>
+                        @auth("web")
                         <div class="form-group">
                             <label for="id_caleg">Pilih Caleg</label>
                             <select class="form-control" name="id_caleg" id="id_caleg">
@@ -162,6 +163,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        @endauth
                         <div class="form-group">
                             <label for="status">Status</label>
                             <select class="form-control" name="status" id="status">
@@ -240,6 +242,7 @@
                             <label for="foto_ktp">Upload Foto KTP</label>
                             <input value="{{ old('foto_ktp') }}" type="file" class="form-control" id="foto_ktp" name="foto_ktp">
                         </div>
+                        @auth("web")
                         <div class="form-group">
                             <label for="id_caleg">Pilih Caleg</label>
                             <select class="form-control" name="id_caleg" id="edit_id_caleg">
@@ -248,6 +251,7 @@
                                 @endforeach
                             </select>
                         </div>
+                        @endauth
                         <div class="form-group">
                             <label for="status">Status</label>
                             <select class="form-control" name="status" id="edit_status">

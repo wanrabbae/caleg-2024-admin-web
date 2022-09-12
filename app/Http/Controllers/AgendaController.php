@@ -39,7 +39,7 @@ class AgendaController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            "nama_agenda" => "max:255|required|unique:agenda",
+            "nama_agenda" => "max:255|required",
             "tanggal" => "required",
             "jam" => "required",
             "lokasi" => "required|max:255"
@@ -85,20 +85,17 @@ class AgendaController extends Controller
     public function update(Request $request, Agenda $agenda)
     {
         $rules = [
+            "nama_agenda" => "max:255|required",
             "tanggal" => "required",
             "jam" => "required",
             "lokasi" => "required|max:255"
         ];
 
-        if ($request->nama_agenda != $agenda->nama_agenda) {
-            $rules["nama_agenda"] = "max:255|required|unique:agenda";
-        }
-
         $data = $request->validate($rules);
 
         $data["id_caleg"] = auth()->user()->id_users;
-        
-        if (Agenda::where("id_agenda", $agenda->id_agenda)->update($data)) {
+
+        if (Agenda::find($agenda->id_agenda)->update($data)) {
             return back()->with("success", "Success Edit $agenda->nama_agenda Agenda");
         }
         return back()->with("error", "Error, Can't Edit $agenda->nama_agenda Agenda");

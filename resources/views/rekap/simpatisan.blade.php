@@ -16,6 +16,9 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            @auth("web")
+                            <th>Caleg</th>
+                            @endauth
                             <th>Judul Program</th>
                             <th>Deskripsi</th>
                             <th>Gambar</th>
@@ -24,10 +27,12 @@
                     </thead>
                     <tbody>
                         @if ($program->count())
-                            <?php $i = 1; ?>
                             @foreach ($program as $data)
                                 <tr>
-                                    <td>{{ $i++ }}</td>
+                                    <td>{{ $loop->iteration }}</td>
+                                    @auth("web")
+                                    <td>{{ $data->caleg->nama_caleg }}</td>
+                                    @endauth
                                     <td>{{ $data->judul_program }}</td>
                                     <td>{{ $data->deskripsi }}</td>
                                     <td>
@@ -39,7 +44,7 @@
                                         @endif
                                     </td>
                                     <td class="d-flex justify-content-center">
-                                        <button class="btn btn-warning mx-3" onclick="getData2({{ $data->id_program }})" data-toggle="modal" data-target="#editModal">
+                                        <button class="btn btn-warning mx-3" onclick="getData({{ $data->id_program }})" data-toggle="modal" data-target="#editModal">
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         <form action="/program/{{ $data->id_program }}" method="POST" class="d-inline">
@@ -76,9 +81,19 @@
                             <label for="judul_program">Judul Program</label>
                             <input type="text" class="form-control" id="judul_program" placeholder="Nama Program" name="judul_program">
                         </div>
+                        @auth("web")
+                        <div class="form-group">
+                        <label for="id_caleg">Pilih Caleg</label>
+                            <select class="form-control" name="id_caleg" id="id_caleg">
+                            @foreach ($caleg as $item)
+                                <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                            @endforeach
+                        </select>
+                        </div>
+                        @endauth
                         <div class="form-group">
                             <label for="deskripsi">Deskripsi Program</label>
-                            <textarea name="deskripsi" id="deskripsi" class="form-control" cols="30" rows="5"></textarea>
+                            <textarea name="deskripsi" id="deskripsi" class="form-control" cols="30" rows="5" style="resize: none"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="foto">Foto Program</label>
@@ -114,12 +129,21 @@
                             <label for="edit_judul_program">Judul Program</label>
                             <input type="text" class="form-control" id="edit_judul_program" placeholder="Nama Program" name="judul_program">
                         </div>
+                        @auth("web")
+                        <div class="form-group">
+                        <label for="id_caleg">Pilih Caleg</label>
+                            <select class="form-control" name="id_caleg" id="id_caleg">
+                            @foreach ($caleg as $item)
+                                <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                            @endforeach
+                        </select>
+                        </div>
+                        @endauth
                         <div class="form-group">
                             <label for="edt_deskripsi">Deskripsi Program</label>
-                            <textarea name="deskripsi" id="edt_deskripsi" class="form-control" cols="30" rows="5"></textarea>
+                            <textarea name="deskripsi" id="edit_deskripsi" class="form-control" cols="30" rows="5"></textarea>
                         </div>
                         <div class="form-group">
-                            <img width="100" alt="NotFound.png" id="preview_image">
                             <label for="foto">Foto Program</label>
                             <input type="file" class="form-control" id="foto" name="foto">
                         </div>
@@ -136,14 +160,13 @@
     </div>
 
     <script>
-        function getData2(data) {
-            console.log(data);
-            fetch(`/program/${data}`).then(resp => resp.json()).then(resp => {
-                document.getElementById("edit_form").action = `/program/${data}`
-                document.getElementById("edit_judul_program").value = resp.nama_judul_program
-                document.getElementById("edit_deskripsi").value = resp.nama_deskripsi
-                document.getElementById("preview_image").src = {{ asset('storage/') }} + resp.foto
+        let getData = id => {
+            fetch(`/program/${id}`).then(resp => resp.json()).then(resp => {
+                document.getElementById("edit_form").action = `/program/${id}`
+                document.getElementById("edit_judul_program").value = resp.judul_program
+                document.getElementById("edit_deskripsi").value = resp.deskripsi
             })
         }
     </script>
+
 @endsection

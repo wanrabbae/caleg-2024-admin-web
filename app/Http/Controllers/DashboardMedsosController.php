@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medsos;
+use App\Models\Caleg;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,8 @@ class DashboardMedsosController extends Controller
     {
         return view("dashboard.medsos.medsos", [
             "title" => "Medsos Page",
-            "dataArr" => Medsos::all()
+            "dataArr" => auth("web")->check() ? Medsos::with("caleg")->get() : Medsos::where("id_caleg", auth()->user()->id_caleg)->get(),
+            "caleg" => Caleg::all()
     ]);
     }
 
@@ -39,8 +41,13 @@ class DashboardMedsosController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         $data = $request->validate([
             "nama_medsos" => "required|max:255|unique:medsos",
+            "id_caleg" => "required",
             "logo" => "image|max:2048|required"
     ]);
 
@@ -87,10 +94,14 @@ class DashboardMedsosController extends Controller
      */
     public function update(Request $request, Medsos $medsos)
     {
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
         $rules = [
-            "logo" => "max:2024|image",
+            "id_caleg" => "required",
+            "logo" => "max:2024|image"
         ];
-   
 
         if ($request->nama_medsos != $medsos->nama_medsos) {
             $rules["nama_medsos"] = "required|max:255|unique:medsos";
