@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalegController;
@@ -56,6 +58,10 @@ Route::post('/update', [AuthController::class, 'update'])->middleware('auth:web,
 // Admin Login
 Route::get("/administrator", [AdminController::class, "index"])->name("administrator")->middleware("guest");
 Route::post('/administrator', [AdminController::class, 'authenticate'])->name('authenticate');
+
+Route::get("/me", [ProfileController::class, "index"])->middleware("auth:web,caleg");
+
+Route::get("/setting", [SettingController::class, "index"])->middleware("auth:web,caleg");
 
 // Caleg Routes
 Route::resource('/caleg', CalegController::class)->middleware('auth:web,caleg');

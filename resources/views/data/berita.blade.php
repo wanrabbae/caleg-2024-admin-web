@@ -1,9 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-{{-- @dd($data) --}}
 <div class="card shadow mb-4">
-    <div class="col-md-3">
-    </div>
     <div class="card-header py-3">
         <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">
             <i class="fas fa-plus"></i>
