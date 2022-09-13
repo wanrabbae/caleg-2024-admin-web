@@ -19,7 +19,7 @@ class BeritaController extends Controller
         return view('data.berita',[
             'title' => 'Berita Page',
             'data' => auth("web")->check() ? News::all() : News::where("id_caleg", auth()->user()->id_caleg)->get(),
-            'caleg' => Caleg::all()
+            'caleg' => Caleg::all(),
         ]);
     }
 

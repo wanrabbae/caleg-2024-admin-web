@@ -250,7 +250,7 @@
             document.getElementById("edit_no_hp").value = resp.no_hp;
             document.getElementById("edit_email").value = resp.email;
             document.getElementById("edit_id_partai").value = resp.id_partai;
-            document.getElementById("edit_aktif").value = resp.aktif;
+            //document.getElementById("edit_aktif").value = resp.aktif;
             document.getElementById("edit_username").value = resp.username;
         })
     }    

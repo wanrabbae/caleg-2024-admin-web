@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Program;
+use App\Models\Caleg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,7 +13,8 @@ class SimpatisanController extends Controller
     {
         return view('rekap.simpatisan', [
             "program" => auth("web")->check() ? Program::all() : Program::where("id_caleg", auth()->user()->id_caleg)->get(),
-            'title' => 'Program'
+            'title' => 'Program',
+            "caleg" => Caleg::all(),
         ]);
     }
 

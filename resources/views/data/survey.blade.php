@@ -136,11 +136,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="mulai_tanggal" class="form-label">Mulai Tanggal</label>
-                    <input type="date" name="mulai_tanggal" id="edit_mulai" class="form-control" value="{}">
+                    <input type="date" name="mulai_tanggal" id="edit_mulai" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="sampai_tangal" class="form-label">Sampai Tanggal</label>
-                    <input type="date" name="sampai_tanggal" id="edit_sampai" class="form-control" value="{}">
+                    <input type="date" name="sampai_tanggal" id="edit_sampai" class="form-control">
                 </div>
                 @auth("web")
                 <div class="mb-3">

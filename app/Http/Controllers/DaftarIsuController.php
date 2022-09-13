@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Daftar_Isu;
+use App\Models\Caleg;
+use App\Models\Relawan;
+use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 
 class DaftarIsuController extends Controller
@@ -16,7 +19,10 @@ class DaftarIsuController extends Controller
     {
         return view("data.daftarIsu", [
             "title" => "Daftar Isu",
-            "dataArr" => Daftar_Isu::all()
+            "dataArr" => auth("web")->check() ? Daftar_Isu::all() : Daftar_Isu::where("id_caleg", auth()->user()->id_caleg)->get(),
+            "caleg" => Caleg::all(),
+            "kecamatan" => Kecamatan::all(),
+            "relawan" => auth("caleg")->check() ? Relawan::where("id_caleg", auth()->user()->id_caleg)->get() : collect([])
     ]);
     }
 
@@ -38,6 +44,24 @@ class DaftarIsuController extends Controller
      */
     public function store(Request $request)
     {
+        if (auth("caleg")->check()) {
+            $request["id_caleg"] = auth()->user()->id_caleg;
+        }
+
+        $data = $request->validate([
+            "id_caleg" => "required",
+            "jenis" => "required",
+            "dampak" => "required",
+            "tanggal" => "required|date",
+            "id_kecamatan" => "required",
+            "id_relawan" => "required",
+            "keterangan" => "required"
+        ]);
+
+        if (Daftar_Isu::create($data)) {
+            return back()->with("success", "Success Create New Issue");
+        }
+        return back()->with("error", "Error When Creating New Issue");
     }
 
     /**
@@ -46,9 +70,9 @@ class DaftarIsuController extends Controller
      * @param  \App\Models\Kecamatan  $kecamatan
      * @return \Illuminate\Http\Response
      */
-    public function show(Kecamatan $kecamatan, $id_kecamatan)
+    public function show(Daftar_Isu $daftar_Isu, $id)
     {
-        return response()->json(Kecamatan::find($id_kecamatan));
+        return response()->json(Daftar_Isu::find($id));
     }
 
     /**
@@ -69,15 +93,41 @@ class DaftarIsuController extends Controller
      * @param  \App\Models\Kecamatan  $kecamatan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Daftar_Isu $daftar_Isu)
+    public function update(Request $request, Daftar_Isu $daftar_Isu, $id)
     {
-        // return $daftar_Isu;
-        // if ($request->has("tanggapi")) {
-        //     if (Daftar_Isu::where("id_isu", $daftar_Isu->id_isu)->update(["tanggapi" => date("Y-m-d")])) {
-        //         return back()->with("success", "Berhasil Ditanggapi");
-        //     }
-        //     return back()->with("error", "Error, Gagal Menanggapi");
-        // }
+         if ($request->has("btn_tanggapan")) {
+            $request->validate([
+                "btn_tanggapan" => "required"
+            ]);
+            
+             if (Daftar_Isu::find($id)->update(["tanggapan" => $request->btn_tanggapan])) {
+                Daftar_Isu::find($id)->update(["tanggapi" => now()->toDateString()]);
+                return back()->with("success", "Successfully responded");
+             }
+             return back()->with("error", "Error, Error when responding");
+         }
+
+         if ($request->has("unrespond")) {
+            if (Daftar_Isu::find($id)->update(["tanggapi" => "N"])) {
+                Daftar_Isu::find($id)->update(["tanggapan" => "Belum Di Tanggapi"]);
+                return back()->with("success", "Successfully unresponded");
+             }
+             return back()->with("error", "Error, Error when responding");
+         }
+
+        $data = $request->validate([
+            "jenis" => "required",
+            "dampak" => "required",
+            "tanggal" => "required|date",
+            "id_kecamatan" => "required",
+            "keterangan" => "required",
+            "tanggapan" => "required",
+        ]);
+
+        if (Daftar_Isu::find($id)->update($data)) {
+                return back()->with("success", "Success Update Berita");
+             }
+             return back()->with("error", "Error, Error When Updating Berita");
     }
 
     /**
@@ -86,7 +136,15 @@ class DaftarIsuController extends Controller
      * @param  \App\Models\Kecamatan  $kecamatan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Kecamatan $kecamatan, $id_kecamatan)
+    public function destroy(Daftar_Isu $daftar_Isu, $id)
     {
+        if (Daftar_Isu::destroy($id)) {
+            return back()->with("success", "Success delete issue");
+        }
+        return back()->with("error", "Error when deleting issue");
+    }
+
+    public function relawan($id) {
+        return response()->json(Relawan::where("id_caleg", $id)->get());
     }
 }

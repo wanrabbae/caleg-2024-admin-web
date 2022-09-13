@@ -64,6 +64,7 @@ Route::resource('/dashboard/medsos', DashboardMedsosController::class)
 
 //Info Politik Routes
 Route::resource('/infoPolitik/daftarIsu', DaftarIsuController::class)->middleware('auth:web,caleg');
+Route::get("/infoPolitik/daftarIsu/relawan/{id}", [DaftarIsuController::class, "relawan"])->middleware("auth:web,caleg");
 Route::resource('/infoPolitik/berita', BeritaController::class)
     ->parameters(['berita' => 'berita'])
     ->middleware('auth:web,caleg');
