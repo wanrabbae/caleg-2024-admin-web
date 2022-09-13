@@ -30,8 +30,8 @@
                                 <td>{{ $data->nama_medsos }}</td>
                                 <td>{{ $data->caleg->nama_caleg }}</td>
                                 <td>
-                                    @if (Storage::exists($data->logo))
-                                    <img src="{{ asset('storage/' . $data->logo) }}" alt="" class="mx-auto d-block" style="width: 75px">
+                                    @if (File::exists($data->logo))
+                                    <img src="{{ asset($data->logo) }}" alt="" class="mx-auto d-block" style="width: 75px">
                                     @else
                                     <i class="fas fa-image"></i>
                                     <span>Image Not Found</span>

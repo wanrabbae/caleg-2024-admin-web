@@ -20,4 +20,8 @@ class Variabel extends Model
     public function survey(){
         return $this->hasMany(Survey::class);
     }
+
+    public function caleg() {
+        return $this->belongsTo(Caleg::class, "id_caleg");
+    }
 }

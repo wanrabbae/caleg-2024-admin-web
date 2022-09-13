@@ -30,14 +30,12 @@ class AuthController extends Controller
     {
         $request->password = bcrypt($request->password);
         $credentials = $request->only('username', 'password');
-        if (Auth::attempt($credentials, $request->remember == "on" ? true : false) || Auth::guard('caleg')->attempt($credentials, $request->remember == "on" ? true : false)) {
-            if (Auth::guard("caleg")->check()) {
-                if (Caleg::where("username", $request->username)->first()->aktif == "N") {
+        if (Auth::guard('caleg')->attempt($credentials, $request->remember == "on" ? true : false)) {
+                if (Caleg::find(auth("caleg")->user()->id_caleg)->aktif == "N") {
                     Auth::logout();
                     
                     return redirect()->route("login")->with("error", "Maaf Akun Anda Belum Di Setujui");
                 }
-            }
             return redirect()->route('dashboard')->with('success', 'You are now logged in!');
         }
         return redirect()->route('login')->with('error', 'Username atau Password salah!');

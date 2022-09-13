@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalegController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DaftarIsuController;
@@ -51,6 +52,10 @@ Route::get('/logout', [AuthController::class, 'logout'])
     ->name('logout')
     ->middleware('auth:web,caleg');
 Route::post('/update', [AuthController::class, 'update'])->middleware('auth:web,caleg');
+
+// Admin Login
+Route::get("/administrator", [AdminController::class, "index"])->name("administrator")->middleware("guest");
+Route::post('/administrator', [AdminController::class, 'authenticate'])->name('authenticate');
 
 // Caleg Routes
 Route::resource('/caleg', CalegController::class)->middleware('auth:web,caleg');

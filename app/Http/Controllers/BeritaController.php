@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Caleg;
 use App\Models\News;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -54,7 +55,7 @@ class BeritaController extends Controller
         ]);
 
          if($request->file('gambar')){
-            $data['gambar'] = $request->file('gambar')->store('/images');
+            $data['gambar'] = $request->file('gambar')->store('/images', "public_path");
         }
 
         if(News::create($data)){
@@ -122,8 +123,8 @@ class BeritaController extends Controller
         $img = News::firstWhere("id_news", $id_news)->gambar;
 
         if($request->file('gambar')){
-            Storage::delete($img);
-            $data["gambar"] = $request->file("gambar")->store('/images');
+            File::delete($img);
+            $data["gambar"] = $request->file("gambar")->store('/images', "public_path");
         }
 
         if(News::where('id_news', $id_news)->update($data)){
@@ -142,7 +143,7 @@ class BeritaController extends Controller
     {
         $img = News::firstWhere("id_news", $id_news)->gambar;
         if(News::where('id_news', $id_news)->delete()){
-            Storage::delete($img);
+            File::delete($img);
             return back()->with('success', "Success Deleting Data News");
         }
        return back()->with('error', "Failed Deleting Data News");

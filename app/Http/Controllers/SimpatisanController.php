@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Program;
 use App\Models\Caleg;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class SimpatisanController extends Controller
 {
@@ -36,7 +36,7 @@ class SimpatisanController extends Controller
             "foto" => "image|max:2048|required"
         ]);
 
-        $data["foto"] = $request->file("foto")->store("/image");
+        $data["foto"] = $request->file("foto")->store("/images", "public_path");
 
         if (Program::create($data)) {
             return back()->with("success", "Success Create New Program");
@@ -49,7 +49,7 @@ class SimpatisanController extends Controller
     {
         $program = Program::find($id);
         if ($program->delete()) {
-            Storage::delete($program->foto);
+            File::delete($program->foto);
             return back()->with("success", "Success Delete Program");
         }
         return back()->with("error", "Error, Can't Delete Program");
@@ -76,8 +76,8 @@ class SimpatisanController extends Controller
         $data = $request->validate($rules);
 
         if ($request->hasFile("foto")) {
-            Storage::delete($program->foto);
-            $data["foto"] = $request->file("foto")->store("/image");
+            File::delete($program->foto);
+            $data["foto"] = $request->file("foto")->store("/images", "public_path");
         }
 
         if ($program->update($data)) {

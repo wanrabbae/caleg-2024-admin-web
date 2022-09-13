@@ -73,8 +73,8 @@
                                     </td>
                                     <td>{{ $data->desa->kecamatan->nama_kecamatan }}</td>
                                     <td>
-                                        @if (Storage::exists($data->foto_ktp))
-                                            <img src="{{ asset('storage/' . $data->foto_ktp) }}" alt="" style="width: 75px">
+                                        @if (File::exists($data->foto_ktp))
+                                            <img src="{{ asset($data->foto_ktp) }}" alt="" style="width: 75px">
                                         @else
                                             <i class="fas fa-image"></i>
                                             <span>Image Not Found</span>

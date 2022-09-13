@@ -15,7 +15,7 @@ class News extends Model
     public $timestamps = false;
 
     public function caleg(){
-        return $this->belongsTo(Caleg::class);
+        return $this->belongsTo(Caleg::class, "id_caleg");
     }
 
 }

@@ -15,6 +15,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Caleg</th>
                         <th>Nama Variable</th>
                         <th>Action</th>
                     </tr>
@@ -24,6 +25,7 @@
                         @foreach($data as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->caleg->nama_caleg }}</td>
                                 <td>{{ $item->nama_variabel }}</td>
                                 <td class="d-flex justify-content-center">
                                    <button type="button" class="btn btn-warning mx-3" onclick="getVariable({{ $item->id_variabel }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">

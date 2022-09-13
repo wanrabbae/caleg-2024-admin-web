@@ -89,7 +89,7 @@ class DataSurveyController extends Controller
      * @param
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id_survey )
+    public function update(Request $request,$id_survey)
     {
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;

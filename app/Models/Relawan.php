@@ -11,7 +11,7 @@ class Relawan extends Model
     protected $table = 'relawan';
     public $timestamps = false;
     protected $primaryKey = 'id_relawan';
-
+    public $incrementing = false;
     protected $guarded = [];
 
     protected $hidden = [

@@ -16,6 +16,9 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        @auth("web")
+                        <th>Caleg</th>
+                        @endauth
                         <th>Judul News</th>
                         <th>Isi Berita</th>
                         <th>Tanggal Publish</th>
@@ -29,6 +32,9 @@
                         @foreach($data as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                @auth("web")
+                                <td>{{ $item->caleg->nama_caleg }}</td>
+                                @endauth
                                 <td>{{ $item->judul }}</td>
                                 <td>{{ $item->isi_berita }}</td>
                                 <td>{{ $item->tgl_publish }}</td>
@@ -47,7 +53,14 @@
                                     @endif
                                     </form>
                                 </td>
-                                <td><img src="{{ asset("storage/$item->gambar") }}" alt="{{ $item->gambar }}" width="60" class = "img-fluid d-flex justify-content-center"></td>
+                                <td>
+                                     @if (File::exists($item->gambar))
+                                        <img src="{{ asset($item->gambar) }}" alt="" class="mx-auto d-block" style="width: 75px">
+                                    @else
+                                        <i class="fas fa-image"></i>
+                                        <span>Image Not Found</span>
+                                    @endif
+                                    </td>
                                 <td class="d-flex justify-content-center">
                                    <button type="button" class="btn btn-warning mx-3" onclick="getBerita({{ $item->id_news }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                        <i class="fas fa-edit"></i>

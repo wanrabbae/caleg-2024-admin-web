@@ -16,14 +16,14 @@
                             <div class="col-lg-12">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">LOGIN CALEG</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">LOGIN ADMINISTRATOR</h1>
                                     </div>
                                     @if (session()->has('error'))
                                         <div class="text-danger text-center mb-2 p-1" role="alert">
                                             {{ session()->get('error') }}
                                         </div>
                                     @endif
-                                    <form class="user" method="POST" action="{{ asset('authenticate') }}">
+                                    <form class="user" method="POST" action="{{ asset('administrator') }}">
                                         @csrf
                                         <div class="form-group">
                                             <input name="username" type="text" class="form-control"
@@ -51,10 +51,7 @@
                                             I forgot my password</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="{{ asset("register") }}">Register a new membership</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="small" href="{{ asset("administrator") }}">Login as admin</a>
+                                        <a class="small" href="{{ asset("login") }}">Login as caleg</a>
                                     </div>
                                 </div>
                             </div>

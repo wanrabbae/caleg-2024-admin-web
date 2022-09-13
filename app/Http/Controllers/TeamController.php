@@ -7,8 +7,7 @@ use App\Models\Desa;
 use App\Models\Kecamatan;
 use App\Models\Relawan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class TeamController extends Controller
 {
@@ -47,7 +46,7 @@ class TeamController extends Controller
             "foto_ktp" => "image|max:2048|required"
         ]);
 
-        $data['foto_ktp'] = $request->file("foto_ktp")->store("/image");
+        $data['foto_ktp'] = $request->file("foto_ktp")->store("/images", "public_path");
         $data['password'] = bcrypt($data['password']);
 
         if (Relawan::create($data)) {
@@ -60,8 +59,8 @@ class TeamController extends Controller
     public function delete($id)
     {
         $relawan = Relawan::find($id);
-        Storage::delete($relawan->foto_ktp);
         if ($relawan->delete()) {
+            File::delete($relawan->foto_ktp);
             return back()->with("success", "Success Delete Relawan");
         }
         return back()->with("error", "Error, Can't Delete Relawan");
@@ -150,8 +149,8 @@ class TeamController extends Controller
     $data = $request->validate($rules);
     
     if ($request->hasFile("foto_ktp")) {
-        Storage::delete($relawan->foto_ktp);
-        $data['foto_ktp'] = $request->file("foto_ktp")->store("/image");
+        File::delete($relawan->foto_ktp);
+        $data['foto_ktp'] = $request->file("foto_ktp")->store("/images", "public_path");
     }
 
     if ($request->password) {

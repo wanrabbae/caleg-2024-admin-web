@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Caleg;
 use App\Models\Legislatif;
 use App\Models\Partai;
-use Illuminate\Support\Facades\Storage;
+use File;
 use Illuminate\Http\Request;
 
 
@@ -55,11 +55,11 @@ class CalegController extends Controller
             //"aktif" => "required",
             "username" => "required|unique:caleg|max:30",
             "password" => "required|min:4",
-            "foto" => "required|file|image|max:5120"
+            "foto" => "required|image|max:5120"
         ]);
 
 
-        $data["foto"] = $request->file("foto")->store("/image");
+        $data["foto"] = $request->file("foto")->store("/images", "public_path");
         $data["password"] = bcrypt($data["password"]);
 
         if (Caleg::create($data)) {
@@ -135,10 +135,10 @@ class CalegController extends Controller
         $data = $request->validate($rules);
 
         if ($request->has("foto")) {
-            if (Storage::exists($caleg->foto)) {
-                Storage::delete($caleg->foto);
+            if (File::exists($caleg->foto)) {
+                File::delete($caleg->foto);
             }
-            $data["foto"] = $request->file("foto")->store("/image");
+            $data["foto"] = $request->file("foto")->store("/images", "public_path");
         }
         
         if ($request->password) {
@@ -160,7 +160,7 @@ class CalegController extends Controller
     public function destroy(Caleg $caleg)
     {
         if (Caleg::destroy($caleg->id_caleg)) {
-            Storage::delete($caleg->foto);
+            File::delete($caleg->foto); 
             return back()->with("success", "Success Delete $caleg->nama_caleg");
         }
         return back()->with("error", "Error When Deleting $caleg->nama_caleg Caleg");

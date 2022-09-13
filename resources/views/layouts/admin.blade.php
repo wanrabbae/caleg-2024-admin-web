@@ -321,7 +321,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->nama_lengkap ?? auth()->guard("caleg")->user()->nama_lengkap}}</span>
-                                <img class="img-profile rounded-circle" src="{{ Auth::guard("web")->check() ? asset("images/" . Auth::user()->foto_user) : asset("storage/" . Auth::guard("caleg")->user()->foto) }}">
+                                <img class="img-profile rounded-circle" src="{{ Auth::guard("web")->check() ? asset("images/" . Auth::user()->foto_user) : asset(Auth::guard("caleg")->user()->foto) }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

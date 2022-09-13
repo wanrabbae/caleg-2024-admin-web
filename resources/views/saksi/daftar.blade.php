@@ -46,8 +46,8 @@
                                 <td>{{ $data->relawan->status }}</td>
                                 <td>{{ $data->relawan->blokir }}</td>
                                 <td>
-                                  @if (Storage::exists($data->relawan->foto_ktp))
-                                      <img src="{{ asset('storage/' . $data->relawan->foto_ktp) }}" alt="" style="width: 200px">
+                                  @if (File::exists($data->relawan->foto_ktp))
+                                      <img src="{{ asset($data->relawan->foto_ktp) }}" alt="" style="width: 200px">
                                   @else
                                       <i class="fas fa-image"></i>
                                       <span>Image Not Found</span>

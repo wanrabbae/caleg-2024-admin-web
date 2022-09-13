@@ -17,7 +17,7 @@ class VariableController extends Controller
         return view('data.variable', [
             'title' => 'Variable Survey Page',
             "caleg" => Caleg::all(),
-            'data' => auth("web")->check() ? Variabel::all() : Variabel::where("id_caleg", auth()->user()->id_caleg)->get()
+            'data' => auth("web")->check() ? Variabel::all() : Variabel::with("caleg")->where("id_caleg", auth()->user()->id_caleg)->get()
         ]);
     }
 
@@ -87,19 +87,21 @@ class VariableController extends Controller
      * @param  \App\Models\Variabel  $variabel
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Variabel $variabel,$id_variabel )
+    public function update(Request $request, Variabel $variabel,$id_variabel)
     {
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
 
-       $rule = [
-        'nama_variabel' => 'required|unique:variabel'
-       ];
+       $rule = [];
+
+        if ($request->nama_variable !== Variabel::find($id_variabel)->nama_variable) {
+            $rule["nama_variabel"] = "required|unique:variabel";
+        }
 
        $data = $request->validate($rule);
 
-       if(Variabel::where('id_variabel', $id_variabel)->update($data)){
+       if(Variabel::find($id_variabel)->update($data)){
             return redirect('/survey/HasilSurvey')->with('success', "Success Update Variabel $variabel->nama_variabel");
        }
        return redirect('/survey/HasilSurvey')->with('error', "Failed Update Variabel $variabel->nama_variabel");

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Medsos;
 use App\Models\Caleg;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 
 class DashboardMedsosController extends Controller
@@ -51,7 +51,7 @@ class DashboardMedsosController extends Controller
             "logo" => "image|max:2048|required"
     ]);
 
-    $data["logo"] = $request->file("logo")->store("/image");
+    $data["logo"] = $request->file("logo")->store("/images", "public_path");
 
         if (Medsos::create($data)) {
             return back()->with("success", "Success Create New Medsos");
@@ -110,10 +110,10 @@ class DashboardMedsosController extends Controller
         $data = $request->validate($rules);
         
         if ($request->file("logo")) {
-            if (!Storage::exists($medsos->logo)) {
-                Storage::delete($medsos->logo);
+            if (File::exists($medsos->logo)) {
+                File::delete($medsos->logo);
             }
-            $data["logo"] = $request->file("logo")->store("/image");
+            $data["logo"] = $request->file("logo")->store("/images", "public_path");
         }
         
         
@@ -133,7 +133,7 @@ class DashboardMedsosController extends Controller
     public function destroy(Medsos $medsos)
     {
         if (Medsos::destroy($medsos->id_medsos)) {
-            Storage::delete($medsos->logo);
+            File::delete($medsos->logo);
             return back()->with("success", "Success Delete $medsos->nama_medsos Medsos");
         }
 
