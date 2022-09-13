@@ -7,8 +7,9 @@
                     allowfullscreen="" width="560" height="315" frameborder="0"></iframe>
             </div>
             <div class="col-md-8 mb-3 me-5">
-                <embed src="http://caleg.jagat.store/assets/info/Profil.pdf" quality="high" name="fb" allowscriptaccess="always" allowfullscreen="true" pluginpage="http://www.adobe.com/go/getreader"
-                    type="application/pdf" width="100%" height="1100">
+                {{-- <embed src="http://caleg.jagat.store/assets/info/Profil.pdf" quality="high" name="fb" allowscriptaccess="always" allowfullscreen="true" pluginpage="http://www.adobe.com/go/getreader"
+                    type="application/pdf" width="100%" height="1100"> --}}
+                <embed src="https://www.jagatgenius.com/assets/images/Profil.pdf" type="application/pdf" quality="high" name="100%" height="455" allowscriptaccess="always" allowfullscreen="true" pluginpage="http://www.adobe.com/go/getreader">
             </div>
         </div>
     </div>

@@ -33,6 +33,8 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $request->remember == "on" ? true : false) || Auth::guard('caleg')->attempt($credentials, $request->remember == "on" ? true : false)) {
             if (Auth::guard("caleg")->check()) {
                 if (Caleg::where("username", $request->username)->first()->aktif == "N") {
+                    Auth::logout();
+                    
                     return redirect()->route("login")->with("error", "Maaf Akun Anda Belum Di Setujui");
                 }
             }

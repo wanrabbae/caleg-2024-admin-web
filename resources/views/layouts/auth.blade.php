@@ -20,9 +20,7 @@
 
 </head>
 
-<body style="background-image: url({{ asset('images/bg_login.png') }}); background-position: center;
-background-repeat: no-repeat;
-background-size: cover;">
+<body style="background-image: url({{ asset('images/bg_login.png') }}); background-position:  left 10px center;">
 
     @yield('content')
 

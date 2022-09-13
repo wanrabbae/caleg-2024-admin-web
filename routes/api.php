@@ -23,6 +23,8 @@ use App\Http\Controllers\SaksiMonitoringController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/getChart', [DPTController::class, 'getChart']);
+Route::get("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);
 
 Route::get("getCaleg", [ApiController::class, "getCaleg",]);
 Route::get("getProgram", [ApiController::class, "getProgram",]);
