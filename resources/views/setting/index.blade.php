@@ -56,7 +56,7 @@
         </div>
         <div class="col-md-12 mt-3">
             <p>Foto</p>
-            <img src="{{ auth()->user()->foto }}" alt="" class="img-fluid" style="width: 200px; height: 200px">
+            <img src="{{ auth()->user()->foto }}" alt="" class="img-fluid" style="height: 200px">
             <p class="mt-2">Update Foto</p>
             <input type="file" class="form-control-file" id="foto" name="foto">
         </div>
