@@ -16,8 +16,15 @@
                             <div class="col-lg-12">
                                 <div class="p-5">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">LOGIN CALEG</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Masukkan Email</h1>
                                     </div>
+                                    @if ($errors->any())
+                                        @foreach ($errors->all() as $error) 
+                                        <div class="text-danger text-center mb-2 p-1" role="alert">
+                                            {{ $error }}
+                                        </div>
+                                        @endforeach
+                                    @endif
                                     @if (session()->has('error'))
                                         <div class="text-danger text-center mb-2 p-1" role="alert">
                                             {{ session()->get('error') }}
@@ -28,39 +35,27 @@
                                             {{ session()->get('success') }}
                                         </div>
                                     @endif
-                                    <form class="user" method="POST" action="{{ asset('authenticate') }}">
+                                    <form class="user" method="POST" action="{{ asset('reset') }}">
                                         @csrf
                                         <div class="form-group">
-                                            <input name="username" type="text" class="form-control"
+                                            <input name="email" type="text" class="form-control"
                                                 style="font-size: 17px" id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Username">
-                                        </div>
-                                        <div class="form-group">
-                                            <input name="password" type="password" class="form-control"
-                                                style="font-size: 17px" id="exampleInputPassword" placeholder="Password">
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" name="remember" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
-                                            </div>
+                                                placeholder="Email">
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-user btn-block">
-                                            Login
+                                            Send
                                         </button>
                                         <hr>
-                                    </form>
-                                    <div class="text-center">
-                                        <a class="small" href="{{ asset("reset") }}">
-                                            I forgot my password</a>
-                                    </div>
-                                    <div class="text-center">
+                                        <div class="text-center">
                                         <a class="small" href="{{ asset("register") }}">Register a new membership</a>
                                     </div>
                                     <div class="text-center">
                                         <a class="small" href="{{ asset("administrator") }}">Login as admin</a>
                                     </div>
+                                    <div class="text-center">
+                                        <a class="small" href="{{ asset("login") }}">Login as Caleg</a>
+                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalegController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\DashboardMedsosController;
 use App\Http\Controllers\DataSurveyController;
 use App\Http\Controllers\DPTController;
+use App\Http\Controllers\ResetController;
 // use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\VariableController;
@@ -160,3 +162,9 @@ Route::get('/documentation', [DocumentationController::class, 'index'])->middlew
 
 // Backup Route
 Route::get('/backup', [BackupController::class, 'index'])->middleware('auth:web,caleg');
+
+Route::get("/reset", [ResetController::class, "index"])->middleware("guest");
+Route::post("/reset", [ResetController::class, "send"])->middleware("guest");
+
+Route::get("/resetpassword", [ResetPasswordController::class, "index"])->middleware("guest");
+Route::post("/resetpassword", [ResetPasswordController::class, "update"])->middleware("guest");
