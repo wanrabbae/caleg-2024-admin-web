@@ -12,6 +12,7 @@ use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\DashboardMedsosController;
 use App\Http\Controllers\DataSurveyController;
 use App\Http\Controllers\DPTController;
+use App\Http\Controllers\ResetController;
 // use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\VariableController;
@@ -154,3 +155,6 @@ Route::get('/documentation', [DocumentationController::class, 'index'])->middlew
 
 // Backup Route
 Route::get('/backup', [BackupController::class, 'index'])->middleware('auth:web,caleg');
+
+Route::get("/reset", [ResetController::class, "index"])->middleware("guest");
+Route::post("/reset", [ResetController::class, "send"])->middleware("guest");
