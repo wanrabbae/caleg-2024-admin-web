@@ -23,11 +23,15 @@ class ResetController extends Controller
         $account = "";
         
         if (Caleg::where("email", $request->email)->first()) {
+            Caleg::where("email", $request->email)->update(["reset_token" => Str::random(60)]);
             $account = Caleg::where("email", $request->email)->first();
+            $account["user"] = "caleg";
         }
    
         if (User::where("email", $request->email)->first()) {
+            User::where("email", $request->email)->update(["reset_token" => Str::random(60)]);
             $account = User::where("email", $request->email)->first();
+            $account["user"] = "admin";
         }
 
         if (!$account) {

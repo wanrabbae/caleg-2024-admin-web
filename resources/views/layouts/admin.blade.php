@@ -249,12 +249,14 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
+            @auth("web")
             <li class="nav-item">
                 <a class="nav-link" href="{{ asset('backup') }}">
                     <i class="far fa-save"></i>
                     <span>Backup</span>
                 </a>
             </li>
+            @endauth
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

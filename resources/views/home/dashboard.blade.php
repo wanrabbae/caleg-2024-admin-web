@@ -117,10 +117,11 @@
             </div>
         </div>
 
+        @auth("web")
         <form action="/update" method="POST">
             @csrf
             <div class="row">
-                <button class="col-lg-6 mb-4 btn" name="warna" value="bg-primary">
+                <button class="col-lg-6 mb-4 btn" name="warna" value="#4e73df">
                     <div class="card bg-primary text-white shadow">
                         <div class="card-body">
                             Primary
@@ -128,7 +129,7 @@
                         </div>
                     </div>
                 </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="bg-success">
+                <button class="col-lg-6 mb-4 btn" name="warna" value="#1cc88a">
                     <div class="card bg-success text-white shadow">
                         <div class="card-body">
                             Success
@@ -136,7 +137,7 @@
                         </div>
                     </div>
                 </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="bg-info">
+                <button class="col-lg-6 mb-4 btn" name="warna" value="#36b9cc">
                     <div class="card bg-info text-white shadow">
                         <div class="card-body">
                             Info
@@ -144,7 +145,7 @@
                         </div>
                     </div>
                 </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="bg-warning">
+                <button class="col-lg-6 mb-4 btn" name="warna" value="#f6c23e">
                     <div class="card bg-warning text-white shadow">
                         <div class="card-body">
                             Warning
@@ -152,7 +153,7 @@
                         </div>
                     </div>
                 </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="bg-danger">
+                <button class="col-lg-6 mb-4 btn" name="warna" value="#e74a3b">
                     <div class="card bg-danger text-white shadow">
                         <div class="card-body">
                             Danger
@@ -160,7 +161,7 @@
                         </div>
                     </div>
                 </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="bg-secondary">
+                <button class="col-lg-6 mb-4 btn" name="warna" value="#858796">
                     <div class="card bg-secondary text-white shadow">
                         <div class="card-body">
                             Secondary
@@ -168,7 +169,7 @@
                         </div>
                     </div>
                 </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="bg-light">
+                <button class="col-lg-6 mb-4 btn" name="warna" value="#f8f9fc">
                     <div class="card bg-light text-black shadow">
                         <div class="card-body">
                             Light
@@ -176,7 +177,7 @@
                         </div>
                     </div>
                 </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="bg-dark">
+                <button class="col-lg-6 mb-4 btn" name="warna" value="#5a5c69">
                     <div class="card bg-dark text-white shadow">
                         <div class="card-body">
                             Dark
@@ -187,6 +188,7 @@
             </div>
         </form>
     </div>
+    @endauth
     <script>
         anychart.onDocumentReady(function() {
                     // create data set on our data

@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Caleg;
+use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class ResetPasswordController extends Controller
 {
     public function index() {
-        $data = Caleg::where("reset_token", request("token"))->first() ?? User::where("reset_token", $request("token"))->first();
-        if (request("token") != $caleg->reset_token) {
+        $data = request("user") == "caleg" ? Caleg::where("reset_token", request("token"))->first() : User::where("reset_token", request("token"))->first();
+        if (request("token") != $data->reset_token) {
             return redirect("login")->with("error", "Token Tidak Sama!");
         }
+
+        $data["user"] = request("user");
         
         return view("mail.reset", [
             "data" => $data
@@ -26,9 +30,12 @@ class ResetPasswordController extends Controller
 
         $data["password"] = bcrypt($data["password"]);
 
-        if (Caleg::where("email", $data["email"])->update(["password" => $data["password"]])) {
-            return redirect("login")->with("success", "Berhasil Mengubah Pasword, Silahkan Login");
+        $user = $request->user == "caleg" ? Caleg::where("email", $data["email"])->update(["password" => $data["password"], "reset_token" => Str::random(60)]) : User::where("email", $data["email"])->update(["password" => $data["password"], "reset_token" => Str::random(60)]);
+
+        if ($user) {
+            return redirect($request->user == "admin" ? "administrator" : "login")->with("success", "Berhasil Mengubah Pasword, Silahkan Login");
         }
-        return redirect("login")->with("error", "Error Saat Mengubah Password");
+        
+        return redirect($request->user == "admin" ? "administrator" : "login")->with("error", "Error Saat Mengubah Password");
     }
 }

@@ -126,11 +126,11 @@ class SettingController extends Controller
         } else {
 
         $user = User::find($id);
+
         $rules = [
             "nama_lengkap" => "required|max:255",
-            "foto_user" => "file|image|max:5120"
+            "foto_user" => "file|image|max:5120",
         ];
-
 
         if ($request->no_telp != $user->no_telp) {
             $rules["no_telp"] = "required|max:20|min:10|unique:users";
@@ -161,7 +161,9 @@ class SettingController extends Controller
             $data["password"] = bcrypt($request->password);
         }
 
-        if (User::find($user->id_users)->update($data)) {
+        $data["warna"] = $request->warna;
+        
+        if ($user->update($data)) {
             return back()->with("success", "Success Update Profile");
         }
         return back()->with("erorr", "Error When Updating Profile");

@@ -100,7 +100,7 @@
         </div>
         <div class="col-md-6 mt-3">
             <p>Warna</p>
-            <input type="color" class="form-control" name="warna" value="{{ auth()->user()->warna }}">
+            <input type="color" class="form-control" id="color" name="warna" value="{{ auth()->user()->warna }}">
         </div>
         <div class="col-md-12 mt-3">
             <p>Password</p>

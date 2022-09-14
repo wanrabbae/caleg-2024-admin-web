@@ -37,6 +37,7 @@
                                     @endif
                                     <form class="user" method="POST" action="{{ asset('resetpassword') }}" id="form">
                                         @csrf
+                                        <input type="hidden" value="{{ $data->user }}" name="user">
                                         <div class="form-group">
                                             <input name="email" type="hidden" class="form-control"
                                                 style="font-size: 17px" aria-describedby="emailHelp"

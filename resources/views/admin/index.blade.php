@@ -47,7 +47,7 @@
                                         <hr>
                                     </form>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html">
+                                        <a class="small" href="{{ asset("reset") }}">
                                             I forgot my password</a>
                                     </div>
                                     <div class="text-center">
