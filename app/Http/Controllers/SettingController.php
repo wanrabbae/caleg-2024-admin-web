@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Caleg;
 use App\Models\Partai;
 use App\Models\Legislatif;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -76,6 +77,7 @@ class SettingController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (auth("caleg")->check()) {
         $caleg = Caleg::find($id);
         $rules = [
             "nama_caleg" => "required|max:255",
@@ -120,6 +122,50 @@ class SettingController extends Controller
             return back()->with("success", "Success Update Profile");
         }
         return back()->with("erorr", "Error When Updating Profile");
+
+        } else {
+
+        $user = User::find($id);
+        $rules = [
+            "nama_lengkap" => "required|max:255",
+            "foto_user" => "file|image|max:5120"
+        ];
+
+
+        if ($request->no_telp != $user->no_telp) {
+            $rules["no_telp"] = "required|max:20|min:10|unique:users";
+        }
+
+        if ($request->email != $user->email) {
+            $rules["email"] = "required|email|max:100|unique:users";
+        }
+
+        if ($request->username != $user->username) {
+            $rules["username"] = "required|unique:users|max:30";
+        }
+
+        if ($request->password) {
+            $rules["password"] = "min:4|max:255|required";
+        }
+
+        $data = $request->validate($rules);
+
+        if ($request->has("foto_user")) {
+            if (File::exists($user->foto_user)) {
+                File::delete($user->foto_user);
+            }
+            $data["foto_user"] = $request->file("foto_user")->store("/images", "public_path");
+        }
+        
+        if ($request->password) {
+            $data["password"] = bcrypt($request->password);
+        }
+
+        if (User::find($user->id_users)->update($data)) {
+            return back()->with("success", "Success Update Profile");
+        }
+        return back()->with("erorr", "Error When Updating Profile");
+        }
     }
 
     /**
