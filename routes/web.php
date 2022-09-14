@@ -62,7 +62,7 @@ Route::post('/administrator', [AdminController::class, 'authenticate'])->name('a
 Route::get("/me", [ProfileController::class, "index"])->middleware("auth:web,caleg");
 
 Route::get("/setting", [SettingController::class, "index"])->middleware("auth:web,caleg");
-
+Route::put("/setting/{id}", [SettingController::class, "update"])->middleware("auth:web,caleg");
 // Caleg Routes
 Route::resource('/caleg', CalegController::class)->middleware('auth:web,caleg');
 

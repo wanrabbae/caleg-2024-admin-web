@@ -112,7 +112,6 @@ class CalegController extends Controller
             "id_legislatif" => "required",
             "alamat" => "required|max:255",
             "id_partai" => "required",
-            //"aktif" => "required",
             "foto" => "file|image|max:5120"
         ];
 
