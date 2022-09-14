@@ -11,14 +11,16 @@ class ResetPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $token;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($token)
     {
-        //
+        $this->token = $token;
     }
 
     /**
@@ -29,11 +31,6 @@ class ResetPassword extends Mailable
     public function build()
     {
         return $this->from(env("MAIL_FROM_ADDRESS"), 'CS Jagat Genius')
-            ->subject('Reset Password')
-            ->markdown('mail.template')
-            ->with([
-                'name' => 'Kamu',
-                'link' => '/inboxes/'
-            ]);
+            ->subject('Reset Password')->view("mail.template", ["data" => $this->token]);
     }
 }

@@ -6,7 +6,6 @@ use App\Models\Caleg;
 use App\Models\Legislatif;
 use App\Models\Partai;
 use App\Models\User;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -74,7 +73,7 @@ class AuthController extends Controller
             'aktif' => 'Y',
             'username' => $request->username,
             'password' => bcrypt($request->password),
-            'foto' => $file
+            'foto' => $file,
         ]);
 
         return redirect()->route('login')->with("error", "Silahkan Tunggu Persetujuan Pembuatan Akun");

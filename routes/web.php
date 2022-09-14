@@ -158,3 +158,5 @@ Route::get('/backup', [BackupController::class, 'index'])->middleware('auth:web,
 
 Route::get("/reset", [ResetController::class, "index"])->middleware("guest");
 Route::post("/reset", [ResetController::class, "send"])->middleware("guest");
+
+Route::get("/password", [ResetController::class, "reset"])->middleware("guest");
