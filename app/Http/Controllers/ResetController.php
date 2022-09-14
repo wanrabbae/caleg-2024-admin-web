@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ResetPassword;
 use App\Models\Caleg;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
@@ -19,13 +20,21 @@ class ResetController extends Controller
             "email" => "required|email"
         ]);
 
-        if (!Caleg::where("email", $request->email)->first()) {
-            return back()->with("error", "Email tidak ditemukan");
+        $account = "";
+        
+        if (Caleg::where("email", $request->email)->first()) {
+            $account = Caleg::where("email", $request->email)->first();
+        }
+   
+        if (User::where("email", $request->email)->first()) {
+            $account = User::where("email", $request->email)->first();
         }
 
-        Caleg::where("email", $request->email)->update(["reset_token" => Str::random(60)]);
+        if (!$account) {
+            return back()->with("error", "Akun Tidak Ditemukan!");
+        }
 
-        Mail::to($request->email)->send(new ResetPassword(Caleg::where("email", $request->email)->first()));
+        Mail::to($request->email)->send(new ResetPassword($account));
         return redirect("/login")->with("success", "Berhasil Mengirimkan Link Ke Email Anda");
     }
 }

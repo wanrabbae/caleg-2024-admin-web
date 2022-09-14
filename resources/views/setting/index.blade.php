@@ -1,8 +1,7 @@
 @extends('layouts.admin')
 
 @section("content")
-@auth("web")
-@else
+@auth("caleg")
 <div class="card shadow mb-4">
   <div class="card-header py-3">
         <h3 class="text-primary">Setting Profile</h3>
@@ -69,7 +68,7 @@
     </form>
     </div>
 </div>
-@endauth
+@else
 <div class="card shadow mb-4">
   <div class="card-header py-3">
         <h3 class="text-primary">Setting Profile</h3>
@@ -120,4 +119,6 @@
     </form>
     </div>
 </div>
+@endauth
+
 @endsection

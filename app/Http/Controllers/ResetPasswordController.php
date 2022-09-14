@@ -8,13 +8,13 @@ use Illuminate\Http\Request;
 class ResetPasswordController extends Controller
 {
     public function index() {
-        $caleg = Caleg::where("reset_token", request("token"))->first();
+        $data = Caleg::where("reset_token", request("token"))->first() ?? User::where("reset_token", $request("token"))->first();
         if (request("token") != $caleg->reset_token) {
             return redirect("login")->with("error", "Token Tidak Sama!");
         }
         
         return view("mail.reset", [
-            "data" => $caleg
+            "data" => $data
         ]);
     }
 
