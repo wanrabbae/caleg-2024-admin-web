@@ -14,7 +14,7 @@ class ResetController extends Controller
         return view("mail.index");
     }
 
-    public function send(Request $request) {
+    public function send(Request $request) {    
         $request->validate([
             "email" => "required|email"
         ]);
@@ -23,13 +23,9 @@ class ResetController extends Controller
             return back()->with("error", "Email tidak ditemukan");
         }
 
-        Mail::to($request->email)->send(new ResetPassword(Caleg::where("email", $request->email)->first()));
-        return back()->with("success", "Berhasil Mengirimkan Link Ke Email Anda");
-    }
+        Caleg::where("email", $request->email)->update(["reset_token" => Str::random(60)]);
 
-    public function reset() {
-        return view("mail.reset", [
-            ""
-        ]);
+        Mail::to($request->email)->send(new ResetPassword(Caleg::where("email", $request->email)->first()));
+        return redirect("/login")->with("success", "Berhasil Mengirimkan Link Ke Email Anda");
     }
 }

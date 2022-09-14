@@ -46,7 +46,7 @@
         </span>
         </table>
         <span style="margin-top: 16px; font-size: 20px; text-align: center;">Klik Disini Untuk Reset Password Anda</span>
-        <a href="{{ env("APP_URL") }}/reset?token={{ $data->reset_token }}">
+        <a href="{{ env("APP_URL") . "/resetpassword?token=$data->reset_token" }}">
             <button class="btn">
                 Reset Password
             </button>

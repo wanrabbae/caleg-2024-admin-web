@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CalegController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\BeritaController;
 use App\Http\Controllers\DaftarIsuController;
 use App\Http\Controllers\DashboardController;
@@ -159,4 +160,5 @@ Route::get('/backup', [BackupController::class, 'index'])->middleware('auth:web,
 Route::get("/reset", [ResetController::class, "index"])->middleware("guest");
 Route::post("/reset", [ResetController::class, "send"])->middleware("guest");
 
-Route::get("/password", [ResetController::class, "reset"])->middleware("guest");
+Route::get("/resetpassword", [ResetPasswordController::class, "index"])->middleware("guest");
+Route::post("/resetpassword", [ResetPasswordController::class, "update"])->middleware("guest");

@@ -46,6 +46,15 @@
                                             Send
                                         </button>
                                         <hr>
+                                        <div class="text-center">
+                                        <a class="small" href="{{ asset("register") }}">Register a new membership</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="{{ asset("administrator") }}">Login as admin</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="{{ asset("login") }}">Login as Caleg</a>
+                                    </div>
                                     </form>
                                 </div>
                             </div>
