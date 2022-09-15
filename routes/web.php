@@ -66,7 +66,7 @@ Route::get("/me", [ProfileController::class, "index"])->middleware("auth:web,cal
 Route::get("/setting", [SettingController::class, "index"])->middleware("auth:web,caleg");
 Route::put("/setting/{id}", [SettingController::class, "update"])->middleware("auth:web,caleg");
 // Caleg Routes
-Route::resource('/caleg', CalegController::class)->middleware('auth:web,caleg');
+Route::resource('/caleg', CalegController::class)->middleware('auth');
 
 //Dashboard Routes
 Route::resource('/dashboard/legislatif', DashboardLegislatifController::class)->middleware('auth:web,caleg');
@@ -161,9 +161,9 @@ Route::prefix('email')
 Route::get('/documentation', [DocumentationController::class, 'index'])->middleware('auth:web,caleg');
 
 // Backup Route
-Route::get('/backup', [BackupController::class, 'index'])->middleware('auth:web,caleg');
-Route::get('/backup/create', [BackupController::class, 'store'])->middleware('auth:web,caleg');
-Route::delete('/backup/{i}', [BackupController::class, 'delete'])->middleware('auth:web,caleg');
+Route::get('/backup', [BackupController::class, 'index'])->middleware('auth');
+Route::get('/backup/create', [BackupController::class, 'store'])->middleware('auth');
+Route::delete('/backup/{i}', [BackupController::class, 'delete'])->middleware('auth');
 
 Route::get("/reset", [ResetController::class, "index"])->middleware("guest");
 Route::post("/reset", [ResetController::class, "send"])->middleware("guest");

@@ -46,12 +46,13 @@ class DashboardMedsosController extends Controller
         }
 
         $data = $request->validate([
-            "nama_medsos" => "required|max:255|unique:medsos",
+            "nama_medsos" => "required|max:255",
+            "link_medsos" => "required|max:255",
             "id_caleg" => "required",
             "logo" => "image|max:2048|required"
-    ]);
+        ]);
 
-    $data["logo"] = $request->file("logo")->store("/images", "public_path");
+        $data["logo"] = $request->file("logo")->store("/images", "public_path");
 
         if (Medsos::create($data)) {
             return back()->with("success", "Success Create New Medsos");
@@ -99,13 +100,11 @@ class DashboardMedsosController extends Controller
         }
 
         $rules = [
+            "nama_medsos" => "required|max:255",
+            "link_medsos" => "required",
             "id_caleg" => "required",
             "logo" => "max:2024|image"
         ];
-
-        if ($request->nama_medsos != $medsos->nama_medsos) {
-            $rules["nama_medsos"] = "required|max:255|unique:medsos";
-        }
 
         $data = $request->validate($rules);
         

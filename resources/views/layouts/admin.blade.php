@@ -55,7 +55,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+            Module
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -246,7 +246,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Labels
+                Backup
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->

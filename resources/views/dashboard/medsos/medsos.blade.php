@@ -17,7 +17,9 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Medsos</th>
+                        @auth("web")
                         <th>Caleg</th>
+                        @endauth
                         <th>Logo</th>
                         <th>Action</th>
                     </tr>
@@ -27,8 +29,14 @@
                         @foreach($dataArr as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->nama_medsos }}</td>
+                                <td>
+                                <a href="http://{{ $data->link_medsos }}" target="_blank" class="btn btn-primary">
+                                  {{ $data->nama_medsos }}
+                                </a>
+                                </td>
+                                @auth("web")
                                 <td>{{ $data->caleg->nama_caleg }}</td>
+                                @endauth
                                 <td>
                                     @if (File::exists($data->logo))
                                     <img src="{{ asset($data->logo) }}" alt="" class="mx-auto d-block" style="width: 75px">
@@ -75,6 +83,10 @@
                   <label for="medsos">Nama Medsos</label>
                   <input type="text" class="form-control" id="medsos" placeholder="Nama Medsos" name="nama_medsos">
                 </div>
+                <div class="form-group">
+                  <label for="link">Link Medsos</label>
+                  <input type="text" class="form-control" id="link" placeholder="Link Medsos" name="link_medsos">
+                </div>
                 @auth("web")
                 <div class="form-group">
                   <label for="id_caleg">Pilih Caleg</label>
@@ -120,6 +132,10 @@
                     <input type="text" class="form-control edit" id="edit_nama_medsos" placeholder="Nama Partai" name="nama_medsos">
                 </div>
                 <div class="form-group">
+                  <label for="link">Link Medsos</label>
+                  <input type="text" class="form-control" id="edit_link_medsos" placeholder="Link Medsos" name="link_medsos">
+                </div>
+                <div class="form-group">
                   <label for="id_caleg">Pilih Caleg</label>
                     <select class="form-control" name="id_caleg" id="edit_id_caleg">
                       @foreach ($caleg as $item)
@@ -149,6 +165,7 @@
         {
             document.getElementById("edit_form").action = `/dashboard/medsos/${data}`
                 document.getElementById(`edit_nama_medsos`).value = resp.nama_medsos;
+                document.getElementById(`edit_link_medsos`).value = resp.link_medsos;
                 @auth("web")
                 document.getElementById(`edit_id_caleg`).value = resp.id_caleg;
                 @endauth
