@@ -7,9 +7,12 @@ use App\Models\Caleg;
 use App\Models\Rk_pemilih;
 use App\Models\Rk_pemilih_2;
 use App\Models\User;
-use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\Kecamatan;
 use Illuminate\Http\Request;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Box\Spout\Common\Entity\Row;
+use Illuminate\Support\Facades\File;
 
 class DptController extends Controller
 {
@@ -30,22 +33,91 @@ class DptController extends Controller
     }
 
     public function store() {
-    $users = Rk_pemilih::all();
+    $data = Rk_pemilih::all();
 
-    // Export all users
-    (new FastExcel($users))->export('dt.xlsx');
+    $writer = WriterEntityFactory::createXLSXWriter();
+    $writer->openToBrowser("caleg.xlsx");
 
+    $title = [
+        "id_pemilih",
+        "id_caleg",
+        "nik",
+        "nama",
+        "tempat_lahir",
+        "tgl_lahir",
+        "jk",
+        "tps",
+        "id_desa",
+        "relawan",	
+        "saksi",
+        "tgl_data",
+        "id_users"
+    ];
+    $row = WriterEntityFactory::createRowFromArray($title);
+    $writer->addRow($row);
+
+    foreach ($data as $value) {
+        $row = WriterEntityFactory::createRowFromArray([
+            $value->id_pemilih,
+            $value->id_caleg,
+            $value->nik,
+            $value->nama,
+            $value->tempat_lahir,
+            $value->tgl_lahir,
+            $value->jk,
+            $value->tps,
+            $value->id_desa,
+            $value->relawan,
+            $value->saksi,
+            $value->tgl_data,
+            $value->id_users,
+        ]);
+        $writer->addRow($row);
+    };
+
+    $writer->close();
     }
 
-    public function update() {
-        $users = (new FastExcel)->import('fitest.xlsx', function ($line) {
-        
-        return User::create([
+    public function update(Request $request) {
+        if ($request->has("dpt")) {
+            $reader = ReaderEntityFactory::createXLSXReader();
+            $reader->open($request->file("dpt"));
+            $arr = [];
+            foreach ($reader->getSheetIterator() as $sheet) {
+                foreach ($sheet->getRowIterator() as $i => $row) {
+                        if ($i != 1) {
+                        $cells = $row->getCells();
+                        array_push($arr,
+                        [
+                            "id_pemilih" => $cells[0]->getValue(),
+                            "id_caleg" => $cells[1]->getValue(),
+                            "nik" => $cells[2]->getValue(),
+                            "nama" => $cells[3]->getValue(),
+                            "tempat_lahir" => $cells[4]->getValue(),
+                            "tgl_lahir" => $cells[5]->getValue(),
+                            "jk" => $cells[6]->getValue(),
+                            "tps" => $cells[7]->getValue(),
+                            "id_desa" => $cells[8]->getValue(),
+                            "relawan" => $cells[9]->getValue(),	
+                            "saksi" => $cells[10]->getValue(),
+                            "tgl_data" => $cells[11]->getValue(),
+                            "id_users" => $cells[12]->getValue()
+                        ]
+                        );
+                    }
+                }
+            }
+        }
 
-        ]);
-    
-    });
-    
+        $reader->close();
+        $dpt = Rk_pemilih::all();
+        Rk_pemilih::truncate();
+        if (Rk_pemilih::insert($arr)) {
+            return back()->with("success", "Data DPT berhasil di impor, silahkan tunggu hingga proses impor selesai. Mungkin akan memakan banyak waktu jika terdapat data yang banyak");
+        }
+        Rk_pemilih::insert($dpt);
+        return back()->with("error", "Error Saat Mengimpor DPT");
+
     }
 
     /*public function store(Request $request)

@@ -123,7 +123,7 @@ Route::prefix('dpt')
     ->group(function () {
         Route::get('/', [DPTController::class, 'index'])->name('dpt');
         Route::get('/export', [DPTController::class, 'store'])->name('dpt-store');
-        Route::get('/import', [DPTController::class, 'update'])->name('dpt-update');
+        Route::post('/import', [DPTController::class, 'update'])->name('dpt-update');
         Route::get('/fetch', [DPTController::class, 'fetch'])->name('dpt-fetch');
         Route::get('/{id}', [DPTController::class, 'show'])->name('dpt-show');
         Route::put('/{id}', [DPTController::class, 'update'])->name('dpt-update');

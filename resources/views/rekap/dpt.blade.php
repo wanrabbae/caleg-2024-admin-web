@@ -9,13 +9,17 @@
                 Create
             </button> --}}
             <a href="{{ asset("dpt/export") }}" class="btn btn-primary">
-            <i class="fa-solid fa-file-export"></i>
+            <i class="fas fa-download"></i>
                 Export
             </a>
-            <a href="{{ asset("dpt/import") }}" class="btn btn-primary">
-            <i class="fa-solid fa-file-import"></i>
-                Import
-            </a>
+            <form action="{{ asset("dpt/import") }}" method="POST" class="d-inline" enctype="multipart/form-data">
+            @csrf
+                <input type="file" id="dpt" name="dpt" style="opacity: 0; display: none;">
+                <label for="dpt" class="btn-primary btn mt-2">
+                    <i class="fas fa-file-import"></i>
+                        Import
+                    </label>
+            </form>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -75,7 +79,7 @@
     </div>
 
     {{-- Modal Create data DPT --}}
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -115,10 +119,10 @@
                             <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
                             <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" placeholder="Masukan Tanggal Lahir">
                         </div>
-                        {{-- <div class="form-group">
+                        <div class="form-group">
                             <label for="tgl_data" class="form-label">Tanggal Data Ditambahkan</label>
                             <input type="datetime-local" class="form-control" id="tgl_data" name="tgl_data" placeholder="Masukan Tanggal Lahir">
-                        </div> --}}
+                        </div>
                         <div class="form-group">
                             <label for="jk" class="form-label">Jenis Kelamin</label>
                             <select name="jk" id="jk" class="form-control form-select">
@@ -176,7 +180,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -218,10 +222,10 @@
                             <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
                             <input type="date" class="form-control" id="edit_tgl_lahir" name="tgl_lahir" placeholder="Masukan Tanggal Lahir">
                         </div>
-                        {{-- <div class="form-group">
+                        <div class="form-group">
                             <label for="tgl_data" class="form-label">Tanggal Data Ditambahkan</label>
                             <input type="datetime-local" class="form-control" id="edit_tgl_data" name="tgl_data" placeholder="Masukan Tanggal Lahir">
-                        </div> --}}
+                        </div>
                         <div class="form-group">
                             <label for="jk" class="form-label">Jenis Kelamin</label>
                             <select name="jk" id="edit_jk" class="form-control form-select">
@@ -279,7 +283,7 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div> 
     <script>
     function getData(params) {
     fetch(`/dpt/${params}`).then(response => response.json()).then(response => {
@@ -299,5 +303,10 @@
         document.getElementById("edit_id_users").value = response.id_users
     })
 }
-</script>
+
+        document.getElementById("dpt").addEventListener("change", function(e) {
+            e.target.form.submit();
+        })
+    </script>
+
 @endsection
