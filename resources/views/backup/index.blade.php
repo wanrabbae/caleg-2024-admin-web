@@ -5,11 +5,12 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3">
             <!-- Button trigger modal -->
-            <a href="{{ asset("backup") }}"></a>
+            <a href="{{ asset("backup/create") }}">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
                 <i class="fas fa-disk"></i>
                 Backup Now
             </button>
+            </a>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -18,28 +19,29 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Backup</th>
-                        <th>Waktu Backup</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if ($dataArr->count())
-                        @foreach($dataArr as $data)
+                        @foreach($dataArr as $i => $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data["filename"] }}</td>
-                                {{-- <td class="d-flex justify-content-center">
-                                    <button class="btn btn-warning mx-3" onclick="getData({{ $data->id_legislatif }})" data-toggle="modal" data-target="#editModal">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <form action="/dashboard/legislatif/{{ $data->id_legislatif }}" method="POST" class="d-inline">
+                                <td class="d-flex justify-content-center">
+                                    <a href="{{ asset("backup?download=$i") }}">
+                                        <button type="submit" class="btn btn-primary mr-4">
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </a>
+                                    <form action="{{ asset("backup/$i") }}" method="POST" class="d-inline">
                                         @method("delete")
                                         @csrf
                                         <button type="submit" class="btn btn-danger">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </form>
-                                </td> --}}
+                                </td>
                             </tr>
                         @endforeach
                     @endif

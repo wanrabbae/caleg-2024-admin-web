@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Caleg">
     <meta name="author" content="Alwan, Iqro, Ibnu">
+    <link rel="icon" type="image/x-icon" href="{{ asset("images/favicon.ico") }}">
 
     <title>{{ $title ?? 'Laravel' }}</title>
 

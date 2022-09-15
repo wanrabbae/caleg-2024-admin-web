@@ -13,6 +13,12 @@ class BackupController extends Controller
         foreach ($data as $file) {
             $files->push(pathinfo($file));
         }
+        $files = $files->sortByDesc("filename");
+
+        if (request()->has("download")) {
+            $file = $files[request("download")]["basename"];
+            return Storage::download("backup/$file");
+        }
 
         return view("backup.index", [
             "title" => "Backup Data",
@@ -22,12 +28,25 @@ class BackupController extends Controller
 
     public function store() {
         if (!\Artisan::call("db:backup")) {
-           return back()->with("success", \Artisan::output());
+           return back()->with("success", "Success Backup Database");
         }
         return back()->with("error", "Error, Can't Backup Database");
     }
 
-    public function delete($id) {
-        Storage::delete("backup");
+    public function download(Request $request) {
+    
+    }
+
+    public function delete($i) {
+        $data = Storage::allFiles("backup");
+        $files = collect([]);
+        foreach ($data as $file) {
+            $files->push(pathinfo($file));
+        }
+        $file = $files->sortByDesc("filename")[$i]["basename"];
+        if (Storage::delete("backup/$file")) {
+            return back()->with("success", "Success Delete Database");
+        }
+        return back()->with("error", "Error When Deleting Database");
     }
 }

@@ -162,6 +162,8 @@ Route::get('/documentation', [DocumentationController::class, 'index'])->middlew
 
 // Backup Route
 Route::get('/backup', [BackupController::class, 'index'])->middleware('auth:web,caleg');
+Route::get('/backup/create', [BackupController::class, 'store'])->middleware('auth:web,caleg');
+Route::delete('/backup/{i}', [BackupController::class, 'delete'])->middleware('auth:web,caleg');
 
 Route::get("/reset", [ResetController::class, "index"])->middleware("guest");
 Route::post("/reset", [ResetController::class, "send"])->middleware("guest");
