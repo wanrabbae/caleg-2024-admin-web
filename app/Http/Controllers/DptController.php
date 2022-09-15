@@ -6,8 +6,8 @@ use App\Models\Desa;
 use App\Models\Caleg;
 use App\Models\Rk_pemilih;
 use App\Models\Rk_pemilih_2;
-use App\Models\Monitoring_Saksi;
 use App\Models\User;
+use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 
@@ -28,7 +28,27 @@ class DptController extends Controller
     {
         return response()->json(Rk_pemilih::find($id));
     }
-    public function store(Request $request)
+
+    public function store() {
+    $users = Rk_pemilih::all();
+
+    // Export all users
+    (new FastExcel($users))->export('dt.xlsx');
+
+    }
+
+    public function update() {
+        $users = (new FastExcel)->import('fitest.xlsx', function ($line) {
+        
+        return User::create([
+
+        ]);
+    
+    });
+    
+    }
+
+    /*public function store(Request $request)
     {
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
@@ -52,8 +72,9 @@ class DptController extends Controller
             return back()->with('success', 'Success Create New Data DPT');
         }
         return back()->with('error', "Error, Can't Create New Data DPT");
-    }
-    public function update(Request $request, $id)
+    }*/
+
+    /*public function update(Request $request, $id)
     {
         $pemilih = Rk_pemilih::find($id);
         if (auth("caleg")->check()) {
@@ -83,7 +104,8 @@ class DptController extends Controller
             return back()->with('success', 'Success Update New Data DPT');
         }
         return back()->with('error', "Error, Can't Update New Data DPT");
-    }
+    }*/
+
     public function delete($id)
     {
         if (Rk_pemilih::destroy($id) && Rk_pemilih_2::destroy($id)) {

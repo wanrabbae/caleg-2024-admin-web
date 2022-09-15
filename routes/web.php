@@ -120,10 +120,10 @@ Route::prefix('/program')
     });
 
 Route::prefix('dpt')
-    ->middleware('auth:web,caleg')
     ->group(function () {
         Route::get('/', [DPTController::class, 'index'])->name('dpt');
-        Route::post('/', [DPTController::class, 'store'])->name('dpt-store');
+        Route::get('/export', [DPTController::class, 'store'])->name('dpt-store');
+        Route::get('/import', [DPTController::class, 'update'])->name('dpt-update');
         Route::get('/fetch', [DPTController::class, 'fetch'])->name('dpt-fetch');
         Route::get('/{id}', [DPTController::class, 'show'])->name('dpt-show');
         Route::put('/{id}', [DPTController::class, 'update'])->name('dpt-update');
