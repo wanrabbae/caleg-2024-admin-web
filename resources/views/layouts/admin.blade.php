@@ -138,10 +138,12 @@
                             <i class="fas fa-tasks"></i>
                             <span>Program</span>
                         </a>
+                        @auth("web")
                         <a class="collapse-item font-weight-bold" href="{{ asset('dpt') }}">
                             <i class="fas fa-clipboard-list"></i>
                             <span>DPT</span>
                         </a>
+                        @endauth
                         <a class="collapse-item font-weight-bold" href="{{ asset('agenda') }}">
                             <i class="fas fa-calendar"></i>
                             <span>Agenda</span>
@@ -241,6 +243,7 @@
                 </a>
             </li>
 
+            @auth("web")
             <!-- Divider -->
             <hr class="sidebar-divider">
 
@@ -250,7 +253,6 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            @auth("web")
             <li class="nav-item">
                 <a class="nav-link" href="{{ asset('backup') }}">
                     <i class="far fa-save"></i>

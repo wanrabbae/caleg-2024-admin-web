@@ -14,7 +14,7 @@ class AgendaController extends Controller
      */
     public function index()
     {
-        return view("rekap.dpt_manual", [
+        return view("rekap.agenda", [
             "title" => "Halaman Agenda",
             "dataArr" => Agenda::all()
     ]);

@@ -32,4 +32,20 @@ class Relawan extends Model
     {
         return $this->belongsTo(Caleg::class, 'id_caleg');
     }
+
+    public function daftarIsu() {
+        return $this->hasMany(Daftar_Isu::class, "id_relawan");
+    }
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($relawan) {
+            $relawan->daftarIsu()->each(function($value) {
+                $value->check();
+            });
+        });
+    }
+
+    
 }

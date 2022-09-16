@@ -6,10 +6,13 @@ use App\Models\Desa;
 use App\Models\Caleg;
 use App\Models\Rk_pemilih;
 use App\Models\Rk_pemilih_2;
-use App\Models\Monitoring_Saksi;
 use App\Models\User;
 use App\Models\Kecamatan;
 use Illuminate\Http\Request;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
+use Box\Spout\Common\Entity\Row;
+use Illuminate\Support\Facades\File;
 
 class DptController extends Controller
 {
@@ -28,7 +31,101 @@ class DptController extends Controller
     {
         return response()->json(Rk_pemilih::find($id));
     }
-    public function store(Request $request)
+
+    public function store() {
+    $data = Rk_pemilih::all();
+
+    $writer = WriterEntityFactory::createXLSXWriter();
+    $writer->openToBrowser("caleg.xlsx");
+
+    $title = [
+        "id_pemilih",
+        "id_caleg",
+        "nik",
+        "nama",
+        "tempat_lahir",
+        "tgl_lahir",
+        "jk",
+        "tps",
+        "id_desa",
+        "relawan",	
+        "saksi",
+        "tgl_data",
+        "id_users"
+    ];
+
+    $row = WriterEntityFactory::createRowFromArray($title);
+    $writer->addRow($row);
+
+    foreach ($data as $value) {
+        $row = WriterEntityFactory::createRowFromArray([
+            $value->id_pemilih,
+            $value->id_caleg,
+            $value->nik,
+            $value->nama,
+            $value->tempat_lahir,
+            $value->tgl_lahir,
+            $value->jk,
+            $value->tps,
+            $value->id_desa,
+            $value->relawan,
+            $value->saksi,
+            $value->tgl_data,
+            $value->id_users,
+        ]);
+        $writer->addRow($row);
+    };
+
+    $writer->close();
+    }
+
+    public function update(Request $request) {
+        $request->validate([
+            "dpt" => "file|required|mimes:xlsx"
+        ]);
+
+        if ($request->has("dpt")) {
+            $reader = ReaderEntityFactory::createXLSXReader();
+            $reader->open($request->file("dpt"));
+            $arr = [];
+            foreach ($reader->getSheetIterator() as $sheet) {
+                foreach ($sheet->getRowIterator() as $i => $row) {
+                        if ($i != 1) {
+                        $cells = $row->getCells();
+                        array_push($arr,
+                        [
+                            "id_pemilih" => $cells[0]->getValue(),
+                            "id_caleg" => $cells[1]->getValue(),
+                            "nik" => $cells[2]->getValue(),
+                            "nama" => $cells[3]->getValue(),
+                            "tempat_lahir" => $cells[4]->getValue(),
+                            "tgl_lahir" => $cells[5]->getValue(),
+                            "jk" => $cells[6]->getValue(),
+                            "tps" => $cells[7]->getValue(),
+                            "id_desa" => $cells[8]->getValue(),
+                            "relawan" => $cells[9]->getValue(),	
+                            "saksi" => $cells[10]->getValue(),
+                            "tgl_data" => $cells[11]->getValue(),
+                            "id_users" => $cells[12]->getValue()
+                        ]
+                        );
+                    }
+                }
+            }
+        }
+
+        $reader->close();
+        $dpt = Rk_pemilih::all();
+        Rk_pemilih::truncate();
+        if (Rk_pemilih::insert($arr)) {
+            return back()->with("success", "Data DPT berhasil di impor, silahkan tunggu hingga proses impor selesai. Mungkin akan memakan banyak waktu jika terdapat data yang banyak");
+        }
+        Rk_pemilih::insert($dpt);
+        return back()->with("error", "Error Saat Mengimpor DPT");
+
+    }
+
+    /*public function store(Request $request)
     {
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
@@ -52,8 +149,9 @@ class DptController extends Controller
             return back()->with('success', 'Success Create New Data DPT');
         }
         return back()->with('error', "Error, Can't Create New Data DPT");
-    }
-    public function update(Request $request, $id)
+    }*/
+
+    /*public function update(Request $request, $id)
     {
         $pemilih = Rk_pemilih::find($id);
         if (auth("caleg")->check()) {
@@ -83,7 +181,8 @@ class DptController extends Controller
             return back()->with('success', 'Success Update New Data DPT');
         }
         return back()->with('error', "Error, Can't Update New Data DPT");
-    }
+    }*/
+
     public function delete($id)
     {
         if (Rk_pemilih::destroy($id) && Rk_pemilih_2::destroy($id)) {
