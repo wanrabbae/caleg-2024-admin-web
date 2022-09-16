@@ -16,6 +16,16 @@ class Partai extends Model
 
     public function caleg()
     {
-        return $this->hasMany(Caleg::class);
+        return $this->hasMany(Caleg::class, "id_partai");
+    }
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($partai) {
+            $partai->caleg()->each(function($value) {
+                $value->delete();
+            });
+        });
     }
 }

@@ -14,8 +14,20 @@ class Legislatif extends Model
     protected $primaryKey = "id_legislatif";
     protected $guarded = [];
 
+
     public function caleg()
     {
-        return $this->hasMany(Caleg::class);
+        return $this->hasMany(Caleg::class, "id_legislatif");
     }
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($legislatif) {
+            $legislatif->caleg()->each(function($value) {
+                $value->delete();
+            });
+        });
+    }
+
 }

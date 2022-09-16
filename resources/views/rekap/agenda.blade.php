@@ -16,6 +16,9 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        @auth("web")
+                        <th>Caleg</th>
+                        @endauth
                         <th>Tanggal</th>
                         <th>Jam</th>
                         <th>Nama Agenda</th>
@@ -28,6 +31,9 @@
                         @foreach($dataArr as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                @auth("web")
+                                <td>{{ $data->caleg->nama_caleg }}</td>
+                                @endauth
                                 <td>{{ $data->tanggal }}</td>
                                 <td>{{ $data->jam }}</td>
                                 <td>{{ $data->nama_agenda }}</td>

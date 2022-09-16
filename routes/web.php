@@ -28,6 +28,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\EmailBlasController;
 use App\Http\Controllers\WaBlasController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
