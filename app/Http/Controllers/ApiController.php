@@ -23,16 +23,7 @@ class ApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\View\View
      */
-
-    public function getCaleg()
-    {
-        $caleg = Caleg::where('aktif', 'Y')->orderBy('id_caleg', 'DESC')->first();
-
-        return response()->json([
-            "caleg" => $caleg,
-        ],);
-    }
-
+    
     public function getProgram(Request $request)
     {
         $program = Program::where("id_caleg", $request->id_caleg)->first();
@@ -105,7 +96,7 @@ class ApiController extends Controller
     $accountLink = array (
         'credentialCode' => '7cXXXXX-XXXX-XXXX-9XXX-944XXXXXXX8',
         'ovo' => array (
-            'paymentDetails' => array ( 
+            'paymentDetails' => array (
                 0 => array (
                     'paymentType' => 'CASH',
                     'amount' => 40000,
@@ -176,11 +167,11 @@ class ApiController extends Controller
     public function getPaymentMethod(Request $request)
     {
 
-        // Set kode merchant anda 
+        // Set kode merchant anda
         $merchantCode = "DS12874";
-        // Set merchant key anda 
+        // Set merchant key anda
         $apiKey = "5d6698ea3a8eea58ef5b509b14f69895";
-        // catatan: environtment untuk sandbox dan passport berbeda 
+        // catatan: environtment untuk sandbox dan passport berbeda
 
         $datetime = date('Y-m-d H:i:s');
         $paymentAmount = $request->amount;

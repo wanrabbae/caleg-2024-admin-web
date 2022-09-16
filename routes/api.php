@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\CalegCtrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DPTController;
@@ -26,7 +27,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/getChart', [DPTController::class, 'getChart']);
 Route::get("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);
 
-Route::get("getCaleg", [ApiController::class, "getCaleg",]);
 Route::get("getProgram", [ApiController::class, "getProgram",]);
 Route::post("requestInquery", [ApiController::class, "requestInquery"]);
 Route::get("getPaymentMethod", [ApiController::class, "getPaymentMethod"]);
@@ -43,3 +43,12 @@ Route::get("getDesa", [ApiController::class, "getDesa"]);
 Route::get('/getChart/{id}', [DPTController::class, 'getChart']);
 Route::get("/getChartDesa/{id}", [SaksiMonitoringController::class, "fetch"]);
 Route::get("/getChartRelawan/{id}", [RelawanController::class, "fetch"]);
+
+//Route Caleg API
+Route::get("getCaleg", [CalegCtrl::class, "index",]);
+Route::post('postCaleg', [CalegCtrl::class, "createCaleg"]);
+Route::post('updateCaleg/{caleg:id}', [CalegCtrl::class, "updateCaleg"]);
+Route::post('deleteCaleg/{caleg:id}', [CalegCtrl::class, "deleteCaleg"]);
+
+
+
