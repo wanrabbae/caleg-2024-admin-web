@@ -94,14 +94,14 @@
             <p>Level</p>
             <span>{{ auth()->user()->level }}</span>
         </div>
-        <div class="col-md-6 mt-3">
+        <div class="col-md-12 mt-3">
             <p>Username</p>
             <input type="text" class="form-control" value="{{ auth()->user()->username }}" name="username">
         </div>
-        <div class="col-md-6 mt-3">
+        {{-- <div class="col-md-6 mt-3">
             <p>Warna</p>
             <input type="color" class="form-control" id="color" name="warna" value="{{ auth()->user()->warna }}">
-        </div>
+        </div> --}}
         <div class="col-md-12 mt-3">
             <p>Password</p>
             <input type="password" class="form-control" name="password">

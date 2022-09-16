@@ -120,6 +120,7 @@ Route::prefix('/program')
     });
 
 Route::prefix('dpt')
+    ->middleware("auth")
     ->group(function () {
         Route::get('/', [DPTController::class, 'index'])->name('dpt');
         Route::get('/export', [DPTController::class, 'store'])->name('dpt-store');

@@ -11,7 +11,8 @@ class ResetPasswordController extends Controller
 {
     public function index() {
         $data = request("user") == "caleg" ? Caleg::where("reset_token", request("token"))->first() : User::where("reset_token", request("token"))->first();
-        if (request("token") != $data->reset_token) {
+
+        if (!$data) {
             return redirect("login")->with("error", "Token Tidak Sama!");
         }
 
@@ -35,7 +36,6 @@ class ResetPasswordController extends Controller
         if ($user) {
             return redirect($request->user == "admin" ? "administrator" : "login")->with("success", "Berhasil Mengubah Pasword, Silahkan Login");
         }
-        
         return redirect($request->user == "admin" ? "administrator" : "login")->with("error", "Error Saat Mengubah Password");
     }
 }

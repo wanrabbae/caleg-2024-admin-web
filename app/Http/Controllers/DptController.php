@@ -53,6 +53,7 @@ class DptController extends Controller
         "tgl_data",
         "id_users"
     ];
+
     $row = WriterEntityFactory::createRowFromArray($title);
     $writer->addRow($row);
 
@@ -79,6 +80,10 @@ class DptController extends Controller
     }
 
     public function update(Request $request) {
+        $request->validate([
+            "dpt" => "file|required|mimes:xlsx"
+        ]);
+
         if ($request->has("dpt")) {
             $reader = ReaderEntityFactory::createXLSXReader();
             $reader->open($request->file("dpt"));

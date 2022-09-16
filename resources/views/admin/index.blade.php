@@ -23,6 +23,11 @@
                                             {{ session()->get('error') }}
                                         </div>
                                     @endif
+                                    @if (session()->has('success'))
+                                        <div class="text-success text-center mb-2 p-1" role="alert">
+                                            {{ session()->get('success') }}
+                                        </div>
+                                    @endif
                                     <form class="user" method="POST" action="{{ asset('administrator') }}">
                                         @csrf
                                         <div class="form-group">
