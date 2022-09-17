@@ -3,46 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Caleg;
-use App\Models\Legislatif;
-use App\Models\Partai;
-use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
-
-class CalegController extends Controller
+class CalegCtrl extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        return view("caleg.index", [
-            "title" => "Caleg Page",
-            "dataArr" => Caleg::all(),
-            "legislatif" => Legislatif::all(),
-            "partai" => Partai::all()
-    ]);
+        $caleg = Caleg::where('aktif', 'Y')->orderBy('id_caleg', 'ASC')->get();
+
+        return response()->json([
+            "caleg" => $caleg,
+        ],);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function createCaleg(Request $request)
     {
         $data = $request->validate([
             "nama_caleg" => "required|max:255",
@@ -63,41 +38,13 @@ class CalegController extends Controller
         $data["password"] = bcrypt($data["password"]);
 
         if (Caleg::create($data)) {
-            return back()->with("success", "Success Create New Caleg");
+            // return back()->with("success", "Success Create New Caleg");
+            return response()->json(['message' => "Success Create New Caleg", 'data' => $data], 200, );
         }
-        return back()->with("erorr", "Error When Creating New Caleg");
+        return response()->json(['message' => "Error When Creating New Caleg"], 500, );
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Caleg  $caleg
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Caleg $caleg)
-    {
-        return response()->json($caleg);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Caleg  $caleg
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Caleg $caleg)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Caleg  $caleg
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Caleg $caleg)
+    public function updateCaleg(Request $request, Caleg $caleg)
     {
         if ($request->aktif) {
             if (Caleg::where("id_caleg", $caleg->id_caleg)->update(["aktif" => $request->aktif == "Y" ? "N" : "Y"])) {
@@ -150,13 +97,7 @@ class CalegController extends Controller
         return back()->with("erorr", "Error When Updating Caleg");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Caleg  $caleg
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Caleg $caleg)
+    public function deleteCaleg(Caleg $caleg)
     {
         if (Caleg::destroy($caleg->id_caleg)) {
             File::delete($caleg->foto);
