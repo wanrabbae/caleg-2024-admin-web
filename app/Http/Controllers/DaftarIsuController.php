@@ -168,7 +168,7 @@ class DaftarIsuController extends Controller
         $isu = Daftar_Isu::find($id);
         if ($isu->delete()) {
             foreach (json_decode($isu->images) as $isuImg) {
-                File::delete("images/".$isuImg);
+                File::delete("images/$isuImg");
             }
             return back()->with('success','Success Delete Daftar Isu');
         }
