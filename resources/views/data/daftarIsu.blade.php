@@ -16,12 +16,16 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        @auth("web")
+                        <th>Caleg</th>
+                        @endauth
                         <th>Jenis</th>
                         <th>Dampak</th>
                         <th>Tanggal</th>
                         <th>Kecamatan</th>
                         <th>Pelapor</th>
                         <th>Keterangan</th>
+                        <th>Foto</th>
                         <th>Di Tanggapi</th>
                         <th>Tanggapan</th>
                         <th>Action</th>
@@ -29,11 +33,16 @@
                 </thead>
                 <tbody>
                     @if ($dataArr->count())
-                        @foreach($dataArr as $data)
+                        @foreach($dataArr as $i => $data)
                         <tr>
                             <td>
                                 {{ $loop->iteration }}
                             </td>
+                            @auth("web")
+                            <td>
+                                {{ $data->caleg->nama_caleg }}
+                            </td>
+                            @endauth
                             <td>
                                 {{ $data->jenis == "L" ? "Isu Lapangan" : "Isu Online" }}
                             <td>
@@ -50,6 +59,13 @@
                             </td>
                             <td>
                                 {{ $data->keterangan }}
+                            </td>
+                            <td>
+                              <a href="{{ asset("infoPolitik/daftarIsu?download=$data->id_isu") }}">
+                                <button type="submit" class="btn btn-primary mr-4">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </a>
                             </td>
                             <td>
                                 @if ($data->tanggapi == "N")
@@ -100,7 +116,7 @@
 </div>
 
 {{-- Modal Create --}}
-  <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+  {{-- <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -187,7 +203,7 @@
             </form>
       </div>
     </div>
-  </div>
+  </div> --}}
 
 {{-- Tangapi Modal --}}
   <div class="modal fade" id="tanggapiModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -224,7 +240,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Edit Berita</h5>
+          <h5 class="modal-title" id="editModalLabel">Edit Tanggapan</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -233,7 +249,7 @@
         <div class="modal-body">
                 @method('put')
                 @csrf
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="jenis" class="form-label" >Jenis</label>
                     <select class="form-select form-control" name="jenis" id="edit_jenis">
                             <option value="L" selected>Lapangan</option>
@@ -258,12 +274,12 @@
                         <option value="{{ $item->id_kecamatan }}">{{ $item->nama_kecamatan }}</option>
                     @endforeach
                     </select>
-                </div>
+                </div> --}}
                 <div class="form-group">
                   <label for="keterangan">Keterangan</label>
                   <textarea type="text" class="form-control" id="edit_keterangan" placeholder="Keterangan..." name="keterangan" rows="5"></textarea>
                 </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                   <label for="tanggapan">Tanggapan</label>
                   <textarea type="text" class="form-control" id="edit_tanggapan" placeholder="Tanggapan..." name="tanggapan" rows="5"></textarea>
                 </div>
@@ -273,7 +289,7 @@
                 <a href="">
                   <button type="submit" class="btn btn-primary">Edit</button>
                 </a>
-              </div>
+              </div> --}}
             </form>
       </div>
     </div>
@@ -287,15 +303,15 @@
     function getData(id) {
         fetch(`/infoPolitik/daftarIsu/${id}`).then(resp => resp.json()).then(resp => {
             document.getElementById("edit_form_2").action = `/infoPolitik/daftarIsu/${id}`
-            document.getElementById("edit_id_kecamatan").value = resp.id_kecamatan
-            document.getElementById("edit_jenis").value = resp.jenis
+            //document.getElementById("edit_id_kecamatan").value = resp.id_kecamatan
+            //document.getElementById("edit_jenis").value = resp.jenis
             document.getElementById("edit_keterangan").value = resp.keterangan
-            document.getElementById("edit_tanggal").value = resp.tanggal
-            document.getElementById("edit_tanggapan").value = resp.tanggapan
+            //document.getElementById("edit_tanggal").value = resp.tanggal
+            //document.getElementById("edit_tanggapan").value = resp.tanggapan
         })
     }
 
-    @auth("web")
+    /*@auth("web")
     document.getElementById("id_caleg").addEventListener("change", function(e) {
         fetch(`/infoPolitik/daftarIsu/relawan/${e.target.value}`).then(resp => resp.json()).then(resp => {
             let text = "";
@@ -311,7 +327,7 @@
             document.getElementById("id_relawan").innerHTML = text;
     })
 })
-@endauth
+@endauth*/
     </script>
 
 @endsection

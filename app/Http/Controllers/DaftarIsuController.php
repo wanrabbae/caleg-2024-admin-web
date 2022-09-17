@@ -6,6 +6,7 @@ use App\Models\Daftar_Isu;
 use App\Models\Caleg;
 use App\Models\Relawan;
 use App\Models\Kecamatan;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 
 class DaftarIsuController extends Controller
@@ -17,12 +18,19 @@ class DaftarIsuController extends Controller
      */
     public function index()
     {
+        if (request()->has("download")) {
+            $data = json_decode(Daftar_Isu::where("id_isu", request("download"))->first()->images);
+            foreach ($data as $value) {
+                return File::download("images/$value");
+            }
+        }
+
         return view("data.daftarIsu", [
             "title" => "Daftar Isu",
-            "dataArr" => auth("web")->check() ? Daftar_Isu::all() : Daftar_Isu::where("id_caleg", auth()->user()->id_caleg)->get(),
-            "caleg" => Caleg::all(),
-            "kecamatan" => Kecamatan::all(),
-            "relawan" => auth("caleg")->check() ? Relawan::where("id_caleg", auth()->user()->id_caleg)->get() : collect([])
+            "dataArr" => auth("web")->check() ? Daftar_Isu::with(["relawan", "caleg", "kecamatan"])->get() : Daftar_Isu::with(["relawan", "caleg", "kecamatan"])->where("id_caleg", auth()->user()->id_caleg)->get(),
+            //"caleg" => Caleg::all(),
+            //"kecamatan" => Kecamatan::all(),
+            //"relawan" => auth("caleg")->check() ? Relawan::where("id_caleg", auth()->user()->id_caleg)->get() : collect([])
     ]);
     }
 
@@ -44,7 +52,7 @@ class DaftarIsuController extends Controller
      */
     public function store(Request $request)
     {
-        if (auth("caleg")->check()) {
+        /*if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
 
@@ -61,7 +69,7 @@ class DaftarIsuController extends Controller
         if (Daftar_Isu::create($data)) {
             return back()->with("success", "Success Create New Issue");
         }
-        return back()->with("error", "Error When Creating New Issue");
+        return back()->with("error", "Error When Creating New Issue");*/
     }
 
     /**
@@ -116,12 +124,12 @@ class DaftarIsuController extends Controller
          }
 
         $data = $request->validate([
-            "jenis" => "required",
-            "dampak" => "required",
-            "tanggal" => "required|date",
-            "id_kecamatan" => "required",
+            //"jenis" => "required",
+            //"dampak" => "required",
+            //"tanggal" => "required|date",
+            //"id_kecamatan" => "required",
             "keterangan" => "required",
-            "tanggapan" => "required",
+            //"tanggapan" => "required",
         ]);
 
         if (Daftar_Isu::find($id)->update($data)) {

@@ -6,6 +6,7 @@ use App\Models\Desa;
 use App\Models\Caleg;
 use App\Models\Rk_pemilih;
 use App\Models\Rk_pemilih_2;
+use App\Models\Monitoring_Saksi;
 use App\Models\User;
 use App\Models\Kecamatan;
 use Illuminate\Http\Request;
@@ -193,7 +194,7 @@ class DptController extends Controller
 
     public function getChart($id)
     {
-        $pemilih = $id == 0 ? Rk_pemilih::with("desa.kecamatan")->get() : Rk_pemilih::with("desa.kecamatan")->where("id_caleg", $id)->get();
+        /*$pemilih = $id == 0 ? Rk_pemilih::with("desa.kecamatan")->get() : Rk_pemilih::with("desa.kecamatan")->where("id_caleg", $id)->get();
         $myArr = [];
         $found = true;
 
@@ -211,6 +212,25 @@ class DptController extends Controller
             $found = true;
         }
 
-        return response()->json($myArr);
+        return response()->json($myArr);*/
+        $arr = $id == 0 ? Monitoring_Saksi::all() : Monitoring_Saksi::where("id_caleg", $id)->get();
+        $data = [];
+        $found = true;
+
+        foreach ($arr as $arr) {
+            for ($i = 0; $i < count($data); $i++) {
+                if (in_array($arr->desa->kecamatan->nama_kecamatan, $data[$i])) {
+                    $data[$i][1] += $arr->suara_2024;
+                    $data[$i][2] += $arr->suara_2019;
+                    $found = false;
+                    break;
+                }
+            }
+            if ($found) {
+                array_push($data, [$arr->desa->kecamatan->nama_kecamatan, $arr->suara_2024, $arr->suara_2019]);
+            }
+            $found = true;
+        }
+        return response()->json($data);
     }
 }

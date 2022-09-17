@@ -15,6 +15,10 @@ class Daftar_Isu extends Model
     public $timestamps = false;
     protected $guarded = [""];
 
+    public function caleg() {
+        return $this->belongsTo(Caleg::class, "id_caleg");
+    }
+
     public function kecamatan() {
         return $this->belongsTo(Kecamatan::class, "id_kecamatan");
     }
