@@ -7,7 +7,9 @@ use App\Models\Caleg;
 use App\Models\Relawan;
 use App\Models\Kecamatan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use ZipArchive;
 
 class DaftarIsuController extends Controller
 {
@@ -20,10 +22,27 @@ class DaftarIsuController extends Controller
     {
         if (request()->has("download")) {
             $data = json_decode(Daftar_Isu::where("id_isu", request("download"))->first()->images);
-            foreach ($data as $value) {
-                return File::download("images/$value");
+            if (count($data) > 0) {
+                $zip = new ZipArchive;
+                $fileName = "images.zip";
+                if (Storage::disk("public_path")->exists($fileName)) {
+                    Storage::disk("public_path")->delete($fileName);
+                }
+
+                if ($zip->open(public_path($fileName), ZipArchive::CREATE) == TRUE) {
+                    foreach ($data as $img) {
+                        $zip->addFile("images/$img", basename($img));
+                    }
+                }
+
+                $zip->close();
+                
+                return Storage::disk("public_path")->download($fileName);
+            } else {
+                return Storage::disk("public_path")->download("images/$data[0]");
             }
         }
+    
 
         return view("data.daftarIsu", [
             "title" => "Daftar Isu",
@@ -146,7 +165,11 @@ class DaftarIsuController extends Controller
      */
     public function destroy(Daftar_Isu $daftar_Isu, $id)
     {
-        if (Daftar_Isu::destroy($id)) {
+        $isu = Daftar_Isu::find($id);
+        if ($isu->delete()) {
+            foreach ($isu as $isuImg) {
+                File::delete($isuImg);
+            }
             return back()->with("success", "Success delete issue");
         }
         return back()->with("error", "Error when deleting issue");

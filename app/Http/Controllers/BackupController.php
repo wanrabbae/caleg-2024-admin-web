@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class BackupController extends Controller
 {
@@ -17,7 +18,7 @@ class BackupController extends Controller
 
         if (request()->has("download")) {
             $file = $files[request("download")]["basename"];
-            return File::download("backups/$file");
+            return Storage::disk("public_path")->download("backups/$file");
         }
 
         return view("backup.index", [
@@ -27,7 +28,7 @@ class BackupController extends Controller
     }
 
     public function store() {
-        if (!\Artisan::call("db:backup public_path")) {
+        if (!\Artisan::call("db:backup")) {
            return back()->with("success", "Success Backup Database");
         }
         return back()->with("error", "Error, Can't Backup Database");
