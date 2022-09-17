@@ -158,7 +158,11 @@ class DptController extends Controller
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> be85f0d7168522ff56a8f748373a328c28b6ada7
         $rules = [
             "id_caleg" => "required",
             'nama' => 'required|max:100',

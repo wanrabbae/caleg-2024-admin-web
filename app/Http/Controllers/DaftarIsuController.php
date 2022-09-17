@@ -170,11 +170,11 @@ class DaftarIsuController extends Controller
             foreach (json_decode($isu->images) as $isuImg) {
                 File::delete("images/".$isuImg);
             }
-            return back()->with("success", "Success delete issue");
+            return back()->with('success','Success Delete Daftar Isu');
         }
-        return back()->with("error", "Error when deleting issue");
-    }
+        return back()->with('error','Error When Deleting Daftar Isu');
 
+    }
     public function relawan($id) {
         return response()->json(Relawan::where("id_caleg", $id)->get());
     }
