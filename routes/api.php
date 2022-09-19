@@ -68,6 +68,9 @@ Route::get('getDPT', [DptCtrl::class, 'index']);
 
 //Route Survey API
 Route::get('getSurvey', [SurveyCtrl::class, 'getSurvey']);
+Route::post('postSurvey', [SurveyCtrl::class, 'store']);
+Route::post('updateSurvey/{survey:id}', [SurveyCtrl::class, 'update']);
+Route::post('deleteSurvey/{survey:id}', [SurveyCtrl::class, 'destroy']);
 
 //Route Variable API
 Route::get('getVariabel', [VariableCtrl::class, 'getVariabel']);

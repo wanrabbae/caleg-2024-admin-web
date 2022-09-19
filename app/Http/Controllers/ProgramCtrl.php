@@ -31,10 +31,7 @@ class ProgramCtrl extends Controller
      */
     public function store(Request $request)
     {
-        if (auth("caleg")->check()) {
-            $request["id_caleg"] = auth()->user()->id_caleg;
-        }
-
+      
         $data = $request->validate([
             "judul_program" => "required|max:255",
             "id_caleg" => "required",
@@ -73,10 +70,6 @@ class ProgramCtrl extends Controller
     public function update(Request $request, $id)
     {
         $program = Program::find($id);
-
-        if (auth("caleg")->check()) {
-            $request["id_caleg"] = auth()->user()->id_caleg;
-        }
 
         $rules = [
             "deskripsi" => "required",
