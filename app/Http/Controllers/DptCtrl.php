@@ -15,8 +15,8 @@ class DptCtrl extends Controller
      */
     public function index(Request $request)
     {
-        $data = Rk_pemilih::orderBy('id_pemilih', 'ASC')->get();
-        if(!Rk_pemilih::where("nik", request("nik"))->first()){
+        $data = Rk_pemilih::where('nik', request("nik"))->get();
+        if(!Rk_pemilih::where("nik", request("nik"))->get()){
             return response()->json(['message' => 0], 500 );
         }
         return response()->json(["message" => 1, "data" => $data], 200);
