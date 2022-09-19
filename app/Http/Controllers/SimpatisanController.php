@@ -67,12 +67,12 @@ class SimpatisanController extends Controller
             "deskripsi" => "required",
             "foto" => "image|max:2048",
             "id_caleg" => "required"
-        ];  
+        ];
 
         if ($request->judul_program !== $program->judul_program) {
             $rules["judul_program"] = "required";
         }
-    
+
         $data = $request->validate($rules);
 
         if ($request->hasFile("foto")) {
