@@ -46,9 +46,9 @@ class ProgramCtrl extends Controller
 
         if (Program::create($data)) {
             // return back()->with("success", "Success Create New Program");
-            return response()->json(['message' => 'Success Create New Program', 'data' => $data], 201);
+            return response()->json(['message' => 1, 'data' => $data], 201);
         }
-        return response()->json(['message' => 'Error When Creating New Program'], 500);
+        return response()->json(['message' => 0], 500);
         // return back()->with("error", "Error, Can't Create New Program");
     }
 
@@ -97,10 +97,10 @@ class ProgramCtrl extends Controller
 
         if ($program->update($data)) {
             // return back()->with("success", "Success Update Program");
-            return response()->json(['message' => 'Success Update Program', 'data' => $data ], 200 );
+            return response()->json(['message' => 1, 'data' => $data ], 200 );
         }
         // return back()->with("error", "Error, Can't Update Program");
-        return response()->json(['message' => "Error, Can't Update Program"], 400, );
+        return response()->json(['message' => 0], 400, );
     }
 
     /**
@@ -116,10 +116,10 @@ class ProgramCtrl extends Controller
         if ($program->delete()) {
             File::delete($program->foto);
             // return back()->with("success", "Success Delete Program");
-            return response()->json(['message' => 'Success Delete Program'], 200 );
+            return response()->json(['message' => 1], 200 );
         }
         // return back()->with("error", "Error, Can't Delete Program");
-        return response()->json(['message' => "Error, Can't Delete Program"], 400 );
+        return response()->json(['message' => 0], 400 );
 
     }
 }

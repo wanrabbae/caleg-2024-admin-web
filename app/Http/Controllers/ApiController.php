@@ -23,22 +23,22 @@ class ApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\View\View
      */
-    
-    public function getProgram(Request $request)
-    {
-        $program = Program::where("id_caleg", $request->id_caleg)->first();
 
-        return response()->json([
-            "program" => $program,
-        ],);
-    }
+    // public function getProgram(Request $request)
+    // {
+    //     $program = Program::where("id_caleg", $request->id_caleg)->first();
+
+    //     return response()->json([
+    //         "program" => $program,
+    //     ],);
+    // }
 
     public function requestInquery(Request $request)
     {
         $merchantCode = "DS12874"; // dari duitku
         $apiKey = "5d6698ea3a8eea58ef5b509b14f69895"; // dari duitku
         $paymentAmount = $request->amount;
-        $paymentMethod = $request->kode; // VC = Credit Card
+        $paymentMethod = $request->kode; // VC = Cred   it Card
         $merchantOrderId = time() . ''; // dari merchant, unik
         $productDetails = 'Tes pembayaran menggunakan Duitku';
         $email = 'test@test.com'; // email pelanggan anda
@@ -255,11 +255,11 @@ class ApiController extends Controller
         }
     }
 
-    public function getGalery()
-    {
-        $galery = Galery::orderBy('id_galery', 'DESC')->get();
-        return response()->json(['gallery' => $galery]);
-    }
+    // public function getGalery()
+    // {
+    //     $galery = Galery::orderBy('id_galery', 'DESC')->get();
+    //     return response()->json(['gallery' => $galery]);
+    // }
 
     public function getVariabel()
     {

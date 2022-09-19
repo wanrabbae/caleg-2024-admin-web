@@ -6,9 +6,12 @@ use App\Http\Controllers\CalegCtrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DPTController;
+use App\Http\Controllers\DptCtrl;
+use App\Http\Controllers\GaleryCtrl;
 use App\Http\Controllers\ProgramCtrl;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\SaksiMonitoringController;
+use App\Http\Controllers\UserCtrl;
 use App\Models\Program;
 
 /*
@@ -31,7 +34,7 @@ Route::get("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);
 
 Route::post("requestInquery", [ApiController::class, "requestInquery"]);
 Route::get("getPaymentMethod", [ApiController::class, "getPaymentMethod"]);
-Route::get("getGalery", [ApiController::class, "getGalery"]);
+// Route::get("getGalery", [ApiController::class, "getGalery"]);
 Route::get("getVariabel", [ApiController::class, "getVariabel"]);
 Route::get("getSurvey", [ApiController::class, "getSurvey"]);
 Route::post("login", [ApiController::class, "login"]);
@@ -56,3 +59,14 @@ Route::get('getProgram', [ProgramCtrl::class, 'index']);
 Route::post('postProgram', [ProgramCtrl::class, 'store']);
 Route::post('updateProgram/{program:id}', [ProgramCtrl::class, 'update']);
 Route::post('deleteProgram/{program:id}', [ProgramCtrl::class, 'destroy']);
+
+//Route Galery API
+Route::get('getGalery', [GaleryCtrl::class, 'index']);
+
+//Route DPT API
+Route::get('getDPT', [DptCtrl::class, 'index']);
+Route::get('checkDPT', [DptCtrl::class, 'checkDpt']);
+
+//Route User API
+Route::get('getRelawan', [UserCtrl::class, 'index']);
+// Route::login('relawanLogin', [UserCtrl::class, 'login']);
