@@ -108,7 +108,6 @@ CREATE TABLE `daftar_isu` (
 
 LOCK TABLES `daftar_isu` WRITE;
 /*!40000 ALTER TABLE `daftar_isu` DISABLE KEYS */;
-INSERT INTO `daftar_isu` VALUES (5,5,'O','P','2022-09-17',1,5,'Ada Kebakaran!!!','[\"kebakaran1.jpeg\", \"kebakaran2.jpeg\"]','2022-09-17','G peduli');
 /*!40000 ALTER TABLE `daftar_isu` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -891,4 +890,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-17 19:11:11
+-- Dump completed on 2022-09-17 20:29:16
