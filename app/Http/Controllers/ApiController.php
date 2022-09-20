@@ -246,12 +246,6 @@ class ApiController extends Controller
         }
     }
 
-    public function getKabupaten()
-    {
-        $kabupaten = Kabupaten::orderBy('id_kabupaten', 'DESC')->get();
-
-        return response()->json(['kabupaten' => $kabupaten]);
-    }
 
     public function getKecamatan(request $request)
     {
@@ -262,7 +256,7 @@ class ApiController extends Controller
 
     public function getDesa(request $request)
     {
-        $desa = Desa::where('id_kecamatan', $request->id_kecamatan)->get();
+        $desa = Desa::where('id_kecamatan', $request->id_kecamatan)->orderBy('id_desa', 'ASC')->get();
 
         return response()->json(['desa' => $desa]);
     }

@@ -20,17 +20,5 @@ class UserCtrl extends Controller
         return response()->json(['relawan_data' =>$data], 200);
     }
 
-    public function registerRelawan( Request $request)
-    {
-        $data = $request->validate([
-           
-        ]);
-
-
-    }
-
-    public function login(Request $request)
-    {
-
-    }
+   
 }

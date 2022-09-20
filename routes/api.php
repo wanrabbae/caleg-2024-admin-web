@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DPTController;
 use App\Http\Controllers\DptCtrl;
+use App\Http\Controllers\KabupatenCtrl;
 use App\Http\Controllers\ProgramCtrl;
+use App\Http\Controllers\UserCtrl;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SurveyCtrl;
@@ -16,8 +18,7 @@ use App\Http\Controllers\VariableCtrl;
 /*
 //Route Galery API
 // Route::get('getGalery', [GaleryCtrl::class, 'index']);
-// //Route User API
-// Route::get('getRelawan', [UserCtrl::class, 'index']);
+
 // // Route::login('relawanLogin', [UserCtrl::class, 'login']);
 |--------------------------------------------------------------------------
 | API Routes
@@ -77,3 +78,9 @@ Route::get('getVariabel', [VariableCtrl::class, 'getVariabel']);
 Route::post('postVariabel', [VariableCtrl::class, 'store']);
 Route::post('updateVariabel/{variabel:id}', [VariableCtrl::class, 'update']);
 Route::post('deleteVariabel/{variabel:id}', [VariableCtrl::class, 'destroy']);
+
+//Route Kabupaten API
+Route::get('getKabupaten', [KabupatenCtrl::class, 'getKabupaten']);
+
+//Route User API
+Route::get('getRelawan', [UserCtrl::class, 'index']);
