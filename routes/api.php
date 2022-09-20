@@ -12,6 +12,7 @@ use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SurveyCtrl;
 use App\Http\Controllers\VariableCtrl;
+use App\Http\Controllers\KecamatanCtrl;
 
 /*
 //Route Galery API
@@ -77,3 +78,13 @@ Route::get('getVariabel', [VariableCtrl::class, 'getVariabel']);
 Route::post('postVariabel', [VariableCtrl::class, 'store']);
 Route::post('updateVariabel/{variabel:id}', [VariableCtrl::class, 'update']);
 Route::post('deleteVariabel/{variabel:id}', [VariableCtrl::class, 'destroy']);
+
+//Route Kecamatan API
+Route::get('getKecamatan', [KecamatanCtrl::class, 'getKecamatan']);
+Route::post('postKecamatan', [KecamatanCtrl::class, 'store']);
+Route::post('updateKecamatan/{kecamatan:id_kecamatan}', [KecamatanCtrl::class, 'update']);
+Route::post('deleteKecamatan/{kecamatan:id_kecamatan}', [KecamatanCtrl::class, 'destroy']);
+
+//Route Daftar Isu API
+Route::get('getIsu', [IsuCtrl::class, 'getIsu']);
+Route::post('postIsu', [IsuCtrl::class, 'store']);
