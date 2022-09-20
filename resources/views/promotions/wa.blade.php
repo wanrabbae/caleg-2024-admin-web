@@ -3,13 +3,13 @@
 
 @section('content')
     <div class="card shadow mb-4">
-        {{-- <div class="card-header py-3">
+        <div class="card-header py-3">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
-                <i class="fas fa-plus"></i>
-                Relawan
+            <button type="button" id="sendBtn" class="btn btn-primary" data-toggle="modal" data-target="#createModal" disabled>
+                <i class="fas fa-comments"></i>
+                Kirim Pesan Ke Relawan
             </button>
-        </div> --}}
+        </div>
 
         <div class="card-body">
             <div class="table-responsive">
@@ -17,6 +17,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Pilih</th>
                             <th>Nama Relawan</th>
                             <th>No Hp</th>
                             <th>Desa</th>
@@ -30,8 +31,9 @@
                         @if ($relawan->count())
                             @foreach ($relawan as $data)
                                 <tr>
+                                    <td>{{ $loop->iteration }}</td>
                                     <td>
-                                        <input type="checkbox" name="check" id="check" class="form-control w-50">
+                                        <input type="checkbox" name="check" class="check" class="form-control w-50">
                                     </td>
                                     <td>{{ $data->nama_relawan }}</td>
                                     <td>{{ $data->no_hp }}</td>
@@ -41,8 +43,8 @@
                                     </td>
                                     <td></td>
                                     <td>
-                                        @if (Storage::exists($data->foto_ktp))
-                                            <img src="{{ asset('storage/' . $data->foto_ktp) }}" alt="" style="width: 200px">
+                                        @if (File::exists($data->foto_ktp))
+                                            <img src="{{ asset($data->foto_ktp) }}" alt="" style="width: 200px">
                                         @else
                                             <i class="fas fa-image"></i>
                                             <span>Image Not Found</span>
@@ -77,15 +79,6 @@
                 <form action="/whatsapp" method="POST" id="sendForm">
                     @csrf
                     <div class="modal-body">
-                        @csrf
-                        <div class="form-group">
-                            <label for="nama_relawan">Nama Relawan</label>
-                            <input required value="{{ old('nama_relawan') }}" type="text" class="form-control" id="nama_relawan" placeholder="Nama Relawan" name="nama_relawan">
-                        </div>
-                        <div class="form-group">
-                            <label for="no_hp">No Hp</label>
-                            <input required value="{{ old('no_hp') }}" type="number" class="form-control" id="no_hp" placeholder="No Hp" name="no_hp">
-                        </div>
                         <div class="form-group">
                             <label for="no_hp">Pesan Japri</label>
                             <textarea name="pesan" id="pesan" cols="30" rows="4" placeholder="Pesan..." class="form-control"></textarea>
@@ -183,5 +176,16 @@
                 document.getElementById("no_hp").value = resp.no_hp
             })
         }
+
+        let checkBox = Array.from(document.getElementsByClassName("check"));
+
+        let check = e => {
+            let check = [...checkBox].filter(v => v.checked).length > 0;
+            check ? document.getElementById("sendBtn").disabled = false : document.getElementById("sendBtn").disabled = true;
+        }
+
+        checkBox.forEach((v, i) => {
+            v.addEventListener("change", check)
+        })
     </script>
 @endsection

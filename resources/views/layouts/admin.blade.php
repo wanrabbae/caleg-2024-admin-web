@@ -229,9 +229,17 @@
                 </a>
                 <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="/whatsapp"><i class="fas fa-comments"></i>Wa Blas</a>
-                        <a class="collapse-item font-weight-bold" href="/email"><i class="fas fa-envelope"></i>Email Blas</a>
-                        <a class="collapse-item font-weight-bold" href=""><i class="fas fa-mobile"></i>Info Mobile</a>
+                        <a class="collapse-item font-weight-bold" href="/whatsapp"><i class="fas fa-comments"></i>
+                        <span>Wa Blas</span>
+                        </a>
+                        <a class="collapse-item font-weight-bold" href="/email"><i class="fas fa-envelope"></i>
+                        <span>Email Blas</span>
+                        </a>
+                        <a class="collapse-item font-weight-bold" href=""><i class="fas fa-mobile"></i>
+                        <span>Info Mobile</span>
+                        </a>
+                        <a class="collapse-item font-weight-bold" href="{{ asset("config") }}"><i class="fas fa-cog"></i>
+                            <span>Setting Blas</span>
                     </div>
                 </div>
             </li>

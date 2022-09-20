@@ -142,6 +142,7 @@ Route::prefix('whatsapp')
     ->middleware('auth:web,caleg')
     ->group(function () {
         Route::get('/', [WaBlasController::class, 'index'])->name('wa');
+        Route::get("/send", [WaBlasController::class, "send"])->name("wa-send");
         // Route::post('/', [WaBlasController::class, 'store'])->name('wa-store');
         // Route::get('/{id}', [WaBlasController::class, 'show'])->name('wa-show');
         // Route::put('/{id}', [WaBlasController::class, 'update'])->name('wa-update');

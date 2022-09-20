@@ -14,7 +14,6 @@ class IsuCtrl extends Controller
      */
     public function getIsu(Request $request)
     {
-        $isu = Daftar_Isu::where()
     }
 
     /**
