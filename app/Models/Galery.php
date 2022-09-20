@@ -9,6 +9,16 @@ class Galery extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $table = 'galery';
 
+    protected $guarded = [''];
+
+    protected $primaryKey = 'id_galery';
+
+    public $timestamps = false;
+
+    public function caleg()
+    {
+        return $this->hasMany(Caleg::class, "id_caleg");
+    }
 }

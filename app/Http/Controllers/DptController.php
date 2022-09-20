@@ -49,7 +49,7 @@ class DptController extends Controller
         "jk",
         "tps",
         "id_desa",
-        "relawan",	
+        "relawan",
         "saksi",
         "tgl_data",
         "id_users"
@@ -104,7 +104,7 @@ class DptController extends Controller
                             "jk" => $cells[6]->getValue(),
                             "tps" => $cells[7]->getValue(),
                             "id_desa" => $cells[8]->getValue(),
-                            "relawan" => $cells[9]->getValue(),	
+                            "relawan" => $cells[9]->getValue(),
                             "saksi" => $cells[10]->getValue(),
                             "tgl_data" => $cells[11]->getValue(),
                             "id_users" => $cells[12]->getValue()
@@ -158,7 +158,11 @@ class DptController extends Controller
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
-        
+<<<<<<< HEAD
+
+=======
+
+>>>>>>> be85f0d7168522ff56a8f748373a328c28b6ada7
         $rules = [
             "id_caleg" => "required",
             'nama' => 'required|max:100',

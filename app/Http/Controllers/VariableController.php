@@ -95,7 +95,7 @@ class VariableController extends Controller
 
        $rule = [];
 
-        if ($request->nama_variable !== Variabel::find($id_variabel)->nama_variable) {
+        if ($request->nama_variable !== Variabel::find($id_variabel)->nama_variabel) {
             $rule["nama_variabel"] = "required|unique:variabel";
         }
 

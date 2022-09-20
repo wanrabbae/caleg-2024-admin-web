@@ -36,13 +36,13 @@ class DaftarIsuController extends Controller
                 }
 
                 $zip->close();
-                
+
                 return Storage::disk("public_path")->download($fileName);
             } else {
                 return Storage::disk("public_path")->download("images/$data[0]");
             }
         }
-    
+
 
         return view("data.daftarIsu", [
             "title" => "Daftar Isu",
@@ -126,7 +126,7 @@ class DaftarIsuController extends Controller
             $request->validate([
                 "btn_tanggapan" => "required"
             ]);
-            
+
              if (Daftar_Isu::find($id)->update(["tanggapan" => $request->btn_tanggapan])) {
                 Daftar_Isu::find($id)->update(["tanggapi" => now()->toDateString()]);
                 return back()->with("success", "Successfully responded");
@@ -170,11 +170,11 @@ class DaftarIsuController extends Controller
             foreach (json_decode($isu->images) as $isuImg) {
                 File::delete("images/$isuImg");
             }
-            return back()->with("success", "Success delete issue");
+            return back()->with('success','Success Delete Daftar Isu');
         }
-        return back()->with("error", "Error when deleting issue");
-    }
+        return back()->with('error','Error When Deleting Daftar Isu');
 
+    }
     public function relawan($id) {
         return response()->json(Relawan::where("id_caleg", $id)->get());
     }

@@ -50,7 +50,7 @@ class SaksiDaftarController extends Controller
             "id_caleg" => "required"
     ]);
 
-    if (auth("web")->check()) {
+    if (auth("web")->check()) {  
         if (!Relawan::where("nik", $request->nik)->first()) {
             return back()->with("error", "Error, There no Relawan with NIK $request->nik");
         }
@@ -63,7 +63,7 @@ class SaksiDaftarController extends Controller
     if (Daftar_Saksi::create($data)) {
         return redirect("/saksi/daftar")->with("success", "Success Create Saksi with NIK $request->nik");
     }
-        
+
         return back()->with("error", "Error, Can't Create Saksi with NIK $request->nik");
     }
 

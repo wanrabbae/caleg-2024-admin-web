@@ -39,18 +39,20 @@ class CalegCtrl extends Controller
 
         if (Caleg::create($data)) {
             // return back()->with("success", "Success Create New Caleg");
-            return response()->json(['message' => "Success Create New Caleg", 'data' => $data], 200, );
+            return response()->json(['message' => 1, 'data' => $data], 201);
         }
-        return response()->json(['message' => "Error When Creating New Caleg"], 500, );
+        return response()->json(['message' => 0], 500);
     }
 
     public function updateCaleg(Request $request, Caleg $caleg)
     {
         if ($request->aktif) {
             if (Caleg::where("id_caleg", $caleg->id_caleg)->update(["aktif" => $request->aktif == "Y" ? "N" : "Y"])) {
-                return back()->with("success", "Success Update Aktif Status");
+                // return back()->with("success", "Success Update Aktif Status");
+                return response()->json(['message' => 1], 200);
             }
-            return back()->with("error", "Error, Can't Update Aktif status");
+            // return back()->with("error", "Error, Can't Update Aktif status");
+            return response()->json(['message' => 0], 200 );
         }
 
         $rules = [
@@ -92,17 +94,22 @@ class CalegCtrl extends Controller
         }
 
         if (Caleg::find($caleg->id_caleg)->update($data)) {
-            return back()->with("success", "Success Update Caleg");
+            // return back()->with("success", "Success Update Caleg");
+            return response()->json(['message' => 1], 200);
         }
-        return back()->with("erorr", "Error When Updating Caleg");
+        // return back()->with("erorr", "Error When Updating Caleg");
+        return response()->json(['message' => 0], 400);
+
     }
 
     public function deleteCaleg(Caleg $caleg)
     {
         if (Caleg::destroy($caleg->id_caleg)) {
             File::delete($caleg->foto);
-            return back()->with("success", "Success Delete $caleg->nama_caleg");
+            // return back()->with("success", "Success Delete $caleg->nama_caleg");
+            return response()->json(['message' => 1], 200);
         }
-        return back()->with("error", "Error When Deleting $caleg->nama_caleg Caleg");
+        // return back()->with("error", "Error When Deleting $caleg->nama_caleg Caleg");
+        return response()->json(['message' => 0], 400);
     }
 }

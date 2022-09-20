@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 class Relawan extends Model
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens;
     protected $table = 'relawan';
     public $timestamps = false;
     protected $primaryKey = 'id_relawan';
@@ -47,5 +48,5 @@ class Relawan extends Model
         });
     }
 
-    
+
 }

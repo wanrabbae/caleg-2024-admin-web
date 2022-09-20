@@ -6,11 +6,19 @@ use App\Http\Controllers\CalegCtrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DPTController;
+use App\Http\Controllers\DptCtrl;
+use App\Http\Controllers\ProgramCtrl;
 use App\Http\Controllers\RelawanController;
 use App\Http\Controllers\SaksiMonitoringController;
-
+use App\Http\Controllers\SurveyCtrl;
+use App\Http\Controllers\VariableCtrl;
 
 /*
+//Route Galery API
+// Route::get('getGalery', [GaleryCtrl::class, 'index']);
+// //Route User API
+// Route::get('getRelawan', [UserCtrl::class, 'index']);
+// // Route::login('relawanLogin', [UserCtrl::class, 'login']);
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
@@ -27,12 +35,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/getChart', [DPTController::class, 'getChart']);
 Route::get("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);
 
-Route::get("getProgram", [ApiController::class, "getProgram",]);
+
 Route::post("requestInquery", [ApiController::class, "requestInquery"]);
 Route::get("getPaymentMethod", [ApiController::class, "getPaymentMethod"]);
-Route::get("getGalery", [ApiController::class, "getGalery"]);
-Route::get("getVariabel", [ApiController::class, "getVariabel"]);
-Route::get("getSurvey", [ApiController::class, "getSurvey"]);
+
+Route::post("register", [ApiController::class, "register"]);
 Route::post("login", [ApiController::class, "login"]);
 
 Route::get("getKabupaten", [ApiController::class, "getKabupaten"]);
@@ -50,5 +57,23 @@ Route::post('postCaleg', [CalegCtrl::class, "createCaleg"]);
 Route::post('updateCaleg/{caleg:id}', [CalegCtrl::class, "updateCaleg"]);
 Route::post('deleteCaleg/{caleg:id}', [CalegCtrl::class, "deleteCaleg"]);
 
+//Route Program API
+Route::get('getProgram', [ProgramCtrl::class, 'index']);
+Route::post('postProgram', [ProgramCtrl::class, 'store']);
+Route::post('updateProgram/{program:id}', [ProgramCtrl::class, 'update']);
+Route::post('deleteProgram/{program:id}', [ProgramCtrl::class, 'destroy']);
 
+//Route DPT API
+Route::get('getDPT', [DptCtrl::class, 'index']);
 
+//Route Survey API
+Route::get('getSurvey', [SurveyCtrl::class, 'getSurvey']);
+Route::post('postSurvey', [SurveyCtrl::class, 'store']);
+Route::post('updateSurvey/{survey:id}', [SurveyCtrl::class, 'update']);
+Route::post('deleteSurvey/{survey:id}', [SurveyCtrl::class, 'destroy']);
+
+//Route Variable API
+Route::get('getVariabel', [VariableCtrl::class, 'getVariabel']);
+Route::post('postVariabel', [VariableCtrl::class, 'store']);
+Route::post('updateVariabel/{variabel:id}', [VariableCtrl::class, 'update']);
+Route::post('deleteVariabel/{variabel:id}', [VariableCtrl::class, 'destroy']);
