@@ -28,6 +28,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\EmailBlasController;
 use App\Http\Controllers\WaBlasController;
+use App\Http\Controllers\ConfigController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,7 +143,8 @@ Route::prefix('whatsapp')
     ->middleware('auth:web,caleg')
     ->group(function () {
         Route::get('/', [WaBlasController::class, 'index'])->name('wa');
-        Route::get("/send", [WaBlasController::class, "send"])->name("wa-send");
+        Route::post("/send", [WaBlasController::class, "send"])->name("wa-send");
+        Route::get("/{relawan:id_relawan}", [WaBlasController::class, "show"])->name("wa-show");
         // Route::post('/', [WaBlasController::class, 'store'])->name('wa-store');
         // Route::get('/{id}', [WaBlasController::class, 'show'])->name('wa-show');
         // Route::put('/{id}', [WaBlasController::class, 'update'])->name('wa-update');
@@ -159,6 +161,10 @@ Route::prefix('email')
         // Route::put('/{id}', [WaBlasController::class, 'update'])->name('email-update');
         // Route::delete('/{id}', [WaBlasController::class, 'delete'])->name('email-delete');
     });
+
+Route::prefix("config")->middleware("auth:web,caleg")->group(function() {
+    Route::get("/", [ConfigController::class, "index"]);
+});
 
 // ROUTE DOCUMENTATION
 Route::get('/documentation', [DocumentationController::class, 'index'])->middleware('auth:web,caleg');

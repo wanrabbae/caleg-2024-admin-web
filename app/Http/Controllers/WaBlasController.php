@@ -15,12 +15,17 @@ class WaBlasController extends Controller
         ]);
     }
 
-    public function send() {
-        $api_key   = '710b80ee88a701f2d769b351a036916f706ea568'; // API KEY Anda
-        $id_device = '3402'; // ID DEVICE yang di SCAN (Sebagai pengirim)
+    public function send(Request $request) {
+        $request->validate([
+            "no_hp" => "required",
+            "pesan" => "required",
+        ]);
+
+        foreach (explode(",", $request->no_hp[0]) as $nomor) {
+        $api_key   = auth()->user()->config->API_KEY; // API KEY Anda
+        $id_device = auth()->user()->config->device_id; // ID DEVICE yang di SCAN (Sebagai pengirim)
         $url   = 'https://api.watsap.id/send-message'; // URL API
-        $no_hp = '082162941198'; // No.HP yang dikirim (No.HP Penerima)
-        $pesan = 'Halo Kakak Ibnu Ganteng. emuach'; // Pesan yang dikirim
+        $pesan = $request->pesan; // Pesan Yang Dikirim
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -36,14 +41,24 @@ class WaBlasController extends Controller
         $data_post = [
         'id_device' => $id_device,
         'api-key' => $api_key,
-        'no_hp'   => $no_hp,
+        "no_hp" => $nomor,
         'pesan'   => $pesan
         ];
-
+            
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data_post));
         curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         $response = curl_exec($curl);
         curl_close($curl);
-        echo $response;
+        }
+        $status = json_decode($response, true);
+
+        if ($status["kode"] != 200) {
+            return back()->with("error", "Gagal Mengirimkan Pesan (kode:" . $status["kode"] . ")");
+        }
+        return back()->with("success", "Berhasil Mengirimkan Pesan");
+        }
+
+        public function show($id) {
+            return response()->json(Relawan::find($id), 200);
         }
 }

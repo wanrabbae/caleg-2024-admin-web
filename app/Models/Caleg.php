@@ -66,6 +66,11 @@ class Caleg extends Model
         return $this->hasMany(Daftar_Saksi::class, "id_caleg");
     }
 
+    public function config() {
+        return $this->belongsTo(ConfigBlas::class, "id_caleg");
+    }
+
+
     public static function boot() {
         parent::boot();
 
@@ -105,6 +110,8 @@ class Caleg extends Model
             $caleg->saksi()->each(function($value) {
                 $value->delete();
             });
+
+            $caleg->config()->delete();
         });
     }
 }
