@@ -9,12 +9,12 @@ class Daftar_Saksi extends Model
 {
     use HasFactory;
     protected $table = "saksi";
-    protected $primaryKey = "nik";
+    protected $primaryKey = "id_saksi";
     public $timestamps = false;
     protected $guarded = [""];
 
     public function relawan() {
-        return $this->belongsTo(Relawan::class, "nik", "nik");
+        return $this->belongsTo(Relawan::class, "nama_relawan", "nama_relawan");
     }
 
     public function caleg() {

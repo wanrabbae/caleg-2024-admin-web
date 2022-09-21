@@ -91,9 +91,9 @@ Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware(
 Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth:web,caleg');
 
 //Data Saksi Routes
-Route::get('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'show'])->middleware('auth:web,caleg');
-Route::put('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'update'])->middleware('auth:web,caleg');
-Route::delete('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'destroy'])->middleware('auth:web,caleg');
+Route::get('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'show'])->middleware('auth:web,caleg');
+Route::put('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'update'])->middleware('auth:web,caleg');
+Route::delete('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'destroy'])->middleware('auth:web,caleg');
 Route::resource('/saksi/daftar', SaksiDaftarController::class)->middleware('auth:web,caleg');
 Route::resource('/saksi/monitoring', SaksiMonitoringController::class)->middleware('auth:web,caleg');
 
@@ -142,6 +142,7 @@ Route::prefix('whatsapp')
     ->middleware('auth:web,caleg')
     ->group(function () {
         Route::get('/', [WaBlasController::class, 'index'])->name('wa');
+        Route::get("/send", [WaBlasController::class, "send"])->name("wa-send");
         // Route::post('/', [WaBlasController::class, 'store'])->name('wa-store');
         // Route::get('/{id}', [WaBlasController::class, 'show'])->name('wa-show');
         // Route::put('/{id}', [WaBlasController::class, 'update'])->name('wa-update');

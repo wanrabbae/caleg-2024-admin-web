@@ -18,24 +18,18 @@ class DptCtrl extends Controller
      */
     public function index(Request $request)
     {
+        $id_desa = Desa::find(request("id_desa"));
         $data = Rk_pemilih::where('nik', request("nik"))->get();
         if(!Rk_pemilih::where("nik", request("nik"))->get()){
             return response()->json(['message' => 0], 500 );
         }
-        return response()->json(["message" => 1, "data" => $data], 200);
+        return response()->json(['region' => Desa::with("kecamatan.kabupaten")->where("id_desa", $id_desa->id_desa)->get(), 'data_dpt' => $data], 200);
     }
 
-    public function callRegion(Request $request)
-    {
-        $rows =
-        $dpt = Rk_pemilih::where('id_pemilih', $request->id_pemilih)->first();
-        $desa = Desa::where('id_desa', $rows->id_desa)->first();
-        $kecamatan = Kecamatan::where('id_kecamatan', $desa->id_kecamatan)->first();
-        $kabupaten = Kabupaten::where('id_kabupaten', $kecamatan->id_kabupaten)->first();
-        $dpt['desa'] = $desa;
-        $dpt['kecamatan'] = $kecamatan;
-        $dpt['kabupaten'] = $kabupaten;
+    // public function callRegion(Request $request)
+    // {
+    //     $id_desa = Desa::find(request("id_desa"));
 
-        return response()->json(['message' => 1, 'data' => $dpt], 200, );
-    }
+    //     return response()->json(Desa::with("kecamatan.kabupaten")->where("id_desa", $id_desa->id_desa)->get(), 200);
+    // }
 }

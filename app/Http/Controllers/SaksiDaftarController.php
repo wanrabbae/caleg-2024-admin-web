@@ -46,25 +46,25 @@ class SaksiDaftarController extends Controller
         }
 
         $data = $request->validate([
-            "nik" => "required|max:255|unique:saksi,id_caleg",
+            "nama_relawan" => "required|max:255|unique:saksi,id_caleg",
             "id_caleg" => "required"
-    ]);
+        ]);
 
-    if (auth("web")->check()) {  
-        if (!Relawan::where("nik", $request->nik)->first()) {
-            return back()->with("error", "Error, There no Relawan with NIK $request->nik");
+    if (auth("web")->check()) {
+        if (!Relawan::where("nama_relawan", $request->nama_relawan)->first()) {
+            return back()->with("error", "Error, There no Relawan with Nama Relawan  $request->nama_relawan");
         }
     } else {
-        if (!Relawan::where("id_caleg", auth()->user()->id_caleg)->where("nik", $request->nik)->first()) {
-            return back()->with("error", "Error, There no Relawan with NIK $request->nik");
+        if (!Relawan::where("id_caleg", auth()->user()->id_caleg)->where("nama_relawan", $request->nama_relawan)->first()) {
+            return back()->with("error", "Error, There no Relawan with Nama Relawan $request->nama_relawan");
         }
     }
 
     if (Daftar_Saksi::create($data)) {
-        return redirect("/saksi/daftar")->with("success", "Success Create Saksi with NIK $request->nik");
+        return redirect("/saksi/daftar")->with("success", "Success Create Saksi with Nama Relawan $request->nama_relawan");
     }
 
-        return back()->with("error", "Error, Can't Create Saksi with NIK $request->nik");
+        return back()->with("error", "Error, Can't Create Saksi with Nama Relawan $request->nama_relawan");
     }
 
     /**
@@ -73,9 +73,9 @@ class SaksiDaftarController extends Controller
      * @param  \App\Models\Daftar_Saksi  $daftar_Saksi
      * @return \Illuminate\Http\Response
      */
-    public function show($nik)
+    public function show($id)
     {
-        return response()->json(Relawan::where("nik", $nik)->first());
+        return response()->json(Daftar_Saksi::where("id_saksi", $id)->first());
     }
 
     /**
@@ -96,34 +96,34 @@ class SaksiDaftarController extends Controller
      * @param  \App\Models\Daftar_Saksi  $daftar_Saksi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $nik)
+    public function update(Request $request, $id)
     {
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
 
         $data = $request->validate([
-            "nik" => "required|max:255|unique:saksi,id_caleg",
+            "nama_relawan" => "required|max:255|unique:saksi,id_caleg",
             "id_caleg" => "required"
-    ]);
+        ]);
 
 
     if (auth("web")->check()) {
-        if (!Relawan::where("nik", $request->nik)->first()) {
-            return back()->with("error", "Error, There no Relawan with NIK $request->nik");
+        if (!Relawan::where("nama_relawan", $request->nama_relawan)->first()) {
+            return back()->with("error", "Error, There no Relawan with Nama Relawan $request->nama_relawan");
         }
-        if (Daftar_Saksi::where("nik", $nik)->update($data)) {
-            return redirect("/saksi/daftar")->with("success", "Success Update $nik");
+        if (Daftar_Saksi::where("id_saksi", $id)->update($data)) {
+            return redirect("/saksi/daftar")->with("success", "Success Update $request->nama_relawan");
         }
-            return back()->with("error", "Error, Can't Update $nik");
+            return back()->with("error", "Error, Can't Update $request->nama_relawan");
     } else {
-        if (!Relawan::where("id_caleg", auth()->user()->id_caleg)->where("nik", $request->nik)->first()) {
-            return back()->with("error", "Error, There no Relawan with NIK $request->nik");
+        if (!Relawan::where("id_caleg", auth()->user()->id_caleg)->where("nama_relawan", $request->nama_relawan)->first()) {
+            return back()->with("error", "Error, There no Relawan with Nama Relawan $request->nama_relawan");
         }
-        if (Daftar_Saksi::where("id_caleg", auth()->user()->id_caleg)->where("nik", $nik)->update($data)) {
-            return redirect("/saksi/daftar")->with("success", "Success Update $nik");
+        if (Daftar_Saksi::where("id_caleg", auth()->user()->id_caleg)->where("id_saksi", $id)->update($data)) {
+            return redirect("/saksi/daftar")->with("success", "Success Update $request->nama_relawan");
         }
-            return back()->with("error", "Error, Can't Update $nik");
+            return back()->with("error", "Error, Can't Update $request->nama_relawan");
         }
     }
 
@@ -134,9 +134,9 @@ class SaksiDaftarController extends Controller
      * @param  \App\Models\Daftar_Saksi  $daftar_Saksi
      * @return \Illuminate\Http\Response
      */
-    public function destroy($nik)
+    public function destroy($id)
     {
-        if (Daftar_Saksi::where("nik", $nik)->delete()) {
+        if (Daftar_Saksi::where("id_saksi", $id)->delete()) {
             return back()->with("success", "Success Delete Saksi");
         }
 

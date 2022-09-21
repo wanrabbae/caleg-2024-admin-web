@@ -12,6 +12,7 @@ use App\Http\Controllers\ProgramCtrl;
 use App\Http\Controllers\UserCtrl;
 use App\Http\Controllers\IsuCtrl;
 use App\Http\Controllers\RelawanController;
+use App\Http\Controllers\SaksiCtrl;
 use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SurveyCtrl;
 use App\Http\Controllers\VariableCtrl;
@@ -68,7 +69,7 @@ Route::post('deleteProgram/{program:id}', [ProgramCtrl::class, 'destroy']);
 
 //Route DPT API
 Route::get('getDPT', [DptCtrl::class, 'index']);
-Route::get('dptRegion', [DptCtrl::class, 'callRegion']);
+// Route::get('dptRegion', [DptCtrl::class, 'callRegion']);
 
 //Route Survey API
 Route::get('getSurvey', [SurveyCtrl::class, 'getSurvey']);
@@ -97,3 +98,6 @@ Route::get('getKabupaten', [KabupatenCtrl::class, 'getKabupaten']);
 
 //Route User API
 Route::get('getUser', [UserCtrl::class, 'index']);
+
+//Route Saksi API
+Route::post('postSaksi', [SaksiCtrl::class, 'postSaksi']);
