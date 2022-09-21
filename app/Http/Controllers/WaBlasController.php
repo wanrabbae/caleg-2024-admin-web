@@ -16,13 +16,12 @@ class WaBlasController extends Controller
     }
 
     public function send(Request $request) {
-        
         $request->validate([
             "no_hp" => "required",
             "pesan" => "required",
         ]);
 
-        foreach ($request->no_hp as $nomor) {
+        foreach (explode(",", $request->no_hp[0]) as $nomor) {
         $api_key   = auth()->user()->config->API_KEY; // API KEY Anda
         $id_device = auth()->user()->config->device_id; // ID DEVICE yang di SCAN (Sebagai pengirim)
         $url   = 'https://api.watsap.id/send-message'; // URL API
@@ -49,8 +48,8 @@ class WaBlasController extends Controller
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data_post));
         curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         $response = curl_exec($curl);
-        }
         curl_close($curl);
+        }
         $status = json_decode($response, true);
 
         if ($status["kode"] != 200) {
