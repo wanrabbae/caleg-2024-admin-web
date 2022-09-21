@@ -247,13 +247,6 @@ class ApiController extends Controller
     }
 
 
-    public function getKecamatan(request $request)
-    {
-        $kecamatan = Kecamatan::where('id_kabupaten', $request->id_kabupaten)->get();
-
-        return response()->json(['kecamatan' => $kecamatan]);
-    }
-
     public function getDesa(request $request)
     {
         $desa = Desa::where('id_kecamatan', $request->id_kecamatan)->orderBy('id_desa', 'ASC')->get();
