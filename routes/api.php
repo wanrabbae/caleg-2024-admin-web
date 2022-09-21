@@ -84,7 +84,3 @@ Route::get('getKecamatan', [KecamatanCtrl::class, 'getKecamatan']);
 Route::post('postKecamatan', [KecamatanCtrl::class, 'store']);
 Route::post('updateKecamatan/{kecamatan:id_kecamatan}', [KecamatanCtrl::class, 'update']);
 Route::post('deleteKecamatan/{kecamatan:id_kecamatan}', [KecamatanCtrl::class, 'destroy']);
-
-//Route Daftar Isu API
-Route::get('getIsu', [IsuCtrl::class, 'getIsu']);
-Route::post('postIsu', [IsuCtrl::class, 'store']);
