@@ -70,16 +70,39 @@ class Calegs extends Authenticatable
 
     public function relawan()
     {
-        return $this->hasMany(Relawan::class);
+        return $this->hasMany(Relawan::class, "id_caleg");
     }
 
     public function survey(){
-        return $this->hasMany(Survey::class);
+        return $this->hasMany(Survey::class, "id_caleg");
     }
 
-    public function getRememberTokenName()
-    {
-        return 'id_session';
+    public function program() {
+        return $this->hasMany(Program::class, "id_caleg");
+    }
+
+    public function medsos() {
+        return $this->hasMany(Medsos::class, "id_caleg");
+    }
+
+    public function daftarIsu() {
+        return $this->hasMany(Daftar_Isu::class, "id_caleg");
+    }
+
+    public function agenda() {
+        return $this->hasMany(Agenda::class, "id_caleg");
+    }
+
+    public function variable() {
+        return $this->hasMany(Variabel::class, "id_caleg");
+    }
+
+    public function saksi() {
+        return $this->hasMany(Daftar_Saksi::class, "id_caleg");
+    }
+
+    public function config() {
+        return $this->belongsTo(ConfigBlas::class, "id_caleg", "id_caleg");
     }
 
 }
