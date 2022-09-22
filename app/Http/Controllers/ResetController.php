@@ -39,6 +39,7 @@ class ResetController extends Controller
         }
 
         Mail::to($request->email)->send(new ResetPassword($account));
+        
         return redirect("/login")->with("success", "Berhasil Mengirimkan Link Ke Email Anda");
     }
 }

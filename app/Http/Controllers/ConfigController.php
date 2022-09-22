@@ -77,12 +77,12 @@ class ConfigController extends Controller
             ]);
         } else {
             $data = $request->validate([
-                "API_KEY" => "required",
-                "device_id" => "required"
+                "email" => "required",
+                "password" => "required"
             ]);
             }
 
-            if (ConfigBlas::where($configBlas->id_caleg)->update($data)) {
+            if (ConfigBlas::where("id_caleg", auth()->user()->id_caleg)->update($data)) {
                 return back()->with("success", "Berhasil Mengubah Data");
             }
             return back()->with("error", "Error Saat Mengubah Data");
