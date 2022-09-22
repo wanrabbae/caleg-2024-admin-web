@@ -98,16 +98,18 @@
     </div>
 
     <script>
+        let arr = [];
         function getData(data) {
             fetch(`/whatsapp/${data}`).then(resp => resp.json()).then(resp => {
                 document.getElementById("no_hp").value = resp.no_hp
+                arr = [];
+                arr.push(resp.no_hp);
             })
         }
 
         let checkBox = Array.from(document.getElementsByClassName("check"));
         let form = document.getElementById("sendForm");
 
-        let arr = [];
 
         document.getElementById("selectAllBtn").addEventListener("click", e => {
             if (arr.length !== checkBox.length) {

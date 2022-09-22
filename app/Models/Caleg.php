@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\ConfigBlas;
 
 class Caleg extends Model
 {
@@ -67,12 +67,16 @@ class Caleg extends Model
     }
 
     public function config() {
-        return $this->belongsTo(ConfigBlas::class, "id_caleg");
+        return $this->belongsTo(ConfigBlas::class, "id_caleg", "id_caleg");
     }
 
 
     public static function boot() {
         parent::boot();
+
+        static::created(function($caleg) {
+            ConfigBlas::create(["id_caleg" => $caleg->id_caleg]);
+        });
 
         static::deleting(function($caleg) {
             $caleg->news()->each(function($value) {

@@ -164,6 +164,7 @@ Route::prefix('email')
 
 Route::prefix("config")->middleware("auth:web,caleg")->group(function() {
     Route::get("/", [ConfigController::class, "index"]);
+    Route::post("/{caleg:id_caleg}", [ConfigController::class, "update"]);
 });
 
 // ROUTE DOCUMENTATION
