@@ -97,7 +97,10 @@ Route::post('postIsu', [IsuCtrl::class, 'store']);
 Route::get('getKabupaten', [KabupatenCtrl::class, 'getKabupaten']);
 
 //Route User API
-Route::get('getUser', [UserCtrl::class, 'index']);
+Route::get('getRelawan', [UserCtrl::class, 'index']);
 
 //Route Saksi API
 Route::post('postSaksi', [SaksiCtrl::class, 'postSaksi']);
+
+//Route  Simpatisan API
+Route::get('getSimpatisan', [UserCtrl::class, 'getSimpatisan']);

@@ -80,7 +80,7 @@
                                             <span>Image Not Found</span>
                                         @endif
                                     </td>
-                                    <td>{{ $data->caleg->nama_lengkap ?? ' ' }}</td>
+                                    <td>{{ $data->caleg->nama_lengkap ?? '' }}</td>
                                     <td>{{ $data->status }}</td>
                                     <td>{{ $data->no_hp }}</td>
                                     <td>{{ $data->email }}</td>
@@ -382,5 +382,5 @@
             })
         }
 
-    </script>    
+    </script>
 @endsection

@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Caleg;
 use App\Models\Desa;
-use App\Models\Galery;
-use App\Models\Kabupaten;
-use App\Models\Kecamatan;
-use App\Models\Program;
-use App\Models\Survey;
-use App\Models\User;
-use App\Models\Variabel;
+// use App\Models\Galery;
+// use App\Models\Kabupaten;
+// use App\Models\Kecamatan;
+// use App\Models\Program;
+use App\Models\Relawan;
+// use App\Models\Survey;
+// use App\Models\User;
+// use App\Models\Variabel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -212,7 +213,7 @@ class ApiController extends Controller
 
     public function register(Request $request)
     {
-        User::insert([
+        Relawan::insert([
             "username" => $request->username,
             "password" => Hash::make($request->password),
             "nik" => $request->nik,
@@ -233,7 +234,8 @@ class ApiController extends Controller
 
     public function login(Request $request)
     {
-        $users = User::where("username", $request->username)->first();
+        $users = Relawan::where("username", $request->username)->first();
+        $caleg = Caleg::where("username", $request->username)->first();
 
         if ($users) {
             if (Hash::check($request->password, $users->password)) {

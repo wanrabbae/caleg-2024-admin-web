@@ -14,7 +14,9 @@ class IsuCtrl extends Controller
      */
     public function getIsu(Request $request)
     {
-        $isu = Daftar_Isu::where();
+        $isu = Daftar_Isu::where("id_relawan", $request->id_relawan)->orderBy("id_isu", "ASC")->get();
+
+        return response()->json(['message' => 'get Data Isu', 'data_isu' => $isu], 200);
     }
 
     /**
@@ -25,7 +27,9 @@ class IsuCtrl extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            
+        ]);
     }
 
     /**
