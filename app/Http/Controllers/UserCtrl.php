@@ -20,17 +20,12 @@ class UserCtrl extends Controller
         return response()->json(['relawan_data' =>$data], 200);
     }
 
-    public function registerRelawan( Request $request)
+    public function getSimpatisan(Request $request)
     {
-        $data = $request->validate([
-           
-        ]);
+        $simpatisan = Relawan::where("upline", $request->upline)->where("loyalis", "1")->get();
 
-
+        return response()->json(['simpatisan' => $simpatisan], 200);
     }
 
-    public function login(Request $request)
-    {
 
-    }
 }

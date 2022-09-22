@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Daftar_Isu;
+use App\Models\Kabupaten;
 use Illuminate\Http\Request;
 
-class IsuCtrl extends Controller
+class KabupatenCtrl extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function getIsu(Request $request)
-    {
-        $isu = Daftar_Isu::where("id_relawan", $request->id_relawan)->orderBy("id_isu", "ASC")->get();
 
-        return response()->json(['message' => 'get Data Isu', 'data_isu' => $isu], 200);
+    public function getKabupaten()
+    {
+        $kabupaten = Kabupaten::orderBy('id_kabupaten', 'DESC')->get();
+
+        return response()->json(['kabupaten' => $kabupaten]);
     }
 
     /**
@@ -28,17 +29,17 @@ class IsuCtrl extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            
+            "nama_kabupaten" => "required|max:255|unique:kabupaten"
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Daftar_Isu  $daftar_Isu
+     * @param  \App\Models\Kabupaten  $kabupaten
      * @return \Illuminate\Http\Response
      */
-    public function show(Daftar_Isu $daftar_Isu)
+    public function show(Kabupaten $kabupaten)
     {
         //
     }
@@ -47,10 +48,10 @@ class IsuCtrl extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Daftar_Isu  $daftar_Isu
+     * @param  \App\Models\Kabupaten  $kabupaten
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Daftar_Isu $daftar_Isu)
+    public function update(Request $request, Kabupaten $kabupaten)
     {
         //
     }
@@ -58,10 +59,10 @@ class IsuCtrl extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Daftar_Isu  $daftar_Isu
+     * @param  \App\Models\Kabupaten  $kabupaten
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Daftar_Isu $daftar_Isu)
+    public function destroy(Kabupaten $kabupaten)
     {
         //
     }

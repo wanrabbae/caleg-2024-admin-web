@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Desa;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
 use App\Models\Rk_pemilih;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -15,19 +18,18 @@ class DptCtrl extends Controller
      */
     public function index(Request $request)
     {
+        $id_desa = Desa::find(request("id_desa"));
         $data = Rk_pemilih::where('nik', request("nik"))->get();
         if(!Rk_pemilih::where("nik", request("nik"))->get()){
             return response()->json(['message' => 0], 500 );
         }
-        return response()->json(["message" => 1, "data" => $data], 200);
+        return response()->json(['region' => Desa::with("kecamatan.kabupaten")->where("id_desa", $id_desa->id_desa)->get(), 'data_dpt' => $data], 200);
     }
 
-//    public function checkDpt(Request $request)
-//    {
-//         // $check = Rk_pemilih::where("nik", $request->nik)->first();
-//         if(!Rk_pemilih::where("nik", request("nik"))->first()){
-//             return response()->json(['message' => "Error, There no Relawan with NIK $request->nik"], 500 );
-//         }
-//         return response()->json(["message" => "Success, This NIK has data"]);
-//    }
+    // public function callRegion(Request $request)
+    // {
+    //     $id_desa = Desa::find(request("id_desa"));
+
+    //     return response()->json(Desa::with("kecamatan.kabupaten")->where("id_desa", $id_desa->id_desa)->get(), 200);
+    // }
 }

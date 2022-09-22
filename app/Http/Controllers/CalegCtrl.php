@@ -8,12 +8,16 @@ use Illuminate\Support\Facades\File;
 
 class CalegCtrl extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $caleg = Caleg::where('aktif', 'Y')->orderBy('id_caleg', 'ASC')->get();
+        if ($request->caleg) {
+            return response()->json(["caleg" => Caleg::find($request->caleg)]);
+        }
+
+        $caleg = Caleg::with("partai")->where('aktif', 'Y')->orderBy('id_caleg', 'ASC')->get();
 
         return response()->json([
-            "caleg" => $caleg,
+            "caleg" => $caleg
         ],);
     }
 

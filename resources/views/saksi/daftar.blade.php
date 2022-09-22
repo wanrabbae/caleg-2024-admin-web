@@ -54,10 +54,10 @@
                                   @endif
                               </td>
                                 <td class="d-flex justify-content-center">
-                                    <button class="btn btn-warning mx-3" onclick="getData({{ $data->nik }})" data-toggle="modal" data-target="#editModal">
+                                    <button class="btn btn-warning mx-3" onclick="getData({{ $data->id_saksi }})" data-toggle="modal" data-target="#editModal">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <form action="/saksi/daftar/{{ $data->nik }}" method="POST" class="d-inline">
+                                    <form action="/saksi/daftar/{{ $data->id_saksi }}" method="POST" class="d-inline">
                                         @method("delete")
                                         @csrf
                                         <button type="submit" class="btn btn-danger">
@@ -79,7 +79,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="createModalLabel">Tambah Saksi</h5>
+          <h5 class="modal-title" id="createModalLabel">Tambah Nama Saksi</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -88,8 +88,8 @@
         <div class="modal-body">
                 @csrf
                 <div class="form-group">
-                  <label for="nik">NIK Saksi</label>
-                  <input type="text" class="form-control" id="nik" placeholder="NIK" name="nik">
+                  <label for="nama_relawan">Nama Saksi</label>
+                  <input type="text" class="form-control" id="nama_relawan" placeholder="Masukan Nama Saksi" name="nama_relawan">
                 </div>
                 @auth("web")
                 <div class="mb-3">
@@ -122,7 +122,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Edit NIK saksi</h5>
+          <h5 class="modal-title" id="editModalLabel">Edit Nama saksi</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -132,8 +132,8 @@
                 @method('put')
                 @csrf
                 <div class="form-group">
-                  <label for="nama_legislatif">NIK</label>
-                  <input type="text" class="form-control" id="edit_nik" placeholder="NIK" name="nik">
+                  <label for="nama_relawan">Nama Saksi</label>
+                  <input type="text" class="form-control" id="edit_nama_relawan" placeholder="Masukan Nama Relawan" name="nama_relawan">
                 </div>
                 @auth("web")
                 <div class="mb-3">
@@ -165,7 +165,7 @@
     function getData(data) {
         fetch(`/saksi/daftar/${data}`).then(resp => resp.json()).then(resp => {
             document.getElementById("edit_form").action = `/saksi/daftar/${data}`
-            document.getElementById("edit_nik").value = resp.nik
+            document.getElementById("edit_nama_relawan").value = resp.nama_relawan
     })
     }
   </script>

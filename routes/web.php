@@ -92,9 +92,9 @@ Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware(
 Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth:web,caleg');
 
 //Data Saksi Routes
-Route::get('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'show'])->middleware('auth:web,caleg');
-Route::put('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'update'])->middleware('auth:web,caleg');
-Route::delete('/saksi/daftar/{nik}', [SaksiDaftarController::class, 'destroy'])->middleware('auth:web,caleg');
+Route::get('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'show'])->middleware('auth:web,caleg');
+Route::put('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'update'])->middleware('auth:web,caleg');
+Route::delete('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'destroy'])->middleware('auth:web,caleg');
 Route::resource('/saksi/daftar', SaksiDaftarController::class)->middleware('auth:web,caleg');
 Route::resource('/saksi/monitoring', SaksiMonitoringController::class)->middleware('auth:web,caleg');
 

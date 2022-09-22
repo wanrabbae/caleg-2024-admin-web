@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Caleg;
 use App\Models\Desa;
-use App\Models\Galery;
-use App\Models\Kabupaten;
-use App\Models\Kecamatan;
-use App\Models\Program;
-use App\Models\Survey;
-use App\Models\User;
-use App\Models\Variabel;
+// use App\Models\Galery;
+// use App\Models\Kabupaten;
+// use App\Models\Kecamatan;
+// use App\Models\Program;
+use App\Models\Relawan;
+// use App\Models\Survey;
+// use App\Models\User;
+// use App\Models\Variabel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -212,7 +213,7 @@ class ApiController extends Controller
 
     public function register(Request $request)
     {
-        User::insert([
+        Relawan::insert([
             "username" => $request->username,
             "password" => Hash::make($request->password),
             "nik" => $request->nik,
@@ -233,7 +234,8 @@ class ApiController extends Controller
 
     public function login(Request $request)
     {
-        $users = User::where("username", $request->username)->first();
+        $users = Relawan::where("username", $request->username)->first();
+        $caleg = Caleg::where("username", $request->username)->first();
 
         if ($users) {
             if (Hash::check($request->password, $users->password)) {
@@ -246,23 +248,10 @@ class ApiController extends Controller
         }
     }
 
-    public function getKabupaten()
-    {
-        $kabupaten = Kabupaten::orderBy('id_kabupaten', 'DESC')->get();
-
-        return response()->json(['kabupaten' => $kabupaten]);
-    }
-
-    public function getKecamatan(request $request)
-    {
-        $kecamatan = Kecamatan::where('id_kabupaten', $request->id_kabupaten)->get();
-
-        return response()->json(['kecamatan' => $kecamatan]);
-    }
 
     public function getDesa(request $request)
     {
-        $desa = Desa::where('id_kecamatan', $request->id_kecamatan)->get();
+        $desa = Desa::where('id_kecamatan', $request->id_kecamatan)->orderBy('id_desa', 'ASC')->get();
 
         return response()->json(['desa' => $desa]);
     }
