@@ -56,7 +56,7 @@ Route::get("/getChartDesa/{id}", [SaksiMonitoringController::class, "fetch"]);
 Route::get("/getChartRelawan/{id}", [RelawanController::class, "fetch"]);
 
 //Route Caleg API
-Route::get("getCaleg", [CalegCtrl::class, "index",]);
+Route::post("getCaleg", [CalegCtrl::class, "index",]);
 Route::post('postCaleg', [CalegCtrl::class, "createCaleg"]);
 Route::post('updateCaleg/{caleg:id}', [CalegCtrl::class, "updateCaleg"]);
 Route::post('deleteCaleg/{caleg:id}', [CalegCtrl::class, "deleteCaleg"]);
@@ -102,5 +102,8 @@ Route::get('getRelawan', [UserCtrl::class, 'index']);
 //Route Saksi API
 Route::post('postSaksi', [SaksiCtrl::class, 'postSaksi']);
 
-//Route  Simpatisan API
+//Route Simpatisan API
 Route::get('getSimpatisan', [UserCtrl::class, 'getSimpatisan']);
+
+//Route Medsos API
+Route::get('getMedsos', [ApiController::class, 'getMedsos']);

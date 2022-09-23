@@ -10,15 +10,16 @@ class CalegCtrl extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->caleg) {
-            return response()->json(["caleg" => Caleg::find($request->caleg)]);
+        // if ($request->caleg) {
+        //     return response()->json(["caleg" => Caleg::find($request->caleg)]);
+        // }
+
+        $caleg = Caleg::with("partai")->where('id_caleg', $request->id_caleg)->orderBy('id_caleg', 'ASC')->get();
+
+        if (!Caleg::where('id_caleg', $request->id_caleg)->with("partai")->first()) {
+            return response()->json(['message' => 'gagal'], 400);
         }
-
-        $caleg = Caleg::with("partai")->where('aktif', 'Y')->orderBy('id_caleg', 'ASC')->get();
-
-        return response()->json([
-            "caleg" => $caleg
-        ],);
+        return response()->json(['message' => 'berhasil', 'data_caleg' => $caleg], 200);
     }
 
     public function createCaleg(Request $request)

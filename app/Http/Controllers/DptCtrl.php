@@ -23,7 +23,7 @@ class DptCtrl extends Controller
         if(!Rk_pemilih::where("nik", request("nik"))->get()){
             return response()->json(['message' => 0], 500 );
         }
-        return response()->json(['region' => Desa::with("kecamatan.kabupaten")->where("id_desa", $id_desa->id_desa)->get(), 'data_dpt' => $data], 200);
+        return response()->json(['message' => 1,'region' => Desa::with("kecamatan.kabupaten")->where("id_desa", $id_desa->id_desa)->get(), 'data_dpt' => $data], 200);
     }
 
     // public function callRegion(Request $request)

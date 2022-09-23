@@ -27,9 +27,34 @@ class IsuCtrl extends Controller
      */
     public function store(Request $request)
     {
+        $images = [];
+        foreach ($request->file("images") as $img) {
+            error_log($img->getClientOriginalName());
+        }
+        return;
         $data = $request->validate([
-            
+            "id_caleg" => "required",
+            "jenis" => "required",
+            "dampak" => "required",
+            "tanggal" => "required|date",
+            "id_kecamatan" => "required",
+            "id_relawan" => "required",
+            "keterangan" => "required",
+            "images" => "required|image|max:6000"
         ]);
+
+        // return $data["images"]->getClientOriginalName();
+
+       return $images;
+        // $data["images"] = $request->file("images")->store("/images", "public_path");
+
+
+        if (Daftar_Isu::create($data)) {
+            // return back()->with("success", "Success Create New Issue");
+            return response()->json(['message' => 1,'data_isu' => $data], 200);
+        }
+        // return back()->with("error", "Error When Creating New Issue");
+        return response()->json(['message' => 0], 400);
     }
 
     /**

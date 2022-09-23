@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Caleg;
 use App\Models\Desa;
+use App\Models\Medsos;
 // use App\Models\Galery;
 // use App\Models\Kabupaten;
 // use App\Models\Kecamatan;
@@ -249,10 +250,23 @@ class ApiController extends Controller
     }
 
 
-    public function getDesa(request $request)
+    public function getDesa(Request $request)
     {
         $desa = Desa::where('id_kecamatan', $request->id_kecamatan)->orderBy('id_desa', 'ASC')->get();
 
-        return response()->json(['desa' => $desa]);
+        if(!$desa){
+            return response()->json(['message' => 0], 400);
+        }
+        return response()->json(['message' => 1, 'data_desa' => $desa], 200);
+    }
+
+    public function getMedsos(Request $request)
+    {
+        $medsos = Medsos::where('id_caleg', $request->id_caleg)->with('caleg')->first();
+
+        if(!$medsos){
+            return response()->json(['message' => 0], 400 );
+        }
+        return response()->json(['message' => 1, 'data_medsos' => $medsos], 400 );
     }
 }
