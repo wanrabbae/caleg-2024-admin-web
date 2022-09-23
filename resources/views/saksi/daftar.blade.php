@@ -87,10 +87,6 @@
         <form action="/saksi/daftar/" method="POST">
         <div class="modal-body">
                 @csrf
-                <div class="form-group">
-                  <label for="nama_relawan">Nama Saksi</label>
-                  <input type="text" class="form-control" id="nama_relawan" placeholder="Masukan Nama Saksi" name="nama_relawan">
-                </div>
                 @auth("web")
                 <div class="mb-3">
                     <label for="legislatif" class="form-label">Calon Legislatif</label>
@@ -105,6 +101,18 @@
                       </select>
                 </div>
                 @endauth
+                <div class="form-group">
+                  <label for="nama_saksi" class="form-label">Nama Saksi</label>
+                  <select class="form-select form-control" name="nama_saksi" id="nama_saksi">
+                      @foreach ($relawan as $item)
+                      @if (old('id_caleg')==$item->id_caleg)
+                          <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_relawan }}</option>
+                      @else
+                          <option value="{{ $item->id_caleg }}">{{ $item->nama_relawan }}</option>
+                      @endif
+                      @endforeach
+                    </select>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -127,6 +135,20 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        @auth("web")
+        <div class="mb-3">
+            <label for="legislatif" class="form-label">Calon Legislatif</label>
+            <select class="form-select form-control" name="id_caleg" id="id_caleg">
+                @foreach ($caleg as $item)
+                @if (old('id_caleg')==$item->id_caleg)
+                    <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
+                @else
+                    <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                @endif
+                @endforeach
+              </select>
+        </div>
+        @endauth
         <form action="" method="POST" id="edit_form">
         <div class="modal-body">
                 @method('put')
@@ -135,20 +157,6 @@
                   <label for="nama_relawan">Nama Saksi</label>
                   <input type="text" class="form-control" id="edit_nama_relawan" placeholder="Masukan Nama Relawan" name="nama_relawan">
                 </div>
-                @auth("web")
-                <div class="mb-3">
-                    <label for="legislatif" class="form-label">Calon Legislatif</label>
-                    <select class="form-select form-control" name="id_caleg" id="id_caleg">
-                        @foreach ($caleg as $item)
-                        @if (old('id_caleg')==$item->id_caleg)
-                            <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
-                        @else
-                            <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
-                        @endif
-                        @endforeach
-                      </select>
-                </div>
-                @endauth
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

@@ -12,7 +12,7 @@ class DashboardController extends Controller
     {
         return view('home.dashboard', [
             'title' => 'Dashboard Caleg',
-            "relawan" => Relawan::all()->count(),
+            "relawan" => auth("web")->check() ? Relawan::all()->count() : Relawan::where("id_caleg", auth()->user()->id_caleg)->get()->count(),
             "pemilih" => Rk_pemilih::all()->count(),
         ]);
     }

@@ -30,7 +30,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
-                                <a href="http://{{ $data->link_medsos }}" target="_blank" class="btn btn-primary">
+                                <a href="https://{{ $data->link_medsos }}" target="_blank" class="btn btn-primary">
                                   {{ $data->nama_medsos }}
                                 </a>
                                 </td>

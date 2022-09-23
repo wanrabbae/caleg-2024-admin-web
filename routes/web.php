@@ -14,7 +14,7 @@ use App\Http\Controllers\DashboardLegislatifController;
 use App\Http\Controllers\DashboardPartaiController;
 use App\Http\Controllers\DashboardMedsosController;
 use App\Http\Controllers\DataSurveyController;
-use App\Http\Controllers\DPTController;
+use App\Http\Controllers\DptController;
 use App\Http\Controllers\ResetController;
 // use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\RelawanController;
