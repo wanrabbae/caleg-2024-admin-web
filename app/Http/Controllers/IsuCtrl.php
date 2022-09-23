@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Daftar_Isu;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class IsuCtrl extends Controller
@@ -27,11 +28,6 @@ class IsuCtrl extends Controller
      */
     public function store(Request $request)
     {
-        $images = [];
-        foreach ($request->file("images") as $img) {
-            error_log($img->getClientOriginalName());
-        }
-        return;
         $data = $request->validate([
             "id_caleg" => "required",
             "jenis" => "required",
@@ -40,14 +36,20 @@ class IsuCtrl extends Controller
             "id_kecamatan" => "required",
             "id_relawan" => "required",
             "keterangan" => "required",
-            "images" => "required|image|max:6000"
         ]);
 
-        // return $data["images"]->getClientOriginalName();
+        $imagesArr = [];
 
-       return $images;
-        // $data["images"] = $request->file("images")->store("/images", "public_path");
 
+        foreach ($request->file("images") as $img) {
+                $validator = Validator::make(["images" => $img], ["images" => "required|image|mimes:png,jpg,jpeg|max:6000"]);
+                if (!$validator->fails()) {
+                    array_push($imagesArr, "images/".$img->getClientOriginalName());
+                }
+        }
+        // return $imagesArr;
+        // $data[$imagesArr];
+        $data["images"] = json_encode($imagesArr);
 
         if (Daftar_Isu::create($data)) {
             // return back()->with("success", "Success Create New Issue");
