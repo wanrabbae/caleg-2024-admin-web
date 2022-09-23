@@ -11,7 +11,7 @@ class ConfigBlas extends Model
 
     protected $table = "config";
     protected $primaryKey = "id";
-
+    public $timestamps = false;
     protected $guarded = [""];
 
     public function caleg() {

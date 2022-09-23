@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Config;
+use App\Models\ConfigBlas;
 use Illuminate\Http\Request;
 
 class ConfigController extends Controller
@@ -43,10 +43,10 @@ class ConfigController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Config  $config
+     * @param  \App\Models\Config  $configBlas
      * @return \Illuminate\Http\Response
      */
-    public function show(Config $config)
+    public function show(ConfigBlas $configBlas)
     {
         //
     }
@@ -54,10 +54,10 @@ class ConfigController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Config  $config
+     * @param  \App\Models\Config  $configBlas
      * @return \Illuminate\Http\Response
      */
-    public function edit(Config $config)
+    public function edit(ConfigBlas $configBlas)
     {
         //
     }
@@ -66,21 +66,35 @@ class ConfigController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Config  $config
+     * @param  \App\Models\Config  $configBlas
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Config $config)
-    {
-        //
-    }
+     public function update(Request $request, ConfigBlas $configBlas) {
+        if (request("update") == "wa") {
+            $data = $request->validate([
+                "API_KEY" => "required",
+                "device_id" => "required"
+            ]);
+        } else {
+            $data = $request->validate([
+                "email" => "required",
+                "password" => "required"
+            ]);
+            }
+
+            if (ConfigBlas::where("id_caleg", auth()->user()->id_caleg)->update($data)) {
+                return back()->with("success", "Berhasil Mengubah Data");
+            }
+            return back()->with("error", "Error Saat Mengubah Data");
+        }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Config  $config
+     * @param  \App\Models\Config  $configBlas
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Config $config)
+    public function destroy(Config $configBlas)
     {
         //
     }

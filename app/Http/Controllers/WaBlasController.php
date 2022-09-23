@@ -10,7 +10,7 @@ class WaBlasController extends Controller
     public function index()
     {
         return view('promotions.wa', [
-            'relawan' => Relawan::all(),
+            'relawan' => auth("web")->check() ? Relawan::with(["desa.kecamatan"])->get() : Relawan::with(["desa.kecamatan"])->where("id_caleg", auth()->user()->id_caleg)->get(),
             'title' => 'WhatsApp Blas'
         ]);
     }
@@ -49,16 +49,17 @@ class WaBlasController extends Controller
         curl_setopt($curl, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         $response = curl_exec($curl);
         curl_close($curl);
-        }
-        $status = json_decode($response, true);
+    }
 
-        if ($status["kode"] != 200) {
-            return back()->with("error", "Gagal Mengirimkan Pesan (kode:" . $status["kode"] . ")");
-        }
-        return back()->with("success", "Berhasil Mengirimkan Pesan");
-        }
+    $check = json_decode($response, true)["kode"];
 
-        public function show($id) {
-            return response()->json(Relawan::find($id), 200);
-        }
+    if ($check != "200") {
+        return back()->with("error", "Gagal Mengirimkan Pesan (Kode :" . $check . ")");
+    }
+    return back()->with("success", "Berhasil Mengirimkan Pesan");
+    }
+
+    public function show($id) {
+        return response()->json(Relawan::find($id), 200);
+    }
 }

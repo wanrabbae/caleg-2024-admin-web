@@ -40,8 +40,8 @@ class TeamController extends Controller
             "loyalis" => "required",
             "status" => "required",
             "no_hp" => "required|min:11",
-            "email" => "required|email:dns|max:255|unique:relawan,id_caleg",
-            "username" => "required|max:255|unique:relawan,id_caleg",
+            "email" => "required|email:dns|max:255|unique:relawan",
+            "username" => "required|max:255|unique:relawan",
             "password" => "required|max:255|min:3",
             "foto_ktp" => "image|max:2048|required"
         ]);
@@ -136,14 +136,20 @@ class TeamController extends Controller
             "id_desa" => "required",
             "id_caleg" => "required",
             "status" => "required",
-            "no_hp" => "required|min:11",
-            "email" => "email|max:255|required",
             "username" => "required|max:255",
             "foto_ktp" => "image|max:2048"
     ];
 
     if ($request->nik !== $relawan->nik) {
         $rules["nik"] = "required|unique:relawan";
+    }
+
+    if ($request->email !== $relawan->email) {
+        $rules["email"] = "email|max:255|required|unique:relawan";
+    }
+
+    if ($request->no_hp !== $relawan->no_hp) {
+        $rules["no_hp"] = "max:255|min:11|required|unique:relawan";
     }
 
     $data = $request->validate($rules);

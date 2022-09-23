@@ -101,8 +101,9 @@ class Calegs extends Authenticatable
         return $this->hasMany(Daftar_Saksi::class, "id_caleg");
     }
 
-    public function config() {
-        return $this->belongsTo(ConfigBlas::class, "id_caleg", "id_caleg");
+    public function config()
+    {
+        return $this->belongsTo(ConfigBlas::class, 'id_caleg', "id_caleg");
     }
 
 }

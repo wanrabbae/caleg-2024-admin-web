@@ -150,12 +150,14 @@ Route::prefix('whatsapp')
         // Route::put('/{id}', [WaBlasController::class, 'update'])->name('wa-update');
         // Route::delete('/{id}', [WaBlasController::class, 'delete'])->name('wa-delete');
     });
-
-// ROUTES EMAIL BLAS
-Route::prefix('email')
+    
+    // ROUTES EMAIL BLAS
+    Route::prefix('email')
     ->middleware('auth:web,caleg')
     ->group(function () {
         Route::get('/', [EmailBlasController::class, 'index'])->name('email');
+        Route::post("/send", [EmailBlasController::class, "send"])->name("email-send");
+        Route::get("/{relawan:id_relawan}", [EmailBlasController::class, "show"])->name("email-show");
         // Route::post('/', [WaBlasController::class, 'store'])->name('email-store');
         // Route::get('/{id}', [WaBlasController::class, 'show'])->name('email-show');
         // Route::put('/{id}', [WaBlasController::class, 'update'])->name('email-update');
@@ -164,6 +166,7 @@ Route::prefix('email')
 
 Route::prefix("config")->middleware("auth:web,caleg")->group(function() {
     Route::get("/", [ConfigController::class, "index"]);
+    Route::post("/", [ConfigController::class, "update"]);
 });
 
 // ROUTE DOCUMENTATION

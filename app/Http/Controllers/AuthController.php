@@ -73,7 +73,7 @@ class AuthController extends Controller
             'aktif' => 'Y',
             'username' => $request->username,
             'password' => bcrypt($request->password),
-            'foto' => $file,
+            'foto' => "images/" . $file,
         ]);
 
         return redirect()->route('login')->with("error", "Silahkan Tunggu Persetujuan Pembuatan Akun");
