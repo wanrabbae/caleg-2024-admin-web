@@ -89,7 +89,16 @@
                 @csrf
                 <div class="form-group">
                   <label for="nama_relawan">Nama Saksi</label>
-                  <input type="text" class="form-control" id="nama_relawan" placeholder="Masukan Nama Saksi" name="nama_relawan">
+                  {{-- <input type="text" class="form-control" id="nama_relawan" placeholder="Masukan Nama Saksi" name="nama_relawan"> --}}
+                  <select class="form-select form-control" aria-label="Default select example" name="nama_relawan" id="nama_relawan">
+                    @foreach ($saksi as $item)
+                    @if (old('nama_relawan')==$item->nama_relawan)
+                        <option value="{{ $item->nama_relawan }}" selected>{{ $item->nama_relawan }}</option>
+                    @else
+                        <option value="{{ $item->nama_relawan }}" selected>{{ $item->nama_relawan }}</option>
+                    @endif
+                    @endforeach
+                  </select>
                 </div>
                 @auth("web")
                 <div class="mb-3">

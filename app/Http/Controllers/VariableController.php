@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Caleg;
+use App\Models\Relawan;
 use App\Models\Variabel;
 use Illuminate\Http\Request;
 

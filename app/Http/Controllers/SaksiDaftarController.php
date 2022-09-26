@@ -19,8 +19,9 @@ class SaksiDaftarController extends Controller
         return view("saksi.daftar", [
             "title" => "Daftar Saksi",
             "dataArr" => auth("web")->check() ? Daftar_Saksi::all() : Daftar_Saksi::where("id_caleg", auth()->user()->id_caleg)->get(),
+            "saksi" => auth("web")->check() ? Relawan::all() : Relawan::where("id_caleg", auth()->user()->id_caleg)->get(),
             "caleg" => Caleg::all()
-    ]);
+        ]);
     }
 
     /**
