@@ -31,7 +31,7 @@ class DaftarIsuController extends Controller
 
                 if ($zip->open(public_path($fileName), ZipArchive::CREATE) == TRUE) {
                     foreach ($data as $img) {
-                        $zip->addFile("images/$img", basename($img));
+                        $zip->addFile("image/$img", basename($img));
                     }
                 }
 
@@ -39,7 +39,7 @@ class DaftarIsuController extends Controller
 
                 return Storage::disk("public_path")->download($fileName);
             } else {
-                return Storage::disk("public_path")->download("images/$data[0]");
+                return Storage::disk("public_path")->download("image/$data[0]");
             }
         }
 

@@ -42,9 +42,11 @@ class IsuCtrl extends Controller
 
 
         foreach ($request->file("images") as $img) {
-                $validator = Validator::make(["images" => $img], ["images" => "required|image|mimes:png,jpg,jpeg|max:6000"]);
-                if (!$validator->fails()) {
-                    array_push($imagesArr, "images/".$img->getClientOriginalName());
+            $validator = Validator::make(["images" => $img], ["images" => "required|image|mimes:png,jpg,jpeg|max:6000"]);
+            if (!$validator->fails()) {
+                    $fileName = $img->getClientOriginalName();
+                    $img->storeAs("image", $fileName, "public_path");
+                    array_push($imagesArr, $fileName);
                 }
         }
         // return $imagesArr;
