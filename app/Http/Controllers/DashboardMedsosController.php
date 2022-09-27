@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Medsos;
 use App\Models\Caleg;
-use Illuminate\Support\Facades\File;
+use App\Models\Medsos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardMedsosController extends Controller
 {
@@ -57,7 +58,7 @@ class DashboardMedsosController extends Controller
         if (Medsos::create($data)) {
             return back()->with("success", "Success Create New Medsos");
         }
-        
+
         return back()->with("error", "Error, Can't Create New Medsos");
     }
 
@@ -107,19 +108,19 @@ class DashboardMedsosController extends Controller
         ];
 
         $data = $request->validate($rules);
-        
+
         if ($request->file("logo")) {
-            if (File::exists($medsos->logo)) {
-                File::delete($medsos->logo);
+            if (Storage::disk("public_path")->exists($medsos->logo)) {
+                Storage::disk("public_path")->delete($medsos->logo);
             }
             $data["logo"] = $request->file("logo")->store("/images", "public_path");
         }
-        
-        
+
+
     if (Medsos::where("id_medsos", $medsos->id_medsos)->update($data)) {
             return back()->with("success", "Success Edit $medsos->nama_medsos");
         }
-        
+
         return back()->with("error", "Error, Can't Edit $medsos->nama_medsos");
     }
 
@@ -132,7 +133,7 @@ class DashboardMedsosController extends Controller
     public function destroy(Medsos $medsos)
     {
         if (Medsos::destroy($medsos->id_medsos)) {
-            File::delete($medsos->logo);
+            Storage::disk("public_path")->delete($medsos->logo);
             return back()->with("success", "Success Delete $medsos->nama_medsos Medsos");
         }
 

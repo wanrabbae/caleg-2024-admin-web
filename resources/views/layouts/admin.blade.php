@@ -245,6 +245,44 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
+                    <i class="fas fa-wallet"></i>
+                    <span>Finance</span>
+                </a>
+                <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('rekening') }}"><i class="fas fa-donate"></i>
+                        <span>Rekening Donasi</span>
+                        </a>
+                        <a class="collapse-item font-weight-bold" href="/email"><i class="fas fa-donate"></i>
+                        <span>No HP Donasi</span>
+                        </a>
+                        <div class="dropdown">
+                            <a class="collapse-item font-weight-bold dropdown-toggle" id="dropdownFadeIn" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <i class="fas fa-money-bill"></i>
+                                <span>Mutasi Keuangan</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-lg-right animated--fade-in" aria-labelledby="dropdownFadeIn">
+                                <a class="dropdown-item font-weight-bold" href="#!">Pemasukan</a>
+                                <a class="dropdown-item font-weight-bold" href="#!">Pengeluaran</a>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <a class="collapse-item font-weight-bold dropdown-toggle" id="dropdownFadeIn" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                                <i class="fas fa-search-dollar"></i>
+                                <span>Laporan Finance</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-lg-right animated--fade-in" aria-labelledby="dropdownFadeIn">
+                                <a class="dropdown-item font-weight-bold" href="#!">Neraca</a>
+                                <a class="dropdown-item font-weight-bold" href="#!">Jurnal Umum</a>
+                                <a class="dropdown-item font-weight-bold" href="#!">Periode Neraca</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ asset('documentation') }}">
                     <i class="fas fa-book"></i>
                     <span>Documentation</span>

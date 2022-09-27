@@ -69,7 +69,7 @@ Route::post('deleteProgram/{program:id}', [ProgramCtrl::class, 'destroy']);
 
 //Route DPT API
 Route::get('getDPT', [DptCtrl::class, 'index']);
-// Route::get('dptRegion', [DptCtrl::class, 'callRegion']);
+Route::get('dptRegion', [DptCtrl::class, 'callRegion']);
 
 //Route Survey API
 Route::get('getSurvey', [SurveyCtrl::class, 'getSurvey']);

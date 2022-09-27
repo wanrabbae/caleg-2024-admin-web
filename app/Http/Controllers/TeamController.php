@@ -7,7 +7,7 @@ use App\Models\Desa;
 use App\Models\Kecamatan;
 use App\Models\Relawan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class TeamController extends Controller
 {
@@ -60,7 +60,7 @@ class TeamController extends Controller
     {
         $relawan = Relawan::find($id);
         if ($relawan->delete()) {
-            File::delete($relawan->foto_ktp);
+            Storage::disk("public_path")->delete($relawan->foto_ktp);
             return back()->with("success", "Success Delete Relawan");
         }
         return back()->with("error", "Error, Can't Delete Relawan");
@@ -102,7 +102,7 @@ class TeamController extends Controller
 
             if (
                 $request->jabatan == 1
-                && 
+                &&
                 Relawan::with("desa")->where("id_desa", $request->desa)->where("jabatan", $request->jabatan)->first()
                 )
             {
@@ -116,7 +116,7 @@ class TeamController extends Controller
                 })) == "integer") {
                 return back()->with("error", "Jabatan untuk daerah ini sudah diambil oleh orang lain!");
                 }
-            
+
             if ($relawan->update(["jabatan" => $request->jabatan])) {
                 return back()->with("success", "Success Update Jabatan");
             }
@@ -153,9 +153,9 @@ class TeamController extends Controller
     }
 
     $data = $request->validate($rules);
-    
+
     if ($request->hasFile("foto_ktp")) {
-        File::delete($relawan->foto_ktp);
+        Storage::disk("public_path")->delete($relawan->foto_ktp);
         $data['foto_ktp'] = $request->file("foto_ktp")->store("/images", "public_path");
     }
 
