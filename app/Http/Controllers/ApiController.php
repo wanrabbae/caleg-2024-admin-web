@@ -11,6 +11,7 @@ use App\Models\Medsos;
 // use App\Models\Kecamatan;
 // use App\Models\Program;
 use App\Models\Relawan;
+use App\Models\Rk_pemilih_2;
 // use App\Models\Survey;
 // use App\Models\User;
 // use App\Models\Variabel;
@@ -214,6 +215,8 @@ class ApiController extends Controller
 
     public function register(Request $request)
     {
+        // $fileName = $request->file("foto_ktp")->getClientOriginalName();
+
         Relawan::insert([
             "username" => $request->username,
             "password" => Hash::make($request->password),
@@ -223,12 +226,24 @@ class ApiController extends Controller
             "email" => $request->email,
             "upline" => 1,
             "id_desa" => 1,
-            "id_caleg" => 2,
+            "id_caleg" => $request->id_caleg,
             "status" => 1,
             "nama_relawan" => $request->nama_relawan,
             "loyalis" => 1,
             "blokir" => "N",
+            "foto_ktp" => $request->file("foto_ktp")->store("/images", "public_path")
         ]);
+
+        if($request->with_dpt == 0){
+            Rk_pemilih_2::insert([
+                "nik" => $request->nik,
+                "nama" => $request->nama,
+                "tempat_lahir" => $request->tempat_lahir,
+                "tgl_lahir" => $request->tgl_lahir,
+                "jk" => null,
+                "id_desa" => $request->id_desa,
+            ]);
+        }
 
         return response()->json(['message' => 'berhasil']);
     }
@@ -262,9 +277,9 @@ class ApiController extends Controller
 
     public function getMedsos(Request $request)
     {
-        $medsos = Medsos::where('id_caleg', $request->id_caleg)->with('caleg')->first();
+        $medsos = Medsos::where('id_caleg', $request->id_caleg)->with('caleg')->get();
 
-        if(!$medsos){
+        if(!  $medsos){
             return response()->json(['message' => 0], 400 );
         }
         return response()->json(['message' => 1, 'data_medsos' => $medsos], 400 );
