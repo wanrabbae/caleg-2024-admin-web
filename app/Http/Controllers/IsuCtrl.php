@@ -30,6 +30,7 @@ class IsuCtrl extends Controller
     {
         $data = $request->validate([
             "id_caleg" => "required",
+            "judul_isu" => "required",
             "jenis" => "required",
             "dampak" => "required",
             "tanggal" => "required|date",

@@ -17,6 +17,7 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Relawan</th>
+                        <th>Jenis Kelamin</th>
                         @auth("web")
                         <th>Caleg</th>
                         @endauth
@@ -36,6 +37,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->relawan->nama_relawan }}</td>
+                                <td>{{ $data->relawan->jk }}</td>
                                 @auth("web")
                                 <td>{{ $data->caleg->nama_caleg }}</td>
                                 @endauth
@@ -103,12 +105,12 @@
                 @endauth
                 <div class="form-group">
                   <label for="nama_saksi" class="form-label">Nama Saksi</label>
-                  <select class="form-select form-control" name="nama_saksi" id="nama_saksi">
+                  <select class="form-select form-control" name="nama_relawan" id="nama_relawan">
                       @foreach ($relawan as $item)
-                      @if (old('id_caleg')==$item->id_caleg)
-                          <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_relawan }}</option>
+                      @if (old('nama_relawan')==$item->nama_relawan)
+                          <option value="{{ $item->nama_relawan }}" selected>{{ $item->nama_relawan }}</option>
                       @else
-                          <option value="{{ $item->id_caleg }}">{{ $item->nama_relawan }}</option>
+                          <option value="{{ $item->nama_relawan }}">{{ $item->nama_relawan }}</option>
                       @endif
                       @endforeach
                     </select>
@@ -135,34 +137,42 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        @auth("web")
-        <div class="mb-3">
-            <label for="legislatif" class="form-label">Calon Legislatif</label>
-            <select class="form-select form-control" name="id_caleg" id="id_caleg">
-                @foreach ($caleg as $item)
-                @if (old('id_caleg')==$item->id_caleg)
-                    <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
-                @else
-                    <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
-                @endif
-                @endforeach
-              </select>
-        </div>
-        @endauth
         <form action="" method="POST" id="edit_form">
         <div class="modal-body">
                 @method('put')
                 @csrf
+                @auth("web")
                 <div class="form-group">
-                  <label for="nama_relawan">Nama Saksi</label>
-                  <input type="text" class="form-control" id="edit_nama_relawan" placeholder="Masukan Nama Relawan" name="nama_relawan">
+                    <label for="legislatif" class="form-label">Calon Legislatif</label>
+                    <select class="form-select form-control" name="id_caleg" id="edit_id_caleg">
+                        @foreach ($caleg as $item)
+                        @if (old('id_caleg')==$item->id_caleg)
+                            <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
+                        @else
+                            <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                        @endif
+                        @endforeach
+                    </select>
                 </div>
+                @endauth
+                <div class="form-group">
+                    <label for="nama_relawan" class="form-label">Nama Saksi</label>
+                    <select class="form-select form-control" name="nama_relawan" id="edit_nama_relawan">
+                        @foreach ($relawan as $item)
+                        @if (old('nama_relawan')==$item->nama_relawan)
+                            <option value="{{ $item->nama_relawan }}" selected>{{ $item->nama_relawan }}</option>
+                        @else
+                            <option value="{{ $item->nama_relawan }}">{{ $item->nama_relawan }}</option>
+                        @endif
+                        @endforeach
+                      </select>
+                  </div>
               </div>
               <div class="modal-footer">
+                  <a href="">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                  </a>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <a href="">
-                  <button type="submit" class="btn btn-primary">Edit</button>
-                </a>
               </div>
             </form>
       </div>
@@ -174,6 +184,7 @@
         fetch(`/saksi/daftar/${data}`).then(resp => resp.json()).then(resp => {
             document.getElementById("edit_form").action = `/saksi/daftar/${data}`
             document.getElementById("edit_nama_relawan").value = resp.nama_relawan
+            document.getElementById("edit_id_caleg").value = resp.id_caleg
     })
     }
   </script>

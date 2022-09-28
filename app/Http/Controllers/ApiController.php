@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Caleg;
 use App\Models\Desa;
+use App\Models\News;
+use App\Models\Caleg;
 use App\Models\Medsos;
+use App\Models\Relawan;
 // use App\Models\Galery;
 // use App\Models\Kabupaten;
 // use App\Models\Kecamatan;
 // use App\Models\Program;
-use App\Models\Relawan;
 use App\Models\Rk_pemilih_2;
+use Illuminate\Http\Request;
 // use App\Models\Survey;
 // use App\Models\User;
 // use App\Models\Variabel;
-use Illuminate\Http\Request;
+use App\Models\PaymentCallback;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
@@ -213,23 +216,51 @@ class ApiController extends Controller
         }
     }
 
+    public function paymentCallback(Request $request)
+    {
+        $callback = PaymentCallback::create([
+            'codeReference' => $request->codeReference,
+            'amount' => $request->amount,
+            'status' => $request->status,
+            'datetime' => date("Y-m-d h:i:s"),
+        ]);
+
+        return response()->json(["massage" => "Success", "calback_data" => $callback], 200);
+    }
+
     public function register(Request $request)
     {
         // $fileName = $request->file("foto_ktp")->getClientOriginalName();
+
+        $validator = Validator::make($request->all(), [
+            "username" => "required|unique:relawan",
+            "no_hp" => "required|numeric|unique:relawan",
+            "nik" => "required|numeric|unique:relawan"
+        ], [
+            "username.unique" => "Username sudah digunakan !!",
+            "no_hp.unique" => "Nomor Hp sudah digunakan !!",
+            "nik.unique" => "Nik Sudah digunakan !!",
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(["message" => $validator->errors()], 400);
+        }
+
+        // $validator = $request->validate([], ['message' => "Username sudah digunakan"]);
 
         Relawan::insert([
             "username" => $request->username,
             "password" => Hash::make($request->password),
             "nik" => $request->nik,
-            "jabatan" => 1,
+            "jabatan" => 3,
             "no_hp" => $request->no_hp,
             "email" => $request->email,
-            "upline" => 1,
-            "id_desa" => 1,
+            "upline" => 0,
+            "id_desa" => $request->id_desa,
             "id_caleg" => $request->id_caleg,
             "status" => 1,
             "nama_relawan" => $request->nama_relawan,
-            "loyalis" => 1,
+            "loyalis" => 2,
             "blokir" => "N",
             "foto_ktp" => $request->file("foto_ktp")->store("/images", "public_path")
         ]);
@@ -237,7 +268,7 @@ class ApiController extends Controller
         if($request->with_dpt == 0){
             Rk_pemilih_2::insert([
                 "nik" => $request->nik,
-                "nama" => $request->nama,
+                "nama" => $request->nama_relawan,
                 "tempat_lahir" => $request->tempat_lahir,
                 "tgl_lahir" => $request->tgl_lahir,
                 "jk" => null,
@@ -250,8 +281,8 @@ class ApiController extends Controller
 
     public function login(Request $request)
     {
-        $users = Relawan::where("username", $request->username)->first();
-        $caleg = Caleg::where("username", $request->username)->first();
+        $users = Relawan::where("username", $request->username)->where("id_caleg", $request->id_caleg)->first();
+        // $caleg = Caleg::where("username", $request->username)->first();
 
         if ($users) {
             if (Hash::check($request->password, $users->password)) {
@@ -260,7 +291,7 @@ class ApiController extends Controller
                 return response()->json(['message' => 'password salah']);
             }
         } else {
-            return response()->json(['message' => 'username salah']);
+            return response()->json(['message' => 'username atau id caleg salah']);
         }
     }
 
@@ -282,6 +313,16 @@ class ApiController extends Controller
         if(!  $medsos){
             return response()->json(['message' => 0], 400 );
         }
-        return response()->json(['message' => 1, 'data_medsos' => $medsos], 400 );
+        return response()->json(['message' => 1, 'data_medsos' => $medsos], 200 );
+    }
+
+    public function getBerita(Request $request)
+    {
+        $news = News::where("id_caleg", $request->id_caleg)->orderByid("id_news", "ASC")->get();
+
+        if(!$news){
+            return response()->json(['message' => 0], 400 );
+        }
+        return response()->json(['message' => 1, 'data_medsos' => $news], 200 );
     }
 }

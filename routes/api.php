@@ -39,9 +39,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/getChart', [DPTController::class, 'getChart']);
 Route::get("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);
 
-
+//Payment Gateway
 Route::post("requestInquery", [ApiController::class, "requestInquery"]);
 Route::get("getPaymentMethod", [ApiController::class, "getPaymentMethod"]);
+Route::post("requestCallback", [ApiController::class, "paymentCallback"]);
 
 Route::post("register", [ApiController::class, "register"]);
 Route::post("login", [ApiController::class, "login"]);
@@ -107,3 +108,6 @@ Route::get('getSimpatisan', [UserCtrl::class, 'getSimpatisan']);
 
 //Route Medsos API
 Route::get('getMedsos', [ApiController::class, 'getMedsos']);
+
+//Route News API
+Route::get('getNews', [ApiController::class, 'getberita']);

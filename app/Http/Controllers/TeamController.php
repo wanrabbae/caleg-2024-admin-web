@@ -34,6 +34,7 @@ class TeamController extends Controller
         $data = $request->validate([
             "nik" => "required|unique:relawan",
             "nama_relawan" => "required|max:255",
+            "jk" => "required",
             "id_desa" => "required",
             "id_caleg" => "required",
             "status" => "required",
@@ -133,6 +134,7 @@ class TeamController extends Controller
 
         $rules = [
             "nama_relawan" => "required|max:255",
+            "jk" => "required",
             "id_desa" => "required",
             "id_caleg" => "required",
             "status" => "required",

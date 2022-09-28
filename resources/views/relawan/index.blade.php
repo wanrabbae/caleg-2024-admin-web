@@ -19,6 +19,7 @@
                             <th>No</th>
                             <th>Nik</th>
                             <th>Nama Relawan</th>
+                            <th>Jenis Kelamin</th>
                             <th>Jabatan</th>
                             <th>Upline</th>
                             <th>Desa</th>
@@ -47,6 +48,7 @@
                                             {{ $data->nama_relawan }}
                                         </button>
                                     </td>
+                                    <td class="text-center">{{ $data->jk }}</td>
                                     <td>
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#editJabatanModal" onclick="getJabatan({{ $data->id_relawan }})">
                                             @if ($data->jabatan == 1)
@@ -58,7 +60,7 @@
                                             @endif
                                         </button>
                                     </td>
-                                    <td>
+                                    <td >
                                         {{ $data->upline }}
                                     </td>
                                     <td>{{ $data->desa->nama_desa }}</td>
@@ -94,13 +96,13 @@
                                             </button>
                                         </form>
                                     </td>
-                                    <td>
+                                    <td class="d-flex justify-content-center">
                                         <a href="{{ asset("team/upline/$data->id_relawan") }}">
-                                            <button class="btn btn-warning">
+                                            <button class="btn btn-warning mx-3">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </a>
-                                        <button class="btn btn-primary" onclick="getData({{ $data->id_relawan }})" data-toggle="modal" data-target="#editModal">
+                                        <button class="btn btn-primary mr-3" onclick="getData({{ $data->id_relawan }})" data-toggle="modal" data-target="#editModal">
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         <form action="/team/{{ $data->id_relawan }}" method="POST">
@@ -141,6 +143,13 @@
                         <div class="form-group">
                             <label for="nama_relawan">Nama Relawan</label>
                             <input required value="{{ old('nama_relawan') }}" type="text" class="form-control" id="nama_relawan" placeholder="Nama Relawan" name="nama_relawan">
+                        </div>
+                        <div class="form-group">
+                            <label for="jk">Jenis Kelamin</label>
+                            <select class="form-select form-control" aria-label="Default select example" name="jk" id="jk">
+                                <option value="Laki-Laki">Laki-laki</option>
+                                <option value="Perempuan">perempuan</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="id_desa">Pilih Desa</label>
@@ -229,6 +238,13 @@
                         <div class="form-group">
                             <label for="nama_relawan">Nama Relawan</label>
                             <input value="{{ old('nama_relawan') }}" type="text" class="form-control" id="edit_nama_relawan" placeholder="Nama Relawan" name="nama_relawan">
+                        </div>
+                        <div class="form-group">
+                            <label for="jk">Jenis Kelamin</label>
+                            <select class="form-select form-control" aria-label="Default select example" name="jk" id="edit_jk">
+                                <option value="Laki-Laki">Laki-laki</option>
+                                <option value="Perempuan">perempuan</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="id_desa">Pilih Desa</label>
@@ -359,6 +375,7 @@
             fetch(`/team/${data}`).then(resp => resp.json()).then(resp => {
                 document.getElementById("edit_form").action = `/team/${data}`
                 document.getElementById("edit_nama_relawan").value = resp.nama_relawan
+                document.getElementById("edit_jk").value = resp.jk
                 document.getElementById("nik_edit").value = resp.nik
                 document.getElementById("edit_email").value = resp.email
                 document.getElementById("edit_id_desa").value = resp.id_desa
