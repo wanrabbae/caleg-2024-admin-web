@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Helper;
 use App\Models\Program;
 use App\Models\Caleg;
 use Illuminate\Http\Request;
@@ -11,8 +12,12 @@ class SimpatisanController extends Controller
 {
     public function index()
     {
+        if (Helper::RequestCheck(request()->all())) {
+            return back()->with("error", "Karakter Ilegal Ditemukan");
+        };
+
         return view('rekap.simpatisan', [
-            "program" => auth("web")->check() ? Program::all() : Program::where("id_caleg", auth()->user()->id_caleg)->get(),
+            "program" => auth("web")->check() ? Program::search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString() : Program::where("id_caleg", auth()->user()->id_caleg)->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
             'title' => 'Program',
             "caleg" => Caleg::all(),
         ]);
@@ -20,11 +25,19 @@ class SimpatisanController extends Controller
 
     public function show($id)
     {
-        return response()->json(Program::find($id));
+        //
     }
 
     public function store(Request $request)
     {
+        if ($request->has("getData") && $request->getData) {
+            $data = Program::find($request->data);
+            if (auth("caleg")->check()) {
+                $this->authorize("all-caleg", $data);
+            }
+            return response()->json($data, 200);
+        }
+
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
@@ -48,6 +61,11 @@ class SimpatisanController extends Controller
     public function delete($id)
     {
         $program = Program::find($id);
+        
+        if (auth("caleg")->check()) {
+            $this->authorize("all-caleg", $program);
+        }
+
         if ($program->delete()) {
             File::delete($program->foto);
             return back()->with("success", "Success Delete Program");
@@ -58,6 +76,10 @@ class SimpatisanController extends Controller
     public function update(Request $request, $id)
     {
         $program = Program::find($id);
+
+        if (auth("caleg")->check()) {
+            $this->authorize("all-caleg", $program);
+        }
 
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;

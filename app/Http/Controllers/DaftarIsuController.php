@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Helper;
 use App\Models\Daftar_Isu;
 use App\Models\Caleg;
 use App\Models\Relawan;
@@ -21,6 +22,10 @@ class DaftarIsuController extends Controller
     public function index()
     {
         if (request()->has("download")) {
+            if (auth("caleg")->check()) {
+               $data = Daftar_Isu::find(request("download"));
+               $this->authorize("all-caleg", $data);
+           }
             $data = json_decode(Daftar_Isu::where("id_isu", request("download"))->first()->images);
             if (count($data) > 0) {
                 $zip = new ZipArchive;
@@ -43,14 +48,14 @@ class DaftarIsuController extends Controller
             }
         }
 
+        if (Helper::RequestCheck(request()->all())) {
+            return back()->with("error", "Karakter Ilegal Ditemukan");
+        };
 
         return view("data.daftarIsu", [
             "title" => "Daftar Isu",
-            "dataArr" => auth("web")->check() ? Daftar_Isu::with(["relawan", "caleg", "kecamatan"])->get() : Daftar_Isu::with(["relawan", "caleg", "kecamatan"])->where("id_caleg", auth()->user()->id_caleg)->get(),
-            //"caleg" => Caleg::all(),
-            //"kecamatan" => Kecamatan::all(),
-            //"relawan" => auth("caleg")->check() ? Relawan::where("id_caleg", auth()->user()->id_caleg)->get() : collect([])
-    ]);
+            "dataArr" => auth("web")->check() ? Daftar_Isu::with(["relawan", "caleg", "kecamatan"])->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString() : Daftar_Isu::with(["relawan", "kecamatan"])->where("id_caleg", auth()->user()->id_caleg)->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
+        ]);
     }
 
     /**
@@ -71,6 +76,13 @@ class DaftarIsuController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has("getData") && $request->getData) {
+            $data = Daftar_Isu::find($request->data);
+            if (auth("caleg")->check()) {
+                $this->authorize("all-caleg", $data);
+            }
+            return response()->json($data, 200);
+        }
         /*if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
@@ -99,7 +111,6 @@ class DaftarIsuController extends Controller
      */
     public function show(Daftar_Isu $daftar_Isu, $id)
     {
-        return response()->json(Daftar_Isu::find($id));
     }
 
     /**
@@ -122,6 +133,11 @@ class DaftarIsuController extends Controller
      */
     public function update(Request $request, Daftar_Isu $daftar_Isu, $id)
     {
+        if (auth("caleg")->check()) {
+            $isu = Daftar_Isu::find($id);
+            $this->authorize("all-caleg", $isu);
+        }
+
          if ($request->has("btn_tanggapan")) {
             $request->validate([
                 "btn_tanggapan" => "required"
@@ -166,6 +182,9 @@ class DaftarIsuController extends Controller
     public function destroy(Daftar_Isu $daftar_Isu, $id)
     {
         $isu = Daftar_Isu::find($id);
+        if (auth("caleg")->check()) {
+            $this->authorize("all-caleg", $isu);
+        }
         if ($isu->delete()) {
             foreach (json_decode($isu->images) as $isuImg) {
                 File::delete("images/$isuImg");
@@ -174,8 +193,5 @@ class DaftarIsuController extends Controller
         }
         return back()->with('error','Error When Deleting Daftar Isu');
 
-    }
-    public function relawan($id) {
-        return response()->json(Relawan::where("id_caleg", $id)->get());
     }
 }

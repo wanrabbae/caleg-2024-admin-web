@@ -15,6 +15,22 @@ class Daftar_Isu extends Model
     public $timestamps = false;
     protected $guarded = [""];
 
+    public function scopeSearch($query, $search) {
+        return $query->where("judul_isu", "LIKE", "%$search%")
+        ->orWhereHas("caleg", function($caleg) use ($search) {
+            $caleg->where("nama_caleg", "LIKE", "%$search%");
+        })
+        ->orWhere("tanggal", "LIKE", "%$search%")
+        ->orWhereHas("kecamatan", function($kecamatan) use ($search) {
+            $kecamatan->where("nama_kecamatan", "LIKE", "%$search%");
+        })
+        ->orWhereHas("relawan", function($relawan) use ($search) {
+            $relawan->where("nama_relawan", "LIKE", "%$search%");
+        })
+        ->orWhere("keterangan", "LIKE", "%$search%")
+        ->orWhere("tanggapan", "LIKE", "%$search%");
+    }
+
     public function caleg() {
         return $this->belongsTo(Caleg::class, "id_caleg");
     }

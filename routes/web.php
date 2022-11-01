@@ -29,6 +29,16 @@ use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\EmailBlasController;
 use App\Http\Controllers\WaBlasController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\RekeningController;
+use App\Http\Controllers\WalletController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\DesaController;
+use App\Http\Controllers\KecamatanController;
+use App\Http\Controllers\KabupatenController;
+use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,14 +64,13 @@ Route::get('/login', [AuthController::class, 'loginView'])
 Route::get('/register', [AuthController::class, 'registerView'])->name('register');
 Route::post('/register-action', [AuthController::class, 'registerAction'])->name('register_action');
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
-Route::get('/logout', [AuthController::class, 'logout'])
+Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout')
     ->middleware('auth:web,caleg');
-Route::post('/update', [AuthController::class, 'update'])->middleware('auth:web,caleg');
 
 // Admin Login
 Route::get("/administrator", [AdminController::class, "index"])->name("administrator")->middleware("guest");
-Route::post('/administrator', [AdminController::class, 'authenticate'])->name('authenticate');
+Route::post('/administrator', [AdminController::class, 'authenticate'])->name('authenticate')->middleware("guest");
 
 Route::get("/me", [ProfileController::class, "index"])->middleware("auth:web,caleg");
 
@@ -71,28 +80,32 @@ Route::put("/setting/{id}", [SettingController::class, "update"])->middleware("a
 Route::resource('/caleg', CalegController::class)->middleware('auth');
 
 //Dashboard Routes
-Route::resource('/dashboard/legislatif', DashboardLegislatifController::class)->middleware('auth:web,caleg');
-Route::resource('/dashboard/partai', DashboardPartaiController::class)->middleware('auth:web,caleg');
+Route::resource('/dashboard/legislatif', DashboardLegislatifController::class)->middleware('auth:web');
+Route::post("/dashboard/provinsi", [DashboardLegislatifController::class, "provinsi"]);
+Route::post("/dashboard/kabupaten", [DashboardLegislatifController::class, "kabupaten"]);
+Route::post("/dashboard/dapil", [DashboardLegislatifController::class, "dapil"]);
+Route::resource('/dashboard/partai', DashboardPartaiController::class)->middleware('auth:web');
 Route::resource('/dashboard/medsos', DashboardMedsosController::class)
     ->parameters(['medsos' => 'medsos'])
     ->middleware('auth:web,caleg');
 
+Route::resource("/desa", DesaController::class)->middleware("auth:web");
+Route::resource("/kecamatan", KecamatanController::class)->middleware("auth:web");
+Route::resource("/kabupaten", KabupatenController::class)->middleware("auth:web");
+Route::resource("/provinsi", ProvinceController::class)->middleware("auth:web");
+
 //Info Politik Routes
 Route::resource('/infoPolitik/daftarIsu', DaftarIsuController::class)->middleware('auth:web,caleg');
-Route::get("/infoPolitik/daftarIsu/relawan/{id}", [DaftarIsuController::class, "relawan"])->middleware("auth:web,caleg");
 Route::resource('/infoPolitik/berita', BeritaController::class)
     ->parameters(['berita' => 'berita'])
     ->middleware('auth:web,caleg');
 
-Route::get('/infoPolitik/berita/publish/{id}/{aktif}', [BeritaController::class, 'publish'])->middleware("auth:web,caleg");
-Route::get('/infoPolitik/berita/unpublish/{id}/{aktif}', [BeritaController::class, 'unpublish'])->middleware("auth:web,caleg");
-
 //Survey Routes
 Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware('auth:web,caleg');
-Route::resource('/survey/HasilSurvey', VariableController::class)->middleware('auth:web,caleg');
+Route::resource('/survey/VariableSurvey', VariableController::class)->middleware('auth:web,caleg');
+Route::post("/survey/HasilSurvey", [DataSurveyController::class, "show"])->middleware("auth:web,caleg");
 
 //Data Saksi Routes
-Route::get('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'show'])->middleware('auth:web,caleg');
 Route::put('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'update'])->middleware('auth:web,caleg');
 Route::delete('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'destroy'])->middleware('auth:web,caleg');
 Route::resource('/saksi/daftar', SaksiDaftarController::class)->middleware('auth:web,caleg');
@@ -104,10 +117,10 @@ Route::prefix('/team')
     ->group(function () {
         Route::get('/', [TeamController::class, 'index'])->name('team');
         Route::post('/', [TeamController::class, 'store'])->name('team-store');
-        Route::get('/{id}', [TeamController::class, 'show'])->name('team-show');
         Route::put('/{id}', [TeamController::class, 'update'])->name('team-update');
         Route::delete('/{id}', [TeamController::class, 'delete'])->name('team-delete');
-        route::get("/upline/{id}", [TeamController::class, "upline"])->name("team-upline");
+        Route::get("/upline/{id}", [TeamController::class, "upline"])->name("team-upline");
+        Route::post("/laporan", [TeamController::class, "report"])->name("team-report");
     });
 
 // ROUTES REKAP DATA SIMPATISAN
@@ -124,13 +137,13 @@ Route::prefix('/program')
 Route::prefix('dpt')
     ->middleware("auth")
     ->group(function () {
-        Route::get('/', [DPTController::class, 'index'])->name('dpt');
-        Route::get('/export', [DPTController::class, 'store'])->name('dpt-store');
-        Route::post('/import', [DPTController::class, 'update'])->name('dpt-update');
-        Route::get('/fetch', [DPTController::class, 'fetch'])->name('dpt-fetch');
-        Route::get('/{id}', [DPTController::class, 'show'])->name('dpt-show');
-        Route::put('/{id}', [DPTController::class, 'update'])->name('dpt-update');
-        Route::delete('/{id}', [DPTController::class, 'delete'])->name('dpt-delete');
+        Route::get('/', [DptController::class, 'index'])->name('dpt');
+        Route::get('/export', [DptController::class, 'store'])->name('dpt-store');
+        Route::post('/import', [DptController::class, 'update'])->name('dpt-update');
+        Route::get('/fetch', [DptController::class, 'fetch'])->name('dpt-fetch');
+        Route::post('/', [DptController::class, 'show'])->name('dpt-show');
+        Route::put('/{id}', [DptController::class, 'update'])->name('dpt-update');
+        Route::delete('/{id}', [DptController::class, 'delete'])->name('dpt-delete');
     });
 
 Route::resource('/agenda', AgendaController::class)->middleware('auth:web,caleg');
@@ -139,12 +152,12 @@ Route::resource('/agenda', AgendaController::class)->middleware('auth:web,caleg'
 Route::get("/relawan", [RelawanController::class, "index"])->middleware("auth:web,caleg");
 
 // ROUTES WA BLAS
-Route::prefix('whatsapp')
-    ->middleware('auth:web,caleg')
+Route::prefix('/whatsapp')
+    ->middleware('auth:caleg')
     ->group(function () {
         Route::get('/', [WaBlasController::class, 'index'])->name('wa');
         Route::post("/send", [WaBlasController::class, "send"])->name("wa-send");
-        Route::get("/{relawan:id_relawan}", [WaBlasController::class, "show"])->name("wa-show");
+        // Route::post("/no", [WaBlasController::class, "sendNum"])->name("wa-sendNum");
         // Route::post('/', [WaBlasController::class, 'store'])->name('wa-store');
         // Route::get('/{id}', [WaBlasController::class, 'show'])->name('wa-show');
         // Route::put('/{id}', [WaBlasController::class, 'update'])->name('wa-update');
@@ -152,8 +165,8 @@ Route::prefix('whatsapp')
     });
     
     // ROUTES EMAIL BLAS
-    Route::prefix('email')
-    ->middleware('auth:web,caleg')
+    Route::prefix('/email')
+    ->middleware('auth:caleg')
     ->group(function () {
         Route::get('/', [EmailBlasController::class, 'index'])->name('email');
         Route::post("/send", [EmailBlasController::class, "send"])->name("email-send");
@@ -164,10 +177,48 @@ Route::prefix('whatsapp')
         // Route::delete('/{id}', [WaBlasController::class, 'delete'])->name('email-delete');
     });
 
-Route::prefix("config")->middleware("auth:web,caleg")->group(function() {
+Route::prefix("/configBlas")->middleware("auth:caleg")->group(function() {
     Route::get("/", [ConfigController::class, "index"]);
     Route::post("/", [ConfigController::class, "update"]);
 });
+
+Route::prefix("/rekening")->middleware("auth:caleg", "platinum")->group(function() {
+    Route::get("/", [RekeningController::class, "index"]);
+    Route::post("/", [RekeningController::class, "store"]);
+    Route::get("/{rk_bank:id_bank}", [RekeningController::class, "show"]);
+    Route::put("/{rk_bank:id_bank}", [RekeningController::class, "update"]);
+    Route::delete("/{rk_bank:id_bank}", [RekeningController::class, "destroy"]);
+});
+
+Route::prefix("/ewallet")->middleware("auth:caleg", "platinum")->group(function() {
+    Route::get("/", [WalletController::class, "index"]);
+    Route::post("/", [WalletController::class, "store"]);
+    Route::get("/{rk_wallet:id_wallet}", [WalletController::class, "show"]);
+    Route::put("/{rk_wallet:id_wallet}", [WalletController::class, "update"]);
+    Route::delete("/{rk_wallet:id_wallet}", [WalletController::class, "destroy"]);
+});
+
+Route::prefix("/kategori")->middleware("auth:caleg", "platinum")->group(function() {
+    Route::get("/", [CategoryController::class, "index"]);
+    Route::post("/", [CategoryController::class, "store"]);
+    Route::get("/{rk_kategori:id_kategori}", [CategoryController::class, "show"]);
+    Route::put("/{rk_kategori:id_kategori}", [CategoryController::class, "update"]);
+    Route::delete("/{rk_kategori:id_kategori}", [CategoryController::class, "destroy"]);
+});
+
+Route::prefix("/transaksi")->middleware("auth:caleg", "platinum")->group(function() {
+    Route::get("/", [TransaksiController::class, "index"]);
+    Route::post("/", [TransaksiController::class, "store"]);
+    Route::put("/{rk_transaksi:id_transaksi}", [TransaksiController::class, "update"]);
+    Route::delete("/{rk_transaksi:id_transaksi}", [TransaksiController::class, "destroy"]);
+});
+
+Route::prefix("/laporan")->middleware("auth:caleg", "platinum")->group(function() {
+    Route::post("/", [ReportController::class, "index"]);
+});
+
+Route::resource("/invoices", InvoiceController::class)->middleware("auth:web");
+Route::post("invoices/show", [InvoiceController::class, "show"])->middleware("auth:web");
 
 // ROUTE DOCUMENTATION
 Route::get('/documentation', [DocumentationController::class, 'index'])->middleware('auth:web,caleg');
@@ -182,3 +233,7 @@ Route::post("/reset", [ResetController::class, "send"])->middleware("guest");
 
 Route::get("/resetpassword", [ResetPasswordController::class, "index"])->middleware("guest");
 Route::post("/resetpassword", [ResetPasswordController::class, "update"])->middleware("guest");
+
+Route::get("/aktivasi", [AuthController::class, "activate"])->middleware("guest");
+
+Route::post("/invoice", [AuthController::class, "invoice"])->middleware("guest");

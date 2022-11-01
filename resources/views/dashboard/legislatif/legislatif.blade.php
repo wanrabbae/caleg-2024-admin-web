@@ -12,11 +12,39 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <div class="d-flex justify-content-between flex-column flex-md-row">
+            <div>
+              <form action="" method="GET" class="d-block mb-2">
+              @if (request()->has("search"))
+              <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+              @endif
+              <span class="d-block">Data Per Page</span>
+                <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                <datalist id="paginates">
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="75">75</option>
+                  <option value="100">100</option>
+                </datalist>
+              </form>
+            </div>
+            <div>
+              <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                @if (request()->has("paginate"))
+                <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                @endif
+                <span class="d-block">Search</span>
+                <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+              </div>
+            </form>
+          </div>
+            {{ $dataArr->links() }}
+            <table class="table table-bordered" id="" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>Nama Legislatif</th>
+                        <th>Type</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -26,11 +54,12 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->nama_legislatif }}</td>
+                                <td>{{ $data->type }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <button class="btn btn-warning mx-3" onclick="getData({{ $data->id_legislatif }})" data-toggle="modal" data-target="#editModal">
+                                    <button class="btn btn-warning mx-3 getData" value="{{ $data->id_legislatif }}" data-toggle="modal" data-target="#editModal">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <form action="/dashboard/legislatif/{{ $data->id_legislatif }}" method="POST" class="d-inline">
+                                    <form action="{{ asset('dashboard/legislatif/'. $data->id_legislatif) }}" method="POST" class="d-inline">
                                         @method("delete")
                                         @csrf
                                         <button type="submit" class="btn btn-danger">
@@ -57,12 +86,19 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="/dashboard/legislatif/" method="POST">
+        <form action="{{ asset('dashboard/legislatif') }}" method="POST">
         <div class="modal-body">
                 @csrf
                 <div class="form-group">
                   <label for="nama_legislatif">Nama Legislatif</label>
                   <input type="text" class="form-control" id="nama_legislatif" placeholder="Nama Legislatif" name="nama_legislatif">
+                </div>
+                <div class="form-group">
+                  <label for="type">Type</label>
+                  <select name="type" class="form-control" id="type" value="{{ old('type') }}" aria-describedby="type">
+                    <option value="Provinsi">Provinsi</option>
+                    <option value="Kabupaten">Kabupaten</option>
+                  </select>
                 </div>
               </div>
               <div class="modal-footer">
@@ -94,6 +130,13 @@
                   <label for="nama_legislatif">Nama Legislatif</label>
                   <input type="text" class="form-control" id="edit_legislatif" placeholder="Nama Legislatif" name="nama_legislatif">
                 </div>
+                <div class="form-group">
+                  <label for="type">Type</label>
+                  <select name="type" class="form-control" id="edit_type" value="{{ old('type') }}" aria-describedby="type">
+                    <option value="Provinsi">Provinsi</option>
+                    <option value="Kabupaten">Kabupaten</option>
+                  </select>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -105,13 +148,34 @@
       </div>
     </div>
   </div>
-
+@endsection
+@section("script")
   <script>
-    function getData(data) {
-        fetch(`/dashboard/legislatif/${data}`).then(resp => resp.json()).then(resp => {
-            document.getElementById("edit_form").action = `/dashboard/legislatif/${data}`
-            document.getElementById("edit_legislatif").value = resp.nama_legislatif
-    })
+  $(document).ready(function() {
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
     }
-  </script>
+});
+
+  let getData = e => {
+    $.ajax({
+        url: `{{ asset('dashboard/legislatif') }}`,
+        method: "POST",
+        data: {
+          getData: true,
+          data: e.currentTarget.value
+        },
+        dataType: "json",
+        success: resp => {
+            $("#edit_form").attr("action", `{{ asset('dashboard/legislatif/${resp.id_legislatif}') }}`)
+            $("#edit_legislatif").val(resp.nama_legislatif)
+            $("#edit_type").val(resp.type)
+        } 
+      })
+  }
+
+  $(".getData").on("click", getData);
+  })
+</script>
 @endsection

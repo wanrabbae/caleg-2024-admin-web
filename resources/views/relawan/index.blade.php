@@ -5,27 +5,66 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
+            {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
                 <i class="fas fa-plus"></i>
                 Relawan
-            </button>
+            </button> --}}
+            @auth("caleg")
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reportModal">
+                <i class="fas fa-book"></i>
+                  Laporan Relawan
+              </button>
+            @endauth
         </div>
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <div class="d-flex justify-content-between flex-column flex-md-row">
+                    <div>
+                      <form action="" method="GET" class="d-block mb-2">
+                      @if (request()->has("search"))
+                      <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                      @endif
+                      <span class="d-block">Data Per Page</span>
+                        <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                        <datalist id="paginates">
+                          <option value="25">25</option>
+                          <option value="50">50</option>
+                          <option value="75">75</option>
+                          <option value="100">100</option>
+                        </datalist>
+                      </form>
+                    </div>
+                    <div>
+                      <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                        @if (request()->has("paginate"))
+                        <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                        @endif
+                        <span class="d-block">Search</span>
+                        <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                      </div>
+                    </form>
+                  </div>
+                    {{ $data->links() }}
+                <table class="table table-bordered" id="" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Nik</th>
                             <th>Nama Relawan</th>
+                            <th>Downline</th>
+                            <th>Jenis Kelamin</th>
                             <th>Jabatan</th>
                             <th>Upline</th>
                             <th>Desa</th>
                             <th>Saksi</th>
                             <th>Kecamatan</th>
                             <th>KTP</th>
+                            <th>TPS</th>
+                            <th>Referral</th>
+                            @auth("web")
                             <th>Caleg</th>
+                            @endauth
                             <th>Status</th>
                             <th>No Hp</th>
                             <th>E-mail</th>
@@ -41,14 +80,14 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $data->nik }}</td>
                                     <td>
-                                        <button class="text-nowrap btn @if ($data->loyalis == 1) btn-success @elseif ($data->loyalis == 2) btn-warning @else btn-danger @endif" data-toggle="modal" data-target="#editLoyalModal"
-                                            onclick="getLoyalis({{ $data->id_relawan }})"
-                                            >
+                                        <button class="text-nowrap getLoyalis btn @if ($data->loyalis == 1) btn-success @elseif ($data->loyalis == 2) btn-warning @else btn-danger @endif" value="{{ $data->id_relawan }}" data-toggle="modal" data-target="#editLoyalModal">
                                             {{ $data->nama_relawan }}
                                         </button>
                                     </td>
+                                    <td>{{ $data->downlineRel->count() / $data->caleg->downline * 100 }}%</td>
+                                    <td>{{ $data->jk }}</td>
                                     <td>
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#editJabatanModal" onclick="getJabatan({{ $data->id_relawan }})">
+                                        <button class="btn btn-primary getJabatan" value="{{ $data->id_relawan }}" data-toggle="modal" data-target="#editJabatanModal">
                                             @if ($data->jabatan == 1)
                                             KoorDes
                                             @elseif ($data->jabatan == 2)
@@ -59,18 +98,24 @@
                                         </button>
                                     </td>
                                     <td>
-                                        {{ $data->upline }}
+                                        {{ $data->simpatisan->nama_relawan ?? "Tidak Ada"}}
                                     </td>
                                     <td>{{ $data->desa->nama_desa }}</td>
                                     <td>
-                                        <form action="/team/{{ $data->id_relawan }}" method="POST">
-                                            @method("put")
-                                            @csrf
-                                            <button class="btn @if ($data->saksi == 'Y') btn-success @else btn-danger @endif" type="submit" value="{{ $data->saksi }}" name="saksi">
-                                                {{ $data->saksi }}
-                                            </button>
-                                        </form>
-                                    </td>
+                                        @if ($data->saksi == "N")
+                                           <button type="button" class="btn btn-danger getTps" data-toggle="modal" data-target="#createTpsModal" value="{{ $data->id_relawan }}">
+                                               {{ $data->saksi }}
+                                           </button>
+                                       @else
+                                       <form action="{{ asset('team/' . $data->id_relawan) }}" method="POST">
+                                           @method("put")
+                                           @csrf
+                                           <button class="btn btn-success" type="submit" value="{{ $data->saksi }}" name="saksi">
+                                               {{ $data->saksi }}
+                                           </button>
+                                       </form>
+                                       @endif
+                                   </td>
                                     <td>{{ $data->desa->kecamatan->nama_kecamatan }}</td>
                                     <td>
                                         @if (File::exists($data->foto_ktp))
@@ -80,13 +125,17 @@
                                             <span>Image Not Found</span>
                                         @endif
                                     </td>
+                                    <td>{{ $data->tps ?? "Tidak Ada" }}</td>
+                                    <td>{{ $data->referal }}</td>
+                                    @auth("web")
                                     <td>{{ $data->caleg->nama_lengkap ?? '' }}</td>
+                                    @endauth
                                     <td>{{ $data->status }}</td>
                                     <td>{{ $data->no_hp }}</td>
                                     <td>{{ $data->email }}</td>
                                     <td>{{ $data->username }}</td>
                                     <td>
-                                        <form action="/team/{{ $data->id_relawan }}" method="POST">
+                                        <form action="{{ asset("team/" . $data->id_relawan) }}" method="POST">
                                         @method("put")
                                         @csrf
                                             <button type="submit" value="{{ $data->blokir }}" class="btn @if ($data->blokir == 'Y') btn-danger @else btn-success @endif" name="blokir">
@@ -95,15 +144,15 @@
                                         </form>
                                     </td>
                                     <td>
-                                        <a href="{{ asset("team/upline/$data->id_relawan") }}">
-                                            <button class="btn btn-warning">
+                                        <a href="{{ asset("team/upline/" . $data->id_relawan) }}" target="_blank">
+                                            <button class="btn btn-warning" type="submit" name="id" value="{{ $data->id_relawan }}">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </a>
-                                        <button class="btn btn-primary" onclick="getData({{ $data->id_relawan }})" data-toggle="modal" data-target="#editModal">
+                                        <button class="btn btn-primary getData" value="{{ $data->id_relawan }}" data-toggle="modal" data-target="#editModal">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <form action="/team/{{ $data->id_relawan }}" method="POST">
+                                        <form action="{{ asset("team/" . $data->id_relawan) }}" method="POST">
                                             @method('delete')
                                             @csrf
                                             <button type="submit" onclick="return confirm('Anda yakin ingin menghapus data ini ?')" class="btn btn-danger">
@@ -120,8 +169,35 @@
         </div>
     </div>
 
+    <!--Modal Create Tps -->
+    <div class="modal fade" id="createTpsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Masukkan TPS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="" method="POST" id="tps_form">
+                            @method('put')
+                            @csrf
+                            <input type="hidden" name="saksi" value="N">
+                            <h5 id="desatitle" class="text-center"></h5>
+                            <div class="form-group"></div>
+                            <div class="modal-footer">
+                                <a type="button" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                                <button type="submit" class="btn btn-primary">Tambah</button>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Modal Create --}}
-    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -130,7 +206,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="/team" method="POST" enctype="multipart/form-data">
+                <form action="{{ asset("team") }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         @csrf
@@ -206,7 +282,52 @@
                 </form>
             </div>
         </div>
+    </div> --}}
+
+    {{-- Report Modal --}}
+  <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Laporan Relawan</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="{{ asset('team/laporan') }}" method="POST">
+            @csrf
+            <div class='form-check'>
+                <input class='form-check-input check' type='checkbox' name='jabatan[]' value="2" id="koorcam">
+                <label class='form-check-label' for='koorcam'>
+                    Koordinator Kecamatan
+                </label>
+            </div>
+            <div class="form-check">
+                <input class='form-check-input check' type='checkbox' name='jabatan[]' value="1" id="koordes">
+                <label class='form-check-label' for='koordes'>
+                    Koordinator Desa
+                </label>
+            </div>
+            <div class="form-check">
+                <input class='form-check-input check' type='checkbox' name='jabatan[]' value="0" id="simpatisan">
+                <label class='form-check-label' for='simpatisan'>
+                    Simpatisan
+                </label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <a href="">
+                <button type="submit" class="btn btn-primary" id="report" disabled>Lapor</button>
+            </a>
+        </div>
+    </form>
     </div>
+</div>
+</div>
+</div>
+</div>
 
     {{-- Edit Modal --}}
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -229,6 +350,13 @@
                         <div class="form-group">
                             <label for="nama_relawan">Nama Relawan</label>
                             <input value="{{ old('nama_relawan') }}" type="text" class="form-control" id="edit_nama_relawan" placeholder="Nama Relawan" name="nama_relawan">
+                        </div>
+                        <div class="form-group">
+                            <label for="jk">Jenis Kelamin</label>
+                            <select class="form-control" name="jk" id="edit_jk">
+                                <option value="Laki-Laki">Laki-Laki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="id_desa">Pilih Desa</label>
@@ -353,34 +481,106 @@
         </div>
     </div>
 </div>
+@endsection
+@section("script")
+  <script>
+  $(document).ready(function() {
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    }
+});
 
-<script>
-        function getData(data) {
-            fetch(`/team/${data}`).then(resp => resp.json()).then(resp => {
-                document.getElementById("edit_form").action = `/team/${data}`
-                document.getElementById("edit_nama_relawan").value = resp.nama_relawan
-                document.getElementById("nik_edit").value = resp.nik
-                document.getElementById("edit_email").value = resp.email
-                document.getElementById("edit_id_desa").value = resp.id_desa
-                document.getElementById("edit_username").value = resp.username
-                document.getElementById("edit_no_hp").value = resp.no_hp
-            })
+  let getData = e => {
+    $.ajax({
+        url: `{{ asset('team') }}`,
+        method: "POST",
+        data: {
+          getData: true,
+          data: e.currentTarget.value,
+        },
+        dataType: "json",
+        success: resp => {
+            $("#edit_form").attr("action", `{{ asset('team/${resp.id_relawan}') }}`)
+            $("#edit_nama_relawan").val(resp.nama_relawan);
+            $("#edit_jk").val(resp.jk);
+            @auth("web")
+            $("#edit_id_caleg").val(resp.id_caleg);
+            @endauth
+            $("#nik_edit").val(resp.nik);
+            $("#edit_email").val(resp.email);
+            $("#edit_id_desa").val(resp.id_desa);
+            $("#edit_username").val(resp.username);
+            $("#edit_no_hp").val(resp.no_hp);
         }
+      })
+  }
 
-        function getLoyalis(data) {
-            fetch(`/team/${data}`).then(resp => resp.json()).then(resp => {
-                document.getElementById("edit_form_loyal").action = `/team/${data}`
-                document.getElementById("edit_loyalis").value = resp.loyalis
-            })
+  let getLoyalis = e => {
+    $.ajax({
+        url: `{{ asset('team') }}`,
+        method: "POST",
+        data: {
+          getData: true,
+          data: e.currentTarget.value,
+        },
+        dataType: "json",
+        success: resp => {
+            $("#edit_form_loyal").attr("action", `{{ asset('team/${resp.id_relawan}') }}`)
+            $("#edit_loyalis").val(resp.loyalis);
+        } 
+      })
+  }
+
+  let getJabatan = e => {
+    $.ajax({
+        url: `{{ asset('team') }}`,
+        method: "POST",
+        data: {
+          getData: true,
+          data: e.currentTarget.value,
+        },
+        dataType: "json",
+        success: resp => {
+            $("#edit_form_jabatan").attr("action", `{{ asset('team/${resp.id_relawan}') }}`)
+            $("#edit_jabatan").val(resp.jabatan);
+            $("#edit_desa").val(resp.id_desa);
+        } 
+      })
+  }
+
+  let getTps = e => {
+    $.ajax({
+        url: `{{ asset('team') }}`,
+        method: "POST",
+        data: {
+          getTps: true,
+          data: e.currentTarget.value,
+        },
+        dataType: "json",
+        success: resp => {
+            $("#tps_form").attr("action", `{{ asset('team/${e.currentTarget.value}') }}`)
+            $("#desatitle").text(`TPS Untuk Desa ${resp[0]}`)
+            $("#tps_form .form-group").html(resp[1])
+        } 
+      })
+  }
+
+  $(".getTps").on("click", getTps);
+  $(".getData").on("click", getData);
+  $(".getLoyalis").on("click", getLoyalis);
+  $(".getJabatan").on("click", getJabatan);
+
+  $("input[type='checkbox'].check").on("click", e => {
+    $("input[type='checkbox'].check").each((i, v) => {
+        if (v.checked) {
+            $("#report").prop("disabled", false);
+            return false;
+        } else {
+            $("#report").prop("disabled", true);
         }
-
-        function getJabatan(data) {
-            fetch(`/team/${data}`).then(resp => resp.json()).then(resp => {
-                document.getElementById("edit_form_jabatan").action = `/team/${data}`
-                document.getElementById("edit_jabatan").value = resp.jabatan
-                document.getElementById("edit_desa").value = resp.id_desa
-            })
-        }
-
-    </script>
+    })
+  })
+  })
+</script>
 @endsection

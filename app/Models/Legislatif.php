@@ -14,10 +14,18 @@ class Legislatif extends Model
     protected $primaryKey = "id_legislatif";
     protected $guarded = [];
 
+    public function scopeSearch($query, $search) {
+        return $query->where("nama_legislatif", "LIKE", "%$search%")
+        ->orWhere("type", "LIKE", "%$search%");
+    }
 
     public function caleg()
     {
         return $this->hasMany(Caleg::class, "id_legislatif");
+    }
+
+    public function dapil() {
+        return $this->hasMany(Dapil::class, "id_legislatif");
     }
 
     public static function boot() {
@@ -27,7 +35,12 @@ class Legislatif extends Model
             $legislatif->caleg()->each(function($value) {
                 $value->delete();
             });
+
+            $legislatif->dapil()->each(function($value) {
+                $value->delete();
+            });
         });
+
     }
 
 }

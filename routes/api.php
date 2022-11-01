@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\CalegCtrl;
 use Illuminate\Http\Request;
@@ -17,6 +16,8 @@ use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SurveyCtrl;
 use App\Http\Controllers\VariableCtrl;
 use App\Http\Controllers\KecamatanCtrl;
+use App\Http\Controllers\TeamController;
+use App\Http\Controllers\CalegController;
 
 /*
 //Route Galery API
@@ -36,8 +37,9 @@ use App\Http\Controllers\KecamatanCtrl;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/getChart', [DPTController::class, 'getChart']);
-Route::get("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);
+
+// Route::get('/getChart', [DPTController::class, 'getChart']);
+// Route::get("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);
 
 
 Route::post("requestInquery", [ApiController::class, "requestInquery"]);
@@ -51,9 +53,11 @@ Route::post("login", [ApiController::class, "login"]);
 Route::get("getDesa", [ApiController::class, "getDesa"]);
 
 // Diagram Data
-Route::get('/getChart/{id}', [DPTController::class, 'getChart']);
-Route::get("/getChartDesa/{id}", [SaksiMonitoringController::class, "fetch"]);
-Route::get("/getChartRelawan/{id}", [RelawanController::class, "fetch"]);
+Route::post('/getChart', [DPTController::class, 'getChart']);
+Route::post("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);
+Route::post("/getChartRelawan", [RelawanController::class, "fetch"]);
+Route::post("/getChartSuara", [CalegController::class, "fetch"]);
+Route::post("/getChartUpline", [TeamController::class, "fetch"]);
 
 //Route Caleg API
 Route::post("getCaleg", [CalegCtrl::class, "index",]);

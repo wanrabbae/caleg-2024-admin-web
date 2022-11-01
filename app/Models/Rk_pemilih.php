@@ -17,12 +17,20 @@ class Rk_pemilih extends Model
 
     protected $guarded = [];
 
+    public function scopeSearch($query, $search) {
+        return $query->where("nik", "LIKE", "%$search%")
+        ->orWhere("nama", "LIKE", "%$search%")
+        ->orWhere("tempat_lahir", "LIKE", "%$search%")
+        ->orWhere("tgl_lahir", "LIKE", "%$search%")
+        ->orWhere("jk", "LIKE", "%$search%")
+        ->orWhereHas("desa.kecamatan", function($desa) use ($search) {
+            $desa->where("nama_desa", "LIKE", "%$search%")->orWhere("nama_kecamatan", "LIKE", "%$search%");
+        })
+        ->orWhere("tgl_data", "LIKE", "%$search%");
+    }
+
     public function desa()
     {
         return $this->belongsTo(Desa::class, 'id_desa');
-    }
-
-    public function caleg() {
-        return $this->belongsTo(Caleg::class, 'id_caleg');
     }
 }

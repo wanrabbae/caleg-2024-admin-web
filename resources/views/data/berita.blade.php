@@ -9,7 +9,34 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <div class="d-flex justify-content-between flex-column flex-md-row">
+                <div>
+                  <form action="" method="GET" class="d-block mb-2">
+                  @if (request()->has("search"))
+                  <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                  @endif
+                  <span class="d-block">Data Per Page</span>
+                    <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                    <datalist id="paginates">
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="75">75</option>
+                      <option value="100">100</option>
+                    </datalist>
+                  </form>
+                </div>
+                <div>
+                  <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                    @if (request()->has("paginate"))
+                    <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                    @endif
+                    <span class="d-block">Search</span>
+                    <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                  </div>
+                </form>
+              </div>
+                {{ $data->links() }}
+            <table class="table table-bordered" id="" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -36,7 +63,7 @@
                                 <td>{{ $item->isi_berita }}</td>
                                 <td>{{ $item->tgl_publish }}</td>
                                 <td>
-                                    <form action="/infoPolitik/berita/{{ $item->id_news }}" method="POST">
+                                    <form action="{{ asset('infoPolitik/berita/' . $item->id_news) }}" method="POST">
                                         @method('put')
                                         @csrf
                                     @if ($item->aktif == 'N')
@@ -59,10 +86,10 @@
                                     @endif
                                     </td>
                                 <td class="d-flex justify-content-center">
-                                   <button type="button" class="btn btn-warning mx-3" onclick="getBerita({{ $item->id_news }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                   <button type="button" class="btn btn-warning mx-3 getData" value="{{ $item->id_news }}" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                        <i class="fas fa-edit"></i>
                                    </button>
-                                   <form action="/infoPolitik/berita/{{ $item->id_news }}" method="post" class="d-inline">
+                                   <form action="{{ asset('infoPolitik/berita/' . $item->id_news) }}" method="post" class="d-inline">
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus {{ $item->judul }}')">
@@ -87,7 +114,7 @@
           <h5 class="modal-title" id="exampleModalLabel">Create Berita</h5>
             <span aria-hidden="true">&times;</span>
         </div>
-        <form action="/infoPolitik/berita" method="post" enctype="multipart/form-data">
+        <form action="{{ asset("infoPolitik/berita") }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="modal-body">
                 <div class="form-group">
@@ -136,17 +163,17 @@
           <h5 class="modal-title" id="exampleModalLabel">Update Data Berita</h5>
             <span aria-hidden="true">&times;</span>
         </div>
-        <form action="" method="post" enctype="multipart/form-data" id="update_berita">
+        <form action="" method="post" enctype="multipart/form-data" id="edit_form">
             @method('put')
             @csrf
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="judul_news" class="form-label">Judul News</label>
+                    <label for="judul_news" class="form-label">Judul Bierta</label>
                     <input type="text" name="judul" id="update_judul" class="form-control" placeholder="Judul news">
                 </div>
                 <div class="form-group">
                     <label for="isi_berita" class="form-label">Isi Berita</label>
-                    <textarea name="isi_berita" id="update_isi_berita" rows="2" class="form-control" placeholder="Masukan Isi Berita"></textarea>
+                    <textarea name="isi_berita" id="update_isi_berita" rows="5" class="form-control" placeholder="Masukan Isi Berita"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tgl_publish" class="form-label">Tanggal Publish</label>
@@ -179,16 +206,38 @@
       </div>
     </div>
 </div>
+@endsection
+@section("script")
 <script>
-function getBerita(data) {
-    fetch(`/infoPolitik/berita/${data}`).then(response => response.json()).then(response => {
-        document.getElementById("update_berita").action = `/infoPolitik/berita/${data}`
-        @auth("web")
-        document.getElementById("update_id_caleg").value = response.id_caleg
-        @endauth
-        document.getElementById("update_judul").value = response.judul
-        document.getElementById("update_isi_berita").value = response.isi_berita
-        document.getElementById("update_tgl_publish").value = response.tgl_publish
+$(document).ready(function() {
+$.ajaxSetup({
+  headers: {
+      'X-CSRF-TOKEN': '{{ csrf_token() }}'
+  }
+});
+
+let getData = e => {
+  $.ajax({
+      url: `{{ asset('infoPolitik/berita') }}`,
+      method: "POST",
+      data: {
+        getData: true,
+        data: e.currentTarget.value
+      },
+      dataType: "json",
+      success: resp => {
+          $("#edit_form").attr("action", `{{ asset('infoPolitik/berita/${resp.id_news}') }}`)
+          @auth("web")
+          $("#edit_id_caleg").val(resp.id_caleg)
+          @endauth
+          $("#update_judul").val(resp.judul)
+          $("#update_isi_berita").val(resp.isi_berita)
+          $("#update_tgl_publish").val(resp.tgl_publish)
+      } 
     })
-}</script>
+}
+
+$(".getData").on("click", getData);
+})
+</script>
 @endsection

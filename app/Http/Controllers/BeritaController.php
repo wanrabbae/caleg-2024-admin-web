@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Helper;
 use App\Models\Caleg;
 use App\Models\News;
 use Illuminate\Support\Facades\File;
@@ -17,9 +18,13 @@ class BeritaController extends Controller
      */
     public function index()
     {
+        if (Helper::RequestCheck(request()->all())) {
+            return back()->with("error", "Karakter Ilegal Ditemukan");
+        };
+
         return view('data.berita',[
             'title' => 'Berita Page',
-            'data' => auth("web")->check() ? News::all() : News::where("id_caleg", auth()->user()->id_caleg)->get(),
+            'data' => auth("web")->check() ? News::search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString() : News::where("id_caleg", auth()->user()->id_caleg)->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
             'caleg' => Caleg::all(),
         ]);
     }
@@ -42,6 +47,14 @@ class BeritaController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has("getData") && $request->getData) {
+            $data = News::find($request->data);
+            if (auth("caleg")->check()) {
+                $this->authorize("all-caleg", $data);
+            }
+            return response()->json($data, 200);
+        }
+
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
@@ -72,7 +85,6 @@ class BeritaController extends Controller
      */
     public function show(News $news, $id_news)
     {
-        return response()->json(News::find($id_news));
     }
 
     /**
@@ -95,6 +107,11 @@ class BeritaController extends Controller
      */
     public function update(Request $request, News $news, $id_news)
     {
+        if (auth("caleg")->check()) {
+            $data = News::find($id_news);
+            $this->authorize("all-caleg", $data);
+        }
+
         if ($request->publish) {
             if(News::where('id_news', $id_news)->update(["aktif" => $request->publish])){
                 return redirect('/infoPolitik/berita')->with('success', 'Success Updating Data News');
@@ -141,6 +158,11 @@ class BeritaController extends Controller
      */
     public function destroy(News $news, $id_news)
     {
+        if (auth("caleg")->check()) {
+            $data = News::find($id_news);
+            $this->authorize("all-caleg", $data);
+        }
+        
         $img = News::firstWhere("id_news", $id_news)->gambar;
         if(News::where('id_news', $id_news)->delete()){
             File::delete($img);
@@ -148,19 +170,4 @@ class BeritaController extends Controller
         }
        return back()->with('error', "Failed Deleting Data News");
     }
-
-    public function publish($id_news){
-
-        $aktif = News::firstWhere("id_news", $id_news)->aktif;
-        $judul = News::firstWhere("id_news", $id_news)->judul;
-
-        if($aktif == "Y"){
-            if(News::where("id_news", $id_news)->update($aktif === "N")){
-                News::where("id_news", $id_news)->delete($aktif);
-            }
-            return redirect('/infoPolitik/berita')->with('success', "Success Publish Berita $judul");
-        }
-        return redirect('/infoPolitik/berita')->with('error', "Failed Publish Berita $judul");
-    }
-
 }

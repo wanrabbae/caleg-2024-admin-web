@@ -23,21 +23,44 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <div class="d-flex justify-content-between flex-column flex-md-row">
+                    <div>
+                      <form action="" method="GET" class="d-block mb-2">
+                      @if (request()->has("search"))
+                      <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                      @endif
+                      <span class="d-block">Data Per Page</span>
+                        <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                        <datalist id="paginates">
+                          <option value="25">25</option>
+                          <option value="50">50</option>
+                          <option value="75">75</option>
+                          <option value="100">100</option>
+                        </datalist>
+                      </form>
+                    </div>
+                    <div>
+                      <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                        @if (request()->has("paginate"))
+                        <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                        @endif
+                        <span class="d-block">Search</span>
+                        <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                      </div>
+                    </form>
+                  </div>
+                    {{ $datas->links() }}
+                <table class="table table-bordered" id="" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>NIK</th>
-                            @auth("web")
-                            <th>Caleg</th>
-                            @endauth
                             <th>Nama Pemilih</th>
                             <th>Tempat Lahir</th>
                             <th>Tanggal Lahir</th>
                             <th>JK</th>
                             <th>Desa</th>
                             <th>Kecamatan</th>
-                            <th>TPS</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -47,21 +70,17 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nik }}</td>
-                                    @auth("web")
-                                    <td>{{ $item->caleg->nama_caleg }}</td>
-                                    @endauth
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ $item->tempat_lahir }}</td>
                                     <td>{{ $item->tgl_lahir }}</td>
                                     <td>{{ $item->jk }}</td>
                                     <td>{{ $item->desa->nama_desa }}</td>
                                     <td>{{ $item->desa->kecamatan->nama_kecamatan }}</td>
-                                    <td>{{ $item->tps }}</td>
                                     <td class="d-flex justify-content-center">
-                                        <button type="button" class="btn btn-warning mx-3" onclick="getData({{ $item->id_pemilih }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                        <button type="button" class="btn btn-warning mx-3 getData" value="{{ $item->id_pemilih }}" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <form action="/dpt/{{ $item->id_pemilih }}" method="post" class="d-inline">
+                                        <form action="{{ asset("dpt/" . $item->id_pemilih) }}" method="post" class="d-inline">
                                             @method('delete')
                                             @csrf
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus DPT Pemilih {{ $item->nama }}')">
@@ -78,109 +97,6 @@
         </div>
     </div>
 
-    {{-- Modal Create data DPT --}}
-    {{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createModalLabel">Create Data DPT</h5>
-                    <span aria-hidden="true">&times;</span>
-                </div>
-                <form action="{{ asset('/dpt') }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="nik" class="form-label">NIK</label>
-                            <input type="text" class="form-control" id="nik" name="nik" placeholder=" Masukan NIK">
-                        </div>
-                        @if (auth("web")->check())
-                        <div class="form-group">
-                            <label for="id_caleg" class="form-label" >Caleg</label>
-                            <select class="form-select form-control" name="id_caleg" id="id_caleg">
-                                @foreach ($caleg as $item)
-                                @if (old('id_caleg')==$item->id_caleg)
-                                    <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
-                                @else
-                                    <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
-                                @endif
-                                @endforeach
-                            </select>
-                        </div>
-                        @endif
-                        <div class="form-group">
-                            <label for="nama" class="form-label">Nama Pemilih</label>
-                            <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukan Nama Pemilih">
-                        </div>
-                        <div class="form-group">
-                            <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
-                            <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Masukan Tempat Lahir">
-                        </div>
-                        <div class="form-group">
-                            <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
-                            <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" placeholder="Masukan Tanggal Lahir">
-                        </div>
-                        <div class="form-group">
-                            <label for="tgl_data" class="form-label">Tanggal Data Ditambahkan</label>
-                            <input type="datetime-local" class="form-control" id="tgl_data" name="tgl_data" placeholder="Masukan Tanggal Lahir">
-                        </div>
-                        <div class="form-group">
-                            <label for="jk" class="form-label">Jenis Kelamin</label>
-                            <select name="jk" id="jk" class="form-control form-select">
-                                <option value="Laki-Laki">Laki-Laki</option>
-                                <option value="Perempuan">Perempuan</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="tps" class="form-label">TPS</label>
-                            <input type="number" class="form-control" id="tps" name="tps" placeholder=" Masukan TPS">
-                        </div>
-                        <div class="form-group">
-                            <label for="desa" class="form-label">Desa</label>
-                            <select class="form-control form-select" name="id_desa" id="id_desa">
-                                @foreach ($desas as $item)
-                                    @if (old('id_desa') == $item->id_desa)
-                                        <option value="{{ $item->id_desa }}" selected>{{ $item->nama_desa }}</option>
-                                    @else
-                                        <option value="{{ $item->id_desa }}">{{ $item->nama_desa }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="relawan" class="form-label">Relawan</label>
-                            <select name="relawan" id="relawan" class="form-control form-select">
-                                <option value="Y">Ya</option>
-                                <option value="T">Tidak</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="saksi" class="form-label">Saksi</label>
-                            <select name="saksi" id="saksi" class="form-control form-select">
-                                <option value="Y">Ya</option>
-                                <option value="T">Tidak</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="user" class="form-label">User</label>
-                            <select class=" form-control form-select" name="id_users" id="id_users">
-                                @foreach ($users as $item)
-                                    @if (old('id_users') == $item->id_users)
-                                        <option value="{{ $item->id_users }}">{{ $item->username }}</option>
-                                    @else
-                                        <option value="{{ $item->id_users }}">{{ $item->username }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Create</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div> --}}
     <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -196,20 +112,6 @@
                             <label for="nik" class="form-label">NIK</label>
                             <input type="text" class="form-control" id="edit_nik" name="nik" placeholder=" Masukan NIK">
                         </div>
-                        @if (auth("web")->check())
-                        <div class="form-group">
-                            <label for="id_caleg" class="form-label" >Caleg</label>
-                            <select class="form-select form-control" name="id_caleg" id="edit_id_caleg">
-                                @foreach ($caleg as $item)
-                                @if (old('id_caleg')==$item->id_caleg)
-                                    <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
-                                @else
-                                    <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
-                                @endif
-                                @endforeach
-                            </select>
-                        </div>
-                        @endif
                         <div class="form-group">
                             <label for="nama" class="form-label">Nama Pemilih</label>
                             <input type="text" class="form-control" id="edit_nama" name="nama" placeholder="Masukan Nama Pemilih">
@@ -234,10 +136,6 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="tps" class="form-label">TPS</label>
-                            <input type="number" class="form-control" id="edit_tps" name="tps" placeholder=" Masukan TPS">
-                        </div>
-                        <div class="form-group">
                             <label for="desa" class="form-label">Desa</label>
                             <select class=" form-control form-select" name="id_desa" id="edit_id_desa">
                                 @foreach ($desas as $item)
@@ -245,32 +143,6 @@
                                         <option value="{{ $item->id_desa }}" selected>{{ $item->nama_desa }}</option>
                                     @else
                                         <option value="{{ $item->id_desa }}">{{ $item->nama_desa }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="relawan" class="form-label">Relawan</label>
-                            <select name="relawan" id="edit_relawan" class="form-control form-select">
-                                <option value="Y">Ya</option>
-                                <option value="T">Tidak</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="saksi" class="form-label">Saksi</label>
-                            <select name="saksi" id="edit_saksi" class="form-control form-select">
-                                <option value="Y">Ya</option>
-                                <option value="T">Tidak</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="user" class="form-label">User</label>
-                            <select class=" form-control form-select" name="id_users" id="edit_id_users">
-                                @foreach ($users as $item)
-                                    @if (old('id_users') == $item->id_users)
-                                        <option value="{{ $item->id_users }}">{{ $item->username }}</option>
-                                    @else
-                                        <option value="{{ $item->id_users }}">{{ $item->username }}</option>
                                     @endif
                                 @endforeach
                             </select>
@@ -284,29 +156,43 @@
             </div>
         </div>
     </div> 
-    <script>
-    function getData(params) {
-    fetch(`/dpt/${params}`).then(response => response.json()).then(response => {
-        document.getElementById("edit_form").action = `/dpt/${params}`
-        document.getElementById("edit_nik").value = response.nik
-        @auth("web")
-        document.getElementById("edit_id_caleg").value = response.id_caleg
-        @endauth
-        document.getElementById("edit_nama").value = response.nama
-        document.getElementById("edit_tempat_lahir").value = response.tempat_lahir
-        document.getElementById("edit_tgl_lahir").value = response.tgl_lahir
-        document.getElementById("edit_jk").value = response.jk
-        document.getElementById("edit_tps").value = response.tps
-        document.getElementById("edit_id_desa").value = response.id_desa
-        document.getElementById("edit_relawan").value = response.relawan
-        document.getElementById("edit_saksi").value = response.saksi
-        document.getElementById("edit_id_users").value = response.id_users
-    })
-}
-
-        document.getElementById("dpt").addEventListener("change", function(e) {
-            e.target.form.submit();
+@endsection
+@section("script")
+<script>
+    $(document).ready(function() {
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': '{{ csrf_token() }}'
+      }
+  });
+  
+    let getData = e => {
+      $.ajax({
+          url: `{{ asset('dpt') }}`,
+          method: "POST",
+          data: {
+            getData: true,
+            data: e.currentTarget.value
+          },
+          dataType: "json",
+          success: resp => {
+              $("#edit_form").attr("action", `{{ asset('dpt/${resp.id_pemilih}') }}`);
+              $("#edit_nik").val(resp.nik)
+              $("#edit_nama").val(resp.nama)
+              $("#edit_tempat_lahir").val(resp.tempat_lahir)
+              $("#edit_tgl_lahir").val(resp.tgl_lahir)
+              $("#edit_jk").val(resp.jk)
+              $("#edit_id_desa").val(resp.id_desa)
+              $("#edit_tgl_data").val(resp.tgl_data)
+          } 
         })
-    </script>
+    }
+  
+    $(".getData").on("click", getData);
 
+    $("#dpt").on("change", e => {
+        e.target.form.submit();
+    })
+    })
+  </script>
 @endsection

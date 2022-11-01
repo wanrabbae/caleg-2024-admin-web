@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ConfigBlas;
 
+
 class Caleg extends Model
 {
     use HasFactory;
@@ -17,6 +18,30 @@ class Caleg extends Model
     protected $guarded = [];
 
     protected $hidden = ["password"];
+
+    public function scopeSearch($query, $search) {
+        return $query->where("demo", $search)
+        ->orWhere("dapil", $search)
+        ->orWhere("nama_caleg", "LIKE", "%$search%")
+        ->orWhere("nama_lengkap", "LIKE", "%$search%")
+        ->orWhereHas("legislatif", function($legislatif) use ($search) {
+            $legislatif->where("nama_legislatif", "LIKE", "%$search%");
+        })
+        ->orWhereHas("provinsi", function($provinsi) use ($search) {
+            $provinsi->where("nama_provinsi", "LIKE", "%$search%");
+        })
+        ->orWhereHas("kabupaten", function($kabupaten) use ($search) {
+            $kabupaten->where("nama_kabupaten", "LIKE", "%$search%");
+        })
+        ->orWhere("level", "LIKE", "%$search%")
+        ->orWhere("alamat", "LIKE", "%$search%")
+        ->orWhere("no_hp", "LIKE", "%$search%")
+        ->orWhere("email", "LIKE", "%$search%")
+        ->orWhereHas("partai", function($partai) use ($search) {
+            $partai->where("nama_partai", "LIKE", "%$search%");
+        })
+        ->orWhere("username", $search);
+    }
 
     public function legislatif()
     {
@@ -70,6 +95,33 @@ class Caleg extends Model
         return $this->belongsTo(ConfigBlas::class, "id_caleg", "id_caleg");
     }
 
+    public function rekening() {
+        return $this->hasOne(Rk_bank::class, "id_caleg");
+    }
+
+    public function wallet() {
+        return $this->hasMany(Rk_wallet::class, "id_caleg");
+    }
+
+    public function kategori() {
+        return $this->hasMany(Rk_kategori::class, "id_caleg");
+    }
+
+    public function transaksi() {
+        return $this->hasMany(Rk_transaksi::class, "id_caleg");
+    }
+
+    public function provinsi() {
+        return $this->belongsTo(Provinsi::class, "id_provinsi");
+    }
+
+    public function kabupaten() {
+        return $this->belongsTo(Kabupaten::class, "id_kabupaten");
+    }
+
+    public function invoice() {
+        return $this->belongsTo(Invoice::class, "id_caleg", "id_caleg");
+    }
 
     public static function boot() {
         parent::boot();
@@ -114,8 +166,24 @@ class Caleg extends Model
             $caleg->saksi()->each(function($value) {
                 $value->delete();
             });
-
+            
             $caleg->config()->delete();
+            
+            $caleg->rekening()->delete();
+
+            $caleg->wallet()->each(function($value) {
+                $value->delete();
+            });
+
+            $caleg->kategori()->each(function($value) {
+                $value->delete();
+            });
+
+            $caleg->transaksi()->each(function($value) {
+                $value->delete();
+            });
+
+            $caleg->invoice()->delete();
         });
     }
 }

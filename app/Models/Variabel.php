@@ -17,8 +17,19 @@ class Variabel extends Model
 
     protected $guarded = [];
 
-    public function survey(){
-        return $this->hasMany(Survey::class);
+    public function scopeSearch($query, $search) {
+        return $query->where("pertanyaan", "LIKE", "%$search%")
+        ->orWhereHas("caleg", function($caleg) use ($search) {
+            $caleg->where("nama_caleg", "LIKE", "%$search%");
+        })
+        ->orWhereHas("survey", function($survey) use ($search) {
+            $survey->where("nama_survey", "LIKE", "%$search%");
+        });
+    }
+
+    public function survey()
+    {
+        return $this->belongsTo(Survey::class, "id_survey");
     }
 
     public function caleg() {

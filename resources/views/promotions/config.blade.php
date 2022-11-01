@@ -6,7 +6,7 @@
         <h3 class="text-primary">Setting Blast</h3>
     </div>
     <div class="card-body">
-    <form action="/config?update=wa" method="POST">
+    <form action="{{ asset('configBlas?update=wa') }}" method="POST">
     @csrf
     <h5 class="text-primary">Setting WA Blas</h5>
     <div class="row">
@@ -25,7 +25,7 @@
     </form>
     </div>
     <div class="card-body">
-    <form action="/config?update=email" method="POST">
+    <form action="{{ asset('configBlas?update=email') }}" method="POST">
     @csrf
     <h5 class="text-primary">Setting Email Blas</h5>
     <div class="row">

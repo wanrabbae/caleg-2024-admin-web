@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Helper;
 use App\Models\Medsos;
 use App\Models\Caleg;
-use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 
 class DashboardMedsosController extends Controller
@@ -16,9 +16,13 @@ class DashboardMedsosController extends Controller
      */
     public function index()
     {
+        if (Helper::RequestCheck(request()->all())) {
+            return back()->with("error", "Karakter Ilegal Ditemukan");
+        };
+
         return view("dashboard.medsos.medsos", [
             "title" => "Medsos Page",
-            "dataArr" => auth("web")->check() ? Medsos::with("caleg")->get() : Medsos::where("id_caleg", auth()->user()->id_caleg)->get(),
+            "dataArr" => auth("web")->check() ? Medsos::with("caleg")->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString() : Medsos::where("id_caleg", auth()->user()->id_caleg)->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
             "caleg" => Caleg::all()
     ]);
     }
@@ -41,18 +45,24 @@ class DashboardMedsosController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has("getData") && $request->getData) {
+            $data = Medsos::find($request->data);
+            if (auth("caleg")->check()) {
+                $this->authorize("all-caleg", $data);
+            }
+            return response()->json($data, 200);
+        }
+
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
 
         $data = $request->validate([
+            "type" => "required",
             "nama_medsos" => "required|max:255",
             "link_medsos" => "required|max:255",
             "id_caleg" => "required",
-            "logo" => "image|max:2048|required"
         ]);
-
-        $data["logo"] = $request->file("logo")->store("/images", "public_path");
 
         if (Medsos::create($data)) {
             return back()->with("success", "Success Create New Medsos");
@@ -69,7 +79,7 @@ class DashboardMedsosController extends Controller
      */
     public function show(Medsos $medsos)
     {
-        return response()->json($medsos->makeHidden("id_medsos", "logo"));
+        //
     }
 
     /**
@@ -80,10 +90,6 @@ class DashboardMedsosController extends Controller
      */
     public function edit(Medsos $medsos)
     {
-        return view("dashboard.medsos.editMedsos", [
-            "title" => "Edit $medsos->nama_medsos",
-            "dataArr" => $medsos
-    ]);
     }
 
     /**
@@ -96,25 +102,21 @@ class DashboardMedsosController extends Controller
     public function update(Request $request, Medsos $medsos)
     {
         if (auth("caleg")->check()) {
+            $this->authorize("all-caleg", $medsos);
+        }
+
+        if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
 
         $rules = [
+            "type" => "required",
             "nama_medsos" => "required|max:255",
             "link_medsos" => "required",
             "id_caleg" => "required",
-            "logo" => "max:2024|image"
         ];
 
         $data = $request->validate($rules);
-        
-        if ($request->file("logo")) {
-            if (File::exists($medsos->logo)) {
-                File::delete($medsos->logo);
-            }
-            $data["logo"] = $request->file("logo")->store("/images", "public_path");
-        }
-        
         
     if (Medsos::where("id_medsos", $medsos->id_medsos)->update($data)) {
             return back()->with("success", "Success Edit $medsos->nama_medsos");
@@ -131,8 +133,11 @@ class DashboardMedsosController extends Controller
      */
     public function destroy(Medsos $medsos)
     {
+        if (auth("caleg")->check()) {
+            $this->authorize("all-caleg", $medsos);
+        }
+
         if (Medsos::destroy($medsos->id_medsos)) {
-            File::delete($medsos->logo);
             return back()->with("success", "Success Delete $medsos->nama_medsos Medsos");
         }
 

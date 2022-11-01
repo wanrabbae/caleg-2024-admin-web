@@ -12,15 +12,42 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <div class="d-flex justify-content-between flex-column flex-md-row">
+            <div>
+              <form action="" method="GET" class="d-block mb-2">
+              @if (request()->has("search"))
+              <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+              @endif
+              <span class="d-block">Data Per Page</span>
+                <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                <datalist id="paginates">
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="75">75</option>
+                  <option value="100">100</option>
+                </datalist>
+              </form>
+            </div>
+            <div>
+              <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                @if (request()->has("paginate"))
+                <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                @endif
+                <span class="d-block">Search</span>
+                <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+              </div>
+            </form>
+          </div>
+            {{ $dataArr->links() }}
+            <table class="table table-bordered" id="" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Tipe</th>
                         <th>Nama Medsos</th>
                         @auth("web")
                         <th>Caleg</th>
                         @endauth
-                        <th>Logo</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -29,6 +56,7 @@
                         @foreach($dataArr as $data)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data->type }}</td>
                                 <td>
                                 <a href="https://{{ $data->link_medsos }}" target="_blank" class="btn btn-primary">
                                   {{ $data->nama_medsos }}
@@ -37,19 +65,11 @@
                                 @auth("web")
                                 <td>{{ $data->caleg->nama_caleg }}</td>
                                 @endauth
-                                <td>
-                                    @if (File::exists($data->logo))
-                                    <img src="{{ asset($data->logo) }}" alt="" class="mx-auto d-block" style="width: 75px">
-                                    @else
-                                    <i class="fas fa-image"></i>
-                                    <span>Image Not Found</span>
-                                    @endif
-                                </td>
                                 <td class="d-flex justify-content-center">
-                                    <button class="btn btn-warning mx-3" data-target="#editModal" data-toggle="modal" onclick="getData({{ $data->id_medsos }})">
+                                    <button class="btn btn-warning mx-3 getData" value={{ $data->id_medsos }} data-target="#editModal" data-toggle="modal">
                                         <i class="fas fa-edit"></i>
                                    </button>
-                                    <form action="/dashboard/medsos/{{ $data->id_medsos }}" method="POST" class="d-inline">
+                                    <form action="{{ asset('dashboard/medsos/' . $data->id_medsos) }}" method="POST" class="d-inline">
                                         @method("delete")
                                         @csrf
                                         <button type="submit" class="btn btn-danger">
@@ -76,9 +96,21 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="/dashboard/medsos/" method="POST" enctype="multipart/form-data">
+        <form action="{{ asset('dashboard/medsos') }}" method="POST">
         <div class="modal-body">
                 @csrf
+                <div class="form-group">
+                  <label for="type">Tipe Medsos</label>
+                    <select class="form-control" name="type" id="type">
+                      <option value="Facebook">Facebook</option>
+                      <option value="Instagram">Instagram</option>
+                      <option value="Twitter">Twitter</option>
+                      <option value="Website">Website</option>
+                      <option value="Snapchat">Snapchat</option>
+                      <option value="Tiktok">Tiktok</option>
+                      <option value="Youtube">Youtube</option>
+                    </select>
+                </div>
                 <div class="form-group">
                   <label for="medsos">Nama Medsos</label>
                   <input type="text" class="form-control" id="medsos" placeholder="Nama Medsos" name="nama_medsos">
@@ -97,10 +129,6 @@
                   </select>
                 </div>
                 @endauth
-                <div class="form-group">
-                    <label for="logo">Logo</label>
-                    <input type="file" class="form-control-file" id="logo" name="logo">
-                  </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -123,30 +151,40 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="" id="edit_form" method="POST" enctype="multipart/form-data">
+        <form action="" id="edit_form" method="POST">
             <div class="modal-body">
                 @method('put')
                 @csrf
                 <div class="form-group">
-                    <label for="nama_partai">Nama Medsos</label>
+                  <label for="edit_type">Tipe Medsos</label>
+                    <select class="form-control" name="type" id="edit_type">
+                      <option value="Facebook">Facebook</option>
+                      <option value="Instagram">Instagram</option>
+                      <option value="Twitter">Twitter</option>
+                      <option value="Website">Website</option>
+                      <option value="Snapchat">Snapchat</option>
+                      <option value="Tiktok">Tiktok</option>
+                      <option value="Youtube">Youtube</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit_nama_partai">Nama Medsos</label>
                     <input type="text" class="form-control edit" id="edit_nama_medsos" placeholder="Nama Partai" name="nama_medsos">
                 </div>
                 <div class="form-group">
-                  <label for="link">Link Medsos</label>
+                  <label for="edit_link_medsos">Link Medsos</label>
                   <input type="text" class="form-control" id="edit_link_medsos" placeholder="Link Medsos" name="link_medsos">
                 </div>
+                @auth("web")
                 <div class="form-group">
                   <label for="id_caleg">Pilih Caleg</label>
-                    <select class="form-control" name="id_caleg" id="edit_id_caleg">
-                      @foreach ($caleg as $item)
-                          <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
-                      @endforeach
+                  <select class="form-control" name="id_caleg" id="edit_id_caleg">
+                    @foreach ($caleg as $item)
+                    <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                    @endforeach
                   </select>
                 </div>
-                <div class="form-group">
-                    <label for="logo">Logo</label>
-                    <input type="file" class="form-control-file" id="logo" name="logo" value="">
-                </div>
+                @endauth
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -158,18 +196,38 @@
       </div>
     </div>
   </div>
-
-    <script>
-    function getData(data) {
-        fetch(`/dashboard/medsos/${data}`).then(resp => resp.json()).then(resp => 
-        {
-            document.getElementById("edit_form").action = `/dashboard/medsos/${data}`
-                document.getElementById(`edit_nama_medsos`).value = resp.nama_medsos;
-                document.getElementById(`edit_link_medsos`).value = resp.link_medsos;
-                @auth("web")
-                document.getElementById(`edit_id_caleg`).value = resp.id_caleg;
-                @endauth
-        })
+@endsection
+@section("script")
+  <script>
+  $(document).ready(function() {
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
     }
-  </script>
+});
+
+  let getData = e => {
+    $.ajax({
+        url: `{{ asset('dashboard/medsos') }}`,
+        method: "POST",
+        data: {
+          getData: true,
+          data: e.currentTarget.value
+        },
+        dataType: "json",
+        success: resp => {
+            $("#edit_form").attr("action", `{{ asset('dashboard/medsos/${resp.id_medsos}') }}`);
+            $("#edit_nama_medsos").val(resp.nama_medsos);
+            $("#edit_type").val(resp.type);
+            $("#edit_link_medsos").val(resp.link_medsos);
+            @auth("web")
+            $("#edit_id_caleg").val(resp.id_caleg);
+            @endauth
+        } 
+      })
+  }
+
+  $(".getData").on("click", getData);
+})
+</script>
 @endsection

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Helper;
 use App\Models\Daftar_Saksi;
 use App\Models\Relawan;
 use App\Models\Caleg;
+use App\Models\Hasil_Survey;
 use Illuminate\Http\Request;
 
 class SaksiDaftarController extends Controller
@@ -16,12 +18,14 @@ class SaksiDaftarController extends Controller
      */
     public function index()
     {
+        if (Helper::RequestCheck(request()->all())) {
+            return back()->with("error", "Karakter Ilegal Ditemukan");
+        };
+
         return view("saksi.daftar", [
             "title" => "Daftar Saksi",
-            "dataArr" => auth("web")->check() ? Daftar_Saksi::all() : Daftar_Saksi::where("id_caleg", auth()->user()->id_caleg)->get(),
-            "relawan" => auth("web")->check() ? Relawan::all() : Relawan::where("id_caleg", auth()->user()->id_caleg),
-            "caleg" => Caleg::all()
-    ]);
+            "dataArr" => auth("web")->check() ? Daftar_Saksi::with("relawan")->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString() : Daftar_Saksi::with("relawan")->where("id_caleg", auth()->user()->id_caleg)->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
+        ]);
     }
 
     /**
@@ -42,30 +46,7 @@ class SaksiDaftarController extends Controller
      */
     public function store(Request $request)
     {
-        if (auth("caleg")->check()) {
-            $request["id_caleg"] = auth()->user()->id_caleg;
-        }
-
-        $data = $request->validate([
-            "nama_relawan" => "required|max:255|unique:saksi",
-            "id_caleg" => "required"
-        ]);
-
-    if (auth("web")->check()) {
-        if (!Relawan::where("nama_relawan", $request->nama_relawan)->first()) {
-            return back()->with("error", "Error, There no Relawan with Nama Relawan  $request->nama_relawan");
-        }
-    } else {
-        if (!Relawan::where("id_caleg", auth()->user()->id_caleg)->where("nama_relawan", $request->nama_relawan)->first()) {
-            return back()->with("error", "Error, There no Relawan with Nama Relawan $request->nama_relawan");
-        }
-    }
-
-    if (Daftar_Saksi::create($data)) {
-        return redirect("/saksi/daftar")->with("success", "Success Create Saksi with Nama Relawan $request->nama_relawan");
-    }
-
-        return back()->with("error", "Error, Can't Create Saksi with Nama Relawan $request->nama_relawan");
+        
     }
 
     /**
@@ -74,9 +55,8 @@ class SaksiDaftarController extends Controller
      * @param  \App\Models\Daftar_Saksi  $daftar_Saksi
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show()
     {
-        return response()->json(Daftar_Saksi::where("id_saksi", $id)->first());
     }
 
     /**
@@ -99,33 +79,7 @@ class SaksiDaftarController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if (auth("caleg")->check()) {
-            $request["id_caleg"] = auth()->user()->id_caleg;
-        }
-
-        $data = $request->validate([
-            "nama_relawan" => "required|max:255|unique:saksi,id_caleg",
-            "id_caleg" => "required"
-        ]);
-
-
-    if (auth("web")->check()) {
-        if (!Relawan::where("nama_relawan", $request->nama_relawan)->first()) {
-            return back()->with("error", "Error, There no Relawan with Nama Relawan $request->nama_relawan");
-        }
-        if (Daftar_Saksi::where("id_saksi", $id)->update($data)) {
-            return redirect("/saksi/daftar")->with("success", "Success Update $request->nama_relawan");
-        }
-            return back()->with("error", "Error, Can't Update $request->nama_relawan");
-    } else {
-        if (!Relawan::where("id_caleg", auth()->user()->id_caleg)->where("nama_relawan", $request->nama_relawan)->first()) {
-            return back()->with("error", "Error, There no Relawan with Nama Relawan $request->nama_relawan");
-        }
-        if (Daftar_Saksi::where("id_caleg", auth()->user()->id_caleg)->where("id_saksi", $id)->update($data)) {
-            return redirect("/saksi/daftar")->with("success", "Success Update $request->nama_relawan");
-        }
-            return back()->with("error", "Error, Can't Update $request->nama_relawan");
-        }
+        
     }
 
 
@@ -137,10 +91,5 @@ class SaksiDaftarController extends Controller
      */
     public function destroy($id)
     {
-        if (Daftar_Saksi::where("id_saksi", $id)->delete()) {
-            return back()->with("success", "Success Delete Saksi");
-        }
-
-        return back()->with("error", "Error, Can't Delete Saksi");
     }
 }

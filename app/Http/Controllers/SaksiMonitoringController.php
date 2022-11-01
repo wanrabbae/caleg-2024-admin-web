@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Provinsi;
 use App\Models\Monitoring_Saksi;
 use App\Models\Rk_pemilih;
 use App\Models\Relawan;
@@ -17,28 +18,37 @@ class SaksiMonitoringController extends Controller
     public function index()
     {
         if (request("table") == "desa") {
-            $data = auth("web")->check() ? Monitoring_Saksi::with(["desa", "caleg.partai"])->get() : Monitoring_Saksi::with(["desa"])->where("id_caleg", auth()->user()->id_caleg)->get();
-            
-           /* $desa = auth("web")->check() ? Rk_pemilih::with("desa.kecamatan")->get() : Rk_pemilih::with("desa.kecamatan")->where("id_caleg", auth()->user()->id_caleg)->get();
-            $myArr = [];
+            $arr = auth("web")->check() ? Monitoring_Saksi::with(["desa", "caleg.partai"])->get() : Monitoring_Saksi::with(["desa"])->where("id_caleg", auth()->user()->id_caleg)->get();
+            $data = [];
             $found = true;
 
-            foreach ($desa as $data) {
-                for ($i = 0; $i < count($myArr); $i++) {
-                    if (in_array($data->desa->nama_desa, $myArr[$i])) {
-                        $myArr[$i][1] += 1;
-                        $myArr[$i][2] += 0;
+            if (auth("caleg")->check()) {
+                $type = auth()->user()->legislatif->type;
+
+                if ($type == "Provinsi") {
+                    $provinsi = Provinsi::with("kabupaten.kecamatan.desa")->find(auth()->user()->provinsi->id_provinsi);
+                    $dapil = auth()->user()->dapil;
+                    return $provinsi;
+                }
+            }
+            //setting chart monitor
+
+            foreach ($arr as $arr) {
+                for ($i = 0; $i < count($data); $i++) {
+                    if (in_array($arr->desa->nama_desa, $data[$i])) {
+                        $data[$i][1] += $arr->suara_2024;
+                        $data[$i][2] += $arr->suara_2019;
                         $found = false;
                         break;
                     }
                 }
                 if ($found) {
-                    array_push($myArr, [$data->desa->nama_desa, 1, 0]);
+                    array_push($data, [$arr->desa->nama_desa, $arr->suara_2024, $arr->suara_2019]);
                 }
                 $found = true;
             }
-            $data = collect($myArr);*/
-        }
+            $data = collect($data);
+            }
         
         if (request("table") == "kecamatan") {
             $arr = auth("web")->check() ? Monitoring_Saksi::with(["desa.kecamatan", "caleg", "partai"])->get() : Monitoring_Saksi::with(["desa.kecamatan"])->where("id_caleg", auth()->user()->id_caleg)->get();
@@ -60,25 +70,6 @@ class SaksiMonitoringController extends Controller
             $found = true;
         }
         $data = collect($data);
-        /*$pemilih = auth("web")->check() ? Rk_pemilih::with("desa.kecamatan")->get() : Rk_pemilih::with("desa.kecamatan")->where("id_caleg", auth()->user()->id_caleg)->get();
-        $myArr = [];
-        $found = true;
-
-        foreach ($pemilih as $data) {
-            for ($i = 0; $i < count($myArr); $i++) {
-                if (in_array($data->desa->kecamatan->nama_kecamatan, $myArr[$i])) {
-                    $myArr[$i][1] += 1;
-                    $myArr[$i][2] += 0;
-                    $found = false;
-                    break;
-                }
-            }
-            if ($found) {
-                array_push($myArr, [$data->desa->kecamatan->nama_kecamatan, 1, 0]);
-            }
-            $found = true;
-        }
-        $data = collect($myArr);*/
         }
 
         if (request("table") == "kabupaten") {
@@ -176,9 +167,12 @@ class SaksiMonitoringController extends Controller
     }
 
 
-    public function fetch($id) {
-        //$desa = Monitoring_Saksi::with("desa.kecamatan")->get();
-        $desa = $id == 0 ? Monitoring_Saksi::with("desa.kecamatan")->get() : Monitoring_Saksi::with("desa.kecamatan")->where("id_caleg", $id)->get();
+    public function fetch(Request $request) {
+        if ($request->has("getData") && $request->getData) {
+            if (auth("caleg")->check()) {
+                $this->authorize("all-caleg", Monitoring_Saksi::where("id_caleg", $request->data)->first());
+            }
+        $desa = $request->data == 0 ? Monitoring_Saksi::with("desa.kecamatan")->get() : Monitoring_Saksi::with("desa.kecamatan")->where("id_caleg", $request->data)->get();
         $myArr = [];
         $found = true;
 
@@ -197,6 +191,7 @@ class SaksiMonitoringController extends Controller
             $found = true;
         }
 
-        return response()->json($myArr);
+        return response()->json($myArr, 200);
+        }
     }
 }

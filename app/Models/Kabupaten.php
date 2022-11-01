@@ -10,13 +10,37 @@ class Kabupaten extends Model
     use HasFactory;
 
     protected $table = 'kabupaten';
-
     protected $primaryKey = 'id_kabupaten';
+    protected $guarded = ["id"];
+    public $timestamps = false;
 
-    protected $guarded = [];
-
-    public function kecamatan(){
-        return $this->hasMany(Kecamatan::class);
+    public function scopeSearch($query, $search) {
+        return $query->where("nama_kabupaten", "LIKE", "%$search%")
+        ->orWhereHas("provinsi", function($provinsi) use ($search) {
+            $provinsi->where("nama_provinsi", "LIKE", "%$search%");
+        })->orWhere("dapil", $search)
+        ->orWhere("jumlah_dapil", $search);
     }
 
+    public function kecamatan(){
+        return $this->hasMany(Kecamatan::class, "id_kabupaten");
+    }
+
+    public function provinsi() {
+        return $this->belongsTo(Provinsi::class, "id_provinsi");
+    }
+
+    public function caleg() {
+        return $this->hasMany(Caleg::class, "id_kabupaten");
+    }
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($kabupaten) {
+            $kabupaten->kecamatan()->each(function($kecamatan) {
+                $kecamatan->delete();
+            });
+        });
+    }
 }

@@ -14,6 +14,12 @@ class Partai extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function scopeSearch($query, $search) {
+        return $query->where("nama_partai", "LIKE", "%$search%")
+        ->orWhere("nama_pendek", "LIKE", "%$search%")
+        ->orWhere("no_urut", $search);
+    }
+
     public function caleg()
     {
         return $this->hasMany(Caleg::class, "id_partai");

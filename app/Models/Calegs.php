@@ -106,4 +106,36 @@ class Calegs extends Authenticatable
         return $this->belongsTo(ConfigBlas::class, 'id_caleg', "id_caleg");
     }
 
+    public function rekening() {
+        return $this->hasOne(Rk_bank::class, "id_caleg");
+    }
+
+    public function wallet() {
+        return $this->hasMany(Rk_wallet::class, "id_caleg");
+    }
+
+    public function kategori() {
+        return $this->hasMany(Rk_kategori::class, "id_caleg");
+    }
+
+    public function transaksi() {
+        return $this->hasMany(Rk_transaksi::class, "id_caleg");
+    }
+
+    public function provinsi() {
+        return $this->belongsTo(Provinsi::class, "id_provinsi");
+    }
+
+    public function kabupaten() {
+        return $this->belongsTo(Kabupaten::class, "id_kabupaten");
+    }
+
+    public function invoice() {
+        return $this->belongsTo(Invoice::class, "id_caleg", "id_caleg");
+    }
+
+    public function getRememberTokenName() {
+        return "id_session";
+    }
+
 }

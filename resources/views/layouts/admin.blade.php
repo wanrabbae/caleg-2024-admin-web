@@ -27,15 +27,32 @@
     <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 
 </head>
-
 <body id="page-top">
     <style>
-        #chart {
+        #chart, #suaraChart, #uplineChart {
             width: 100%;
             height: 500px;
             margin: 0;
             padding: 0;
         }
+
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+        -moz-appearance: textfield;
+        }
+
+        /* li.nav-item a.nav-link.collapsed i, .nav-item span { */
+        .nav-item a.nav-link > span {
+            color: {{ auth("caleg")->check() ? auth()->user()->partai->text_color : ""}}
+        }
+
     </style>
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -47,7 +64,7 @@
                     {{-- <i class="fas fa-laugh-wink"></i> --}}
                     <img src="{{ asset('images/jagat.png') }}" alt="" srcset="" width="50">
                 </div>
-                <div class="sidebar-brand-text mx-3">{{ auth()->guard("web")->check() ? "PT.Jagat" : auth()->guard("caleg")->user()->partai->nama_partai }}</div>
+                <div class="sidebar-brand-text mx-3">{{ auth()->guard("web")->check() ? "PT.Jagat" : auth()->guard("caleg")->user()->partai->nama_pendek }}</div>
             </a>
 
             <!-- Divider -->
@@ -95,6 +112,38 @@
                         <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/medsos") }}"><i class="fas fa-hashtag"></i>
                         <span>Medsos</span>
                         </a>
+                        @auth("web")
+                        <a href="{{ asset("desa") }}" class="collapse-item font-weight-bold">
+                            <i class="fas fa-home"></i>
+                            <span>Desa</span>
+                        </a>
+                        <a href="{{ asset("kecamatan") }}" class="collapse-item font-weight-bold">
+                            <i class="fas fa-building"></i>
+                            <span>Kecamatan</span>
+                        </a>
+                        <a href="{{ asset("kabupaten") }}" class="collapse-item font-weight-bold">
+                            <i class="fas fa-city"></i>
+                            <span>Kabupaten</span>
+                        </a>
+                        <a href="{{ asset("provinsi") }}" class="collapse-item font-weight-bold">
+                            <i class="fas fa-place-of-worship"></i>
+                            <span>Provinsi</span>
+                        </a>
+                        {{-- <a href="{{ asset("dapil") }}" class="collapse-item font-weight-bold">
+                            <i class="fas fa-box-tissue"></i>
+                            <span>Dapil</span>
+                        </a> --}}
+                        {{-- <div class="dropdown">
+                            <a class="collapse-item font-weight-bold dropdown-toggle" id="dropdownFadeIn" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-box-tissue"></i>
+                                <span>Daerah Pemilihan</span>
+                            </a>
+                            <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownFadeIn">
+                                <a class="dropdown-item font-weight-bold" href="{{ asset("dapil") }}">Nama Daerah</a>
+                                <a class="dropdown-item font-weight-bold" href="{{ asset("dapil/detail") }}">Detail Daerah</a>
+                            </div>
+                        </div> --}}
+                        @endauth
                     </div>
                 </div>
             </li>
@@ -167,7 +216,7 @@
                             <i class="fas fa-plus-square"></i>
                             <span>Input Data</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="{{ asset('survey/HasilSurvey') }}">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('survey/VariableSurvey') }}">
                             <i class="fas fa-poll"></i>
                             <span>Variable Survey</span>
                         </a>
@@ -222,6 +271,7 @@
                 </div>
             </li> --}}
 
+            @auth("caleg")
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
                     <i class="far fa-star"></i>
@@ -238,18 +288,59 @@
                         <a class="collapse-item font-weight-bold" href=""><i class="fas fa-mobile"></i>
                         <span>Info Mobile</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="{{ asset("config") }}"><i class="fas fa-cog"></i>
+                        <a class="collapse-item font-weight-bold" href="{{ asset("configBlas") }}"><i class="fas fa-cog"></i>
                             <span>Setting Blas</span>
                     </div>
                 </div>
             </li>
+            @endauth
+            
+            @if (auth("caleg")->check() && auth("caleg")->user()->level == "Platinum")
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
+                    <i class="fas fa-donate"></i>
+                    <span>Finance</span>
+                </a>
+                <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('rekening') }}"><i class="fas fa-money-check"></i>
+                        <span>Rekening Donasi</span>
+                        </a>
+                        <a class="collapse-item font-weight-bold" href="{{ asset('ewallet') }}"><i class="fas fa-wallet"></i>
 
+                        <span>e-Wallet Donasi</span>
+                        </a>
+                        <div class="dropdown">
+                            <a class="collapse-item font-weight-bold dropdown-toggle" id="dropdownFadeIn" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-money-bill"></i>
+                                <span>Mutasi Keuangan</span>
+                            </a>
+                            <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownFadeIn">
+                                <a class="dropdown-item font-weight-bold" href="{{ asset("kategori") }}">Kategori</a>
+                                <a class="dropdown-item font-weight-bold" href="{{ asset("transaksi") }}">Transaksi</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            @endif
+
+            @auth("web")
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ asset('invoices') }}">
+                    <i class="fas fa-file-invoice"></i>
+                    <span>Invoices</span>
+                </a>
+            </li>
+            @endauth
+            
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ asset('documentation') }}">
                     <i class="fas fa-book"></i>
                     <span>Documentation</span>
                 </a>
             </li>
+
 
             @auth("web")
             <!-- Divider -->
@@ -347,10 +438,13 @@
                                     Settings
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" onclick="return confirm('Anda yaking ingin logout ?')" href="{{ asset('logout') }}">
+                                <form action="{{ asset('logout') }}" method="POST">
+                                    @csrf
+                                <button class="dropdown-item" onclick="return confirm('Anda yaking ingin logout ?')">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Sign out
-                                </a>
+                                </button>
+                                </form>
                             </div>
                         </li>
 
@@ -440,7 +534,7 @@
     <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
-
+    @yield("script")
 </body>
 
 </html>

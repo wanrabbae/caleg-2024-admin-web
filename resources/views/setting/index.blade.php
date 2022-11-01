@@ -7,8 +7,8 @@
         <h3 class="text-primary">Setting Profile</h3>
     </div>
     <div class="card-body">
-    <form action="/setting/{{ auth()->user()->id_caleg }}" method="POST" enctype="multipart/form-data">
-    @method("put")
+    <form action="{{ asset('setting/'. auth()->user()->id_caleg) }}" method="POST" enctype="multipart/form-data">
+        @method("put")
         @csrf
     <div class="row">
         <div class="col-md-6">
@@ -26,6 +26,14 @@
                 <option value="{{ $item->id_legislatif }}" @if (auth()->user()->legislatif->id_legislatif == $item->id_legislatif) selected @endif>{{ $item->nama_legislatif }}</option>
                 @endforeach
             </select>
+        </div>
+        <div class="col-md-6 mt-3">
+            <label for="harapan_suara">Harapan Suara</label>
+            <input type="text" class="form-control" value="{{ auth()->user()->harapan_suara }}" name="harapan_suara">
+        </div>
+        <div class="col-md-6 mt-3">
+            <label for="downline">Maksimal Downline</label>
+            <input type="text" class="form-control" value="{{ auth()->user()->downline }}" name="downline">
         </div>
         <div class="col-md-6 mt-3">
             <label for="id_partai">Partai</label>
@@ -51,9 +59,10 @@
             <p>Username</p>
             <input type="text" class="form-control" value="{{ auth()->user()->username }}" name="username">
         </div>
-        <div class="col-md-12 mt-3">
+        <div class="col-md-6 mt-3">
             <p>Password</p>
-            <input type="password" class="form-control" name="password">
+            <input type="password" class="form-control" name="password" id="password">
+            <i class="fas fa-eye btn btn-primary mt-2" id="btn"></i>
         </div>
         <div class="col-md-12 mt-3">
             <p>Foto</p>
@@ -104,7 +113,8 @@
         </div> --}}
         <div class="col-md-12 mt-3">
             <p>Password</p>
-            <input type="password" class="form-control" name="password">
+            <input type="password" class="form-control" name="password" id="password">
+            <i class="fas fa-eye btn btn-primary mt-2" id="btn"></i>
         </div>
         <div class="col-md-12 mt-3">
             <p>Foto</p>
@@ -120,5 +130,17 @@
     </div>
 </div>
 @endauth
-
+<script>
+    let pass = document.getElementById("password");
+        let btn = document.getElementById("btn");
+        btn.addEventListener("click", e => {
+            e.target.classList.toggle("fa-eye")
+            e.target.classList.toggle("fa-eye-slash")
+            if (pass.type == "password") {
+                pass.type = "text";
+            } else {
+                pass.type = "password";
+            }
+        })
+</script>
 @endsection

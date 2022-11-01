@@ -19,14 +19,37 @@ class Relawan extends Model
         'password',
     ];
 
+    public function scopeSearch($query, $search) {
+        return $query->where("nik", "LIKE", "%$search%")
+        ->orWhere("nama_relawan", "LIKE", "%$search%")
+        ->orWhere("jk", "LIKE", "%$search%")
+        ->orWhereHas("desa.kecamatan", function($desa) use ($search) {
+            $desa->where("nama_desa", "LIKE", "%$search%")->orWhere("nama_kecamatan", "LIKE", "%$search%");
+        })
+        ->orWhere("saksi", $search)
+        ->orWhereHas("caleg", function($caleg) use ($search) {
+            $caleg->where("nama_caleg", "LIKE", "%$search%");
+        })
+        ->orWhere("no_hp", "LIKE", "%$search%")
+        ->orWhere("email", "LIKE", "%$search%")
+        ->orWhere("username", "LIKE", "%$search%")
+        ->orWhere("tps", "LIKE", "%$search%")
+        ->orWhere("referal", "LIKE", "%$search%")
+        ->orWhere("blokir", "LIKE", "%$search%");
+    }
+
     public function desa()
     {
         return $this->belongsTo(Desa::class, 'id_desa');
     }
 
-    public function simpatisan()
+    public function uplineRel()
     {
-        return $this->hasMany(Relawan::class, 'upline', 'upline');
+        return $this->belongsTo(Relawan::class, 'upline', 'id_relawan');
+    }
+
+    public function downlineRel() {
+        return $this->hasMany(Relawan::class, "upline", "id_relawan");
     }
 
     public function caleg()
@@ -43,7 +66,7 @@ class Relawan extends Model
 
         static::deleting(function($relawan) {
             $relawan->daftarIsu()->each(function($value) {
-                $value->check();
+                $value->delete();
             });
         });
     }

@@ -16,6 +16,20 @@ class Monitoring_Saksi extends Model
 
     // protected $with = ["desa", "caleg", "partai"];
 
+    public function scopeSearch($query, $search) {
+        return $query->where("suara_2024", "LIKE", "%$search%")
+        ->orWhere("suara_2019", "LIKE", "%$search%")
+        ->orWhereHas("desa", function($desa) use ($search) {
+            $desa->where("nama_desa", "LIKE", "%$search%");
+        })
+        ->orWhereHas("caleg", function($caleg) use ($search) {
+            $caleg->where("nama_caleg", "LIKE", "%$search%");
+        })
+        ->orWhereHas("partai", function($partai) use ($search) {
+            $partai->where("nama_partai", "LIKE", "%$search%");
+        });
+    }
+
     public function desa()
     {
         return $this->belongsTo(Desa::class, 'id_desa');

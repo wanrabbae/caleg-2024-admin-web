@@ -11,14 +11,42 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <div class="d-flex justify-content-between flex-column flex-md-row">
+                <div>
+                  <form action="" method="GET" class="d-block mb-2">
+                  @if (request()->has("search"))
+                  <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                  @endif
+                  <span class="d-block">Data Per Page</span>
+                    <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                    <datalist id="paginates">
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="75">75</option>
+                      <option value="100">100</option>
+                    </datalist>
+                  </form>
+                </div>
+                <div>
+                  <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                    @if (request()->has("paginate"))
+                    <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                    @endif
+                    <span class="d-block">Search</span>
+                    <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                  </div>
+                </form>
+              </div>
+                {{ $data->links() }}
+            <table class="table table-bordered" id="" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>No</th>
                         @auth("web")
                         <th>Caleg</th>
                         @endauth
-                        <th>Nama Variable</th>
+                        <th>Pertanyaan</th>
+                        <th>Survey</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -30,12 +58,13 @@
                                 @auth("web")
                                 <td>{{ $item->caleg->nama_caleg }}</td>
                                 @endauth
-                                <td>{{ $item->nama_variabel }}</td>
+                                <td>{{ $item->pertanyaan }}</td>
+                                <td>{{ $item->survey->nama_survey}}</td>
                                 <td class="d-flex justify-content-center">
-                                   <button type="button" class="btn btn-warning mx-3" onclick="getVariable({{ $item->id_variabel }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                   <button type="button" class="btn btn-warning mx-3 getData" value="{{ $item->id_variabel }}" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                        <i class="fas fa-edit"></i>
                                    </button>
-                                   <form action="/survey/HasilSurvey/{{ $item->id_variabel }}" method="post" class="d-inline">
+                                   <form action="{{ asset("survey/VariableSurvey/" . $item->id_variabel) }}" method="post" class="d-inline">
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus Variabel {{ $item->nama_variabel }}')">
@@ -60,12 +89,23 @@
           <h5 class="modal-title" id="createModalLabel">Create Data Variable Survey</h5>
           <span aria-hidden="true">&times;</span>
         </div>
-        <form action="{{ asset('survey/HasilSurvey') }}" method="POST">
+        <form action="{{ asset('survey/VariableSurvey') }}" method="POST">
             @csrf
             <div class="modal-body">
                 <div class="mb-3">
-                    <label for="nama_variabel" class="form-label">Nama Variable</label>
-                    <input type="text" class="form-control" id="nama_variabel" name="nama_variabel" id="nama_variabel" placeholder="Nama Variabel">
+                    <label for="pertanyaan" class="form-label">Nama Variable</label>
+                    <input type="text" class="form-control" name="pertanyaan" id="pertanyaan" placeholder="Masukan Pertanyaan">
+                </div>
+                <div class="form-group">
+                    <label for="data">Data Survey</label>
+                    <select class="form-select form-control" name="id_survey" id="id_survey">
+                        @foreach ($survey as $item)
+                            @if (old('id_survey') == $item->id_survey)
+                                <option value="{{ $item->id_survey }}" selected>{{ $item->nama_survey }}</option>
+                            @endif
+                            <option value="{{ $item->id_survey }}">{{ $item->nama_survey }}</option>
+                        @endforeach
+                    </select>
                 </div>
             @auth("web")
                 <div class="mb-3">
@@ -99,18 +139,29 @@
           <h5 class="modal-title" id="editModalLabel">Update Data Variable Survey</h5>
           <span aria-hidden="true">&times;</span>
         </div>
-        <form action="" method="POST" id="update_variabel">
+        <form action="" method="POST" id="edit_form">
             <div class="modal-body">
             @method('put')
             @csrf
                 <div class="mb-3">
-                    <label for="nama_variabel" class="form-label">Nama Variable</label>
-                    <input type="text" class="form-control" name="nama_variabel" id="edit_variabel" placeholder="Nama Variable">
+                    <label for="pertanyaan" class="form-label">Pertanyaan</label>
+                    <input type="text" class="form-control" name="pertanyaan" id="edit_pertanyaan" placeholder="Masukan Pertanyaan Yang Ingin diubah">
+                </div>
+                <div class="form-group">
+                    <label for="edit_data">Data Survey</label>
+                    <select class="form-select form-control" name="id_survey" id="edit_survey">
+                        @foreach ($survey as $item)
+                            @if (old('id_survey') == $item->id_survey)
+                                <option value="{{ $item->id_survey }}" selected>{{ $item->nama_survey }}</option>
+                            @endif
+                            <option value="{{ $item->id_survey }}">{{ $item->nama_survey }}</option>
+                        @endforeach
+                    </select>
                 </div>
             @auth("web")
                 <div class="mb-3">
                     <label for="legislatif" class="form-label">Calon Legislatif</label>
-                    <select class="form-select form-control" name="id_caleg" id="id_caleg">
+                    <select class="form-select form-control" name="id_caleg" id="edit_id_caleg">
                         @foreach ($caleg as $item)
                         @if (old('id_caleg')==$item->id_caleg)
                             <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
@@ -130,5 +181,37 @@
       </div>
     </div>
 </div>
-<script src="/js/value.js"></script>
+@endsection
+@section("script")
+  <script>
+  $(document).ready(function() {
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    }
+});
+
+  let getData = e => {
+    $.ajax({
+        url: `{{ asset('survey/VariableSurvey') }}`,
+        method: "POST",
+        data: {
+          getData: true,
+          data: e.currentTarget.value
+        },
+        dataType: "json",
+        success: resp => {
+            $("#edit_form").attr("action", `{{ asset('survey/VariableSurvey/${resp.id_variabel}') }}`)
+            $("#edit_pertanyaan").val(resp.pertanyaan);
+            @auth("web")
+            $("#edit_id_caleg").val(resp.id_caleg)
+            @endauth
+            $("#edit_survey").val(resp.id_survey);
+        }
+      })
+  }
+
+  $(".getData").on("click", getData);
+  })
+  </script>
 @endsection

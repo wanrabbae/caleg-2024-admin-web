@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Helper;
 use App\Models\Relawan;
 use App\Mail\MailBlas;
 use Illuminate\Support\Facades\Mail;
@@ -12,8 +13,12 @@ class EmailBlasController extends Controller
 {
     public function index()
     {
+        if (Helper::RequestCheck(request()->all())) {
+            return back()->with("error", "Karakter Ilegal Ditemukan");
+        };
+        
         return view('promotions.email', [
-            'relawan' => auth("web")->check() ? Relawan::all() : Relawan::with("desa.kecamatan")->where("id_caleg", auth()->user()->id_caleg)->get(),
+            'relawan' => auth("web")->check() ? Relawan::search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString() : Relawan::with("desa.kecamatan")->where("id_caleg", auth()->user()->id_caleg)->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
             'title' => 'Email Blas'
         ]);
     }
@@ -23,6 +28,13 @@ class EmailBlasController extends Controller
             "email" => "required",
             "pesan" => "required"
     ]);
+
+    if (auth("caleg")->check()) {
+        foreach (explode(",", $request->email[0]) as $email) {
+            $data = Relawan::where("email", $email)->first();
+            $this->authorize("all-caleg", $data);
+        }
+    }
 
     Config::set('mail.mailers.blas.username', auth()->user()->config->email);
     Config::set('mail.mailers.blas.password', auth()->user()->config->password);
@@ -36,9 +48,5 @@ class EmailBlasController extends Controller
         }
     };
     return back()->with("success", "Berhasil Mengirimkan Pesan");
-    }
-
-    public function show($id) {
-        return response()->json(Relawan::find($id), 200);
     }
 }

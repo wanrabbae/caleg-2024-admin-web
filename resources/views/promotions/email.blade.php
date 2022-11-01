@@ -17,7 +17,35 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <div class="table-responsive">
+                    <div class="d-flex justify-content-between flex-column flex-md-row">
+                        <div>
+                          <form action="" method="GET" class="d-block mb-2">
+                          @if (request()->has("search"))
+                          <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                          @endif
+                          <span class="d-block">Data Per Page</span>
+                            <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                            <datalist id="paginates">
+                              <option value="25">25</option>
+                              <option value="50">50</option>
+                              <option value="75">75</option>
+                              <option value="100">100</option>
+                            </datalist>
+                          </form>
+                        </div>
+                        <div>
+                          <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                            @if (request()->has("paginate"))
+                            <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                            @endif
+                            <span class="d-block">Search</span>
+                            <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                          </div>
+                        </form>
+                      </div>
+                        {{ $relawan->links() }}
+                <table class="table table-bordered" id="" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -52,11 +80,10 @@
                                             <span>Image Not Found</span>
                                         @endif
                                     </td>
-                                    <td id="sendColumn">
-                                        <button class="btn btn-success" data-toggle="modal" data-target="#createModal" onclick="getData({{ $data->id_relawan }})" id="send">
+                                    <td>
+                                        <button class="btn btn-success setForm" data-toggle="modal" data-target="#createModal" value="{{ $data->email }}">
                                             <i class="fas fa-bell"></i>
                                         </button>
-                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -80,7 +107,6 @@
                 <form action="{{ asset("email/send") }}" method="POST" id="sendForm">
                     @csrf
                     <div class="modal-body">
-                        @csrf
                         <input type="hidden" name="email[]" value="" id="email">
                         <div class="form-group">
                             <label for="no_hp">Pesan Japri</label>
@@ -95,18 +121,11 @@
             </div>
         </div>
     </div>
-
+@endsection
+@section("script")
     <script>
-
         let arr = [];
-        function getData(data) {
-            fetch(`/email/${data}`).then(resp => resp.json()).then(resp => {
-                document.getElementById("email").value = resp.email
-                arr = [];
-                arr.push(resp.email);
-            })
-        }
-
+        
         let checkBox = Array.from(document.getElementsByClassName("check"));
         let form = document.getElementById("sendForm");
 
@@ -144,7 +163,6 @@
             } else {
                 document.getElementById("sendBtn").disabled = true;
             }
-            console.log(arr)
         }
 
         checkBox.forEach((v, i) => {
@@ -155,6 +173,15 @@
             e.preventDefault();
             form["email"].value = arr;
             form.submit();
+        })
+
+        let addEmail = e => {
+            $("#email").val(e.currentTarget.value)
+        }
+        
+        $(".setForm").on("click", addEmail)
+        $(document).on("click", function() {
+            $(".setForm").off().on("click", addEmail)
         })
     </script>
 @endsection

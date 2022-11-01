@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Helper;
 use App\Models\Desa;
 use App\Models\Caleg;
 use App\Models\Rk_pemilih;
@@ -19,18 +20,22 @@ class DptController extends Controller
 {
     public function index()
     {
+        if (Helper::RequestCheck(request()->all())) {
+            return back()->with("error", "Karakter Ilegal Ditemukan");
+        };
+
         return view('rekap.dpt', [
             'title' => 'DPT / Pemilih Page',
-            'datas' => auth("web")->check() ? Rk_pemilih::with(["caleg", "desa"])->get() : Rk_pemilih::with('desa')->where("id_caleg", auth()->user()->id_caleg)->get(),
+            'datas' => Rk_pemilih::with("desa.kecamatan")->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
             'desas' => Desa::all(),
-            'users' => User::all(),
-            "caleg" => Caleg::all()
         ]);
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
-        return response()->json(Rk_pemilih::find($id));
+        if ($request->has("getData") && $request->getData) {
+            return response()->json(Rk_pemilih::find($request->data), 200);
+        }
     }
 
     public function store() {
@@ -41,18 +46,13 @@ class DptController extends Controller
 
     $title = [
         "id_pemilih",
-        "id_caleg",
         "nik",
         "nama",
         "tempat_lahir",
         "tgl_lahir",
         "jk",
-        "tps",
         "id_desa",
-        "relawan",
-        "saksi",
         "tgl_data",
-        "id_users"
     ];
 
     $row = WriterEntityFactory::createRowFromArray($title);
@@ -61,18 +61,13 @@ class DptController extends Controller
     foreach ($data as $value) {
         $row = WriterEntityFactory::createRowFromArray([
             $value->id_pemilih,
-            $value->id_caleg,
             $value->nik,
             $value->nama,
             $value->tempat_lahir,
             $value->tgl_lahir,
             $value->jk,
-            $value->tps,
             $value->id_desa,
-            $value->relawan,
-            $value->saksi,
-            $value->tgl_data,
-            $value->id_users,
+            $value->tgl_data
         ]);
         $writer->addRow($row);
     };
@@ -82,7 +77,7 @@ class DptController extends Controller
 
     public function update(Request $request) {
         $request->validate([
-            "dpt" => "file|required|mimes:xlsx"
+            "dpt" => "file|required|mimes:xlsx,csv"
         ]);
 
         if ($request->has("dpt")) {
@@ -96,18 +91,13 @@ class DptController extends Controller
                         array_push($arr,
                         [
                             "id_pemilih" => $cells[0]->getValue(),
-                            "id_caleg" => $cells[1]->getValue(),
-                            "nik" => $cells[2]->getValue(),
-                            "nama" => $cells[3]->getValue(),
-                            "tempat_lahir" => $cells[4]->getValue(),
-                            "tgl_lahir" => $cells[5]->getValue(),
-                            "jk" => $cells[6]->getValue(),
-                            "tps" => $cells[7]->getValue(),
-                            "id_desa" => $cells[8]->getValue(),
-                            "relawan" => $cells[9]->getValue(),
-                            "saksi" => $cells[10]->getValue(),
-                            "tgl_data" => $cells[11]->getValue(),
-                            "id_users" => $cells[12]->getValue()
+                            "nik" => $cells[1]->getValue(),
+                            "nama" => $cells[2]->getValue(),
+                            "tempat_lahir" => $cells[3]->getValue(),
+                            "tgl_lahir" => $cells[4]->getValue(),
+                            "jk" => $cells[5]->getValue(),
+                            "id_desa" => $cells[6]->getValue(),
+                            "tgl_data" => $cells[7]->getValue()
                         ]
                         );
                     }
@@ -117,11 +107,15 @@ class DptController extends Controller
 
         $reader->close();
         $dpt = Rk_pemilih::all();
+        $dpt2 = Rk_pemilih_2::all();
         Rk_pemilih::truncate();
+        Rk_pemilih_2::truncate();
         if (Rk_pemilih::insert($arr)) {
+            Rk_pemilih_2::insert($arr);
             return back()->with("success", "Data DPT berhasil di impor, silahkan tunggu hingga proses impor selesai. Mungkin akan memakan banyak waktu jika terdapat data yang banyak");
         }
         Rk_pemilih::insert($dpt);
+        Rk_pemilih_2::insert($dpt2);
         return back()->with("error", "Error Saat Mengimpor DPT");
 
     }
@@ -158,11 +152,7 @@ class DptController extends Controller
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
-<<<<<<< HEAD
-
-=======
-
->>>>>>> be85f0d7168522ff56a8f748373a328c28b6ada7
+        
         $rules = [
             "id_caleg" => "required",
             'nama' => 'required|max:100',
@@ -196,30 +186,12 @@ class DptController extends Controller
         return back()->with('error', "Error, Can't Delete Data DPT");
     }
 
-    public function getChart($id)
+    public function getChart(Request $request)
     {
-        /*$pemilih = $id == 0 ? Rk_pemilih::with("desa.kecamatan")->get() : Rk_pemilih::with("desa.kecamatan")->where("id_caleg", $id)->get();
-        $myArr = [];
-        $found = true;
-
-        foreach ($pemilih as $data) {
-            for ($i = 0; $i < count($myArr); $i++) {
-                if (in_array($data->desa->kecamatan->nama_kecamatan, $myArr[$i])) {
-                    $data->jk == "Laki-Laki" ? $myArr[$i][1]++ : $myArr[$i][2]++;
-                    $found = false;
-                    break;
-                }
-            }
-            if ($found) {
-                array_push($myArr, [$data->desa->kecamatan->nama_kecamatan, $data->jk == "Laki-Laki" ? 1 : 0, $data->jk == "Perempuan" ? 1 : 0]);
-            }
+        if ($request->has("getData") && $request->getData) {
+            $arr = $request->data == 0 ? Monitoring_Saksi::all() : Monitoring_Saksi::where("id_caleg", $request->data)->get();
+            $data = [];
             $found = true;
-        }
-
-        return response()->json($myArr);*/
-        $arr = $id == 0 ? Monitoring_Saksi::all() : Monitoring_Saksi::where("id_caleg", $id)->get();
-        $data = [];
-        $found = true;
 
         foreach ($arr as $arr) {
             for ($i = 0; $i < count($data); $i++) {
@@ -235,6 +207,7 @@ class DptController extends Controller
             }
             $found = true;
         }
-        return response()->json($data);
+        return response()->json($data, 200);
+    }
     }
 }

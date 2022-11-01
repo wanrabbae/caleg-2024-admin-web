@@ -10,12 +10,16 @@ class Desa extends Model
     use HasFactory;
 
     protected $table = 'desa';
-
     protected $primaryKey = 'id_desa';
-
     public $timestamps = false;
-
     protected $guarded = [];
+
+    public function scopeSearch($query, $search) {
+        return $query->where("nama_desa", "LIKE", "%$search%")
+        ->orWhereHas("kecamatan", function($kecamatan) use ($search) {
+            $kecamatan->where("nama_kecamatan", "LIKE", "%$search%");
+        })->orWhere("tps", $search);
+    }
 
     public function kecamatan()
     {
@@ -29,6 +33,16 @@ class Desa extends Model
 
     public function rk_pemilih()
     {
-        return $this->hasMany(Rk_pemilih::class);
+        return $this->hasMany(Rk_pemilih::class, "id_desa");
+    }
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleting(function($desa) {
+            $desa->relawan()->each(function($relawan) {
+                $relawan->delete();
+            });
+        });
     }
 }

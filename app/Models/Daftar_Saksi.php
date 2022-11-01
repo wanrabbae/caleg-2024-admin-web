@@ -13,8 +13,17 @@ class Daftar_Saksi extends Model
     public $timestamps = false;
     protected $guarded = [""];
 
+    public function scopeSearch($query, $search) {
+        return $query->whereHas("relawan.desa.kecamatan", function($relawan) use ($search) {
+            $relawan->where("nama_relawan", "LIKE", "%$search%")->orWhere("jk", "LIKE", "%$search%")->orWhere("tps", "LIKE", "%$search%")->orWhere("nama_desa", "LIKE", "%$search%")->orWhere("nama_kecamatan", "LIKE", "%$search%");
+        })
+        ->orWhereHas("caleg", function($caleg) use ($search) {
+            $caleg->where("nama_caleg", "LIKE", "%$search%");
+        });
+    }
+
     public function relawan() {
-        return $this->belongsTo(Relawan::class, "nama_relawan", "nama_relawan");
+        return $this->belongsTo(Relawan::class, "id_relawan", "id_relawan");
     }
 
     public function caleg() {

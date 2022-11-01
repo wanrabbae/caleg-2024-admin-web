@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Helper;
 use App\Models\Partai;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
@@ -15,9 +16,13 @@ class DashboardPartaiController extends Controller
      */
     public function index()
     {
+        if (Helper::RequestCheck(request()->all())) {
+            return back()->with("error", "Karakter Ilegal Ditemukan");
+        };
+
         return view("dashboard.partai.partai", [
             "title" => "Partai Page",
-            "dataArr" => Partai::all()
+            "dataArr" => Partai::search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString()
         ]);
     }
 
@@ -38,9 +43,16 @@ class DashboardPartaiController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has("getData") && $request->getData) {
+            return response()->json(Partai::find($request->data), 200);
+        }
+
         $data = $request->validate([
-            "nama_partai" => "required|max:255|unique:partai",
+            "nama_partai" => "required|max:100|unique:partai",
+            "nama_pendek" => "required|max:50|unique:partai",
             "warna" => "required",
+            "secondary_color" => "required",
+            "text_color" => "required",
             "no_urut" => "required|max:100",
             "logo" => "image|max:2048|required"
     ]);
@@ -62,7 +74,7 @@ class DashboardPartaiController extends Controller
      */
     public function show(Partai $partai)
     {
-        return response()->json($partai->makeHidden("id_partai", "logo"));
+        //
     }
 
     /**
@@ -87,11 +99,17 @@ class DashboardPartaiController extends Controller
         $rules = [
             "logo" => "max:2024|image",
             "warna" => "required",
+            "secondary_color" => "required",
+            "text_color" => "required",
             "no_urut" => "required|max:100"
         ];
 
         if ($request->nama_partai != $partai->nama_partai) {
-            $rules["nama_partai"] = "required|max:255|unique:partai";
+            $rules["nama_partai"] = "required|max:100|unique:partai";
+        }
+
+        if ($request->nama_pendek != $partai->nama_pendek) {
+            $rules["nama_pendek"] = "required|max:50|unique:partai";
         }
 
         $data = $request->validate($rules);

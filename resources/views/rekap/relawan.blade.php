@@ -1,4 +1,3 @@
-{{-- DATA RELAWAN --}}
 @extends('layouts.admin')
 
 @section('content')
@@ -19,85 +18,105 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+@endsection
+@section("script")
 <script>
-    anychart.onDocumentReady(function () {
-         // create data set on our data
-         @if (auth("web")->check())
-            fetch("{{ asset('api/getChartRelawan/0') }}").then(resp => resp.json()).then(resp => {
-        @else
-            fetch("{{ asset('api/getChartRelawan/' . auth()->user()->id_caleg) }}").then(resp => resp.json()).then(resp => {
-          //fetch("{{ asset("api/getChartDesa/" . auth()->user()->id_caleg) }}").then(resp => resp.json()).then(resp => {
-        @endif
-            if (resp.length > 0) {
-            document.getElementsByClassName("spinner-border")[0].style.display = "none";
-            var dataSet = anychart.data.set(resp);
-                
-                // map data for the first series, take x from the zero column and value from the first column of data set
-            var firstSeriesData = dataSet.mapAs({ x: 0, value: 1 });
-            
-            // map data for the second series, take x from the zero column and value from the second column of data set
-            var secondSeriesData = dataSet.mapAs({ x: 0, value: 2 });
-            
-            // create column chart
-            var chart = anychart.column3d();
-            
-            // turn on chart animation
-            chart.animation(true);
-            
-            // set chart title text settings
-            // chart.title('');
-            
-            // temp variable to store series instance
-            var series;
-            
-            // helper function to setup label settings for all series
-            var setupSeries = function (series, name) {
-                series.name(name);
-                series.selected().fill('#f48fb1 0.8').stroke('1.5 #c2185b');
-            };
+    $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+        });
 
-            // create first series with mapped data
-            series = chart.column(firstSeriesData);
-            series.xPointPosition(0.25);
-            setupSeries(series, 'Relawan');
+        let getData = () => {
+                let result = $.ajax({
+                url: `{{ asset('api/getChartRelawan') }}`,
+                method: "POST",
+                data: {
+                getData: true,
+                data: "{{ auth('web')->check() ? 0 : auth()->user()->id_caleg }}"
+                },
+                dataType: "json",
+                success: resp => resp
+            })
+            return result;
+      }
 
-            // create second series with mapped data
-            // series = chart.column(secondSeriesData);
-            // series.xPointPosition(0.45);
-            // setupSeries(series, 'Perempuan');
-            
-            chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+        anychart.onDocumentReady(async function() {
+            let resp = await getData()
+                    // create data set on our data
+                        if (resp.length > 0) {
+                            document.getElementsByClassName("spinner-border")[0].style.display = "none";
+                            var dataSet = anychart.data.set(resp);
 
-            // set titles for Y-axis
-            // chart.yAxis().title('Revenue in Dollars');
+                            // map data for the first series, take x from the zero column and value from the first column of data set
+                            var firstSeriesData = dataSet.mapAs({
+                                x: 0,
+                                value: 1
+                            });
 
-            // set chart title text settings
-            chart.barGroupsPadding(0.3);
-            
-            // turn on legend
-            chart.legend().enabled(true).fontSize(13).padding([0, 0, 20, 0]);
+                            // map data for the second series, take x from the zero column and value from the second column of data set
+                            var secondSeriesData = dataSet.mapAs({
+                                x: 0,
+                                value: 2
+                            });
 
-            chart.interactivity().hoverMode('single');
-            
-            // chart.tooltip().valuePrefix('$');
-            
-            // set container id for the chart
-            chart.container('chart');
-            
-            // initiate chart drawing
-            chart.draw();
-        } else if (resp.length == 0) {
-            document.getElementById("chart").innerHTML = "Tidak Ada Suara Untuk Saat Ini";
-        } else {
-            document.getElementById("chart").innerHTML = "Error When Getting Data";
-        }
+                            // create column chart
+                            var chart = anychart.column3d();
 
+                            // turn on chart animation
+                            chart.animation(true);
 
+                            // set chart title text settings
+                            // chart.title('');
 
-            });
-        })
+                            // temp variable to store series instance
+                            var series;
+
+                            // helper function to setup label settings for all series
+                            var setupSeries = function(series, name) {
+                                series.name(name);
+                                series.selected().fill('#f48fb1 0.8').stroke('1.5 #c2185b');
+                            };
+
+                            // create first series with mapped data
+                            series = chart.column(firstSeriesData);
+                            series.xPointPosition(0.25);
+                            setupSeries(series, 'Laki-Laki');
+
+                            // create second series with mapped data
+                            series = chart.column(secondSeriesData);
+                            series.xPointPosition(0.45);
+                            setupSeries(series, 'Perempuan');
+
+                            chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+
+                            // set titles for Y-axis
+                            // chart.yAxis().title('Revenue in Dollars');
+
+                            // set chart title text settings
+                            chart.barGroupsPadding(0.3);
+
+                            // turn on legend
+                            chart.legend().enabled(true).fontSize(13).padding([0, 0, 20, 0]);
+
+                            chart.interactivity().hoverMode('single');
+
+                            // chart.tooltip().valuePrefix('$');
+
+                            // set container id for the chart
+                            chart.container('chart');
+
+                            // initiate chart drawing
+                            chart.draw();
+                        } else if (resp.length == 0) {
+                            document.getElementById("chart").innerHTML = "Tidak Ada Suara Untuk Saat Ini";
+                        } else {
+                            document.getElementById("chart").innerHTML = "Error When Getting Data";
+                        }
+                        });
+                    })
 </script>
 @endsection

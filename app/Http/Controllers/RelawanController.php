@@ -82,24 +82,30 @@ class RelawanController extends Controller
     //     return back()->with("error", "Error, Can't Update Relawan");
     // }
 
-    public function fetch($id) {
-        $arr = $id == 0 ? Relawan::with("desa.kecamatan")->get() : Relawan::with("desa.kecamatan")->where("id_caleg", $id)->get();
+    public function fetch(Request $request) {
+        if ($request->has("getData") && $request->getData) {
+            if (auth("caleg")->check()) {
+                $data = Relawan::with("desa.kecamatan")->where("id_caleg", $request->data)->first();
+                $this->authorize("all-caleg", $data);
+            }
+        $arr = $request->data == 0 ? Relawan::with("desa.kecamatan")->get() : Relawan::with("desa.kecamatan")->where("id_caleg", $request->data)->get();
         $found = true;
         $data = [];
         
         foreach ($arr as $arr) {
             for ($i = 0; $i < count($data); $i++) {
                 if (in_array($arr->desa->kecamatan->nama_kecamatan, $data[$i])) {
-                    $data[$i][1]++;
+                    $arr->jk == "Laki-Laki" ? $data[$i][1]++ : $data[$i][2]++;
                     $found = false;
                     break;
                 }
             }
             if ($found) {
-                array_push($data, [$arr->desa->kecamatan->nama_kecamatan, 1]);
+                array_push($data, [$arr->desa->kecamatan->nama_kecamatan, $arr->jk == "Laki-Laki" ? 1 : 0, $arr->jk == "Perempuan" ? 1 : 0]);
             }
             $found = true;
         }
-        return response()->json($data);
+        return response()->json($data, 200);
+        }
     }
 }

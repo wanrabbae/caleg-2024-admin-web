@@ -1,6 +1,5 @@
 @extends('layouts.admin')
 @section('content')
-{{-- @dd($data) --}}
 <div class="card shadow mb-4">
     <div class="col-md-3">
     </div>
@@ -12,7 +11,34 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <div class="d-flex justify-content-between flex-column flex-md-row">
+                <div>
+                  <form action="" method="GET" class="d-block mb-2">
+                  @if (request()->has("search"))
+                  <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                  @endif
+                  <span class="d-block">Data Per Page</span>
+                    <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                    <datalist id="paginates">
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="75">75</option>
+                      <option value="100">100</option>
+                    </datalist>
+                  </form>
+                </div>
+                <div>
+                  <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                    @if (request()->has("paginate"))
+                    <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                    @endif
+                    <span class="d-block">Search</span>
+                    <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                  </div>
+                </form>
+              </div>
+                {{ $data->links() }}
+            <table class="table table-bordered" id="" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -22,7 +48,8 @@
                         <th>Nama Survey</th>
                         <th>Dari</th>
                         <th>Sampai</th>
-                        <th>Indikator</th>
+                        <th>Aktif</th>
+                        <th>Hasil</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -37,12 +64,38 @@
                                 <td>{{ $item->nama_survey }}</td>
                                 <td>{{ $item->mulai_tanggal }}</td>
                                 <td>{{ $item->sampai_tanggal }}</td>
-                                <td>{{ $item->variable->nama_variabel }}</td>
+                                <td>
+                                    @if ($item->aktif == "N")
+                                        <form action="{{ asset('survey/inputSurvey/' . $item->id_survey) }}" method="post">
+                                            @method('put')
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger d-flex justify-content-center" value="{{ $item->aktif }}" name="aktif">
+                                                {{ $item->aktif }}
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ asset('survey/inputSurvey/' . $item->id_survey) }}" method="post">
+                                            @method('put')
+                                            @csrf
+                                            <button type="submit" class="btn btn-success" name="aktif" value="{{ $item->aktif }}">
+                                                {{ $item->aktif }}
+                                            </button>
+                                        </form>
+                                    @endif
+                                </td>
+                                <td>
+                                    <form action="{{ asset('survey/HasilSurvey') }}" target="_blank" method="POST">
+                                        @csrf
+                                        <button class="btn btn-primary" value="{{ $item->id_survey }}" name="survey">
+                                            Hasil
+                                        </button>
+                                    </form>
+                                </td>
                                 <td class="d-flex justify-content-center">
-                                   <button type="button" class="btn btn-warning mx-3" onclick="DataSurvey({{ $item->id_survey }})" data-bs-toggle="modal" data-bs-target="#exampleModal1">
+                                   <button type="button" class="btn btn-warning mx-3 getData" value="{{ $item->id_survey }}" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                         <i class="fas fa-edit"></i>
                                    </button>
-                                   <form action="/survey/inputSurvey/{{ $item->id_survey }}" method="post" class="d-inline">
+                                   <form action="{{ asset('survey/inputSurvey/' . $item->id_survey) }}" method="post" class="d-inline">
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus Survey {{ $item->nama_survey }}')">
@@ -96,18 +149,6 @@
                       </select>
                 </div>
                 @endauth
-                <div class="mb-3">
-                    <label for="indikator" class="form-label">Indikator</label>
-                    <select class="form-select form-control" name="id_variabel" id="indikator">
-                        @foreach ($variabel as $item)
-                        @if (old('id_variabel')==$item->id_variabel)
-                            <option value="{{ $item->id_variabel }}" selected>{{ $item->nama_variabel}}</option>
-                        @else
-                            <option value="{{ $item->id_variabel }}">{{ $item->nama_variabel }}</option>
-                        @endif
-                        @endforeach
-                      </select>
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Create</button>
@@ -156,18 +197,6 @@
                     </select>
                 </div>
                 @endauth
-                <div class="mb-3">
-                    <label for="id_variabel" class="form-label">Indikator</label>
-                    <select name="id_variabel" id="edit_variabel" class="form-select form-control">
-                        @foreach ($variabel as $item)
-                        @if (old('id_variabel')==$item->id_variabel)
-                            <option value="{{ $item->id_variabel }}" selected >{{ $item->nama_variabel }}</option>
-                        @else
-                            <option value="{{ $item->id_variabel }}">{{ $item->nama_variabel }}</option>
-                        @endif
-                        @endforeach
-                    </select>
-                </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary">Save changes</button>
@@ -177,5 +206,39 @@
       </div>
     </div>
   </div>
-  <script src="/js/value.js"></script>
+@endsection
+@section("script")
+  <script>
+  $(document).ready(function() {
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    }
+});
+
+  let getData = e => {
+    $.ajax({
+        url: `{{ asset('survey/inputSurvey') }}`,
+        method: "POST",
+        data: {
+          getData: true,
+          data: e.currentTarget.value
+        },
+        dataType: "json",
+        success: resp => {
+            $("#edit_form").attr("action", `{{ asset('survey/inputSurvey/${resp.id_survey}') }}`)
+            $("#edit_survey").val(resp.nama_survey)
+            $("#edit_mulai").val(resp.mulai_tanggal)
+            $("#edit_sampai").val(resp.sampai_tanggal)
+            @auth("web")
+            $("#edit_caleg").val(resp.id_caleg)
+            @endauth
+            // $("#edit_variabel").val(resp.id_variabel)
+        } 
+      })
+  }
+
+  $(".getData").on("click", getData);
+  })
+</script>
 @endsection

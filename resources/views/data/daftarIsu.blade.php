@@ -12,7 +12,34 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <div class="d-flex justify-content-between flex-column flex-md-row">
+            <div>
+              <form action="" method="GET" class="d-block mb-2">
+              @if (request()->has("search"))
+              <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+              @endif
+              <span class="d-block">Data Per Page</span>
+                <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                <datalist id="paginates">
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  <option value="75">75</option>
+                  <option value="100">100</option>
+                </datalist>
+              </form>
+            </div>
+            <div>
+              <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                @if (request()->has("paginate"))
+                <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                @endif
+                <span class="d-block">Search</span>
+                <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+              </div>
+            </form>
+          </div>
+            {{ $dataArr->links() }}
+            <table class="table table-bordered" id="" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -69,18 +96,11 @@
                             </td>
                             <td>
                                 @if ($data->tanggapi == "N")
-                                {{-- <form action="/infoPolitik/daftarIsu/{{ $data->id_isu }}" method="POST">
-                                    @method("put")
-                                    @csrf
-                                    <button class="btn btn-primary" type="submit" name="tanggapi">
-                                        Tanggapi
-                                    </button>
-                                </form> --}}
-                                    <button class="btn btn-primary" onclick="getTanggapan({{ $data->id_isu }})" data-toggle="modal" data-target="#tanggapiModal">
+                                    <button class="btn btn-primary getTanggapan" value="{{ $data->id_isu }}" data-toggle="modal" data-target="#tanggapiModal">
                                         Tanggapi
                                     </button>
                                 @else
-                                 <form action="/infoPolitik/daftarIsu/{{ $data->id_isu }}" method="POST">
+                                 <form action="{{ asset("infoPolitik/daftarIsu/" . $data->id_isu) }}" method="POST">
                                     @method("put")
                                     @csrf
                                     <button class="btn btn-success" type="submit" name="unrespond">
@@ -94,7 +114,7 @@
                             </td>
                             <td class="d-flex justify-content-center">
                                     @if ($data->tanggapi != "N")
-                                    <button class="btn btn-warning mx-3" onclick="getData({{ $data->id_isu }})" data-toggle="modal" data-target="#editModal">
+                                    <button class="btn btn-warning mx-3 getData" value="{{ $data->id_isu }}" data-toggle="modal" data-target="#editModal">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     @endif
@@ -115,97 +135,7 @@
     </div>
 </div>
 
-{{-- Modal Create --}}
-  {{-- <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="createModalLabel">Tambah Isu</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action="/infoPolitik/daftarIsu/" method="POST">
-        <div class="modal-body">
-                @csrf
-                @auth("web")
-                <div class="form-group">
-                    <label for="id_caleg" class="form-label" >Caleg</label>
-                    <select class="form-select form-control" name="id_caleg" id="id_caleg">
-                        @foreach ($caleg as $item)
-                        @if (old('id_caleg')==$item->id_caleg)
-                            <option value="{{ $item->id_caleg }}" selected>{{ $item->nama_caleg }}</option>
-                        @else
-                            <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
-                        @endif
-                        @endforeach
-                      </select>
-                </div>
-                @endauth
-                <div class="form-group">
-                    <label for="jenis" class="form-label" >Jenis</label>
-                    <select class="form-select form-control" name="jenis" id="jenis">
-                            <option value="L" selected>Lapangan</option>
-                            <option value="O">Online</option>
-                      </select>
-                </div>
-                <div class="form-group">
-                    <label for="dampak" class="form-label" >Dampak</label>
-                    <select class="form-select form-control" name="dampak" id="dampak">
-                            <option value="P" selected>Positif</option>
-                            <option value="N">Negatif</option>
-                      </select>
-                </div>
-                <div class="mb-3">
-                    <label for="tanggal" class="form-label">Tanggal</label>
-                    <input type="date" name="tanggal" id="tanggal" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="id_kecamatan">Kecamatan</label>
-                    <select class="form-control" name="id_kecamatan" id="id_kecamatan">
-                    @foreach ($kecamatan as $item)
-                        <option value="{{ $item->id_kecamatan }}">{{ $item->nama_kecamatan }}</option>
-                    @endforeach
-                    </select>
-                </div>
-                @auth("web")
-                <div class="form-group">
-                    <label for="id_relawan">Relawan</label>
-                    <select class="form-control" name="id_relawan" id="id_relawan">
-                        <option value="">Silahkan Pilih Caleg</option>
-                    </select>
-                </div>
-                @else
-                <div class="form-group">
-                    <label for="id_relawan">Relawan</label>
-                    <select class="form-control" name="id_relawan" id="id_relawan">
-                    @if ($relawan->count())
-                    @foreach ($relawan as $item)
-                        <option value="{{ $item->id_relawan }}">{{ $item->nama_relawan }}</option>
-                    @endforeach
-                    @else
-                        <option value="">Tidak Ada Relawan</option>
-                    @endif
-                    </select>
-                </div>
-                @endif
-                <div class="form-group">
-                  <label for="keterangan">Keterangan</label>
-                  <textarea type="text" class="form-control" id="keterangan" placeholder="Keterangan..." name="keterangan" rows="5"></textarea>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <a href="">
-                  <button type="submit" class="btn btn-primary">Tambah</button>
-                </a>
-              </div>
-            </form>
-      </div>
-    </div>
-  </div> --}}
-
-{{-- Tangapi Modal --}}
+{{-- Tanggapi Modal --}}
   <div class="modal fade" id="tanggapiModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -249,85 +179,52 @@
         <div class="modal-body">
                 @method('put')
                 @csrf
-                {{-- <div class="form-group">
-                    <label for="jenis" class="form-label" >Jenis</label>
-                    <select class="form-select form-control" name="jenis" id="edit_jenis">
-                            <option value="L" selected>Lapangan</option>
-                            <option value="O">Online</option>
-                      </select>
-                </div>
                 <div class="form-group">
-                    <label for="dampak" class="form-label" >Dampak</label>
-                    <select class="form-select form-control" name="dampak" id="edit_dampak">
-                            <option value="P" selected>Positif</option>
-                            <option value="N">Negatif</option>
-                      </select>
-                </div>
-                <div class="mb-3">
-                    <label for="tanggal" class="form-label">Tanggal</label>
-                    <input type="date" name="tanggal" id="edit_tanggal" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="id_kecamatan">Kecamatan</label>
-                    <select class="form-control" name="id_kecamatan" id="edit_id_kecamatan">
-                    @foreach ($kecamatan as $item)
-                        <option value="{{ $item->id_kecamatan }}">{{ $item->nama_kecamatan }}</option>
-                    @endforeach
-                    </select>
-                </div> --}}
-                <div class="form-group">
-                  <label for="keterangan">Keterangan</label>
-                  <textarea type="text" class="form-control" id="edit_keterangan" placeholder="Keterangan..." name="keterangan" rows="5"></textarea>
-                </div>
-                {{-- <div class="form-group">
                   <label for="tanggapan">Tanggapan</label>
-                  <textarea type="text" class="form-control" id="edit_tanggapan" placeholder="Tanggapan..." name="tanggapan" rows="5"></textarea>
+                  <textarea type="text" class="form-control" id="edit_tanggapan" placeholder="Tanggapan" name="btn_tanggapan" rows="5"></textarea>
                 </div>
-              </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <a href="">
                   <button type="submit" class="btn btn-primary">Edit</button>
                 </a>
-              </div> --}}
+              </div>
             </form>
       </div>
     </div>
   </div>
-
-    <script>
-    function getTanggapan(data) {
-            document.getElementById("edit_form").action = `/infoPolitik/daftarIsu/${data}`
-        }
-
-    function getData(id) {
-        fetch(`/infoPolitik/daftarIsu/${id}`).then(resp => resp.json()).then(resp => {
-            document.getElementById("edit_form_2").action = `/infoPolitik/daftarIsu/${id}`
-            //document.getElementById("edit_id_kecamatan").value = resp.id_kecamatan
-            //document.getElementById("edit_jenis").value = resp.jenis
-            document.getElementById("edit_keterangan").value = resp.keterangan
-            //document.getElementById("edit_tanggal").value = resp.tanggal
-            //document.getElementById("edit_tanggapan").value = resp.tanggapan
-        })
+@endsection
+@section("script")
+  <script>
+  $(document).ready(function() {
+  $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
     }
+});
 
-    /*@auth("web")
-    document.getElementById("id_caleg").addEventListener("change", function(e) {
-        fetch(`/infoPolitik/daftarIsu/relawan/${e.target.value}`).then(resp => resp.json()).then(resp => {
-            let text = "";
-            if (resp.length == 0) {
-                text += "<option value=''>Tidak Ada Relawan</option>"
-            } else {
-                resp.forEach(v => {
-                    text += `
-                        <option value="${v.id_relawan}">${v.nama_relawan}</option>
-                    `
-                })
-            }
-            document.getElementById("id_relawan").innerHTML = text;
-    })
-})
-@endauth*/
-    </script>
+  let getTanggapan = e => {
+    $("#edit_form").attr("action", `{{ asset('infoPolitik/daftarIsu/${e.currentTarget.value}') }}`)
+  }
 
+  let getData = e => {
+    $.ajax({
+        url: `{{ asset('infoPolitik/daftarIsu') }}`,
+        method: "POST",
+        data: {
+          getData: true,
+          data: e.currentTarget.value
+        },
+        dataType: "json",
+        success: resp => {
+            $("#edit_form_2").attr("action", `{{ asset('infoPolitik/daftarIsu/${resp.id_isu}') }}`);
+            $("#edit_tanggapan").val(resp.tanggapan)
+        } 
+      })
+  }
+
+  $(".getTanggapan").on("click", getTanggapan);
+  $(".getData").on("click", getData);
+  })
+</script>
 @endsection

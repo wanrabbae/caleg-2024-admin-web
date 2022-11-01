@@ -115,89 +115,55 @@
                 </div>
 
             </div>
-        </div>
 
-        @auth("web")
-        <form action="/update" method="POST">
-            @csrf
-            <div class="row">
-                <button class="col-lg-6 mb-4 btn" name="warna" value="#4e73df">
-                    <div class="card bg-primary text-white shadow">
-                        <div class="card-body">
-                            Primary
-                            <div class="text-white-50 small">#4e73df</div>
+            @auth("caleg")
+            <div class="col-md-12 mb-4">
+
+                <!-- Project Card Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            <i class="fas fa-chart-bar text-lg"></i>
+                            Perolehan Total Suara
+                        </h6>
+                    </div>
+                    <div class="card-body d-flex justify-content-center align-items-center" id="suaraChart">
+                        <div class="spinner-border-suara" role="status">
                         </div>
                     </div>
-                </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="#1cc88a">
-                    <div class="card bg-success text-white shadow">
-                        <div class="card-body">
-                            Success
-                            <div class="text-white-50 small">#1cc88a</div>
-                        </div>
-                    </div>
-                </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="#36b9cc">
-                    <div class="card bg-info text-white shadow">
-                        <div class="card-body">
-                            Info
-                            <div class="text-white-50 small">#36b9cc</div>
-                        </div>
-                    </div>
-                </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="#f6c23e">
-                    <div class="card bg-warning text-white shadow">
-                        <div class="card-body">
-                            Warning
-                            <div class="text-white-50 small">#f6c23e</div>
-                        </div>
-                    </div>
-                </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="#e74a3b">
-                    <div class="card bg-danger text-white shadow">
-                        <div class="card-body">
-                            Danger
-                            <div class="text-white-50 small">#e74a3b</div>
-                        </div>
-                    </div>
-                </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="#858796">
-                    <div class="card bg-secondary text-white shadow">
-                        <div class="card-body">
-                            Secondary
-                            <div class="text-white-50 small">#858796</div>
-                        </div>
-                    </div>
-                </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="#f8f9fc">
-                    <div class="card bg-light text-black shadow">
-                        <div class="card-body">
-                            Light
-                            <div class="text-black-50 small">#f8f9fc</div>
-                        </div>
-                    </div>
-                </button>
-                <button class="col-lg-6 mb-4 btn" name="warna" value="#5a5c69">
-                    <div class="card bg-dark text-white shadow">
-                        <div class="card-body">
-                            Dark
-                            <div class="text-white-50 small">#5a5c69</div>
-                        </div>
-                    </div>
-                </button>
+                </div>
+
             </div>
-        </form>
-    </div>
-    @endauth
-    <script>
-        anychart.onDocumentReady(function() {
-                    // create data set on our data
-                    @if (auth("web")->check())
-                        fetch("{{ asset('api/getChart/0') }}").then(resp => resp.json()).then(resp => {
-                    @else
-                        fetch("{{ asset("api/getChart/" . auth()->user()->id_caleg) }}").then(resp => resp.json()).then(resp => {
-                    @endif
-                        if (resp.length > 0) {
+            @endauth
+        </div>
+@endsection
+@section("script")
+<script>
+    $(document).ready(function() {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+        });
+
+        let getData = () => {
+                let result = $.ajax({
+                url: `{{ asset('api/getChart') }}`,
+                method: "POST",
+                data: {
+                getData: true,
+                data: "{{ auth('web')->check() ? 0 : auth()->user()->id_caleg }}"
+                },
+                dataType: "json",
+                success: resp => resp
+            })
+            return result;
+      }
+
+        anychart.onDocumentReady(async function() {
+                        let resp = await getData()
+                        // create data set on our data
+                           if (resp.length > 0) {
                             document.getElementsByClassName("spinner-border")[0].style.display = "none";
                             var dataSet = anychart.data.set(resp);
 
@@ -268,5 +234,95 @@
                         }
                         });
                     })
-    </script>
+        
+                    @auth("caleg")
+                    let getSuara = () => {
+                        let result = $.ajax({
+                                url: `{{ asset('api/getChartSuara') }}`,
+                                method: "POST",
+                                data: {
+                                getData: true,
+                                data: "{{ auth()->user()->id_caleg }}"
+                                },
+                                dataType: "json",
+                                success: resp => resp
+                            })
+                            return result;
+                    }
+
+                    anychart.onDocumentReady(async function() {
+                        let resp = await getSuara()
+                        // create data set on our data
+                           if (resp.length > 0) {
+                            document.getElementsByClassName("spinner-border-suara")[0].style.display = "none";
+                            var dataSet = anychart.data.set(resp);
+
+                            // map data for the first series, take x from the zero column and value from the first column of data set
+                            var firstSeriesData = dataSet.mapAs({
+                                x: 0,
+                                value: 1
+                            });
+
+                            // map data for the second series, take x from the zero column and value from the second column of data set
+                            var secondSeriesData = dataSet.mapAs({
+                                x: 0,
+                                value: 2
+                            });
+
+                            // create column chart
+                            var chart = anychart.column3d();
+
+                            // turn on chart animation
+                            chart.animation(true);
+
+                            // set chart title text settings
+                            // chart.title('');
+
+                            // temp variable to store series instance
+                            var series;
+
+                            // helper function to setup label settings for all series
+                            var setupSeries = function(series, name) {
+                                series.name(name);
+                                series.selected().fill('#f48fb1 0.8').stroke('1.5 #c2185b');
+                            };
+
+                            // create first series with mapped data
+                            series = chart.column(firstSeriesData);
+                            series.xPointPosition(0.25);
+                            setupSeries(series, 'Suara Harapan');
+
+                            // create second series with mapped data
+                            series = chart.column(secondSeriesData);
+                            series.xPointPosition(0.45);
+                            setupSeries(series, 'Total Suara');
+
+                            chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+
+                            // set titles for Y-axis
+                            // chart.yAxis().title('Revenue in Dollars');
+
+                            // set chart title text settings
+                            chart.barGroupsPadding(0.3);
+
+                            // turn on legend
+                            chart.legend().enabled(true).fontSize(13).padding([0, 0, 20, 0]);
+
+                            chart.interactivity().hoverMode('single');
+
+                            // chart.tooltip().valuePrefix('$');
+
+                            // set container id for the chart
+                            chart.container('suaraChart');
+
+                            // initiate chart drawing
+                            chart.draw();
+                        } else if (resp.length == 0) {
+                            document.getElementById("suaraChart").innerHTML = "Tidak Ada Suara Untuk Saat Ini";
+                        } else {
+                            document.getElementById("suaraChart").innerHTML = "Error When Getting Data";
+                        }
+                        });
+                    @endauth
+</script>
 @endsection

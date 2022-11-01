@@ -17,7 +17,34 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <div class="d-flex justify-content-between flex-column flex-md-row">
+                    <div>
+                      <form action="" method="GET" class="d-block mb-2">
+                      @if (request()->has("search"))
+                      <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                      @endif
+                      <span class="d-block">Data Per Page</span>
+                        <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                        <datalist id="paginates">
+                          <option value="25">25</option>
+                          <option value="50">50</option>
+                          <option value="75">75</option>
+                          <option value="100">100</option>
+                        </datalist>
+                      </form>
+                    </div>
+                    <div>
+                      <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                        @if (request()->has("paginate"))
+                        <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                        @endif
+                        <span class="d-block">Search</span>
+                        <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                      </div>
+                    </form>
+                  </div>
+                    {{ $relawan->links() }}
+                <table class="table table-bordered" id="" width="100%" cellspacing="0">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -54,11 +81,10 @@
                                             <span>Image Not Found</span>
                                         @endif
                                     </td>
-                                    <td id="sendColumn">
-                                        <button class="btn btn-success" data-toggle="modal" data-target="#createModal" onclick="getData({{ $data->id_relawan }})" id="send">
+                                    <td>
+                                        <button class="btn btn-success setForm" data-toggle="modal" data-target="#createModal" value="{{ $data->no_hp }}">
                                             <i class="fas fa-bell"></i>
                                         </button>
-                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -79,7 +105,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="/whatsapp/send" method="POST" id="sendForm">
+                <form action="{{ asset('whatsapp/send') }}" method="POST" id="sendForm">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="no_hp[]" value="" id="no_hp">
@@ -96,14 +122,9 @@
             </div>
         </div>
     </div>
-
+@endsection
+@section("script")
     <script>
-        function getData(data) {
-            fetch(`/whatsapp/${data}`).then(resp => resp.json()).then(resp => {
-                document.getElementById("no_hp").value = resp.no_hp
-            })
-        }
-
         let checkBox = Array.from(document.getElementsByClassName("check"));
         let form = document.getElementById("sendForm");
 
@@ -143,7 +164,6 @@
             } else {
                 document.getElementById("sendBtn").disabled = true;
             }
-            console.log(arr)
         }
 
         checkBox.forEach((v, i) => {
@@ -152,8 +172,14 @@
 
         form.addEventListener("submit", e => {
             e.preventDefault();
-            form["no_hp"].value = arr;
+            form["no_hp"].value = arr.length ? arr : form["no_hp"].value;
             form.submit();
         })
+        
+        let addHp = e => {
+            $("#no_hp").val(e.currentTarget.value)
+        }
+        
+        $(".setForm").on("click", addHp)
     </script>
 @endsection

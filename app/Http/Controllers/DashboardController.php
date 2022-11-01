@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Relawan;
 use App\Models\Rk_pemilih;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {

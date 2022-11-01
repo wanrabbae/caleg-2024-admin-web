@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Helper;
 use App\Models\Caleg;
 use App\Models\Legislatif;
 use App\Models\Partai;
+use App\Models\Provinsi;
+use App\Models\Kabupaten;
+use App\Models\Monitoring_Saksi;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 
@@ -18,9 +22,13 @@ class CalegController extends Controller
      */
     public function index()
     {
+        if (Helper::RequestCheck(request()->all())) {
+            return back()->with("error", "Karakter Ilegal Ditemukan");
+        }
+
         return view("caleg.index", [
             "title" => "Caleg Page",
-            "dataArr" => Caleg::all(),
+            "dataArr" => Caleg::with(["partai", "legislatif", "kabupaten", "provinsi"])->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
             "legislatif" => Legislatif::all(),
             "partai" => Partai::all()
     ]);
@@ -44,13 +52,26 @@ class CalegController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has("getData") && $request->getData) {
+            return response()->json(Caleg::find($request->data), 200);
+        }
+
+        if ($request->has("getLevel") && $request->getLevel) {
+            return response()->json(Caleg::find($request->data), 200);
+        }
+
         $data = $request->validate([
+            "demo" => "required",
             "nama_caleg" => "required|max:255",
             "nama_lengkap" => "required|max:255",
             "id_legislatif" => "required",
+            "level" => "required",
+            "id_provinsi" => "required",
+            "id_kabupaten" => Legislatif::find($request->id_legislatif)->type == "Kabupaten" ? "required" : "",
+            "dapil" => "required",
             "alamat" => "required|max:255",
             "no_hp" => "required|max:20|min:10|unique:caleg",
-            "email" => "required|email:dns|max:100|unique:caleg",
+            "email" => "required|email|max:100|unique:caleg",
             "id_partai" => "required",
             //"aktif" => "required",
             "username" => "required|unique:caleg|max:30",
@@ -76,7 +97,7 @@ class CalegController extends Controller
      */
     public function show(Caleg $caleg)
     {
-        return response()->json($caleg);
+
     }
 
     /**
@@ -106,6 +127,20 @@ class CalegController extends Controller
             return back()->with("error", "Error, Can't Update Aktif status");
         }
 
+        if ($request->demo) {
+            if (Caleg::where("id_caleg", $caleg->id_caleg)->update(["demo" => $request->demo == "Y" ? "N" : "Y"])) {
+                return back()->with("success", "Success Update Demo Status");
+            }
+            return back()->with("error", "Error, Can't Update Aktif Status");
+        }
+
+        if ($request->level) {
+            if (Caleg::where("id_caleg", $caleg->id_caleg)->update(["level" => $request->level])) {
+                return back()->with("success", "Success Update Subscribe");
+            }
+            return back()->with("error", "Error, Can't Update Subscribe");
+        }
+
         $rules = [
             "nama_caleg" => "required|max:255",
             "nama_lengkap" => "required|max:255",
@@ -120,11 +155,23 @@ class CalegController extends Controller
         }
 
         if ($request->email !== $caleg->email) {
-            $rules["email"] = "required|email:dns|max:100|unique:caleg";
+            $rules["email"] = "required|email|max:100|unique:caleg";
         }
 
         if ($request->username !== $caleg->username) {
             $rules["username"] = "required|unique:caleg|max:30";
+        }
+
+        if ($request->has("id_provinsi") && $request->id_provinsi !== $caleg->id_provinsi) {
+            $rules["id_provinsi"] = "required";
+        }
+
+        if ($request->has("id_kabupaten") && $request->id_kabupaten !== $caleg->id_kabupaten) {
+            $rules["id_kabupaten"] = "required";
+        }
+
+        if ($request->has("dapil") && $request->dapil !== $caleg->dapil) {
+            $rules["dapil"] = "required";
         }
 
         if ($request->password) {
@@ -163,5 +210,20 @@ class CalegController extends Controller
             return back()->with("success", "Success Delete $caleg->nama_caleg");
         }
         return back()->with("error", "Error When Deleting $caleg->nama_caleg Caleg");
+    }
+
+    public function fetch(Request $request) {
+        if ($request->has("getData") && $request->getData) {
+            $arr = Monitoring_Saksi::with(["desa.kecamatan.kabupaten"])->where("id_caleg", $request->data)->get();
+            $data = ["Suara", 0, 0];
+
+            foreach ($arr as $suara) {
+                $data[2] += $suara->suara_2024;
+            }
+
+            $data[1] = Caleg::find($request->data)->harapan_suara;
+
+            return response()->json([$data], 200);
+        }
     }
 }
