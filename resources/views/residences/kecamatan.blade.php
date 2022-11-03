@@ -40,23 +40,25 @@
           </div>
             {{ $dataArr->links() }}
             <table class="table table-bordered" id="" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Nama Kecamatan</th>
-                        <th>Nama Kabupaten</th>
-                        <th>Dapil Kabupaten</th>
-                        <th>Wilayah</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if ($dataArr->count())
-                        @foreach($dataArr as $data)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $data->nama_kecamatan }}</td>
-                                <td>{{ $data->kabupaten->nama_kabupaten }}</td>
+              <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Kecamatan</th>
+                    <th>Nama Kabupaten</th>
+                    <th>Nama Provinsi</th>
+                    <th>Dapil Kabupaten</th>
+                    <th>Wilayah</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if ($dataArr->count())
+                    @foreach($dataArr as $data)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $data->nama_kecamatan }}</td>
+                            <td>{{ $data->kabupaten->nama_kabupaten }}</td>
+                            <td>{{ $data->kabupaten->provinsi->nama_provinsi }}</td>
                                 <td>{{ $data->dapil == 0 ? "Tidak Ada" : $data->dapil }}</td>
                                 <td><a href="{{ $data->wilayah }}" target="_blank" class="btn btn-primary">Lokasi</a></td>
                                 <td class="d-flex justify-content-center">

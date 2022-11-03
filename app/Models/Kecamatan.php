@@ -20,8 +20,8 @@ class Kecamatan extends Model
     public function scopeSearch($query, $search) {
         return $query->where("nama_kecamatan", "LIKE", "%$search%")
         ->orWhere("dapil", $search)
-        ->orWhereHas("kabupaten", function($kabupaten) use ($search) {
-            $kabupaten->where("nama_kabupaten", "LIKE", "%$search%");
+        ->orWhereHas("kabupaten.provinsi", function($kabupaten) use ($search) {
+            $kabupaten->where("nama_kabupaten", "LIKE", "%$search%")->orWhere("nama_provinsi", "LIKE", "%$search%");
         });
     }
 

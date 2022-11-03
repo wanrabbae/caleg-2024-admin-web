@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Provinsi;
+use App\Models\Kabupaten;
+use App\Models\Desa;
 use App\Models\Monitoring_Saksi;
 use App\Models\Rk_pemilih;
 use App\Models\Relawan;
@@ -17,87 +19,103 @@ class SaksiMonitoringController extends Controller
      */
     public function index()
     {
-        if (request("table") == "desa") {
-            $arr = auth("web")->check() ? Monitoring_Saksi::with(["desa", "caleg.partai"])->get() : Monitoring_Saksi::with(["desa"])->where("id_caleg", auth()->user()->id_caleg)->get();
-            $data = [];
-            $found = true;
+        if (request("table") != "kabupaten" && request("table") != "kecamatan" && request("table") != "desa") {
+            abort(404);
+        }
 
+        // if (auth("caleg")->check()) {
+        //     $dapil = auth()->user()->dapil;
+        //     if (auth()->user()->legislatif->type == "Provinsi") {
+        //         $data = Desa::with("kecamatan.kabupaten.provinsi")->filter(["id" => auth()->user()->provinsi->id_provinsi, "dapil" => $dapil])->search(request("search"))->paginate(request("paginate") ?? 500)->withQueryString();
+        //     } else {
+        //         $data = Desa::with("kecamatan.kabupaten")->filter(["id" => auth()->user()->provinsi->id_provinsi, "dapil" => $dapil])->search(request("search"))->paginate(request("paginate") ?? 500)->withQueryString();
+        //     }
+        // }
+        
+        $arr = [];
+        $diagram = [];
+        $found = true;
+
+        if (request("table") == "kabupaten") {
             if (auth("caleg")->check()) {
-                $type = auth()->user()->legislatif->type;
-
-                if ($type == "Provinsi") {
-                    $provinsi = Provinsi::with("kabupaten.kecamatan.desa")->find(auth()->user()->provinsi->id_provinsi);
-                    $dapil = auth()->user()->dapil;
-                    return $provinsi;
-                }
+                $suara = Monitoring_Saksi::with("desa.kecamatan.kabupaten.provinsi")->where("id_caleg", auth()->user()->id_caleg)->whereHas("desa.kecamatan.kabupaten.provinsi", function($desa) {
+                    $desa->where("id_provinsi", auth()->user()->id_provinsi)->where("dapil", auth()->user()->dapil);
+                })->get();
+            } else {
+                $suara = Monitoring_Saksi::with(["desa.kecamatan.kabupaten.provinsi"])->get();
             }
-            //setting chart monitor
-
-            foreach ($arr as $arr) {
-                for ($i = 0; $i < count($data); $i++) {
-                    if (in_array($arr->desa->nama_desa, $data[$i])) {
-                        $data[$i][1] += $arr->suara_2024;
-                        $data[$i][2] += $arr->suara_2019;
+            foreach ($suara as $data) {
+                for ($i = 0; $i < count($arr); $i++) {
+                    if (in_array($data->desa->kecamatan->kabupaten->nama_kabupaten, $arr[$i])) {
+                        $arr[$i][3] += $data->suara_caleg;
+                        $diagram[$i][1] += $data->suara_caleg;
                         $found = false;
                         break;
                     }
                 }
                 if ($found) {
-                    array_push($data, [$arr->desa->nama_desa, $arr->suara_2024, $arr->suara_2019]);
+                    array_push($arr, [$data->desa->kecamatan->id_kabupaten, $data->desa->kecamatan->kabupaten->nama_kabupaten, $data->desa->kecamatan->kabupaten->provinsi->nama_provinsi, $data->suara_caleg]);
+                    array_push($diagram, [$data->desa->kecamatan->kabupaten->nama_kabupaten, $data->suara_caleg]);
                 }
                 $found = true;
             }
-            $data = collect($data);
-            }
+        }
         
         if (request("table") == "kecamatan") {
-            $arr = auth("web")->check() ? Monitoring_Saksi::with(["desa.kecamatan", "caleg", "partai"])->get() : Monitoring_Saksi::with(["desa.kecamatan"])->where("id_caleg", auth()->user()->id_caleg)->get();
-            $data = [];
-            $found = true;
-
-        foreach ($arr as $arr) {
-            for ($i = 0; $i < count($data); $i++) {
-                if (in_array($arr->desa->kecamatan->nama_kecamatan, $data[$i])) {
-                    $data[$i][1] += $arr->suara_2024;
-                    $data[$i][2] += $arr->suara_2019;
-                    $found = false;
-                    break;
+            if (auth("caleg")->check()) {
+                $suara = Monitoring_Saksi::with("desa.kecamatan.kabupaten")->where("id_caleg", auth()->user()->id_caleg)->whereHas("desa.kecamatan.kabupaten", function($desa) {
+                    $desa->where("id_kabupaten", request("kabupaten"))->where("dapil", auth()->user()->dapil);
+                })->get();
+            } else {
+                $suara = Monitoring_Saksi::with(["desa.kecamatan.kabupaten"])->get();
+            }
+            foreach ($suara as $data) {
+                for ($i = 0; $i < count($arr); $i++) {
+                    if (in_array($data->desa->kecamatan->nama_kecamatan, $arr[$i])) {
+                        $arr[$i][2] += $data->suara_caleg;
+                        $diagram[$i][1] += $data->suara_caleg;
+                        $found = false;
+                        break;
+                    }
                 }
-            }
-            if ($found) {
-                array_push($data, [$arr->desa->kecamatan->nama_kecamatan, $arr->suara_2024, $arr->suara_2019]);
-            }
-            $found = true;
-        }
-        $data = collect($data);
-        }
-
-        if (request("table") == "kabupaten") {
-            $arr = auth("web")->check() ? Monitoring_Saksi::with(["desa.kecamatan.kabupaten", "caleg"])->get() : Monitoring_Saksi::with(["desa.kecamatan.kabupaten"])->where("id_caleg", auth()->user()->id_caleg)->get();
-            $data = [];
-            $found = true;
-
-        foreach ($arr as $arr) {
-            for ($i = 0; $i < count($data); $i++) {
-                if (in_array($arr->desa->kecamatan->kabupaten->nama_kabupaten, $data[$i])) {
-                    $data[$i][1] += $arr->suara_2024;
-                    $data[$i][2] += $arr->suara_2019;
-                    $found = false;
-                    break;
+                if ($found) {
+                    array_push($arr, [$data->desa->id_kecamatan, $data->desa->kecamatan->nama_kecamatan, $data->suara_caleg, $data->desa->kecamatan->kabupaten->nama_kabupaten]);
+                    array_push($diagram, [$data->desa->kecamatan->nama_kecamatan, $data->suara_caleg]);
                 }
+                $found = true;
             }
-            if ($found) {
-                array_push($data, [$arr->desa->kecamatan->kabupaten->nama_kabupaten, $arr->suara_2024, $arr->suara_2019]);
-            }
-            $found = true;
-        }
-        $data = collect($data);
         }
 
+        if (request("table") == "desa") {
+            if (auth("caleg")->check()) {
+                $suara = Monitoring_Saksi::with("desa.kecamatan")->where("id_caleg", auth()->user()->id_caleg)->whereHas("desa.kecamatan", function($desa) {
+                    $desa->where("id_kecamatan", request("kecamatan"));
+                })->get();
+            } else {
+                $suara = Monitoring_Saksi::with(["desa.kecamatan"])->get();
+            }
+            foreach ($suara as $data) {
+                for ($i = 0; $i < count($arr); $i++) {
+                    if (in_array($data->desa->nama_desa, $arr[$i])) {
+                        $arr[$i][1] += $data->suara_caleg;
+                        $diagram[$i][1] += $data->suara_caleg;
+                        $found = false;
+                        break;
+                    }
+                }
+                if ($found) {
+                    array_push($arr, [$data->desa->nama_desa, $data->suara_caleg, $data->desa->kecamatan->nama_kecamatan]);
+                    array_push($diagram, [$data->desa->nama_desa, $data->suara_caleg]);
+                }
+                $found = true;
+            }
+        }
+        
         return view("saksi.monitoring", [
             "title" => "Monitoring Suara",
-            "dataArr" => $data,
-    ]);
+            "data" => $arr,
+            "diagram" => collect($diagram)
+        ]);
     }
 
     /**

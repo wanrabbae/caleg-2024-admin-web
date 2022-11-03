@@ -14,10 +14,16 @@ class Desa extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function scopeFilter($query, array $search) {
+        return $query->whereHas("kecamatan.kabupaten.provinsi", function($desa) use ($search) {
+            $desa->where("kabupaten.id_provinsi", $search["id"])->where("kabupaten.dapil", $search["dapil"]);
+        });
+    }
+
     public function scopeSearch($query, $search) {
         return $query->where("nama_desa", "LIKE", "%$search%")
-        ->orWhereHas("kecamatan", function($kecamatan) use ($search) {
-            $kecamatan->where("nama_kecamatan", "LIKE", "%$search%");
+        ->orWhereHas("kecamatan.kabupaten.provinsi", function($kecamatan) use ($search) {
+            $kecamatan->where("nama_kecamatan", "LIKE", "%$search%")->orWhere("nama_kabupaten", "LIKE", "%$search%")->orWhere("nama_provinsi", "LIKE", "%$search%");
         })->orWhere("tps", $search);
     }
 

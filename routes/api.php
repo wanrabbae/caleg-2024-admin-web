@@ -18,6 +18,7 @@ use App\Http\Controllers\VariableCtrl;
 use App\Http\Controllers\KecamatanCtrl;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\CalegController;
+use App\Http\Controllers\SuaraCtrl;
 
 /*
 //Route Galery API
@@ -111,3 +112,5 @@ Route::get('getSimpatisan', [UserCtrl::class, 'getSimpatisan']);
 
 //Route Medsos API
 Route::get('getMedsos', [ApiController::class, 'getMedsos']);
+
+Route::post('postSuara', [SuaraCtrl::class, 'store']);

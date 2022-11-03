@@ -24,7 +24,7 @@ class DesaController extends Controller
 
         return view("residences.desa", [
             "title" => "Desa Page",
-            "dataArr" => Desa::with("kecamatan")->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
+            "dataArr" => Desa::with("kecamatan.kabupaten.provinsi")->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
             "provinsi" => Provinsi::all()
        ]);
     }

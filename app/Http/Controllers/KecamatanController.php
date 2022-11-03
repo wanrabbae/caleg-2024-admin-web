@@ -22,7 +22,7 @@ class KecamatanController extends Controller
         };
         return view("residences.kecamatan", [
             "title" => "Kecamatan Page",
-            "dataArr" => Kecamatan::with("kabupaten")->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
+            "dataArr" => Kecamatan::with("kabupaten.provinsi")->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
             "provinsi" => Provinsi::all()
        ]);
     }

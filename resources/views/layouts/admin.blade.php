@@ -235,7 +235,7 @@
                             <i class="fas fa-list-ul"></i>
                             <span>Daftar Saksi</span>
                         </a>
-                        <a class="collapse-item font-weight-bold" href="{{ asset('saksi/monitoring?table=desa') }}">
+                        <a class="collapse-item font-weight-bold" href="{{ asset((auth('caleg')->check() && auth()->user()->legislatif->type == 'Kabupaten') ? 'saksi/monitoring?table=kecamatan' : 'saksi/monitoring?table=kabupaten') }}">
                             <i class="fas fa-desktop"></i>
                             <span>Monitoring</span>
                         </a>

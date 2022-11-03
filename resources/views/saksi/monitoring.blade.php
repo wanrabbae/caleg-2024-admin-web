@@ -11,7 +11,7 @@
     </div>
 
     <div class="card-body">
-      <ul class="nav nav-pills mb-4">
+      {{-- <ul class="nav nav-pills mb-4">
         <li class="nav-item">
           <a class="nav-link @if (request("table") == 'desa') ? active : '' @endif" aria-current="page" href="?table=desa">Desa</a>
         </li>
@@ -23,7 +23,7 @@
           <a class="nav-link @if (request("table") == 'kabupaten') ? active : '' @endif" href="?table=kabupaten">Kabupaten</a>
         </li>
         @endif
-      </ul>
+      </ul> --}}
 
       <div class="row">
         <div class="col-lg-12 d-flex justify-content-center align-items-center" id="chart">
@@ -62,47 +62,48 @@
             <thead>
               <tr>
                 <th>No</th>
-                @if (request("table") == "desa")
-                <th>Desa</th>
+                @if (request("table") == "kabupaten")
+                <th>Kabupaten</th>
+                <th>Provinsi</th>
+                <th>Total Suara</th>
+                <th>Detail</th>
                 @endif
                 @if (request("table") == "kecamatan")
                 <th>Kecamatan</th>
-                @elseif (request("table") == "kabupaten")
+                <th>Total Suara</th>
                 <th>Kabupaten</th>
+                <th>Detail</th>
                 @endif
-                <th>Total Suara 2024</th>
-                <th>Total Suara 2019</th>
+                @if (request("table") == "desa")
+                <th>Desa</th>
+                <th>Total Suara</th>
+                <th>Kecamatan</th>
+                @endif
               </tr>
             </thead>
             <tbody>
-              @if (request("table") == "desa")
-              @foreach ($dataArr as $data)
-                <tr>
-                  <td>{{ $loop->iteration }}</td>
-                  <td>{{ $data[0] }}</td>
-                  <td>{{ $data[1] }}</td>
-                  <td>{{ $data[2] }}</td>
-                </tr>
+              @if (request("table") != "desa")
+              @foreach ($data as $item)
+              <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $item[1] }}</td>
+                <td>{{ $item[2] }}</td>
+                <td>{{ $item[3] }}</td>
+                <td>
+                  <a href="{{ asset(request('table') == 'kabupaten' ? "saksi/monitoring?table=kecamatan&kabupaten=$item[0]" : "saksi/monitoring?table=desa&kecamatan=$item[0]") }}" class="btn btn-primary">
+                    Detail
+                  </a>
+                </td>
+              </tr>
               @endforeach
-              @endif
-              @if (request("table") == "kecamatan")
-              @foreach ($dataArr as $data)
-                  <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $data[0] }}</td>
-                    <td>{{ $data[1] }}</td>
-                    <td>{{ $data[2] }}</td>
-                  </tr>
-              @endforeach
-              @endif
-              @if (request("table") == "kabupaten")
-              @foreach ($dataArr as $data)
-                  <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $data[0] }}</td>
-                    <td>{{ $data[1] }}</td>
-                    <td>{{ $data[2] }}</td>
-                  </tr>
+              @else
+              @foreach ($data as $item)
+              <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $item[0] }}</td>
+                <td>{{ $item[1] }}</td>
+                <td>{{ $item[2] }}</td>
+              </tr>
               @endforeach
               @endif
             </tbody>
@@ -113,7 +114,7 @@
   </div>
 </div>
 @endsection
-@section("script")
+{{-- @section("script")
 <script>
     $(document).ready(function() {
       @if (request("table") == "desa")
@@ -274,5 +275,81 @@
                 @endif
                 @endif
                     })
+</script>
+@endsection --}}
+@section("script")
+<script>
+      anychart.onDocumentReady(function() {
+          // create data set on our data
+          @if ($diagram->count())
+                  document.getElementsByClassName("spinner-border")[0].style.display = "none";
+                  var dataSet = anychart.data.set({!! $diagram !!});
+
+                  // map data for the first series, take x from the zero column and value from the first column of data set
+                  var firstSeriesData = dataSet.mapAs({
+                      x: 0,
+                      value: 1
+                  });
+
+                  // map data for the second series, take x from the zero column and value from the second column of data set
+                  var secondSeriesData = dataSet.mapAs({
+                      x: 0,
+                      value: 2
+                  });
+
+                  // create column chart
+                  var chart = anychart.column3d();
+
+                  // turn on chart animation
+                  chart.animation(true);
+
+                  // set chart title text settings
+                  // chart.title('');
+
+                  // temp variable to store series instance
+                  var series;
+
+                  // helper function to setup label settings for all series
+                  var setupSeries = function(series, name) {
+                      series.name(name);
+                      series.selected().fill('#f48fb1 0.8').stroke('1.5 #c2185b');
+                  };
+
+                  // create first series with mapped data
+                  series = chart.column(firstSeriesData);
+                  series.xPointPosition(0.25);
+                  setupSeries(series, 'Pemilih 2024');
+
+                  // create second series with mapped data
+                  series = chart.column(secondSeriesData);
+                  series.xPointPosition(0.45);
+                  setupSeries(series, 'Pemilih 2019');
+
+                  chart.yAxis().labels().format('{%Value}{groupsSeparator: }');
+
+                  // set titles for Y-axis
+                  // chart.yAxis().title('Revenue in Dollars');
+
+                  // set chart title text settings
+                  chart.barGroupsPadding(0.3);
+
+                  // turn on legend
+                  chart.legend().enabled(true).fontSize(13).padding([0, 0, 20, 0]);
+
+                  chart.interactivity().hoverMode('single');
+
+                  // chart.tooltip().valuePrefix('$');
+
+                  // set container id for the chart
+                  chart.container('chart');
+
+                  // initiate chart drawing
+                  chart.draw();
+                  @elseif ($diagram->count() == 0)
+                  document.getElementById("chart").innerHTML = "Tidak Ada Suara Untuk Saat Ini";
+                  @else
+                  document.getElementById("chart").innerHTML = "Error When Getting Data";
+                  @endif
+              });
 </script>
 @endsection

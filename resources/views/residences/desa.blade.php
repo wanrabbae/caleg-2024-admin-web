@@ -45,6 +45,8 @@
                         <th>No</th>
                         <th>Nama Desa</th>
                         <th>Nama Kecamatan</th>
+                        <th>Nama Kabupaten</th>
+                        <th>Nama Provinsi</th>
                         <th>TPS</th>
                         <th>Action</th>
                     </tr>
@@ -56,6 +58,8 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->nama_desa }}</td>
                                 <td>{{ $data->kecamatan->nama_kecamatan }}</td>
+                                <td>{{ $data->kecamatan->kabupaten->nama_kabupaten }}</td>
+                                <td>{{ $data->kecamatan->kabupaten->provinsi->nama_provinsi }}</td>
                                 <td>{{ $data->tps }}</td>
                                 <td class="d-flex justify-content-center">
                                     <button class="btn btn-warning mx-3 getData" value={{ $data->id_desa }} data-target="#editModal" data-toggle="modal">
