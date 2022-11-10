@@ -34,9 +34,6 @@ class BackupController extends Controller
         return back()->with("error", "Error, Can't Backup Database");
     }
 
-    public function download(Request $request) {
-
-    }
 
     public function delete($i) {
         $data = File::allFiles("backups");

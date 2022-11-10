@@ -12,11 +12,11 @@ class VariableCtrl extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getVariabel()
+    public function getVariabel(Request $request)
     {
-        $variable = Variabel::orderBy("id_variabel", "ASC")->get();
+        $variable = Variabel::where("id_survey", $request->id_survey)->orderBy("id_variabel", "ASC")->get();
 
-        return response()->json(["variable" => $variable]);
+        return response()->json([ "message" => "Berhasil","variable" => $variable]);
     }
 
 

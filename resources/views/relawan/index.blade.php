@@ -65,13 +65,19 @@
                                     </td>
                                     <td>{{ $data->desa->nama_desa }}</td>
                                     <td>
+                                        @if ($data->saksi == "N")
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createTpsModal{{$loop->iteration}}">
+                                            {{ $data->saksi }}
+                                        </button>
+                                        @else
                                         <form action="/team/{{ $data->id_relawan }}" method="POST">
                                             @method("put")
                                             @csrf
-                                            <button class="btn @if ($data->saksi == 'Y') btn-success @else btn-danger @endif" type="submit" value="{{ $data->saksi }}" name="saksi">
+                                            <button class="btn btn-success" type="submit" value="{{ $data->saksi }}" name="saksi">
                                                 {{ $data->saksi }}
                                             </button>
                                         </form>
+                                        @endif
                                     </td>
                                     <td>{{ $data->desa->kecamatan->nama_kecamatan }}</td>
                                     <td>
@@ -91,7 +97,7 @@
                                         <form action="/team/{{ $data->id_relawan }}" method="POST">
                                         @method("put")
                                         @csrf
-                                            <button type="submit" value="{{ $data->blokir }}" class="btn @if ($data->blokir == 'Y') btn-danger @else btn-success @endif" name="blokir">
+                                            <button type="submit" value="{{ $data->blokir }}" class="btn @if ($data->blokir == 'Y') btn-success @else btn-danger @endif" name="blokir">
                                                 {{ $data->blokir }}
                                             </button>
                                         </form>
@@ -114,6 +120,33 @@
                                         </form>
                                     </td>
                                 </tr>
+                                 {{-- Modal Create Tps --}}
+                                 <div class="modal fade" id="createTpsModal{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Create Tps</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="team/{{ $data->id_relawan }}" method="post">
+                                                        @method('put')
+                                                        @csrf
+                                                        <div class="form-group">
+                                                            <label for="tps">Input Tps</label>
+                                                            <input type="number" class="form-control" id="tps" name="tps" placeholder="Masukan Nomor Tps" >
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a type="button" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                                                            <button type="submit" name="saksi" value="{{ $data->saksi }}" class="btn btn-primary">edit</button>
+                                                        </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         @endif
                     </tbody>
@@ -335,8 +368,8 @@
     </div>
 </div>
 
-{{-- Jabatan Modal --}}
-<div class="modal fade" id="editJabatanModal" tabindex="-1" role="dialog" aria-labelledby="createJabatanLabel" aria-hidden="true">
+    {{-- Jabatan Modal --}}
+    <div class="modal fade" id="editJabatanModal" tabindex="-1" role="dialog" aria-labelledby="createJabatanLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -370,6 +403,7 @@
     </div>
 </div>
 
+
 <script>
         function getData(data) {
             fetch(`/team/${data}`).then(resp => resp.json()).then(resp => {
@@ -398,6 +432,18 @@
                 document.getElementById("edit_desa").value = resp.id_desa
             })
         }
+
+        // $(document).ready(() => {
+        //     $('#submit').click(() => {
+        //         let tps = $("#tps").val();
+        //         $.ajax({
+        //             type: "POST",
+        //             data: {
+        //                 tps : tps
+        //             }
+        //         })
+        //     })
+        // })
 
     </script>
 @endsection

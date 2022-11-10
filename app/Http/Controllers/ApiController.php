@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Response;
 use App\Models\Desa;
 use App\Models\News;
-use App\Models\Caleg;
 use App\Models\Medsos;
 use App\Models\Relawan;
-// use App\Models\Galery;
-// use App\Models\Kabupaten;
-// use App\Models\Kecamatan;
-// use App\Models\Program;
+use Illuminate\Support\Str;
 use App\Models\Rk_pemilih_2;
 use Illuminate\Http\Request;
-// use App\Models\Survey;
-// use App\Models\User;
-// use App\Models\Variabel;
 use App\Models\PaymentCallback;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -43,7 +37,7 @@ class ApiController extends Controller
         $additionalParam = ''; // opsional
         $merchantUserInfo = ''; // opsional
         $customerVaName = 'John Doe'; // tampilan nama pada tampilan konfirmasi bank
-        $callbackUrl = 'http://example.com/callback'; // url untuk callback
+        $callbackUrl = 'http://localhost:8000/api/requestCallback'; // url untuk callback
         $returnUrl = 'http://example.com/return'; // url untuk redirect
         $expiryPeriod = 10; // atur waktu kadaluarsa dalam hitungan menit
         $signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
@@ -230,13 +224,23 @@ class ApiController extends Controller
 
     public function register(Request $request)
     {
-        // $fileName = $request->file("foto_ktp")->getClientOriginalName();
+        if ($request->has("referal") && $request->referal) {
+            $referal = Relawan::where("referal", $request->referal)->first();
+            if ($referal) {
+                $request["upline"] = $referal->id_relawan;
+            } else {
+                return response()->json(["message" => "Tidak ada Referal"], 200);
+            }
+        }
 
+        // $fileName = $request->file("foto_ktp")->getClientOriginalName();
         $validator = Validator::make($request->all(), [
             "username" => "required|unique:relawan",
             "no_hp" => "required|numeric|unique:relawan",
-            "nik" => "required|numeric|unique:relawan"
+            "nik" => "required|numeric|unique:relawan",
+            "email" => "required|email:dns"
         ], [
+            "email.email" => "email harus valid",
             "username.unique" => "Username sudah digunakan !!",
             "no_hp.unique" => "Nomor Hp sudah digunakan !!",
             "nik.unique" => "Nik Sudah digunakan !!",
@@ -246,7 +250,18 @@ class ApiController extends Controller
             return response()->json(["message" => $validator->errors()], 400);
         }
 
-        // $validator = $request->validate([], ['message' => "Username sudah digunakan"]);
+
+        if (!$request->referal) {
+            $ref = Str::random(2) . random_int(10, 99) . Str::random(2);
+
+            while (Relawan::where("referal", $ref)->first()) {
+                $ref = Str::random(2) . random_int(10, 99) . Str::random(2);
+            }
+            // error_log("keluar");
+            $request["upline"] = 0;
+        }
+
+        $ref = Str::random(2) . random_int(10, 99) . Str::random(2);
 
         Relawan::insert([
             "username" => $request->username,
@@ -255,14 +270,17 @@ class ApiController extends Controller
             "jabatan" => 3,
             "no_hp" => $request->no_hp,
             "email" => $request->email,
-            "upline" => 0,
+            "jk" => $request->jk,
             "id_desa" => $request->id_desa,
             "id_caleg" => $request->id_caleg,
             "status" => 1,
+            "upline" => $request["upline"],
             "nama_relawan" => $request->nama_relawan,
             "loyalis" => 2,
             "blokir" => "N",
-            "foto_ktp" => $request->file("foto_ktp")->store("/images", "public_path")
+            "foto_ktp" => $request->file("foto_ktp")->store("/images", "public_path"),
+            "referal" => $ref,
+            "token" => uniqid() . Str::random(34) . random_int(10,99)
         ]);
 
         if($request->with_dpt == 0){
@@ -295,6 +313,26 @@ class ApiController extends Controller
         }
     }
 
+    public function referalCheck(Request $request)
+    {
+        $referal = Relawan::where('referal', $request->referal)->first();
+        if($referal){
+            return response()->json(["message" => "Berhasil Mendapat Kode Referal"], 200);
+        }
+        return response()->json(["message" => "Tidak ada Referal"], 404);
+    }
+
+    public function getSimpatisan(Request $request)
+    {
+        $simpatisan = Relawan::where("upline", $request->upline)->orderBy("id_relawan", 'ASC')->get();
+
+        return response()->json(["message" => "Berhasil", "data" => $simpatisan ], 200);
+    }
+
+    public function getSurvey()
+    {
+        # code...
+    }
 
     public function getDesa(Request $request)
     {
@@ -318,11 +356,10 @@ class ApiController extends Controller
 
     public function getBerita(Request $request)
     {
-        $news = News::where("id_caleg", $request->id_caleg)->orderByid("id_news", "ASC")->get();
+        $news = News::where("id_caleg", $request->id_caleg)->where("aktif", "Y")->get();
 
-        if(!$news){
-            return response()->json(['message' => 0], 400 );
-        }
         return response()->json(['message' => 1, 'data_medsos' => $news], 200 );
     }
+
+
 }

@@ -42,16 +42,23 @@ class DataSurveyController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has("getData") && $request->getData) {
+            return response()->json(Survey::find($request->data), 200);
+        }
+
+
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
+
+        // dd($request->all());
 
         $data =  $request->validate([
             'nama_survey' => 'required',
             'mulai_tanggal' => 'required|date',
             'sampai_tanggal' => 'required|date',
             'id_caleg' => 'required',
-            'id_variabel' => 'required',
+            'hasil_survey' => 'required'
         ]);
 
         if(Survey::create($data)){
@@ -95,12 +102,30 @@ class DataSurveyController extends Controller
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
 
+        if($request->has('aktif')) {
+            if ($request->aktif == "Y") {
+                if (Survey::find($id_survey)->update(["aktif" => $request->aktif = "N"])) {
+                    return back()->with("success", "Success Update Active");
+                }
+                return back()->with("error", "Error When Updating Active");
+            }
+
+            if (Survey::where("aktif", "Y")->first()) {
+                Survey::where("aktif", "Y")->update(["aktif" => "N"]);
+            }
+
+            if (Survey::find($id_survey)->update(["aktif" =>    "Y"])) {
+                return back()->with("success", "Success Update Active");
+            }
+
+            return back()->with("error", "Error When Updating Active");
+        }
+
         $data = $request->validate([
             'nama_survey' => 'required',
             'mulai_tanggal' => 'required|date',
             'sampai_tanggal' => 'required|date',
             'id_caleg' => 'required',
-            'id_variabel' => 'required'
         ]);
 
         if(Survey::where('id_survey', $id_survey)->update($data)){

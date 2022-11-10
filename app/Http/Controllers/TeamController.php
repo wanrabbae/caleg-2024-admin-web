@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Caleg;
 use App\Models\Desa;
-use App\Models\Kecamatan;
+use App\Models\Caleg;
 use App\Models\Relawan;
+use App\Models\Kecamatan;
+use Illuminate\Support\Str;
+use App\Models\Daftar_Saksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Console\Input\Input;
 
 class TeamController extends Controller
 {
@@ -49,6 +53,7 @@ class TeamController extends Controller
 
         $data['foto_ktp'] = $request->file("foto_ktp")->store("/images", "public_path");
         $data['password'] = bcrypt($data['password']);
+        $data['referal'] = Str::random(3) . random_int(10, 99) . "5" . Str::random(1) .  Relawan::where("id_relawan", $request->id_relawan)->first() + 1;
 
         if (Relawan::create($data)) {
             return back()->with("success", "Success Create New Relawan");
@@ -86,13 +91,30 @@ class TeamController extends Controller
         }
 
         if ($request->has("saksi")) {
+            if ($request->saksi == "N") {
+                $request->validate([
+                    "tps" => "required"
+                ]);
+            }
+
             if ($request->saksi == "N" && Relawan::with("desa")->where("id_desa", $relawan->id_desa)->where("saksi", "Y")->first()) {
                 return back()->with("error", "Sudah ada saksi di wilayah ini!");
             }
 
+
             if ($relawan->update(["saksi" => $request->saksi == "Y" ? "N" : "Y"])) {
-                return back()->with("success", "Success Update Saksi");
+                if ($request->saksi == "Y") {
+                    Daftar_Saksi::where('id_relawan', $id)->delete();
+                    return back()->with("success", "Success Change Saksi");
+                }
+
+                $relawan->update(["tps" => $request->tps]);
+
+                if (Daftar_Saksi::create(["id_relawan" => $id,"id_caleg" => auth("caleg")->check() ? auth()->user()->id_caleg : Relawan::where("id_caleg", $request->id_caleg)->first()])) {
+                    return back()->with("success", "Success Upload Saksi");
+                }
             }
+
             return back()->with("error", "Erorr, Can't Update Saksi");
         }
 
@@ -112,7 +134,7 @@ class TeamController extends Controller
 
             if ($request->jabatan == 2 && gettype(Relawan::with("desa.kecamatan")->get()->filter(function($value, $i) use ($relawan) {
                     return $value->desa->kecamatan->nama_kecamatan == $relawan->desa->kecamatan->nama_kecamatan;
-                })->search(function($value, $i) use ($request) {
+                })->search(function($value) use ($request) {
                     return $value->jabatan == $request->jabatan;
                 })) == "integer") {
                 return back()->with("error", "Jabatan untuk daerah ini sudah diambil oleh orang lain!");

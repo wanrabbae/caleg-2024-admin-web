@@ -29,6 +29,7 @@ use App\Http\Controllers\DocumentationController;
 use App\Http\Controllers\EmailBlasController;
 use App\Http\Controllers\WaBlasController;
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\SuaraController;
 
 /*
 |--------------------------------------------------------------------------
@@ -150,7 +151,7 @@ Route::prefix('whatsapp')
         // Route::put('/{id}', [WaBlasController::class, 'update'])->name('wa-update');
         // Route::delete('/{id}', [WaBlasController::class, 'delete'])->name('wa-delete');
     });
-    
+
     // ROUTES EMAIL BLAS
     Route::prefix('email')
     ->middleware('auth:web,caleg')
@@ -171,6 +172,11 @@ Route::prefix("config")->middleware("auth:web,caleg")->group(function() {
 
 // ROUTE DOCUMENTATION
 Route::get('/documentation', [DocumentationController::class, 'index'])->middleware('auth:web,caleg');
+
+//ROUTE SUARA
+Route::prefix('suara')->middleware("auth:web,caleg")->group(function() {
+    Route::get('/', [SuaraController::class, 'index']);
+});
 
 // Backup Route
 Route::get('/backup', [BackupController::class, 'index'])->middleware('auth');

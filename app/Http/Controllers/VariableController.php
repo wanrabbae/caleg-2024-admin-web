@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Caleg;
-use App\Models\Relawan;
+use App\Models\Survey;
 use App\Models\Variabel;
 use Illuminate\Http\Request;
 
@@ -18,7 +18,8 @@ class VariableController extends Controller
         return view('data.variable', [
             'title' => 'Variable Survey Page',
             "caleg" => Caleg::all(),
-            'data' => auth("web")->check() ? Variabel::all() : Variabel::with("caleg")->where("id_caleg", auth()->user()->id_caleg)->get()
+            'data' => auth("web")->check() ? Variabel::all() : Variabel::with("caleg")->where("id_caleg", auth()->user()->id_caleg)->get(),
+            'survey' => Survey::all()
         ]);
     }
 
@@ -40,14 +41,20 @@ class VariableController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has("getData") && $request->getData) {
+            return response()->json(Variabel::find($request->data), 200);
+        }
 
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
 
+        // dd($request);
+
         $rule = [
-            'nama_variabel' => 'required|unique:variabel',
-            "id_caleg" => "required"
+            'pertanyaan' => 'required',
+            "id_survey" => "required",
+            "id_caleg" => "required",
         ];
 
         $data = $request->validate($rule);
@@ -67,7 +74,7 @@ class VariableController extends Controller
      */
     public function show(Variabel $variabel, $id_variabel)
     {
-        return response()->json(Variabel::find($id_variabel));
+
     }
 
     /**
@@ -94,10 +101,14 @@ class VariableController extends Controller
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
 
-       $rule = [];
+       $rule = [
+            "pertanyaan" => "required",
+            "id_survey" => "required",
+            "id_caleg" => "required"
+           ];
 
         if ($request->nama_variable !== Variabel::find($id_variabel)->nama_variabel) {
-            $rule["nama_variabel"] = "required|unique:variabel";
+            $rule["nama_variabel"] = "required";
         }
 
        $data = $request->validate($rule);

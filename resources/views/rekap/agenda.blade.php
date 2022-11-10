@@ -23,6 +23,8 @@
                         <th>Jam</th>
                         <th>Nama Agenda</th>
                         <th>Lokasi</th>
+                        <th>Jenis Agenda</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -38,6 +40,36 @@
                                 <td>{{ $data->jam }}</td>
                                 <td>{{ $data->nama_agenda }}</td>
                                 <td>{{ $data->lokasi }}</td>
+                                <td>
+                                    <form action="/agenda/{{ $data->id_agenda }}" method="post">
+                                        @method('put')
+                                        @csrf
+                                        @if ($data->jenis == "O")
+                                            <button type="submit" class="btn btn-warning" name="jenis" value="L">
+                                                Online
+                                            </button>
+                                        @else
+                                            <button type="submit" class="btn btn-info" name="jenis" value="O">
+                                                Lapangan
+                                            </button>
+                                        @endif
+                                    </form>
+                                </td>
+                                <td>
+                                    <form action="/agenda/{{ $data->id_agenda }}" method="post">
+                                        @method('put')
+                                        @csrf
+                                        @if ($data->status == "N")
+                                            <button type="submit" value="Y" name="status" class="btn btn-primary">
+                                                {{ $data->status }}
+                                            </button>
+                                        @else
+                                        <button type="submit" value="N" name="status" class="btn btn-danger">
+                                            {{ $data->status }}
+                                        </button>
+                                        @endif
+                                    </form>
+                                </td>
                                 <td class="d-flex justify-content-center">
                                     <button class="btn btn-warning mx-3" onclick="getData({{ $data->id_agenda }})" data-toggle="modal" data-target="#editModal">
                                         <i class="fas fa-edit"></i>
@@ -72,6 +104,16 @@
         <form action="/agenda/" method="POST">
         <div class="modal-body">
                 @csrf
+                @auth("web")
+                <div class="form-group">
+                  <label for="id_caleg">Pilih Caleg</label>
+                   <select class="form-control form-select" name="id_caleg" id="id_caleg">
+                      @foreach ($caleg as $item)
+                        <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                      @endforeach
+                   </select>
+                </div>
+                @endauth
                 <div class="form-group">
                   <label for="nama_agenda">Nama Agenda</label>
                   <input type="text" class="form-control" id="nama_agenda" placeholder="Nama Agenda" name="nama_agenda">
@@ -83,6 +125,13 @@
                 <div class="form-group">
                   <label for="jam">Jam Pelaksanaan</label>
                   <input type="time" class="form-control" id="jam" placeholder="Jam Pelaksanaan" name="jam">
+                </div>
+                <div class="form-group">
+                    <label for="jenis">Jenis Agenda</label>
+                     <select class="form-control form-select" name="jenis" id="jenis">
+                        <option value="L">Lapangan</option>
+                        <option value="O">Online</option>
+                     </select>
                 </div>
                 <div class="form-group">
                   <label for="lokasi">Lokasi Pelaksanaan</label>
@@ -114,6 +163,16 @@
         <div class="modal-body">
                 @method('put')
                 @csrf
+                @auth("web")
+                <div class="form-group">
+                  <label for="id_caleg">Pilih Caleg</label>
+                   <select class="form-control" name="id_caleg" id="id_caleg">
+                      @foreach ($caleg as $item)
+                        <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
+                      @endforeach
+                   </select>
+                </div>
+                @endauth
                 <div class="form-group">
                     <label for="nama_agenda">Nama Agenda</label>
                     <input type="text" class="form-control" id="edit_nama_agenda" placeholder="Nama Agenda" name="nama_agenda">

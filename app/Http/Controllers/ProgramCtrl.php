@@ -31,7 +31,7 @@ class ProgramCtrl extends Controller
      */
     public function store(Request $request)
     {
-      
+
         $data = $request->validate([
             "judul_program" => "required|max:255",
             "id_caleg" => "required",

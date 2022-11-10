@@ -4,10 +4,10 @@
 <div class="card shadow mb-4">
   <div class="card-header py-3">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
+            {{-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
                 <i class="fas fa-plus"></i>
                 Daftar Saksi
-            </button>
+            </button> --}}
     </div>
 
     <div class="card-body">
@@ -21,6 +21,7 @@
                         @auth("web")
                         <th>Caleg</th>
                         @endauth
+                        <th>TPS</th>
                         <th>HP</th>
                         <th>Email</th>
                         <th>Desa</th>
@@ -38,6 +39,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $data->relawan->nama_relawan }}</td>
                                 <td>{{ $data->relawan->jk }}</td>
+                                <td>{{ $data->relawan->tps }}</td>
                                 @auth("web")
                                 <td>{{ $data->caleg->nama_caleg }}</td>
                                 @endauth
@@ -104,13 +106,13 @@
                 </div>
                 @endauth
                 <div class="form-group">
-                  <label for="nama_saksi" class="form-label">Nama Saksi</label>
-                  <select class="form-select form-control" name="nama_relawan" id="nama_relawan">
+                  <label for="id_relawan" class="form-label">Nama Saksi</label>
+                  <select class="form-select form-control" name="id_relawan" id="id_relawan">
                       @foreach ($relawan as $item)
-                      @if (old('nama_relawan')==$item->nama_relawan)
-                          <option value="{{ $item->nama_relawan }}" selected>{{ $item->nama_relawan }}</option>
+                      @if (old('id_relawan')==$item->id_relawan)
+                          <option value="{{ $item->id_relawan }}" selected>{{ $item->nama_relawan }}</option>
                       @else
-                          <option value="{{ $item->nama_relawan }}">{{ $item->nama_relawan }}</option>
+                          <option value="{{ $item->id_relawan }}">{{ $item->nama_relawan }}</option>
                       @endif
                       @endforeach
                     </select>
@@ -156,13 +158,13 @@
                 </div>
                 @endauth
                 <div class="form-group">
-                    <label for="nama_relawan" class="form-label">Nama Saksi</label>
-                    <select class="form-select form-control" name="nama_relawan" id="edit_nama_relawan">
+                    <label for="nama_saksi" class="form-label">Nama Saksi</label>
+                    <select class="form-select form-control" name="id_relawan" id="id_relawan">
                         @foreach ($relawan as $item)
-                        @if (old('nama_relawan')==$item->nama_relawan)
-                            <option value="{{ $item->nama_relawan }}" selected>{{ $item->nama_relawan }}</option>
+                        @if (old('id_relawan')==$item->id_relawan)
+                            <option value="{{ $item->id_relawan }}" selected>{{ $item->nama_relawan }}</option>
                         @else
-                            <option value="{{ $item->nama_relawan }}">{{ $item->nama_relawan }}</option>
+                            <option value="{{ $item->id_relawan }}">{{ $item->nama_relawan }}</option>
                         @endif
                         @endforeach
                       </select>

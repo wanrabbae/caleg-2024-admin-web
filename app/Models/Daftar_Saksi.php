@@ -14,7 +14,7 @@ class Daftar_Saksi extends Model
     protected $guarded = [""];
 
     public function relawan() {
-        return $this->belongsTo(Relawan::class, "nama_relawan", "nama_relawan");
+        return $this->belongsTo(Relawan::class, "id_relawan");
     }
 
     public function caleg() {

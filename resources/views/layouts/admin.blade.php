@@ -25,6 +25,7 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset("vendor/datatables/dataTables.bootstrap.min.js") }}">
 
 </head>
 
@@ -148,10 +149,10 @@
                             <i class="fas fa-calendar"></i>
                             <span>Agenda</span>
                         </a>
-                        {{-- <a class="collapse-item font-weight-bold" href="">
+                        <a class="collapse-item font-weight-bold" href="{{ asset('suara') }}">
                             <i class="fas fa-vote-yea"></i>
-                            <span>Tabulasi Suara</span>
-                        </a> --}}
+                            <span>Suara</span>
+                        </a>
                     </div>
                 </div>
             </li>
@@ -208,7 +209,7 @@
                     </div>
                 </div>
             </li>
-{{--
+        {{--
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeven1" aria-expanded="true" aria-controls="collapseSeven1">
                     <i class="fas fa-user-friends"></i>
@@ -478,6 +479,7 @@
     <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+    @yield("script")
 
 </body>
 

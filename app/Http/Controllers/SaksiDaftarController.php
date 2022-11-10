@@ -47,25 +47,25 @@ class SaksiDaftarController extends Controller
         }
 
         $data = $request->validate([
-            "nama_relawan" => "required|max:255|unique:saksi,id_caleg",
+            "id_relawan" => "required",
             "id_caleg" => "required"
         ]);
 
     if (auth("web")->check()) {
-        if (!Relawan::where("nama_relawan", $request->nama_relawan)->first()) {
-            return back()->with("error", "Error, There no Relawan with Nama Relawan  $request->nama_relawan");
+        if (!Relawan::where("id_relawan", $request->id_relawan)->first()) {
+            return back()->with("error", "Error, There is no Relawan");
         }
     } else {
-        if (!Relawan::where("id_caleg", auth()->user()->id_caleg)->where("nama_relawan", $request->nama_relawan)->first()) {
-            return back()->with("error", "Error, There no Relawan with Nama Relawan $request->nama_relawan");
+        if (!Relawan::where("id_caleg", auth()->user()->id_caleg)->where("id_relawan", $request->id_relawan)->first()) {
+            return back()->with("error", "Error, There is no Relawan");
         }
     }
 
     if (Daftar_Saksi::create($data)) {
-        return redirect("/saksi/daftar")->with("success", "Success Create Saksi with Nama Relawan $request->nama_relawan");
+        return redirect("/saksi/daftar")->with("success", "Success Create Saksi ");
     }
 
-        return back()->with("error", "Error, Can't Create Saksi with Nama Relawan $request->nama_relawan");
+        return back()->with("error", "Error, Can't Create Saksi ");
     }
 
     /**
@@ -104,27 +104,27 @@ class SaksiDaftarController extends Controller
         }
 
         $data = $request->validate([
-            "nama_relawan" => "required|max:255|unique:saksi,id_caleg",
+            "id_relawan" => "required",
             "id_caleg" => "required"
         ]);
 
 
     if (auth("web")->check()) {
-        if (!Relawan::where("nama_relawan", $request->nama_relawan)->first()) {
-            return back()->with("error", "Error, There no Relawan with Nama Relawan $request->nama_relawan");
+        if (!Relawan::where("id_relawan", $request->id_relawan)->first()) {
+            return back()->with("error", "Error, There is no Relawan ");
         }
         if (Daftar_Saksi::where("id_saksi", $id)->update($data)) {
-            return redirect("/saksi/daftar")->with("success", "Success Update $request->nama_relawan");
+            return redirect("/saksi/daftar")->with("success", "Success Update Saksi");
         }
-            return back()->with("error", "Error, Can't Update $request->nama_relawan");
+            return back()->with("error", "Error, Can't Update Saksi");
     } else {
-        if (!Relawan::where("id_caleg", auth()->user()->id_caleg)->where("nama_relawan", $request->nama_relawan)->first()) {
-            return back()->with("error", "Error, There no Relawan with Nama Relawan $request->nama_relawan");
+        if (!Relawan::where("id_caleg", auth()->user()->id_caleg)->where("id_relawan", $request->id_relawan)->first()) {
+            return back()->with("error", "Error, There is no Relawan ");
         }
         if (Daftar_Saksi::where("id_caleg", auth()->user()->id_caleg)->where("id_saksi", $id)->update($data)) {
-            return redirect("/saksi/daftar")->with("success", "Success Update $request->nama_relawan");
+            return redirect("/saksi/daftar")->with("success", "Success Update Saksi");
         }
-            return back()->with("error", "Error, Can't Update $request->nama_relawan");
+            return back()->with("error", "Error, Can't Update Saksi");
         }
     }
 

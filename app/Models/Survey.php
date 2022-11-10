@@ -22,7 +22,7 @@ class Survey extends Model
     }
 
     public function variable() {
-        return $this->belongsTo(Variabel::class, "id_variabel");
+        return $this->hasMany(Variabel::class, "id_variabel");
     }
 
 }
