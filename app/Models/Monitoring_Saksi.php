@@ -23,10 +23,10 @@ class Monitoring_Saksi extends Model
     }
 
     public function scopeSearch($query, $search) {
-        return $query->where("suara_2024", "LIKE", "%$search%")
-        ->orWhere("suara_2019", "LIKE", "%$search%")
-        ->orWhereHas("desa", function($desa) use ($search) {
-            $desa->where("nama_desa", "LIKE", "%$search%");
+        return $query->where("suara_caleg", "LIKE", "%$search%")
+        ->orWhere("suara_partai", "LIKE", "%$search%")
+        ->orWhereHas("desa.kecamatan.kabupaten.provinsi", function($desa) use ($search) {
+            $desa->where("nama_desa", "LIKE", "%$search%")->orWhere("nama_kecamatan", "LIKE", "%$search%")->orWhere("nama_kabupaten", "LIKE", "%$search%")->orWhere("nama_provinsi", "LIKE", "%$search%");
         })
         ->orWhereHas("caleg", function($caleg) use ($search) {
             $caleg->where("nama_caleg", "LIKE", "%$search%");

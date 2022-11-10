@@ -55,7 +55,7 @@ class Calegs extends Authenticatable
 
     public function legislatif()
     {
-        return $this->belongsTo(Legislatif::class, 'id_legislatif');
+        return $this->belongsTo(Legislatif::class, 'id_legislatif')->withDefault();
     }
 
     public function partai()
@@ -123,11 +123,11 @@ class Calegs extends Authenticatable
     }
 
     public function provinsi() {
-        return $this->belongsTo(Provinsi::class, "id_provinsi");
+        return $this->belongsTo(Provinsi::class, "id_provinsi")->withDefault();
     }
 
     public function kabupaten() {
-        return $this->belongsTo(Kabupaten::class, "id_kabupaten");
+        return $this->belongsTo(Kabupaten::class, "id_kabupaten")->withDefault();
     }
 
     public function invoice() {

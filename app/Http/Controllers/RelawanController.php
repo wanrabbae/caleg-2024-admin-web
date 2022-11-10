@@ -85,12 +85,13 @@ class RelawanController extends Controller
     public function fetch(Request $request) {
         if ($request->has("getData") && $request->getData) {
             if (auth("caleg")->check()) {
-                $data = Relawan::with("desa.kecamatan")->where("id_caleg", $request->data)->first();
-                $this->authorize("all-caleg", $data);
+                $arr = Relawan::with("desa.kecamatan")->where("id_caleg", auth("caleg")->user()->id_caleg)->get();
+            } else {
+                $arr = Relawan::with("desa.kecamatan")->get();
             }
-        $arr = $request->data == 0 ? Relawan::with("desa.kecamatan")->get() : Relawan::with("desa.kecamatan")->where("id_caleg", $request->data)->get();
-        $found = true;
-        $data = [];
+
+            $found = true;
+            $data = [];
         
         foreach ($arr as $arr) {
             for ($i = 0; $i < count($data); $i++) {

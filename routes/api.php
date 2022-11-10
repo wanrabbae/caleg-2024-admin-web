@@ -39,10 +39,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::get('/getChart', [DPTController::class, 'getChart']);
-// Route::get("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);
-
-
 Route::post("requestInquery", [ApiController::class, "requestInquery"]);
 Route::get("getPaymentMethod", [ApiController::class, "getPaymentMethod"]);
 
@@ -52,13 +48,6 @@ Route::post("login", [ApiController::class, "login"]);
 // Route::get("getKabupaten", [ApiController::class, "getKabupaten"]);
 // Route::get("getKecamatan", [ApiController::class, "getKecamatan"]);
 Route::get("getDesa", [ApiController::class, "getDesa"]);
-
-// Diagram Data
-Route::post('/getChart', [DPTController::class, 'getChart']);
-Route::post("/getChartDesa", [SaksiMonitoringController::class, "fetch"]);
-Route::post("/getChartRelawan", [RelawanController::class, "fetch"]);
-Route::post("/getChartSuara", [CalegController::class, "fetch"]);
-Route::post("/getChartUpline", [TeamController::class, "fetch"]);
 
 //Route Caleg API
 Route::post("getCaleg", [CalegCtrl::class, "index",]);

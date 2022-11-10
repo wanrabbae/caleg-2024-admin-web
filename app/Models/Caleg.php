@@ -45,7 +45,7 @@ class Caleg extends Model
 
     public function legislatif()
     {
-        return $this->belongsTo(Legislatif::class, 'id_legislatif');
+        return $this->belongsTo(Legislatif::class, 'id_legislatif')->withDefault();
     }
 
     public function partai()
@@ -112,11 +112,11 @@ class Caleg extends Model
     }
 
     public function provinsi() {
-        return $this->belongsTo(Provinsi::class, "id_provinsi");
+        return $this->belongsTo(Provinsi::class, "id_provinsi")->withDefault();
     }
 
     public function kabupaten() {
-        return $this->belongsTo(Kabupaten::class, "id_kabupaten");
+        return $this->belongsTo(Kabupaten::class, "id_kabupaten")->withDefault();
     }
 
     public function invoice() {

@@ -61,11 +61,18 @@ class Relawan extends Model
         return $this->hasMany(Daftar_Isu::class, "id_relawan");
     }
 
+    public function survey() {
+        return $this->hasMany(Hasil_Survey::class, "id_relawan");
+    }
+
     public static function boot() {
         parent::boot();
 
         static::deleting(function($relawan) {
             $relawan->daftarIsu()->each(function($value) {
+                $value->delete();
+            });
+            $relawan->survey()->each(function($value) {
                 $value->delete();
             });
         });

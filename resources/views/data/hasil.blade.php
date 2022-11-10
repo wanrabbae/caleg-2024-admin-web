@@ -10,9 +10,6 @@
     <div class="col-md-3">
     </div>
     <div class="card-header py-3">
-        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">
-            <i class="fas fa-plus"></i>
-        </button>
     </div>
     <div class="card-body">
         <div class="table-responsive">

@@ -40,9 +40,9 @@ class SaksiMonitoringController extends Controller
             if (auth("caleg")->check()) {
                 $suara = Monitoring_Saksi::with("desa.kecamatan.kabupaten.provinsi")->where("id_caleg", auth()->user()->id_caleg)->whereHas("desa.kecamatan.kabupaten.provinsi", function($desa) {
                     $desa->where("id_provinsi", auth()->user()->id_provinsi)->where("dapil", auth()->user()->dapil);
-                })->get();
+                })->search(request("search"))->get();
             } else {
-                $suara = Monitoring_Saksi::with(["desa.kecamatan.kabupaten.provinsi"])->get();
+                $suara = Monitoring_Saksi::with(["desa.kecamatan.kabupaten.provinsi"])->search(request("search"))->get();
             }
             foreach ($suara as $data) {
                 for ($i = 0; $i < count($arr); $i++) {
@@ -54,7 +54,7 @@ class SaksiMonitoringController extends Controller
                     }
                 }
                 if ($found) {
-                    array_push($arr, [$data->desa->kecamatan->id_kabupaten, $data->desa->kecamatan->kabupaten->nama_kabupaten, $data->desa->kecamatan->kabupaten->provinsi->nama_provinsi, $data->suara_caleg]);
+                    array_push($arr, [$data->desa->kecamatan->id_kabupaten, $data->desa->kecamatan->kabupaten->nama_kabupaten, $data->desa->kecamatan->kabupaten->provinsi->nama_provinsi, $data->suara_caleg, $data->suara_partai]);
                     array_push($diagram, [$data->desa->kecamatan->kabupaten->nama_kabupaten, $data->suara_caleg]);
                 }
                 $found = true;
@@ -65,9 +65,9 @@ class SaksiMonitoringController extends Controller
             if (auth("caleg")->check()) {
                 $suara = Monitoring_Saksi::with("desa.kecamatan.kabupaten")->where("id_caleg", auth()->user()->id_caleg)->whereHas("desa.kecamatan.kabupaten", function($desa) {
                     $desa->where("id_kabupaten", request("kabupaten"))->where("dapil", auth()->user()->dapil);
-                })->get();
+                })->search(request("search"))->get();
             } else {
-                $suara = Monitoring_Saksi::with(["desa.kecamatan.kabupaten"])->get();
+                $suara = Monitoring_Saksi::with(["desa.kecamatan.kabupaten"])->search(request("search"))->get();
             }
             foreach ($suara as $data) {
                 for ($i = 0; $i < count($arr); $i++) {
@@ -79,7 +79,7 @@ class SaksiMonitoringController extends Controller
                     }
                 }
                 if ($found) {
-                    array_push($arr, [$data->desa->id_kecamatan, $data->desa->kecamatan->nama_kecamatan, $data->suara_caleg, $data->desa->kecamatan->kabupaten->nama_kabupaten]);
+                    array_push($arr, [$data->desa->id_kecamatan, $data->desa->kecamatan->nama_kecamatan, $data->suara_caleg, $data->suara_partai, $data->desa->kecamatan->kabupaten->nama_kabupaten]);
                     array_push($diagram, [$data->desa->kecamatan->nama_kecamatan, $data->suara_caleg]);
                 }
                 $found = true;
@@ -90,9 +90,11 @@ class SaksiMonitoringController extends Controller
             if (auth("caleg")->check()) {
                 $suara = Monitoring_Saksi::with("desa.kecamatan")->where("id_caleg", auth()->user()->id_caleg)->whereHas("desa.kecamatan", function($desa) {
                     $desa->where("id_kecamatan", request("kecamatan"));
-                })->get();
+                })->search(request("search"))->get();
             } else {
-                $suara = Monitoring_Saksi::with(["desa.kecamatan"])->get();
+                $suara = Monitoring_Saksi::with("desa.kecamatan")->whereHas("desa.kecamatan", function($desa) {
+                    $desa->where("id_kecamatan", request("kecamatan"));
+                })->search(request("search"))->get();
             }
             foreach ($suara as $data) {
                 for ($i = 0; $i < count($arr); $i++) {
@@ -104,7 +106,7 @@ class SaksiMonitoringController extends Controller
                     }
                 }
                 if ($found) {
-                    array_push($arr, [$data->desa->nama_desa, $data->suara_caleg, $data->desa->kecamatan->nama_kecamatan]);
+                    array_push($arr, [$data->desa->nama_desa, $data->suara_caleg, $data->suara_partai, $data->desa->kecamatan->nama_kecamatan]);
                     array_push($diagram, [$data->desa->nama_desa, $data->suara_caleg]);
                 }
                 $found = true;
@@ -182,34 +184,5 @@ class SaksiMonitoringController extends Controller
     public function destroy(Monitoring_Saksi $monitoring_Saksi)
     {
         //
-    }
-
-
-    public function fetch(Request $request) {
-        if ($request->has("getData") && $request->getData) {
-            if (auth("caleg")->check()) {
-                $this->authorize("all-caleg", Monitoring_Saksi::where("id_caleg", $request->data)->first());
-            }
-        $desa = $request->data == 0 ? Monitoring_Saksi::with("desa.kecamatan")->get() : Monitoring_Saksi::with("desa.kecamatan")->where("id_caleg", $request->data)->get();
-        $myArr = [];
-        $found = true;
-
-        foreach ($desa as $data) {
-            for ($i = 0; $i < count($myArr); $i++) {
-                if (in_array($data->desa->nama_desa, $myArr[$i])) {
-                    $myArr[$i][1] += $data->suara_2024;
-                    $myArr[$i][2] += $data->suara_2019;
-                    $found = false;
-                    break;
-                }
-            }
-            if ($found) {
-                array_push($myArr, [$data->desa->nama_desa, $data->suara_2024, $data->suara_2019]);
-            }
-            $found = true;
-        }
-
-        return response()->json($myArr, 200);
-        }
     }
 }

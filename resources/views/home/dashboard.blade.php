@@ -143,16 +143,15 @@
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
+                }
         });
 
         let getData = () => {
                 let result = $.ajax({
-                url: `{{ asset('api/getChart') }}`,
+                url: `{{ asset('getChart') }}`,
                 method: "POST",
                 data: {
                 getData: true,
-                data: "{{ auth('web')->check() ? 0 : auth()->user()->id_caleg }}"
                 },
                 dataType: "json",
                 success: resp => resp
@@ -237,12 +236,17 @@
         
                     @auth("caleg")
                     let getSuara = () => {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                }
+                        });
+                        
                         let result = $.ajax({
-                                url: `{{ asset('api/getChartSuara') }}`,
+                                url: `{{ asset('getChartSuara') }}`,
                                 method: "POST",
                                 data: {
                                 getData: true,
-                                data: "{{ auth()->user()->id_caleg }}"
                                 },
                                 dataType: "json",
                                 success: resp => resp

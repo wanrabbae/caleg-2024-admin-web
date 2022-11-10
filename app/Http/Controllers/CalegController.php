@@ -214,14 +214,14 @@ class CalegController extends Controller
 
     public function fetch(Request $request) {
         if ($request->has("getData") && $request->getData) {
-            $arr = Monitoring_Saksi::with(["desa.kecamatan.kabupaten"])->where("id_caleg", $request->data)->get();
+            $arr = Monitoring_Saksi::with(["desa.kecamatan.kabupaten"])->where("id_caleg", auth("caleg")->user()->id_caleg)->get();
             $data = ["Suara", 0, 0];
 
             foreach ($arr as $suara) {
                 $data[2] += $suara->suara_2024;
             }
 
-            $data[1] = Caleg::find($request->data)->harapan_suara;
+            $data[1] = auth("caleg")->user()->harapan_suara;
 
             return response()->json([$data], 200);
         }

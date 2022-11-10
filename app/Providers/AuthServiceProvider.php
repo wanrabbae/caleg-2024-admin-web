@@ -30,5 +30,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define("all-caleg", function(Calegs $calegs, $model) {
             return $calegs->id_caleg === $model->id_caleg;
         });
+
+        Gate::define("level", function(Calegs $calegs, ...$levels) {
+            return in_array(strtolower(auth("caleg")->user()->level), $levels);
+        });
     }
 }

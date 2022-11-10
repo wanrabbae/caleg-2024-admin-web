@@ -189,25 +189,29 @@ class DptController extends Controller
     public function getChart(Request $request)
     {
         if ($request->has("getData") && $request->getData) {
-            $arr = $request->data == 0 ? Monitoring_Saksi::all() : Monitoring_Saksi::where("id_caleg", $request->data)->get();
-            $data = [];
+            $diagram = [];
             $found = true;
-
-        foreach ($arr as $arr) {
-            for ($i = 0; $i < count($data); $i++) {
-                if (in_array($arr->desa->kecamatan->nama_kecamatan, $data[$i])) {
-                    $data[$i][1] += $arr->suara_2024;
-                    $data[$i][2] += $arr->suara_2019;
-                    $found = false;
-                    break;
+            if (auth("caleg")->check()) {
+                $suara = Monitoring_Saksi::with("desa.kecamatan.kabupaten")->where("id_caleg", auth("caleg")->user()->id_caleg)->whereHas("desa.kecamatan.kabupaten", function($desa) {
+                    $desa->where("dapil", auth("caleg")->user()->dapil);
+                })->get();
+            } else {
+                $suara = Monitoring_Saksi::with(["desa.kecamatan.kabupaten"])->get();
+            }
+            foreach ($suara as $data) {
+                for ($i = 0; $i < count($diagram); $i++) {
+                    if (in_array($data->desa->kecamatan->nama_kecamatan, $diagram[$i])) {
+                        $diagram[$i][1] += $data->suara_caleg;
+                        $found = false;
+                        break;
+                    }
                 }
+                if ($found) {
+                    array_push($diagram, [$data->desa->kecamatan->nama_kecamatan, $data->suara_caleg]);
+                }
+                $found = true;
             }
-            if ($found) {
-                array_push($data, [$arr->desa->kecamatan->nama_kecamatan, $arr->suara_2024, $arr->suara_2019]);
-            }
-            $found = true;
         }
-        return response()->json($data, 200);
-    }
+        return response()->json($diagram, 200);
     }
 }

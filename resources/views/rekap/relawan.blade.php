@@ -32,11 +32,10 @@
 
         let getData = () => {
                 let result = $.ajax({
-                url: `{{ asset('api/getChartRelawan') }}`,
+                url: `{{ asset('getChartRelawan') }}`,
                 method: "POST",
                 data: {
                 getData: true,
-                data: "{{ auth('web')->check() ? 0 : auth()->user()->id_caleg }}"
                 },
                 dataType: "json",
                 success: resp => resp

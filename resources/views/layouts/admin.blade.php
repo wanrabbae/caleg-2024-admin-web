@@ -109,9 +109,11 @@
                                 <span>Partai</span>
                             </a>
                         @endauth
+                        @if (auth("web")->check() || in_array(strtolower(auth("caleg")->user()->level), ["platinum", "gold", "basic"]))
                         <a class="collapse-item font-weight-bold" href="{{ asset("dashboard/medsos") }}"><i class="fas fa-hashtag"></i>
                         <span>Medsos</span>
                         </a>
+                        @endif
                         @auth("web")
                         <a href="{{ asset("desa") }}" class="collapse-item font-weight-bold">
                             <i class="fas fa-home"></i>
@@ -129,26 +131,13 @@
                             <i class="fas fa-place-of-worship"></i>
                             <span>Provinsi</span>
                         </a>
-                        {{-- <a href="{{ asset("dapil") }}" class="collapse-item font-weight-bold">
-                            <i class="fas fa-box-tissue"></i>
-                            <span>Dapil</span>
-                        </a> --}}
-                        {{-- <div class="dropdown">
-                            <a class="collapse-item font-weight-bold dropdown-toggle" id="dropdownFadeIn" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-box-tissue"></i>
-                                <span>Daerah Pemilihan</span>
-                            </a>
-                            <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownFadeIn">
-                                <a class="dropdown-item font-weight-bold" href="{{ asset("dapil") }}">Nama Daerah</a>
-                                <a class="dropdown-item font-weight-bold" href="{{ asset("dapil/detail") }}">Detail Daerah</a>
-                            </div>
-                        </div> --}}
                         @endauth
                     </div>
                 </div>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
+            @if (auth("web")->check() || in_array(strtolower(auth("caleg")->user()->level), ["platinum", "gold", "basic"]))
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
                     <i class="far fa-folder"></i>
@@ -171,6 +160,7 @@
                     </div>
                 </div>
             </li>
+            @endif
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
@@ -197,14 +187,11 @@
                             <i class="fas fa-calendar"></i>
                             <span>Agenda</span>
                         </a>
-                        {{-- <a class="collapse-item font-weight-bold" href="">
-                            <i class="fas fa-vote-yea"></i>
-                            <span>Tabulasi Suara</span>
-                        </a> --}}
                     </div>
                 </div>
             </li>
 
+            @if (auth("web")->check() || in_array(strtolower(auth("caleg")->user()->level), ["platinum", "gold"]))
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
                     <i class="fas fa-chart-pie"></i>
@@ -223,7 +210,9 @@
                     </div>
                 </div>
             </li>
+            @endauth
 
+            @if (auth("web")->check() || in_array(strtolower(auth("caleg")->user()->level), ["platinum", "gold"]))
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix">
                     <i class="fas fa-laptop"></i>
@@ -242,6 +231,7 @@
                     </div>
                 </div>
             </li>
+            @endif
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
@@ -272,6 +262,7 @@
             </li> --}}
 
             @auth("caleg")
+            @if (in_array(strtolower(auth("caleg")->user()->level), ["platinum"]))
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseEight">
                     <i class="far fa-star"></i>
@@ -293,9 +284,11 @@
                     </div>
                 </div>
             </li>
+            @endif
             @endauth
             
-            @if (auth("caleg")->check() && auth("caleg")->user()->level == "Platinum")
+            @auth("caleg")
+            @if (in_array(strtolower(auth("caleg")->user()->level), ["platinum"]))
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
                     <i class="fas fa-donate"></i>
@@ -324,6 +317,7 @@
                 </div>
             </li>
             @endif
+            @endauth
 
             @auth("web")
             <li class="nav-item">
