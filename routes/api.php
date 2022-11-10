@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\AgendaCtrl;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\CalegCtrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DPTController;
+use App\Http\Controllers\DptController;
 use App\Http\Controllers\DptCtrl;
+use App\Http\Controllers\HasilSurveyCtrl;
 use App\Http\Controllers\KabupatenCtrl;
 use App\Http\Controllers\ProgramCtrl;
 use App\Http\Controllers\UserCtrl;
@@ -16,9 +18,10 @@ use App\Http\Controllers\SaksiMonitoringController;
 use App\Http\Controllers\SurveyCtrl;
 use App\Http\Controllers\VariableCtrl;
 use App\Http\Controllers\KecamatanCtrl;
-use App\Http\Controllers\TeamController;
-use App\Http\Controllers\CalegController;
 use App\Http\Controllers\SuaraCtrl;
+use App\Http\Controllers\CalegController;
+
+
 
 /*
 //Route Galery API
@@ -41,7 +44,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post("requestInquery", [ApiController::class, "requestInquery"]);
 Route::get("getPaymentMethod", [ApiController::class, "getPaymentMethod"]);
+Route::post("requestCallback", [ApiController::class, "paymentCallback"]);
 
+Route::post("referalCheck", [ApiController::class, "referalCheck"]);
 Route::post("register", [ApiController::class, "register"]);
 Route::post("login", [ApiController::class, "login"]);
 
@@ -67,9 +72,8 @@ Route::get('getDPT', [DptCtrl::class, 'index']);
 
 //Route Survey API
 Route::get('getSurvey', [SurveyCtrl::class, 'getSurvey']);
-Route::post('postSurvey', [SurveyCtrl::class, 'store']);
-Route::post('updateSurvey/{survey:id}', [SurveyCtrl::class, 'update']);
-Route::post('deleteSurvey/{survey:id}', [SurveyCtrl::class, 'destroy']);
+Route::post('postHasil', [HasilSurveyCtrl::class, 'store']);
+
 
 //Route Variable API
 Route::get('getVariabel', [VariableCtrl::class, 'getVariabel']);
@@ -79,6 +83,7 @@ Route::post('deleteVariabel/{variabel:id}', [VariableCtrl::class, 'destroy']);
 
 //Route Kecamatan API
 Route::get('getKecamatan', [KecamatanCtrl::class, 'getKecamatan']);
+Route::get('getKecamatan-2', [KecamatanCtrl::class, 'getKecamatan2']);
 Route::post('postKecamatan', [KecamatanCtrl::class, 'store']);
 Route::post('updateKecamatan/{kecamatan:id_kecamatan}', [KecamatanCtrl::class, 'update']);
 Route::post('deleteKecamatan/{kecamatan:id_kecamatan}', [KecamatanCtrl::class, 'destroy']);
@@ -89,9 +94,16 @@ Route::post('postIsu', [IsuCtrl::class, 'store']);
 
 //Route Kabupaten API
 Route::get('getKabupaten', [KabupatenCtrl::class, 'getKabupaten']);
+Route::get('getKabupaten-2', [KabupatenCtrl::class, 'getKabupaten2']);
+Route::get('getProvinsi', [ApiController::class, 'getProvinsi']);
 
 //Route User API
-Route::get('getRelawan', [UserCtrl::class, 'index']);
+Route::get('getTps', [UserCtrl::class, 'getTps']);
+Route::get('getRelawan', [UserCtrl::class, 'getRelawan']);
+Route::get('qrCode', [UserCtrl::class, 'getQR']);
+Route::post("updateLoyal/{relawan:id}", [UserCtrl::class, 'updateRelawan']);
+Route::post("updateProfile/{relawan:id}", [UserCtrl::class, 'addProfile']);
+Route::get('getProfile', [UserCtrl::class, 'getProfile']);
 
 //Route Saksi API
 Route::post('postSaksi', [SaksiCtrl::class, 'postSaksi']);
@@ -102,4 +114,14 @@ Route::get('getSimpatisan', [UserCtrl::class, 'getSimpatisan']);
 //Route Medsos API
 Route::get('getMedsos', [ApiController::class, 'getMedsos']);
 
+//Route News API
+Route::get('getNews', [ApiController::class, 'getberita']);
+
+//Route SUara Api
 Route::post('postSuara', [SuaraCtrl::class, 'store']);
+
+//Route Simpatisa Api
+Route::get('getSimpatisan', [ApiController::class, 'getSimpatisan']);
+
+//Route Agenda Api
+Route::get('getAgenda', [AgendaCtrl::class, 'index']);

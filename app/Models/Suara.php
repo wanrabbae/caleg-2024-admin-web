@@ -21,8 +21,4 @@ class Suara extends Model
     {
         return $this->belongsTo(Relawan::class, 'id_relawan');
     }
-
-    public function detailSuara() {
-        return $this->belongsTo(Relawan::class, "id_detail");
-    }
  }

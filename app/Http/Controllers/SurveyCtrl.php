@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Survey;
+use App\Models\Variabel;
 use Illuminate\Http\Request;
 
 class SurveyCtrl extends Controller
@@ -15,11 +16,18 @@ class SurveyCtrl extends Controller
      public function getSurvey(Request $request)
     {
         $survey = Survey::where([
+            ['aktif', '=', 'Y'],
             ['id_caleg', '=', $request->id_caleg],
-            ['id_variabel', '=', $request->id_variabel],
-        ])->orderBy('id_survey', 'DESC')->get();
+        ])->orderBy('id_survey', 'ASC')->get();
 
-        return response()->json(['survey' => $survey]);
+
+        // return $survey->t
+
+        // if(){
+
+        // }
+
+        return response()->json(["message" =>  "Berhasil",   'survey' => $survey]);
     }
 
 
@@ -89,4 +97,5 @@ class SurveyCtrl extends Controller
             return response()->json(['message' => 0], 500, );
             // return back()->with('error', 'failed Deleting Data Survey')
     }
+
 }

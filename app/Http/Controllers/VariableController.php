@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Helper;
 use App\Models\Caleg;
 use App\Models\Survey;
@@ -17,7 +16,7 @@ class VariableController extends Controller
      */
     public function index()
     {
-        if (Helper::RequestCheck(request()->all())) {
+       if (Helper::RequestCheck(request()->all())) {
             return back()->with("error", "Karakter Ilegal Ditemukan");
         };
 
@@ -59,6 +58,8 @@ class VariableController extends Controller
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
 
+        // dd($request);
+
         $rule = [
             'pertanyaan' => 'required',
             "id_survey" => "required",
@@ -82,6 +83,7 @@ class VariableController extends Controller
      */
     public function show(Variabel $variabel, $id_variabel)
     {
+
     }
 
     /**
@@ -108,12 +110,12 @@ class VariableController extends Controller
             $data = Variabel::find($id_variabel);
             $this->authorize("all-caleg", $data);
         }
-
+        
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
 
-        $rule = [
+       $rule = [
             "pertanyaan" => "required",
             "id_survey" => "required",
             "id_caleg" => "required"
@@ -126,9 +128,9 @@ class VariableController extends Controller
        $data = $request->validate($rule);
 
        if(Variabel::find($id_variabel)->update($data)){
-            return redirect('/survey/VariableSurvey')->with('success', "Success Update Variabel $variabel->nama_variabel");
+            return redirect('/survey/HasilSurvey')->with('success', "Success Update Variabel $variabel->nama_variabel");
        }
-       return redirect('/survey/VariableSurvey')->with('error', "Failed Update Variabel $variabel->nama_variabel");
+       return redirect('/survey/HasilSurvey')->with('error', "Failed Update Variabel $variabel->nama_variabel");
     }
 
     /**
@@ -143,7 +145,7 @@ class VariableController extends Controller
             $data = Variabel::find($id_variabel);
             $this->authorize("all-caleg", $data);
         }
-
+        
         if(Variabel::where('id_variabel', $id_variabel)->delete()){
             return back()->with('success', "Success Deleting Data Variable");
         }

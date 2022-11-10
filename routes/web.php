@@ -61,12 +61,13 @@ Route::get('/', [DashboardController::class, 'index'])
 Route::get('/login', [AuthController::class, 'loginView'])
     ->name('login')
     ->middleware('guest');
-Route::get('/register', [AuthController::class, 'registerView'])->name('register');
+Route::get('/register', [AuthController::class, 'registerView'])->name('register')->middleware("guest");
 Route::post('/register-action', [AuthController::class, 'registerAction'])->name('register_action');
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout')
     ->middleware('auth:web,caleg');
+
 
 // Admin Login
 Route::get("/administrator", [AdminController::class, "index"])->name("administrator")->middleware("guest");
@@ -88,28 +89,31 @@ Route::resource('/dashboard/partai', DashboardPartaiController::class)->middlewa
 Route::resource('/dashboard/medsos', DashboardMedsosController::class)
     ->parameters(['medsos' => 'medsos'])
     ->middleware(['auth:web,caleg', "level:basic,gold,platinum"]);
-
+    
 Route::resource("/desa", DesaController::class)->middleware("auth:web");
 Route::resource("/kecamatan", KecamatanController::class)->middleware("auth:web");
 Route::resource("/kabupaten", KabupatenController::class)->middleware("auth:web");
 Route::resource("/provinsi", ProvinceController::class)->middleware("auth:web");
 
+
 //Info Politik Routes
 Route::resource('/infoPolitik/daftarIsu', DaftarIsuController::class)->middleware(['auth:web,caleg', "level:basic,gold,platinum"]);
+
 Route::resource('/infoPolitik/berita', BeritaController::class)
     ->parameters(['berita' => 'berita'])
     ->middleware(['auth:web,caleg', "level:basic,gold,platinum"]);
 
 //Survey Routes
 Route::resource('/survey/inputSurvey', DataSurveyController::class)->middleware(["auth:web,caleg",'level:gold,platinum']);
-Route::resource('/survey/VariableSurvey', VariableController::class)->middleware(['auth:web,caleg', "level:gold,platinum"]);
-Route::post("/survey/HasilSurvey", [DataSurveyController::class, "show"])->middleware(['auth:web,caleg', "level:gold,platinum"]);
+Route::resource('/survey/VariableSurvey', VariableController::class)->middleware(["auth:web,caleg",'level:gold,platinum']);
+Route::post("/survey/HasilSurvey", [DataSurveyController::class, "show"])->middleware(["auth:web,caleg",'level:gold,platinum']);
 
 //Data Saksi Routes
+Route::get('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'show'])->middleware(["auth:web,caleg",'level:gold,platinum']);
 Route::put('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'update'])->middleware(["auth:web,caleg",'level:gold,platinum']);
 Route::delete('/saksi/daftar/{daftar_saksi:id}', [SaksiDaftarController::class, 'destroy'])->middleware(["auth:web,caleg",'level:gold,platinum']);
-Route::resource('/saksi/daftar', SaksiDaftarController::class)->middleware(['auth:web,caleg', "level:gold,platinum"]);
-Route::resource('/saksi/monitoring', SaksiMonitoringController::class)->middleware(['auth:web,caleg', "level:gold,platinum"]);
+Route::resource('/saksi/daftar', SaksiDaftarController::class)->middleware(["auth:web,caleg",'level:gold,platinum']);
+Route::resource('/saksi/monitoring', SaksiMonitoringController::class)->middleware(["auth:web,caleg",'level:gold,platinum']);
 
 // RELAWAN ROUTES (KALO CONFLICT SAMA ROUTE LAIN, BISA TARO INI DI PALING BAWAH)
 Route::prefix('/team')
@@ -119,7 +123,7 @@ Route::prefix('/team')
         Route::post('/', [TeamController::class, 'store'])->name('team-store');
         Route::put('/{id}', [TeamController::class, 'update'])->name('team-update');
         Route::delete('/{id}', [TeamController::class, 'delete'])->name('team-delete');
-        Route::get("/upline/{id}", [TeamController::class, "upline"])->name("team-upline");
+        route::post("/upline", [TeamController::class, "upline"])->name("team-upline");
         Route::post("/laporan", [TeamController::class, "report"])->name("team-report");
     });
 
@@ -134,8 +138,8 @@ Route::prefix('/program')
         Route::delete('/{id}', [SimpatisanController::class, 'delete'])->name('simpatisan-delete');
     });
 
-Route::prefix('dpt')
-    ->middleware("auth")
+Route::prefix('/dpt')
+    ->middleware("auth:web")
     ->group(function () {
         Route::get('/', [DptController::class, 'index'])->name('dpt');
         Route::get('/export', [DptController::class, 'store'])->name('dpt-store');
@@ -157,7 +161,7 @@ Route::prefix('/whatsapp')
     ->group(function () {
         Route::get('/', [WaBlasController::class, 'index'])->name('wa');
         Route::post("/send", [WaBlasController::class, "send"])->name("wa-send");
-        // Route::post("/no", [WaBlasController::class, "sendNum"])->name("wa-sendNum");
+        Route::get("/{relawan:id_relawan}", [WaBlasController::class, "show"])->name("wa-show");
         // Route::post('/', [WaBlasController::class, 'store'])->name('wa-store');
         // Route::get('/{id}', [WaBlasController::class, 'show'])->name('wa-show');
         // Route::put('/{id}', [WaBlasController::class, 'update'])->name('wa-update');
@@ -182,7 +186,7 @@ Route::prefix("/configBlas")->middleware(['auth:caleg', "level:platinum"])->grou
     Route::post("/", [ConfigController::class, "update"]);
 });
 
-Route::prefix("/rekening")->middleware(['auth:web,caleg', "level:platinum"])->group(function() {
+Route::prefix("/rekening")->middleware(['auth:caleg', "level:platinum"])->group(function() {
     Route::get("/", [RekeningController::class, "index"]);
     Route::post("/", [RekeningController::class, "store"]);
     Route::get("/{rk_bank:id_bank}", [RekeningController::class, "show"]);
@@ -190,7 +194,7 @@ Route::prefix("/rekening")->middleware(['auth:web,caleg', "level:platinum"])->gr
     Route::delete("/{rk_bank:id_bank}", [RekeningController::class, "destroy"]);
 });
 
-Route::prefix("/ewallet")->middleware(['auth:web,caleg', "level:platinum"])->group(function() {
+Route::prefix("/ewallet")->middleware(['auth:caleg', "level:platinum"])->group(function() {
     Route::get("/", [WalletController::class, "index"]);
     Route::post("/", [WalletController::class, "store"]);
     Route::get("/{rk_wallet:id_wallet}", [WalletController::class, "show"]);
@@ -198,7 +202,7 @@ Route::prefix("/ewallet")->middleware(['auth:web,caleg', "level:platinum"])->gro
     Route::delete("/{rk_wallet:id_wallet}", [WalletController::class, "destroy"]);
 });
 
-Route::prefix("/kategori")->middleware(['auth:web,caleg', "level:platinum"])->group(function() {
+Route::prefix("/kategori")->middleware(['auth:caleg', "level:platinum"])->group(function() {
     Route::get("/", [CategoryController::class, "index"]);
     Route::post("/", [CategoryController::class, "store"]);
     Route::get("/{rk_kategori:id_kategori}", [CategoryController::class, "show"]);
@@ -206,14 +210,14 @@ Route::prefix("/kategori")->middleware(['auth:web,caleg', "level:platinum"])->gr
     Route::delete("/{rk_kategori:id_kategori}", [CategoryController::class, "destroy"]);
 });
 
-Route::prefix("/transaksi")->middleware(['auth:web,caleg', "level:platinum"])->group(function() {
+Route::prefix("/transaksi")->middleware(['auth:caleg', "level:platinum"])->group(function() {
     Route::get("/", [TransaksiController::class, "index"]);
     Route::post("/", [TransaksiController::class, "store"]);
     Route::put("/{rk_transaksi:id_transaksi}", [TransaksiController::class, "update"]);
     Route::delete("/{rk_transaksi:id_transaksi}", [TransaksiController::class, "destroy"]);
 });
 
-Route::prefix("/laporan")->middleware(['auth:web,caleg', "level:platinum"])->group(function() {
+Route::prefix("/laporan")->middleware(['auth:caleg', "level:basic,gold,platinum"])->group(function() {
     Route::post("/", [ReportController::class, "index"]);
 });
 
@@ -235,10 +239,8 @@ Route::get("/resetpassword", [ResetPasswordController::class, "index"])->middlew
 Route::post("/resetpassword", [ResetPasswordController::class, "update"])->middleware("guest");
 
 Route::get("/aktivasi", [AuthController::class, "activate"])->middleware("guest");
-
 Route::post("/invoice", [AuthController::class, "invoice"])->middleware("guest");
 
-//Chart
 Route::post('/getChart', [DPTController::class, 'getChart'])->middleware(['auth:web,caleg']);
 Route::post("/getChartRelawan", [RelawanController::class, "fetch"])->middleware(['auth:web,caleg']);
 Route::post("/getChartSuara", [CalegController::class, "fetch"])->middleware(['auth:web,caleg']);

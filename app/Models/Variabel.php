@@ -16,7 +16,7 @@ class Variabel extends Model
     public $timestamps = false;
 
     protected $guarded = [];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("pertanyaan", "LIKE", "%$search%")
         ->orWhereHas("caleg", function($caleg) use ($search) {

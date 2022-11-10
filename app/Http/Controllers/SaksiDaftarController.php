@@ -6,7 +6,6 @@ use Helper;
 use App\Models\Daftar_Saksi;
 use App\Models\Relawan;
 use App\Models\Caleg;
-use App\Models\Hasil_Survey;
 use Illuminate\Http\Request;
 
 class SaksiDaftarController extends Controller
@@ -18,7 +17,7 @@ class SaksiDaftarController extends Controller
      */
     public function index()
     {
-        if (Helper::RequestCheck(request()->all())) {
+       if (Helper::RequestCheck(request()->all())) {
             return back()->with("error", "Karakter Ilegal Ditemukan");
         };
 
@@ -55,8 +54,9 @@ class SaksiDaftarController extends Controller
      * @param  \App\Models\Daftar_Saksi  $daftar_Saksi
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
+        
     }
 
     /**
@@ -91,5 +91,6 @@ class SaksiDaftarController extends Controller
      */
     public function destroy($id)
     {
+        
     }
 }

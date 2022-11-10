@@ -57,13 +57,15 @@ class AgendaController extends Controller
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
 
+        // dd($request);
         $data = $request->validate([
             "nama_agenda" => "max:255|required",
             "tanggal" => "required",
             "jam" => "required",
             "lokasi" => "required|max:255",
-            "id_caleg" => "required"
-    ]);
+            "id_caleg" => "required",
+            "jenis" => "required"
+        ]);
 
         if (Agenda::create($data)) {
             return back()->with("success", "Success Create New Agenda");
@@ -131,6 +133,21 @@ class AgendaController extends Controller
             "lokasi" => "required|max:255",
             "id_caleg" => "required"
         ];
+
+        if($request->has('status')){
+            if(Agenda::where('id_agenda', $agenda->id_agenda)->update(["status" => $request->status])){
+                return back()->with('success', 'Success Updating Status');
+            }
+
+            return back()->with('error', 'Failed Updating Status');
+        }
+
+        if($request->has('jenis')){
+            if(Agenda::where('id_agenda', $agenda->id_agenda)->update(["jenis" => $request->jenis])){
+                return back()->with('success', 'Success Updating Jenis Agenda');
+            }
+            return back()->with('error', 'Failed Updating jenis Agenda');
+        }
 
         $data = $request->validate($rules);
 

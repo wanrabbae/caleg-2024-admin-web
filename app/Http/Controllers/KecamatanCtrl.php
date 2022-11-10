@@ -15,6 +15,7 @@ class KecamatanCtrl extends Controller
     public function getKecamatan(Request $request)
     {
         $kecamatan = Kecamatan::where('id_kabupaten', $request->id_kabupaten)->get();
+        // Kecamatan::orderBy('id_kecamatan', 'ASC')->get();
 
         return response()->json(["message" => 1, 'kecamatan' => $kecamatan], 200);
     }

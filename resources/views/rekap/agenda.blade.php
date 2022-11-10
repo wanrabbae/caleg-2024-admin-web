@@ -68,7 +68,11 @@
                                 <td>{{ $data->nama_agenda }}</td>
                                 <td>{{ $data->lokasi }}</td>
                                 <td>
+<<<<<<< HEAD
                                     <form action="{{ asset('agenda/' . $data->id_agenda) }}" method="post">
+=======
+                                    <form action="/agenda/{{ $data->id_agenda }}" method="post">
+>>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
                                         @method('put')
                                         @csrf
                                         @if ($data->jenis == "O")
@@ -83,7 +87,11 @@
                                     </form>
                                 </td>
                                 <td>
+<<<<<<< HEAD
                                     <form action="{{ asset('agenda/' . $data->id_agenda) }}" method="post">
+=======
+                                    <form action="/agenda/{{ $data->id_agenda }}" method="post">
+>>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
                                         @method('put')
                                         @csrf
                                         @if ($data->status == "N")
@@ -134,7 +142,11 @@
                 @auth("web")
                 <div class="form-group">
                   <label for="id_caleg">Pilih Caleg</label>
+<<<<<<< HEAD
                    <select class="form-control" name="id_caleg" id="id_caleg">
+=======
+                   <select class="form-control form-select" name="id_caleg" id="id_caleg">
+>>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
                       @foreach ($caleg as $item)
                         <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
                       @endforeach
@@ -193,7 +205,11 @@
                 @auth("web")
                 <div class="form-group">
                   <label for="id_caleg">Pilih Caleg</label>
+<<<<<<< HEAD
                    <select class="form-control" name="id_caleg" id="edit_id_caleg">
+=======
+                   <select class="form-control" name="id_caleg" id="id_caleg">
+>>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
                       @foreach ($caleg as $item)
                         <option value="{{ $item->id_caleg }}">{{ $item->nama_caleg }}</option>
                       @endforeach

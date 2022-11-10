@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use DB;
-use App\Models\Suara;
 use App\Models\Relawan;
+use App\Models\Monitoring_Saksi;
+use App\Models\Suara;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Monitoring_Saksi;
 
 class SuaraCtrl extends Controller
 {

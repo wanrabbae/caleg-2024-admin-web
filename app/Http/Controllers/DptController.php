@@ -23,11 +23,11 @@ class DptController extends Controller
         if (Helper::RequestCheck(request()->all())) {
             return back()->with("error", "Karakter Ilegal Ditemukan");
         };
-
+        
         return view('rekap.dpt', [
             'title' => 'DPT / Pemilih Page',
             'datas' => Rk_pemilih::with("desa.kecamatan")->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
-            'desas' => Desa::all(),
+            'desas' => Desa::all()
         ]);
     }
 
@@ -42,7 +42,7 @@ class DptController extends Controller
     $data = Rk_pemilih::all();
 
     $writer = WriterEntityFactory::createXLSXWriter();
-    $writer->openToBrowser("caleg.xlsx");
+    $writer->openToBrowser("dpt.xlsx");
 
     $title = [
         "id_pemilih",
@@ -52,7 +52,7 @@ class DptController extends Controller
         "tgl_lahir",
         "jk",
         "id_desa",
-        "tgl_data",
+        "tgl_data"
     ];
 
     $row = WriterEntityFactory::createRowFromArray($title);
@@ -152,7 +152,7 @@ class DptController extends Controller
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
-        
+
         $rules = [
             "id_caleg" => "required",
             'nama' => 'required|max:100',

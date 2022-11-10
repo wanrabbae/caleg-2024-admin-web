@@ -6,7 +6,7 @@ use Helper;
 use App\Models\Program;
 use App\Models\Caleg;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class SimpatisanController extends Controller
 {
@@ -67,7 +67,7 @@ class SimpatisanController extends Controller
         }
 
         if ($program->delete()) {
-            File::delete($program->foto);
+            Storage::disk("public_path")->delete($program->foto);
             return back()->with("success", "Success Delete Program");
         }
         return back()->with("error", "Error, Can't Delete Program");
@@ -98,7 +98,7 @@ class SimpatisanController extends Controller
         $data = $request->validate($rules);
 
         if ($request->hasFile("foto")) {
-            File::delete($program->foto);
+            Storage::disk("public_path")->delete($program->foto);
             $data["foto"] = $request->file("foto")->store("/images", "public_path");
         }
 

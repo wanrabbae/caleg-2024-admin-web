@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Helper;
 use App\Models\Partai;
-use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardPartaiController extends Controller
 {
@@ -115,8 +116,8 @@ class DashboardPartaiController extends Controller
         $data = $request->validate($rules);
 
         if ($request->file("logo")) {
-            if (File::exists($partai->logo)) {
-                File::delete($partai->logo);
+            if (Storage::disk("public_path")->exists($partai->foto)) {
+                Storage::disk("public_path")->delete($partai->logo);
             }
             $data["logo"] = $request->file("logo")->store("/images", "public_path");
         }
@@ -138,7 +139,7 @@ class DashboardPartaiController extends Controller
     public function destroy(Partai $partai)
     {
         if (Partai::destroy($partai->id_partai)) {
-            File::delete($partai->logo);
+            Storage::disk("public_path")->delete($partai->logo);
             return back()->with("success", "Success Delete $partai->nama_partai Partai");
         }
 

@@ -12,7 +12,7 @@ class Daftar_Saksi extends Model
     protected $primaryKey = "id_saksi";
     public $timestamps = false;
     protected $guarded = [""];
-
+    
     public function scopeSearch($query, $search) {
         return $query->whereHas("relawan.desa.kecamatan", function($relawan) use ($search) {
             $relawan->where("nama_relawan", "LIKE", "%$search%")->orWhere("jk", "LIKE", "%$search%")->orWhere("tps", "LIKE", "%$search%")->orWhere("nama_desa", "LIKE", "%$search%")->orWhere("nama_kecamatan", "LIKE", "%$search%");
@@ -23,7 +23,7 @@ class Daftar_Saksi extends Model
     }
 
     public function relawan() {
-        return $this->belongsTo(Relawan::class, "id_relawan", "id_relawan");
+        return $this->belongsTo(Relawan::class, "id_relawan");
     }
 
     public function caleg() {

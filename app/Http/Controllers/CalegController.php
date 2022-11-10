@@ -11,7 +11,7 @@ use App\Models\Kabupaten;
 use App\Models\Monitoring_Saksi;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
 
 class CalegController extends Controller
 {
@@ -181,8 +181,8 @@ class CalegController extends Controller
         $data = $request->validate($rules);
 
         if ($request->has("foto")) {
-            if (File::exists($caleg->foto)) {
-                File::delete($caleg->foto);
+            if (Storage::disk("public_path")->exists($caleg->foto)) {
+                Storage::disk("public_path")->delete($caleg->foto);
             }
             $data["foto"] = $request->file("foto")->store("/images", "public_path");
         }
@@ -206,7 +206,7 @@ class CalegController extends Controller
     public function destroy(Caleg $caleg)
     {
         if (Caleg::destroy($caleg->id_caleg)) {
-            File::delete($caleg->foto);
+            Storage::disk("public_path")->delete($caleg->foto);
             return back()->with("success", "Success Delete $caleg->nama_caleg");
         }
         return back()->with("error", "Error When Deleting $caleg->nama_caleg Caleg");

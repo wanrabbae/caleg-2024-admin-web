@@ -18,12 +18,11 @@ class DptCtrl extends Controller
      */
     public function index(Request $request)
     {
-        $id_desa = Desa::find(request("id_desa"));
-        $data = Rk_pemilih::where('nik', request("nik"))->get();
-        if(!Rk_pemilih::where("nik", request("nik"))->get()){
+        $data = Rk_pemilih::where('nik', request("nik"))->with('desa.kecamatan.kabupaten')->first();
+        if(!$data){
             return response()->json(['message' => 0], 500 );
         }
-        return response()->json(['message' => 1,'region' => Desa::with("kecamatan.kabupaten")->where("id_desa", $id_desa->id_desa)->get(), 'data_dpt' => $data], 200);
+        return response()->json(['message' => 1, 'data_dpt' => $data], 200);
     }
 
     // public function callRegion(Request $request)

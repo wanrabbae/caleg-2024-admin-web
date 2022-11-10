@@ -140,7 +140,7 @@ class BeritaController extends Controller
         $img = News::firstWhere("id_news", $id_news)->gambar;
 
         if($request->file('gambar')){
-            File::delete($img);
+            Storage::disk("public_path")->delete($img);
             $data["gambar"] = $request->file("gambar")->store('/images', "public_path");
         }
 
@@ -165,7 +165,7 @@ class BeritaController extends Controller
         
         $img = News::firstWhere("id_news", $id_news)->gambar;
         if(News::where('id_news', $id_news)->delete()){
-            File::delete($img);
+            Storage::disk("public_path")->delete($img);
             return back()->with('success', "Success Deleting Data News");
         }
        return back()->with('error', "Failed Deleting Data News");

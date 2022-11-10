@@ -43,6 +43,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Judul Isu</th>
                         @auth("web")
                         <th>Caleg</th>
                         @endauth
@@ -64,6 +65,9 @@
                         <tr>
                             <td>
                                 {{ $loop->iteration }}
+                            </td>
+                            <td>
+                                {{ $data->judul_isu }}
                             </td>
                             @auth("web")
                             <td>
@@ -126,7 +130,7 @@
                                         </button>
                                     </form>
                                 </td>
-                        </tr>                
+                        </tr>
                         @endforeach
                     @endif
                 </tbody>
@@ -164,7 +168,7 @@
       </div>
     </div>
   </div>
-  
+
   {{-- Edit Modal --}}
   <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

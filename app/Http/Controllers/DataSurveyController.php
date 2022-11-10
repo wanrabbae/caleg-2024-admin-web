@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Helper;
 use App\Models\Caleg;
 use App\Models\Survey;
-use App\Models\Variabel;
 use App\Models\Hasil_Survey;
+use App\Models\Variabel;
 use Illuminate\Http\Request;
 
 class DataSurveyController extends Controller
@@ -21,7 +21,7 @@ class DataSurveyController extends Controller
         if (Helper::RequestCheck(request()->all())) {
             return back()->with("error", "Karakter Ilegal Ditemukan");
         };
-
+        
         return view('data.survey', [
             'title' => 'Data Survey Page',
             'data' => auth("web")->check() ? Survey::with("caleg", "variable")->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString() : Survey::with("caleg", "variable")->where("id_caleg", auth()->user()->id_caleg)->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
@@ -83,15 +83,15 @@ class DataSurveyController extends Controller
     public function show(Request $request)
     {
         $survey = Survey::with("variable")->find($request->survey);
-
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $survey);
         }
-
+        
         $hasil = Hasil_Survey::where("id_survey", $request->survey)->get();
         $relawanSurvey = [];
         $data = [];
         $found = true;
+        
         foreach ($survey->variable as $i => $pertanyaan) {
             array_push($data, [$pertanyaan->pertanyaan, 0, 0]);
             array_push($relawanSurvey, [$pertanyaan->pertanyaan, [], []]);
@@ -110,12 +110,11 @@ class DataSurveyController extends Controller
                 }
             }
         }
-
+        
         return view("data.hasil", [
             "title" => "Hasil Survey",
             "survey" => $survey->nama_survey,
-            "data" => collect($data),
-            "relawanSurvey" => collect($relawanSurvey)
+            "data" => collect($data)
         ]);
     }
 
@@ -143,7 +142,7 @@ class DataSurveyController extends Controller
             $survey = Survey::find($id_survey);
             $this->authorize("all-caleg", $survey);
         }
-
+        
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
@@ -160,7 +159,7 @@ class DataSurveyController extends Controller
                 Survey::where("aktif", "Y")->update(["aktif" => "N"]);
             }
 
-            if (Survey::find($id_survey)->update(["aktif" => "Y"])) {
+            if (Survey::find($id_survey)->update(["aktif" =>    "Y"])) {
                 return back()->with("success", "Success Update Active");
             }
 
@@ -192,7 +191,7 @@ class DataSurveyController extends Controller
             $data = Survey::find($id_survey);
             $this->authorize("all-caleg", $data);
         }
-
+        
         if(Survey::where('id_survey', $id_survey)->delete()){
             return back()->with('success', 'Success Deleting Data Survey');
         }

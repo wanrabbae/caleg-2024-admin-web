@@ -45,6 +45,7 @@ class DashboardMedsosController extends Controller
      */
     public function store(Request $request)
     {
+        
         if ($request->has("getData") && $request->getData) {
             $data = Medsos::find($request->data);
             if (auth("caleg")->check()) {
@@ -104,7 +105,7 @@ class DashboardMedsosController extends Controller
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $medsos);
         }
-
+        
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
@@ -136,7 +137,7 @@ class DashboardMedsosController extends Controller
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $medsos);
         }
-
+        
         if (Medsos::destroy($medsos->id_medsos)) {
             return back()->with("success", "Success Delete $medsos->nama_medsos Medsos");
         }

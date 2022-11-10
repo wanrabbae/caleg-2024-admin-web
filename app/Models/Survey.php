@@ -16,7 +16,7 @@ class Survey extends Model
     public $timestamps = false;
 
     protected $guarded = [];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("nama_survey","LIKE", "%$search%")
         ->orWhere("mulai_tanggal", "LIKE", "%$search%")
