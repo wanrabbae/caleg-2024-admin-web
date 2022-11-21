@@ -114,7 +114,8 @@ class DataSurveyController extends Controller
         return view("data.hasil", [
             "title" => "Hasil Survey",
             "survey" => $survey->nama_survey,
-            "data" => collect($data)
+            "data" => collect($data),
+            "relawanSurvey" => collect($relawanSurvey)
         ]);
     }
 

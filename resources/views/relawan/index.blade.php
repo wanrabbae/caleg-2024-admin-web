@@ -52,10 +52,7 @@
                             <th>No</th>
                             <th>Nik</th>
                             <th>Nama Relawan</th>
-<<<<<<< HEAD
                             <th>Downline</th>
-=======
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
                             <th>Jenis Kelamin</th>
                             <th>Jabatan</th>
                             <th>Upline</th>
@@ -87,12 +84,8 @@
                                             {{ $data->nama_relawan }}
                                         </button>
                                     </td>
-<<<<<<< HEAD
                                     <td>{{ $data->downlineRel->count() / $data->caleg->downline * 100 }}%</td>
                                     <td>{{ $data->jk }}</td>
-=======
-                                    <td class="text-center">{{ $data->jk }}</td>
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
                                     <td>
                                         <button class="btn btn-primary getJabatan" value="{{ $data->id_relawan }}" data-toggle="modal" data-target="#editJabatanModal">
                                             @if ($data->jabatan == 1)
@@ -104,18 +97,12 @@
                                             @endif
                                         </button>
                                     </td>
-<<<<<<< HEAD
                                     <td>
-                                        {{ $data->simpatisan->nama_relawan ?? "Tidak Ada"}}
-=======
-                                    <td >
-                                        {{ $data->upline }}
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
+                                        {{ $data->upline ?? "Tidak Ada"}}
                                     </td>
                                     <td>{{ $data->desa->nama_desa }}</td>
                                     <td>
                                         @if ($data->saksi == "N")
-<<<<<<< HEAD
                                            <button type="button" class="btn btn-danger getTps" data-toggle="modal" data-target="#createTpsModal" value="{{ $data->id_relawan }}">
                                                {{ $data->saksi }}
                                            </button>
@@ -129,21 +116,6 @@
                                        </form>
                                        @endif
                                    </td>
-=======
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#createTpsModal{{$loop->iteration}}">
-                                            {{ $data->saksi }}
-                                        </button>
-                                        @else
-                                        <form action="/team/{{ $data->id_relawan }}" method="POST">
-                                            @method("put")
-                                            @csrf
-                                            <button class="btn btn-success" type="submit" value="{{ $data->saksi }}" name="saksi">
-                                                {{ $data->saksi }}
-                                            </button>
-                                        </form>
-                                        @endif
-                                    </td>
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
                                     <td>{{ $data->desa->kecamatan->nama_kecamatan }}</td>
                                     <td>
                                         @if (File::exists($data->foto_ktp))
@@ -171,7 +143,6 @@
                                             </button>
                                         </form>
                                     </td>
-<<<<<<< HEAD
                                     <td>
                                         <a href="{{ asset("team/upline/" . $data->id_relawan) }}" target="_blank">
                                             <button class="btn btn-warning" type="submit" name="id" value="{{ $data->id_relawan }}">
@@ -179,15 +150,6 @@
                                             </button>
                                         </a>
                                         <button class="btn btn-primary getData" value="{{ $data->id_relawan }}" data-toggle="modal" data-target="#editModal">
-=======
-                                    <td class="d-flex justify-content-center">
-                                        <a href="{{ asset("team/upline/$data->id_relawan") }}">
-                                            <button class="btn btn-warning mx-3">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                        </a>
-                                        <button class="btn btn-primary mr-3" onclick="getData({{ $data->id_relawan }})" data-toggle="modal" data-target="#editModal">
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         <form action="{{ asset("team/" . $data->id_relawan) }}" method="POST">
@@ -425,15 +387,9 @@
                         </div>
                         <div class="form-group">
                             <label for="jk">Jenis Kelamin</label>
-<<<<<<< HEAD
                             <select class="form-control" name="jk" id="edit_jk">
                                 <option value="Laki-Laki">Laki-Laki</option>
                                 <option value="Perempuan">Perempuan</option>
-=======
-                            <select class="form-select form-control" aria-label="Default select example" name="jk" id="edit_jk">
-                                <option value="Laki-Laki">Laki-laki</option>
-                                <option value="Perempuan">perempuan</option>
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
                             </select>
                         </div>
                         <div class="form-group">
@@ -559,53 +515,6 @@
         </div>
     </div>
 </div>
-<<<<<<< HEAD
-=======
-
-
-<script>
-        function getData(data) {
-            fetch(`/team/${data}`).then(resp => resp.json()).then(resp => {
-                document.getElementById("edit_form").action = `/team/${data}`
-                document.getElementById("edit_nama_relawan").value = resp.nama_relawan
-                document.getElementById("edit_jk").value = resp.jk
-                document.getElementById("nik_edit").value = resp.nik
-                document.getElementById("edit_email").value = resp.email
-                document.getElementById("edit_id_desa").value = resp.id_desa
-                document.getElementById("edit_username").value = resp.username
-                document.getElementById("edit_no_hp").value = resp.no_hp
-            })
-        }
-
-        function getLoyalis(data) {
-            fetch(`/team/${data}`).then(resp => resp.json()).then(resp => {
-                document.getElementById("edit_form_loyal").action = `/team/${data}`
-                document.getElementById("edit_loyalis").value = resp.loyalis
-            })
-        }
-
-        function getJabatan(data) {
-            fetch(`/team/${data}`).then(resp => resp.json()).then(resp => {
-                document.getElementById("edit_form_jabatan").action = `/team/${data}`
-                document.getElementById("edit_jabatan").value = resp.jabatan
-                document.getElementById("edit_desa").value = resp.id_desa
-            })
-        }
-
-        // $(document).ready(() => {
-        //     $('#submit').click(() => {
-        //         let tps = $("#tps").val();
-        //         $.ajax({
-        //             type: "POST",
-        //             data: {
-        //                 tps : tps
-        //             }
-        //         })
-        //     })
-        // })
-
-    </script>
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
 @endsection
 @section("script")
   <script>

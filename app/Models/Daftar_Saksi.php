@@ -23,7 +23,7 @@ class Daftar_Saksi extends Model
     }
 
     public function relawan() {
-        return $this->belongsTo(Relawan::class, "id_relawan");
+        return $this->belongsTo(Relawan::class, "id_relawan")->withDefault();
     }
 
     public function caleg() {
