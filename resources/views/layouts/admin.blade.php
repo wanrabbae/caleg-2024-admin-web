@@ -188,13 +188,6 @@
                             <i class="fas fa-calendar"></i>
                             <span>Agenda</span>
                         </a>
-<<<<<<< HEAD
-=======
-                        <a class="collapse-item font-weight-bold" href="{{ asset('suara') }}">
-                            <i class="fas fa-vote-yea"></i>
-                            <span>Suara</span>
-                        </a>
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
                     </div>
                 </div>
             </li>
@@ -575,10 +568,6 @@
 
     <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
     @yield("script")
-<<<<<<< HEAD
-=======
-
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
 </body>
 
 </html>
