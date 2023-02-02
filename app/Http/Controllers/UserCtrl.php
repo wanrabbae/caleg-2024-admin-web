@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Desa;
 use App\Models\Relawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\RequestStack;
-
-use function PHPUnit\Framework\isNull;
 
 class UserCtrl extends Controller
 {
@@ -36,11 +32,14 @@ class UserCtrl extends Controller
 
     public function getSimpatisan(Request $request)
     {
-        $simpatisan = Relawan::where("upline", $request->upline)->where("loyalis", "1")->get();
+        $simpatisan = Relawan::where([
+            ["upline", $request->upline],
+            ["loyalis", "1"]
+            ])->get();
 
         return response()->json(['simpatisan' => $simpatisan], 200);
     }
-
+    
     public function updateRelawan(Request $request, $id)
     {
         $relawan = Relawan::find($id);
@@ -58,16 +57,34 @@ class UserCtrl extends Controller
             return response()->json(["message" => "gagal"], 200);
         }
     }
-
+    
     public function addProfile(Request $request, $id)
     {
+        // return $request->file('profile');
+        $file = $request->file('profile');
         $relawan = Relawan::find($id);
 
+        // return $relawan;
+
         $data = $request->validate([
-            'profile' => "required|image|max:6000|mimes:png,jpg,jpeg"
+            'profile' => "required|image|mimes:png,jpg,jpeg"
         ]);
 
-        $data['profile'] = $request->file('profile')->store("images", "public_path");
+        if($request->hasFile('profile')){
+
+            if($relawan->profile == null){
+                $data['profile'] = $file->store("images", "public_path");
+            }
+
+            if($request->hasFile('profile')){
+                !is_null($relawan->profile) && Storage::disk("public_path")->delete($relawan->profile);
+                
+                $data['profile'] = $file->store("images", "public_path");
+            }
+
+        }
+
+        // return $data['profile'];
 
         if(Relawan::where("id_relawan", $id)->update($data)){
             return response()->json(["message" => "berhasil"], 200);
@@ -75,7 +92,7 @@ class UserCtrl extends Controller
         return response()->json(['message' => "gagal"], 200);
 
     }
-
+    
     public function getQr(Request $request)
     {
         $relawan = collect(Relawan::where('nik', $request->nik)->get());
@@ -89,21 +106,13 @@ class UserCtrl extends Controller
         }
         return response()->json(['message' => "gagal"]);
     }
-
-    public function getProfile(Request $request)
+    
+     public function getProfile(Request $request)
     {
-        $profile = Relawan::where("id_relawan",$request->id_relawan)->first()->profile;
+        $profile = Relawan::where("id_relawan",$request->id_relawan)->first();
 
         return response()->json(["message"=> "berhasil", "profile" => $profile], 200);
     }
 
-    public function forgotPassword(Request $request)
-    {
 
-    }
-
-    public function resetPassword(Request $request)
-    {
-
-    }
 }

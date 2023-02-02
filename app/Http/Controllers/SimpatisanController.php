@@ -25,7 +25,7 @@ class SimpatisanController extends Controller
 
     public function show($id)
     {
-        //
+
     }
 
     public function store(Request $request)
@@ -37,7 +37,7 @@ class SimpatisanController extends Controller
             }
             return response()->json($data, 200);
         }
-
+        
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
@@ -61,11 +61,9 @@ class SimpatisanController extends Controller
     public function delete($id)
     {
         $program = Program::find($id);
-        
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $program);
         }
-
         if ($program->delete()) {
             Storage::disk("public_path")->delete($program->foto);
             return back()->with("success", "Success Delete Program");
@@ -80,7 +78,7 @@ class SimpatisanController extends Controller
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $program);
         }
-
+        
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }

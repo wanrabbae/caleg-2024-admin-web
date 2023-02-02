@@ -14,7 +14,7 @@ class Daftar_Isu extends Model
     protected $primaryKey = "id_isu";
     public $timestamps = false;
     protected $guarded = [""];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("judul_isu", "LIKE", "%$search%")
         ->orWhereHas("caleg", function($caleg) use ($search) {

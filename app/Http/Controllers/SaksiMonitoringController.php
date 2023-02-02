@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Provinsi;
-use App\Models\Kabupaten;
-use App\Models\Desa;
 use App\Models\Monitoring_Saksi;
 use App\Models\Rk_pemilih;
 use App\Models\Relawan;
@@ -19,7 +16,77 @@ class SaksiMonitoringController extends Controller
      */
     public function index()
     {
-        if (request("table") != "kabupaten" && request("table") != "kecamatan" && request("table") != "desa") {
+    //     if (request("table") == "desa") {
+    //       $arr = auth("web")->check() ? Monitoring_Saksi::with(["desa", "caleg.partai"])->get() : Monitoring_Saksi::with(["desa"])->where("id_caleg", auth()->user()->id_caleg)->get();
+    //         $data = [];
+    //         $found = true;
+
+    //     foreach ($arr as $arr) {
+    //         for ($i = 0; $i < count($data); $i++) {
+    //             if (in_array($arr->desa->nama_desa, $data[$i])) {
+    //                 $data[$i][1] += $arr->suara_2024;
+    //                 $data[$i][2] += $arr->suara_2019;
+    //                 $found = false;
+    //                 break;
+    //             }
+    //         }
+    //         if ($found) {
+    //             array_push($data, [$arr->desa->nama_desa, $arr->suara_2024, $arr->suara_2019]);
+    //         }
+    //         $found = true;
+    //     }
+    //     $data = collect($data);
+    //     }
+        
+    //     if (request("table") == "kecamatan") {
+    //         $arr = auth("web")->check() ? Monitoring_Saksi::with(["desa.kecamatan", "caleg", "partai"])->get() : Monitoring_Saksi::with(["desa.kecamatan"])->where("id_caleg", auth()->user()->id_caleg)->get();
+    //         $data = [];
+    //         $found = true;
+
+    //     foreach ($arr as $arr) {
+    //         for ($i = 0; $i < count($data); $i++) {
+    //             if (in_array($arr->desa->kecamatan->nama_kecamatan, $data[$i])) {
+    //                 $data[$i][1] += $arr->suara_2024;
+    //                 $data[$i][2] += $arr->suara_2019;
+    //                 $found = false;
+    //                 break;
+    //             }
+    //         }
+    //         if ($found) {
+    //             array_push($data, [$arr->desa->kecamatan->nama_kecamatan, $arr->suara_2024, $arr->suara_2019]);
+    //         }
+    //         $found = true;
+    //     }
+    //     $data = collect($data);
+    //     }
+
+    //     if (request("table") == "kabupaten") {
+    //         $arr = auth("web")->check() ? Monitoring_Saksi::with(["desa.kecamatan.kabupaten", "caleg"])->get() : Monitoring_Saksi::with(["desa.kecamatan.kabupaten"])->where("id_caleg", auth()->user()->id_caleg)->get();
+    //         $data = [];
+    //         $found = true;
+
+    //     foreach ($arr as $arr) {
+    //         for ($i = 0; $i < count($data); $i++) {
+    //             if (in_array($arr->desa->kecamatan->kabupaten->nama_kabupaten, $data[$i])) {
+    //                 $data[$i][1] += $arr->suara_2024;
+    //                 $data[$i][2] += $arr->suara_2019;
+    //                 $found = false;
+    //                 break;
+    //             }
+    //         }
+    //         if ($found) {
+    //             array_push($data, [$arr->desa->kecamatan->kabupaten->nama_kabupaten, $arr->suara_2024, $arr->suara_2019]);
+    //         }
+    //         $found = true;
+    //     }
+    //     $data = collect($data);
+    //     }
+
+    //     return view("saksi.monitoring", [
+    //         "title" => "Monitoring Suara",
+    //         "dataArr" => $data,
+    // ]);
+    if (request("table") != "kabupaten" && request("table") != "kecamatan" && request("table") != "desa") {
             abort(404);
         }
 
@@ -38,7 +105,7 @@ class SaksiMonitoringController extends Controller
 
         if (request("table") == "kabupaten") {
             if (auth("caleg")->check()) {
-                $suara = Monitoring_Saksi::with("desa.kecamatan.kabupaten.provinsi")->where("id_caleg", auth()->user()->id_caleg)->whereHas("desa.kecamatan.kabupaten.provinsi", function($desa) {
+                $suara = Monitoring_Saksi::with("desa.kecamatan.kabupaten.provinsi")->where("id_caleg", auth()->user()->id_caleg)->orWhereHas("desa.kecamatan.kabupaten.provinsi", function($desa) {
                     $desa->where("id_provinsi", auth()->user()->id_provinsi)->where("dapil", auth()->user()->dapil);
                 })->search(request("search"))->get();
             } else {
@@ -63,12 +130,13 @@ class SaksiMonitoringController extends Controller
         
         if (request("table") == "kecamatan") {
             if (auth("caleg")->check()) {
-                $suara = Monitoring_Saksi::with("desa.kecamatan.kabupaten")->where("id_caleg", auth()->user()->id_caleg)->whereHas("desa.kecamatan.kabupaten", function($desa) {
+                $suara = Monitoring_Saksi::with("desa.kecamatan.kabupaten")->where("id_caleg", auth()->user()->id_caleg)->orWhereHas("desa.kecamatan.kabupaten", function($desa) {
                     $desa->where("id_kabupaten", request("kabupaten"))->where("dapil", auth()->user()->dapil);
                 })->search(request("search"))->get();
             } else {
                 $suara = Monitoring_Saksi::with(["desa.kecamatan.kabupaten"])->search(request("search"))->get();
             }
+            
             foreach ($suara as $data) {
                 for ($i = 0; $i < count($arr); $i++) {
                     if (in_array($data->desa->kecamatan->nama_kecamatan, $arr[$i])) {
@@ -88,7 +156,7 @@ class SaksiMonitoringController extends Controller
 
         if (request("table") == "desa") {
             if (auth("caleg")->check()) {
-                $suara = Monitoring_Saksi::with("desa.kecamatan")->where("id_caleg", auth()->user()->id_caleg)->whereHas("desa.kecamatan", function($desa) {
+                $suara = Monitoring_Saksi::with("desa.kecamatan")->where("id_caleg", auth()->user()->id_caleg)->orWhereHas("desa.kecamatan", function($desa) {
                     $desa->where("id_kecamatan", request("kecamatan"));
                 })->search(request("search"))->get();
             } else {
@@ -184,5 +252,34 @@ class SaksiMonitoringController extends Controller
     public function destroy(Monitoring_Saksi $monitoring_Saksi)
     {
         //
+    }
+
+
+    public function fetch(Request $request) {
+        if ($request->has("getData") && $request->getData) {
+            if (auth("caleg")->check()) {
+                $this->authorize("all-caleg", Monitoring_Saksi::where("id_caleg", $request->data)->first());
+            }
+        $desa = $request->data == 0 ? Monitoring_Saksi::with("desa.kecamatan")->get() : Monitoring_Saksi::with("desa.kecamatan")->where("id_caleg", $request->data)->get();
+        $myArr = [];
+        $found = true;
+
+        foreach ($desa as $data) {
+            for ($i = 0; $i < count($myArr); $i++) {
+                if (in_array($data->desa->nama_desa, $myArr[$i])) {
+                    $myArr[$i][1] += $data->suara_2024;
+                    $myArr[$i][2] += $data->suara_2019;
+                    $found = false;
+                    break;
+                }
+            }
+            if ($found) {
+                array_push($myArr, [$data->desa->nama_desa, $data->suara_2024, $data->suara_2019]);
+            }
+            $found = true;
+        }
+
+        return response()->json($myArr);
+        }
     }
 }

@@ -7,8 +7,8 @@ use App\Models\Partai;
 use App\Models\Legislatif;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\File;
 
 class SettingController extends Controller
 {
@@ -79,18 +79,18 @@ class SettingController extends Controller
     public function update(Request $request, $id)
     {
         if (auth("caleg")->check()) {
-
+            
         Gate::allowIf(function($user) {
             return $user->id_caleg == auth()->user()->id_caleg;
         });
-
+        
         $caleg = Caleg::find($id);
         $rules = [
             "nama_caleg" => "required|max:255",
             "nama_lengkap" => "required|max:255",
-            "id_legislatif" => "required",
             "harapan_suara" => "required",
             "downline" => "required",
+            "id_legislatif" => "required",
             "alamat" => "required|max:255",
             "id_partai" => "required",
             "foto" => "file|image|max:5120"
@@ -116,8 +116,8 @@ class SettingController extends Controller
         $data = $request->validate($rules);
 
         if ($request->has("foto")) {
-            if (File::exists($caleg->foto)) {
-                File::delete($caleg->foto);
+            if (Storage::disk("public_path")->exists($caleg->foto)) {
+                Storage::disk("public_path")->delete($caleg->foto);
             }
             $data["foto"] = $request->file("foto")->store("/images", "public_path");
         }
@@ -159,8 +159,8 @@ class SettingController extends Controller
         $data = $request->validate($rules);
 
         if ($request->has("foto_user")) {
-            if (File::exists($user->foto_user)) {
-                File::delete($user->foto_user);
+            if (Storage::disk("public_path")->exists($user->foto_user)) {
+                Storage::disk("public_path")->delete($user->foto_user);
             }
             $data["foto_user"] = $request->file("foto_user")->store("/images", "public_path");
         }

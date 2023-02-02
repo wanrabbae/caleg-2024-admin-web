@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Survey;
-use App\Models\Variabel;
+use App\Models\Hasil_Survey;
 use Illuminate\Http\Request;
 
 class SurveyCtrl extends Controller
@@ -15,19 +15,23 @@ class SurveyCtrl extends Controller
      */
      public function getSurvey(Request $request)
     {
-        $survey = Survey::where([
-            ['aktif', '=', 'Y'],
-            ['id_caleg', '=', $request->id_caleg],
-        ])->orderBy('id_survey', 'ASC')->get();
+        // $survey = Survey::where([
+        //     ['aktif', '=', 'Y'],
+        //     ['id_caleg', '=', $request->id_caleg],
+        // ])->orderBy('id_survey', 'ASC')->get();
+        
+        $survey = Survey::where("aktif", "Y")->where("id_caleg", $request->id_caleg)->first();
+        $hasil = Hasil_Survey::where("id_relawan", $request->id_relawan)->where("id_survey", $survey->id_survey)->first();
+        
+        if(strtotime($survey->sampai_tanggal) >= strtotime(now())){
+            return response()->json(["message" =>  "Berhasil",   'survey' => $survey]);
+        }
+        
+        if ($hasil) {
+            return response()->json(["message" => "N"]);
+        }
+        // return response()->json(["message" =>  "Berhasil",   'survey' => $survey]);
 
-
-        // return $survey->t
-
-        // if(){
-
-        // }
-
-        return response()->json(["message" =>  "Berhasil",   'survey' => $survey]);
     }
 
 
@@ -97,5 +101,4 @@ class SurveyCtrl extends Controller
             return response()->json(['message' => 0], 500, );
             // return back()->with('error', 'failed Deleting Data Survey')
     }
-
 }

@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-          <div class="d-flex justify-content-between flex-column flex-md-row">
+            <div class="d-flex justify-content-between flex-column flex-md-row">
             <div>
               <form action="" method="GET" class="d-block mb-2">
               @if (request()->has("search"))
@@ -187,7 +187,6 @@
           data: e.currentTarget.value
         },
         success: resp => {
-          console.log(resp)
             $("#edit_form").attr("action", `{{ asset('invoices/${resp.id_invoice}') }}`)
             $("#edit_id_caleg").val(resp.id_caleg)
         },

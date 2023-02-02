@@ -80,7 +80,7 @@
                                         <button type="button" class="btn btn-warning mx-3 getData" value="{{ $item->id_pemilih }}" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <form action="{{ asset("dpt/" . $item->id_pemilih) }}" method="post" class="d-inline">
+                                        <form action="/dpt/{{ $item->id_pemilih }}" method="post" class="d-inline">
                                             @method('delete')
                                             @csrf
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus DPT Pemilih {{ $item->nama }}')">

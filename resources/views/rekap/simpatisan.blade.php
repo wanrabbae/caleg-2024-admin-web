@@ -63,8 +63,8 @@
                                     <td>{{ $data->judul_program }}</td>
                                     <td>{{ $data->deskripsi }}</td>
                                     <td>
-                                        @if (File::exists($data->foto))
-                                            <img src="{{ asset($data->foto) }}" alt="" style="width: 75px">
+                                        @if (Storage::disk("public_path")->exists($data->foto))
+                                            <img src="{{ asset('public/'.$data->foto) }}" alt="" style="width: 75px">
                                         @else
                                             <i class="fas fa-image"></i>
                                             <span>Image Not Found</span>

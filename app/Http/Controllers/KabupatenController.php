@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Helper;
-use App\Models\Provinsi;
 use App\Models\Kabupaten;
+use App\Models\Provinsi;
 use Illuminate\Http\Request;
 
 class KabupatenController extends Controller

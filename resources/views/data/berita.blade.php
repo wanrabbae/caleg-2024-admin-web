@@ -8,8 +8,7 @@
         </button>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <div class="d-flex justify-content-between flex-column flex-md-row">
+        <div class="table-responsive"><div class="d-flex justify-content-between flex-column flex-md-row">
                 <div>
                   <form action="" method="GET" class="d-block mb-2">
                   @if (request()->has("search"))
@@ -78,8 +77,8 @@
                                     </form>
                                 </td>
                                 <td>
-                                     @if (File::exists($item->gambar))
-                                        <img src="{{ asset($item->gambar) }}" alt="" class="mx-auto d-block" style="width: 75px">
+                                     @if (Storage::disk("public_path")->exists($item->gambar))
+                                        <img src="{{ asset('public/'.$item->gambar) }}" alt="" class="mx-auto d-block" style="width: 75px">
                                     @else
                                         <i class="fas fa-image"></i>
                                         <span>Image Not Found</span>
@@ -168,12 +167,12 @@
             @csrf
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="judul_news" class="form-label">Judul Bierta</label>
+                    <label for="judul_news" class="form-label">Judul News</label>
                     <input type="text" name="judul" id="update_judul" class="form-control" placeholder="Judul news">
                 </div>
                 <div class="form-group">
                     <label for="isi_berita" class="form-label">Isi Berita</label>
-                    <textarea name="isi_berita" id="update_isi_berita" rows="5" class="form-control" placeholder="Masukan Isi Berita"></textarea>
+                    <textarea name="isi_berita" id="update_isi_berita" rows="2" class="form-control" placeholder="Masukan Isi Berita"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="tgl_publish" class="form-label">Tanggal Publish</label>

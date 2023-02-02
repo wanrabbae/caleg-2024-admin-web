@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Helper;
+use Helper;
 use App\Models\Provinsi;
 use App\Models\Kecamatan;
 use App\Models\Kabupaten;
@@ -20,11 +20,12 @@ class DesaController extends Controller
     {
         if (Helper::RequestCheck(request()->all())) {
             return back()->with("error", "Karakter Ilegal Ditemukan");
-        };
-
+        }
+        
         return view("residences.desa", [
             "title" => "Desa Page",
             "dataArr" => Desa::with("kecamatan.kabupaten.provinsi")->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),
+
             "provinsi" => Provinsi::all()
        ]);
     }
@@ -50,7 +51,7 @@ class DesaController extends Controller
         if ($request->has("getData") && $request->getData) {
             return response()->json(Desa::find($request->data), 200);
         }
-
+        
         if ($request->has("getProvinsi") && $request->getProvinsi) {
             $data = Kabupaten::where("id_provinsi", $request->data)->get();
             if (!$data->count()) {
@@ -123,7 +124,7 @@ class DesaController extends Controller
         $rules = [
             "tps" => "required",
         ];
-
+        
         if ($request->id_kecamatan && $request->id_kecamatan != $desa->id_kecamatan) {
             $rules["id_kecamatan"] = "required";
         }

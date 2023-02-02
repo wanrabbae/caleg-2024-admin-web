@@ -12,7 +12,7 @@ class Rk_bank extends Model
     protected $primaryKey = "id_bank";
     public $timestamps = false;
     protected $guarded = [];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("nama_bank", "LIKE", "%$search%")
         ->orWhere("nomor_bank", "LIKE", "%$search%")
@@ -23,7 +23,7 @@ class Rk_bank extends Model
     public function caleg() {
         return $this->belongsTo(Caleg::class, "id_caleg");
     }
-
+    
     public function transaksi() {
         return $this->hasMany(Rk_transaksi::class, "id_bank");
     }

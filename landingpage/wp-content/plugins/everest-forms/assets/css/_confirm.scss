@@ -1,0 +1,160 @@
+/**
+ * _confirm.scss
+ * Styling applied to jQuery-confirm JS alert library.
+ */
+
+/**
+ * Styling begins
+ */
+div.jconfirm {
+
+	*,
+	*::before,
+	*::after {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+	&.jconfirm-modern {
+		div.jconfirm-box-container div.jconfirm-box {
+			border-radius: 0;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+		}
+
+		.jconfirm-box {
+			div.jconfirm-content-pane {
+				margin-bottom: 20px;
+				display: block;
+
+				.jconfirm-content {
+					margin-bottom: 0;
+					overflow: initial;
+				}
+			}
+
+			div.jconfirm-content {
+				font-size: 16px;
+				color: #555;
+				line-height: 1.5;
+
+				p {
+					margin: 0 0 16px;
+					font-size: 16px;
+				}
+			}
+
+			input[type='text'] {
+				width: 99%;
+				padding: 10px;
+				box-shadow: none;
+				margin: 20px auto 0 auto;
+				border: 1px solid #d6d6d6;
+			}
+
+			#evf-embed-shortcode {
+				margin: 20px 0;
+				text-align: center;
+				font-size: 24px;
+				padding: 8px 5px;
+			}
+
+			#evf-embed-shortcode:disabled {
+				color: #333;
+			}
+
+			button.btn-confirm {
+				background-color: $blue;
+				color: $color-white;
+				outline: none;
+
+				&:hover {
+					background-color: transparentize($blue, 0.2);
+				}
+			}
+
+			.error {
+				color: $red;
+				display: none;
+			}
+
+			div.jconfirm-title-c .jconfirm-icon-c {
+				-webkit-transition: none !important;
+				transition: none !important;
+				-webkit-transform: none !important;
+				-ms-transform: none !important;
+				transform: none !important;
+				font-size: 45px !important;
+
+				.dashicons {
+					height: inherit;
+					width: inherit;
+					font-size: 60px;
+				}
+			}
+		}
+	}
+}
+
+// Customize jsconfirm styles
+.everest-forms-jsconfirm {
+	&.jconfirm-modern {
+		.jconfirm-box {
+			width: 500px !important;
+			padding: 20px 30px 15px !important;
+			border-radius: 4px !important;
+
+			.jconfirm-title-c {
+				font-size: 20px !important;
+				font-weight: 400 !important;
+				padding-bottom: 0 !important;
+				line-height: 1.4 !important;
+
+				.jconfirm-icon-c {
+					margin: 0 !important;
+				}
+			}
+
+			.jconfirm-content {
+				margin-bottom: 0 !important;
+
+				input[type='text'] {
+					margin: 5px 2px 2px;
+					padding: 5px 10px;
+
+					&:focus {
+						border-color: #007cba;
+						box-shadow: 0 0 0 1px #007cba;
+					}
+				}
+			}
+
+			.jconfirm-buttons {
+				text-align: right;
+
+				.everest-forms-btn {
+					font-weight: 400;
+					text-transform: none;
+				}
+			}
+		}
+	}
+
+	&--align-left {
+		&.jconfirm-modern {
+			.jconfirm-box {
+				.jconfirm-title-c {
+					text-align: left !important;
+				}
+
+				.jconfirm-content {
+					text-align: left !important;
+				}
+
+				.jconfirm-buttons {
+					text-align: right !important;
+				}
+			}
+		}
+	}
+}

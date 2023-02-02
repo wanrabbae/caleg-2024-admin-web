@@ -55,7 +55,7 @@ class Calegs extends Authenticatable
 
     public function legislatif()
     {
-        return $this->belongsTo(Legislatif::class, 'id_legislatif')->withDefault();
+        return $this->belongsTo(Legislatif::class, 'id_legislatif');
     }
 
     public function partai()
@@ -107,13 +107,9 @@ class Calegs extends Authenticatable
     }
 
     public function rekening() {
-        return $this->hasOne(Rk_bank::class, "id_caleg");
+        return $this->belongsTo(Rk_bank::class, "id_caleg");
     }
-
-    public function wallet() {
-        return $this->hasMany(Rk_wallet::class, "id_caleg");
-    }
-
+    
     public function kategori() {
         return $this->hasMany(Rk_kategori::class, "id_caleg");
     }
@@ -121,7 +117,7 @@ class Calegs extends Authenticatable
     public function transaksi() {
         return $this->hasMany(Rk_transaksi::class, "id_caleg");
     }
-
+    
     public function provinsi() {
         return $this->belongsTo(Provinsi::class, "id_provinsi")->withDefault();
     }
@@ -129,9 +125,9 @@ class Calegs extends Authenticatable
     public function kabupaten() {
         return $this->belongsTo(Kabupaten::class, "id_kabupaten")->withDefault();
     }
-
+    
     public function invoice() {
-        return $this->belongsTo(Invoice::class, "id_caleg", "id_caleg");
+        return $this->belongsTo(Invoice::class, "id_caleg");
     }
 
     public function getRememberTokenName() {

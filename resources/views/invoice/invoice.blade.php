@@ -3515,7 +3515,7 @@ window.application = new Application();
 	<div id="Transfer_VIA_BCA_774_548_629_1">
 		<span>Transfer VIA<br/>BCA 774 548 629 1<br/>a.n Calita</span>
 	</div>
-	<img id="logo_direktur" src="{{ asset("images/jagat.png") }}" srcset="{{ asset("images/jagat.png") }}">
+	<img id="logo_direktur" src="{{ asset("public/images/jagat.png") }}" srcset="{{ asset("public/images/jagat.png") }}">
 		
 	<div id="Scroll_Group_4">
 		<div id="Admin_________________________">

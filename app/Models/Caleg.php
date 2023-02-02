@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ConfigBlas;
 
-
 class Caleg extends Model
 {
     use HasFactory;
@@ -18,7 +17,7 @@ class Caleg extends Model
     protected $guarded = [];
 
     protected $hidden = ["password"];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("demo", $search)
         ->orWhere("dapil", $search)
@@ -45,7 +44,7 @@ class Caleg extends Model
 
     public function legislatif()
     {
-        return $this->belongsTo(Legislatif::class, 'id_legislatif')->withDefault();
+        return $this->belongsTo(Legislatif::class, 'id_legislatif');
     }
 
     public function partai()
@@ -96,13 +95,13 @@ class Caleg extends Model
     }
 
     public function rekening() {
-        return $this->hasOne(Rk_bank::class, "id_caleg");
+        return $this->belongsTo(Rk_bank::class, "id_caleg");
     }
-
+    
     public function wallet() {
         return $this->hasMany(Rk_wallet::class, "id_caleg");
     }
-
+    
     public function kategori() {
         return $this->hasMany(Rk_kategori::class, "id_caleg");
     }
@@ -110,7 +109,7 @@ class Caleg extends Model
     public function transaksi() {
         return $this->hasMany(Rk_transaksi::class, "id_caleg");
     }
-
+    
     public function provinsi() {
         return $this->belongsTo(Provinsi::class, "id_provinsi")->withDefault();
     }
@@ -118,7 +117,7 @@ class Caleg extends Model
     public function kabupaten() {
         return $this->belongsTo(Kabupaten::class, "id_kabupaten")->withDefault();
     }
-
+    
     public function invoice() {
         return $this->belongsTo(Invoice::class, "id_caleg", "id_caleg");
     }
@@ -166,15 +165,15 @@ class Caleg extends Model
             $caleg->saksi()->each(function($value) {
                 $value->delete();
             });
-            
-            $caleg->config()->delete();
-            
-            $caleg->rekening()->delete();
 
+            $caleg->config()->delete();
+
+            $caleg->rekening()->delete();
+            
             $caleg->wallet()->each(function($value) {
                 $value->delete();
             });
-
+            
             $caleg->kategori()->each(function($value) {
                 $value->delete();
             });
@@ -182,8 +181,9 @@ class Caleg extends Model
             $caleg->transaksi()->each(function($value) {
                 $value->delete();
             });
-
+            
             $caleg->invoice()->delete();
+    
         });
     }
 }

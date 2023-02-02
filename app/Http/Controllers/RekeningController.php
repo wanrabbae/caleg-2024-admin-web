@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Helper;
+use Helper;
 use App\Models\Rk_bank;
 use Illuminate\Http\Request;
 
@@ -51,7 +51,7 @@ class RekeningController extends Controller
 
             return response()->json($data, 200);
         }
-
+        
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
@@ -66,7 +66,7 @@ class RekeningController extends Controller
         if (Rk_bank::create($data)) {
             return back()->with("success", "Success New Bank");
         }
-        return back()->with("error", "Error When Creating New Bank");
+        return back()->with("error", "Error When Create New Bank");
     }
 
     /**
@@ -102,7 +102,7 @@ class RekeningController extends Controller
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $rk_bank);
         }
-
+        
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
@@ -136,7 +136,7 @@ class RekeningController extends Controller
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $rk_bank);
         }
-
+        
         if (Rk_bank::destroy($rk_bank->id_bank)) {
             return back()->with("success", "Success Delete Bank");            
         }

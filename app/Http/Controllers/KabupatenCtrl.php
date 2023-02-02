@@ -15,7 +15,7 @@ class KabupatenCtrl extends Controller
 
     public function getKabupaten()
     {
-        $kabupaten = Kabupaten::orderBy('id_kabupaten', 'DESC')->get();
+        $kabupaten = Kabupaten::where('dapil', request('dapil'))->where('id_provinsi', request('id_provinsi'))->with("caleg")->orderBy('id_kabupaten', 'ASC')->get();
 
         return response()->json(['kabupaten' => $kabupaten]);
     }
@@ -26,11 +26,11 @@ class KabupatenCtrl extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function getKabupaten2()
     {
-        $data = $request->validate([
-            "nama_kabupaten" => "required|max:255|unique:kabupaten"
-        ]);
+        $data = Kabupaten::where('id_provinsi', request('id_provinsi'))->with('kecamatan')->orderBy('id_kabupaten', 'ASC')->get();
+        
+        return response()->json(['kabupaten' => $data]);
     }
 
     /**

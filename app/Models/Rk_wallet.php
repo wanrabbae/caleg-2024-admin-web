@@ -13,7 +13,7 @@ class Rk_wallet extends Model
     protected $primaryKey = "id_wallet";
     public $timestamps = false;
     protected $guarded = ["id"];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("nama_wallet", "LIKE", "%$search%")
         ->orWhere("nomor_wallet", "LIKE", "%$search%")
@@ -24,7 +24,7 @@ class Rk_wallet extends Model
     public function caleg() {
         return $this->belongsTo(Caleg::class, "id_caleg");
     }
-
+    
     public function transaksi() {
         return $this->hasMany(Rk_transaksi::class, "id_wallet");
     }

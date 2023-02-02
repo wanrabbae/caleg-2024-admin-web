@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-          <div class="d-flex justify-content-between flex-column flex-md-row">
+            <div class="d-flex justify-content-between flex-column flex-md-row">
             <div>
               <form action="" method="GET" class="d-block mb-2">
               @if (request()->has("search"))
@@ -43,7 +43,6 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Judul Isu</th>
                         @auth("web")
                         <th>Caleg</th>
                         @endauth
@@ -65,9 +64,6 @@
                         <tr>
                             <td>
                                 {{ $loop->iteration }}
-                            </td>
-                            <td>
-                                {{ $data->judul_isu }}
                             </td>
                             @auth("web")
                             <td>
@@ -130,7 +126,7 @@
                                         </button>
                                     </form>
                                 </td>
-                        </tr>
+                        </tr>                
                         @endforeach
                     @endif
                 </tbody>
@@ -168,7 +164,7 @@
       </div>
     </div>
   </div>
-
+  
   {{-- Edit Modal --}}
   <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -187,12 +183,6 @@
                   <label for="tanggapan">Tanggapan</label>
                   <textarea type="text" class="form-control" id="edit_tanggapan" placeholder="Tanggapan" name="btn_tanggapan" rows="5"></textarea>
                 </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <a href="">
-                  <button type="submit" class="btn btn-primary">Edit</button>
-                </a>
-              </div>
             </form>
       </div>
     </div>

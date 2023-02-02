@@ -28,7 +28,7 @@ class EmailBlasController extends Controller
             "email" => "required",
             "pesan" => "required"
     ]);
-
+    
     if (auth("caleg")->check()) {
         foreach (explode(",", $request->email[0]) as $email) {
             $data = Relawan::where("email", $email)->first();

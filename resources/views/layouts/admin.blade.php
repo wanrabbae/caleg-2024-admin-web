@@ -8,12 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Caleg">
     <meta name="author" content="Alwan, Iqro, Ibnu">
-    <link rel="icon" type="image/x-icon" href="{{ asset("images/favicon.ico") }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset("public/images/favicon.ico") }}">
 
     <title>{{ $title ?? 'Laravel' }}</title>
 
     <!-- Custom fonts for this template-->
-    <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('public/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     {{-- anychart js --}}
     <script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
@@ -23,20 +23,19 @@
     <link href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
     <link href="https://cdn.anychart.com/releases/v8/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">
     <!-- Custom styles for this template-->
-    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset("vendor/datatables/dataTables.bootstrap.min.js") }}">
-
+    <link href="{{ asset('public/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 </head>
+
 <body id="page-top">
     <style>
-        #chart, #suaraChart, #uplineChart {
+        #chart, #suaraChart {
             width: 100%;
             height: 500px;
             margin: 0;
             padding: 0;
         }
-
+        
         /* Chrome, Safari, Edge, Opera */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
@@ -48,12 +47,12 @@
         input[type=number] {
         -moz-appearance: textfield;
         }
+        
 
         /* li.nav-item a.nav-link.collapsed i, .nav-item span { */
         .nav-item a.nav-link > span {
             color: {{ auth("caleg")->check() ? auth()->user()->partai->text_color : ""}}
         }
-
     </style>
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -63,7 +62,7 @@
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ asset('/') }}">
                 <div class="sidebar-brand-icon">
                     {{-- <i class="fas fa-laugh-wink"></i> --}}
-                    <img src="{{ asset('images/jagat.png') }}" alt="" srcset="" width="50">
+                    <img src="{{ asset('public/images/jagat.png') }}" alt="" srcset="" width="50">
                 </div>
                 <div class="sidebar-brand-text mx-3">{{ auth()->guard("web")->check() ? "PT.Jagat" : auth()->guard("caleg")->user()->partai->nama_pendek }}</div>
             </a>
@@ -188,6 +187,10 @@
                             <i class="fas fa-calendar"></i>
                             <span>Agenda</span>
                         </a>
+                        {{-- <a class="collapse-item font-weight-bold" href="">
+                            <i class="fas fa-vote-yea"></i>
+                            <span>Tabulasi Suara</span>
+                        </a> --}}
                     </div>
                 </div>
             </li>
@@ -211,7 +214,7 @@
                     </div>
                 </div>
             </li>
-            @endauth
+            @endif
 
             @if (auth("web")->check() || in_array(strtolower(auth("caleg")->user()->level), ["platinum", "gold"]))
             <li class="nav-item">
@@ -248,7 +251,7 @@
                     </div>
                 </div>
             </li>
-        {{--
+{{--
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeven1" aria-expanded="true" aria-controls="collapseSeven1">
                     <i class="fas fa-user-friends"></i>
@@ -261,7 +264,7 @@
                     </div>
                 </div>
             </li> --}}
-
+            
             @auth("caleg")
             @if (in_array(strtolower(auth("caleg")->user()->level), ["platinum"]))
             <li class="nav-item">
@@ -301,7 +304,6 @@
                         <span>Rekening Donasi</span>
                         </a>
                         <a class="collapse-item font-weight-bold" href="{{ asset('ewallet') }}"><i class="fas fa-wallet"></i>
-
                         <span>e-Wallet Donasi</span>
                         </a>
                         <div class="dropdown">
@@ -319,7 +321,7 @@
             </li>
             @endif
             @endauth
-
+            
             @auth("web")
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ asset('invoices') }}">
@@ -328,44 +330,6 @@
                 </a>
             </li>
             @endauth
-            
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNine" aria-expanded="true" aria-controls="collapseNine">
-                    <i class="fas fa-wallet"></i>
-                    <span>Finance</span>
-                </a>
-                <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item font-weight-bold" href="{{ asset('rekening') }}"><i class="fas fa-donate"></i>
-                        <span>Rekening Donasi</span>
-                        </a>
-                        <a class="collapse-item font-weight-bold" href="/email"><i class="fas fa-donate"></i>
-                        <span>No HP Donasi</span>
-                        </a>
-                        <div class="dropdown">
-                            <a class="collapse-item font-weight-bold dropdown-toggle" id="dropdownFadeIn" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <i class="fas fa-money-bill"></i>
-                                <span>Mutasi Keuangan</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-lg-right animated--fade-in" aria-labelledby="dropdownFadeIn">
-                                <a class="dropdown-item font-weight-bold" href="#!">Pemasukan</a>
-                                <a class="dropdown-item font-weight-bold" href="#!">Pengeluaran</a>
-                            </div>
-                        </div>
-                        <div class="dropdown">
-                            <a class="collapse-item font-weight-bold dropdown-toggle" id="dropdownFadeIn" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
-                                <i class="fas fa-search-dollar"></i>
-                                <span>Laporan Finance</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-lg-right animated--fade-in" aria-labelledby="dropdownFadeIn">
-                                <a class="dropdown-item font-weight-bold" href="#!">Neraca</a>
-                                <a class="dropdown-item font-weight-bold" href="#!">Jurnal Umum</a>
-                                <a class="dropdown-item font-weight-bold" href="#!">Periode Neraca</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ asset('documentation') }}">
@@ -373,7 +337,6 @@
                     <span>Documentation</span>
                 </a>
             </li>
-
 
             @auth("web")
             <!-- Divider -->
@@ -458,7 +421,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->nama_lengkap ?? auth()->guard("caleg")->user()->nama_lengkap}}</span>
-                                <img class="img-profile rounded-circle" src="{{ Auth::guard("web")->check() ? asset(Auth::user()->foto_user) : asset(Auth::guard("caleg")->user()->foto) }}">
+                                <img class="img-profile rounded-circle" src="{{ Auth::guard("web")->check() ? asset("public/".Auth::user()->foto_user) : asset('public/'.Auth::guard("caleg")->user()->foto) }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -553,20 +516,20 @@
     </a>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('public/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('public/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+    <script src="{{ asset('public/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+    <script src="{{ asset('public/js/sb-admin-2.min.js') }}"></script>
 
     <!-- Page level plugins -->
-    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('public/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('public/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
-    <script src="{{ asset('js/demo/datatables-demo.js') }}"></script>
+    <script src="{{ asset('public/js/demo/datatables-demo.js') }}"></script>
     @yield("script")
 </body>
 

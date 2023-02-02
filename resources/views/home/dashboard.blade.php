@@ -143,7 +143,7 @@
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
+                    }
         });
 
         let getData = () => {
@@ -239,7 +239,7 @@
                         $.ajaxSetup({
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                }
+                                    }
                         });
                         
                         let result = $.ajax({

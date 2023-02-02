@@ -14,7 +14,7 @@ class VariableCtrl extends Controller
      */
     public function getVariabel(Request $request)
     {
-        $variable = Variabel::where("id_survey", $request->id_survey)->orderBy("id_variabel", "ASC")->get();
+        $variable = Variabel::where("id_survey", $request->id_survey)->with('survey')->orderBy("id_variabel", "ASC")->get();
 
         return response()->json([ "message" => "Berhasil","variable" => $variable]);
     }

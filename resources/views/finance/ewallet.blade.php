@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-          <div class="d-flex justify-content-between flex-column flex-md-row">
+            <div class="d-flex justify-content-between flex-column flex-md-row">
             <div>
               <form action="" method="GET" class="d-block mb-2">
               @if (request()->has("search"))
@@ -182,6 +182,9 @@
   }
 
   $(".getData").on("click", getData);
+  $(document).on("click", function() {
+    $(".getData").off().on("click", getData);
+  })
   })
   </script>
   @endsection

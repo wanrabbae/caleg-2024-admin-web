@@ -13,7 +13,7 @@ class Partai extends Model
     protected $primaryKey = "id_partai";
     public $timestamps = false;
     protected $guarded = [];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("nama_partai", "LIKE", "%$search%")
         ->orWhere("nama_pendek", "LIKE", "%$search%")

@@ -21,8 +21,8 @@ class DaftarIsuController extends Controller
      */
     public function index()
     {
-        if (request()->has("download")) {
-            if (auth("caleg")->check()) {
+       if (request()->has("download")) {
+           if (auth("caleg")->check()) {
                $data = Daftar_Isu::find(request("download"));
                $this->authorize("all-caleg", $data);
            }
@@ -36,7 +36,7 @@ class DaftarIsuController extends Controller
 
                 if ($zip->open(public_path($fileName), ZipArchive::CREATE) == TRUE) {
                     foreach ($data as $img) {
-                        $zip->addFile("image/$img", basename($img));
+                        $zip->addFile("public/images/$img", basename($img));
                     }
                 }
 
@@ -44,9 +44,10 @@ class DaftarIsuController extends Controller
 
                 return Storage::disk("public_path")->download($fileName);
             } else {
-                return Storage::disk("public_path")->download("image/$data[0]");
+                return Storage::disk("public_path")->download("public/images/$data[0]");
             }
         }
+
 
         if (Helper::RequestCheck(request()->all())) {
             return back()->with("error", "Karakter Ilegal Ditemukan");
@@ -83,10 +84,8 @@ class DaftarIsuController extends Controller
             }
             return response()->json($data, 200);
         }
-        /*if (auth("caleg")->check()) {
-            $request["id_caleg"] = auth()->user()->id_caleg;
-        }
-
+    
+        /*
         $data = $request->validate([
             "id_caleg" => "required",
             "jenis" => "required",
@@ -136,8 +135,8 @@ class DaftarIsuController extends Controller
         if (auth("caleg")->check()) {
             $isu = Daftar_Isu::find($id);
             $this->authorize("all-caleg", $isu);
-        }
-
+        }   
+        
          if ($request->has("btn_tanggapan")) {
             $request->validate([
                 "btn_tanggapan" => "required"
@@ -187,7 +186,7 @@ class DaftarIsuController extends Controller
         }
         if ($isu->delete()) {
             foreach (json_decode($isu->images) as $isuImg) {
-                File::delete("images/$isuImg");
+                Storage::disk("public_path")->delete("public/images/$isuImg");
             }
             return back()->with('success','Success Delete Daftar Isu');
         }

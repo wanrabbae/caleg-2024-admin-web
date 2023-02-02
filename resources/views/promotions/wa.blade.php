@@ -74,8 +74,8 @@
                                     </td>
                                     <td></td>
                                     <td>
-                                        @if (File::exists($data->foto_ktp))
-                                            <img src="{{ asset($data->foto_ktp) }}" alt="" style="width: 200px">
+                                        @if (Storage::disk("public_path")->exists($data->profile))
+                                            <img src="{{ asset("public/" . $data->profile) }}" alt="" style="width: 200px">
                                         @else
                                             <i class="fas fa-image"></i>
                                             <span>Image Not Found</span>
@@ -105,7 +105,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ asset('whatsapp/send') }}" method="POST" id="sendForm">
+                <form action="/whatsapp/send" method="POST" id="sendForm">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="no_hp[]" value="" id="no_hp">

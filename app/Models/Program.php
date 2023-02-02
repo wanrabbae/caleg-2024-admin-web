@@ -14,7 +14,7 @@ class Program extends Model
     public $timestamps = false;
 
     protected $guarded = [];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("judul_program", "LIKE", "%$search%")
         ->orWhereHas("caleg", function($caleg) use ($search) {

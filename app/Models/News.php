@@ -13,7 +13,7 @@ class News extends Model
     protected $primaryKey = 'id_news';
     protected $guarded = [];
     public $timestamps = false;
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("judul", "LIKE", "%$search%")
         ->orWhere("isi_berita", "LIKE", "%$search%")

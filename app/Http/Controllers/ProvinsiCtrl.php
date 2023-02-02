@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Provinsi;
 use Illuminate\Http\Request;
 
 class ProvinsiCtrl extends Controller
@@ -13,7 +14,9 @@ class ProvinsiCtrl extends Controller
      */
     public function index()
     {
-        //
+        $provinsi = Provinsi::orderBy('id_provinsi', 'ASC')->get();
+        
+        return response()->json(["provinsi" => $provinsi]);
     }
 
     /**

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class BackupController extends Controller
 {
     public function index() {
-        $data = File::allFiles("backups");
+        $data = Storage::disk("public_path")->allFiles("backups");
         $files = collect([]);
         foreach ($data as $file) {
             $files->push(pathinfo($file));
@@ -34,15 +34,18 @@ class BackupController extends Controller
         return back()->with("error", "Error, Can't Backup Database");
     }
 
+    public function download(Request $request) {
+
+    }
 
     public function delete($i) {
-        $data = File::allFiles("backups");
+        $data = Storage::disk("public_path")->allFiles("backups");
         $files = collect([]);
         foreach ($data as $file) {
             $files->push(pathinfo($file));
         }
         $file = $files->sortByDesc("filename")[$i]["basename"];
-        if (File::delete("backups/$file")) {
+        if (Storage::disk("public_path")->delete("backups/$file")) {
             return back()->with("success", "Success Delete Database");
         }
         return back()->with("error", "Error When Deleting Database");

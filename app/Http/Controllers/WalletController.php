@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Helper;
+use Helper;
 use App\Models\Rk_wallet;
 use Illuminate\Http\Request;
 
@@ -51,7 +51,7 @@ class WalletController extends Controller
 
             return response()->json($data, 200);
         }
-
+        
         $walletRules = 'required|numeric|unique:rk_wallet';
 
         if (auth('caleg')->check()) {
@@ -112,14 +112,14 @@ class WalletController extends Controller
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $rk_wallet);
         }
-
-        $findWallet = Rk_wallet::where('id_caleg', auth()->user()->id_caleg)->first();
+        
         $walletRules = 'required|numeric|unique:rk_wallet';
 
         if (auth('caleg')->check()) {
             $request['id_caleg'] = auth()->user()->id_caleg;
         }
 
+        $findWallet = Rk_wallet::where('id_caleg', auth()->user()->id_caleg)->first();
 
         if ($findWallet) {
             if ($findWallet->nomor_wallet == $request->nomor_wallet) {
@@ -151,7 +151,7 @@ class WalletController extends Controller
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $rk_wallet);
         }
-
+        
         if ($rk_wallet->delete()) {
             return back()->with('success', 'Success Delete Wallet');
         }

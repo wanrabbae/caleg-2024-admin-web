@@ -16,9 +16,9 @@ class Rk_pemilih_2 extends Model
 
     public $timestamps = false;
 
-    protected $guarded = [""];
-
-    public function desa()
+    protected $guarded = [];
+    
+     public function desa()
     {
         return $this->belongsTo(Desa::class, 'id_desa');
     }

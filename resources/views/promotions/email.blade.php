@@ -17,34 +17,33 @@
 
         <div class="card-body">
             <div class="table-responsive">
-                <div class="table-responsive">
-                    <div class="d-flex justify-content-between flex-column flex-md-row">
-                        <div>
-                          <form action="" method="GET" class="d-block mb-2">
-                          @if (request()->has("search"))
-                          <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
-                          @endif
-                          <span class="d-block">Data Per Page</span>
-                            <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
-                            <datalist id="paginates">
-                              <option value="25">25</option>
-                              <option value="50">50</option>
-                              <option value="75">75</option>
-                              <option value="100">100</option>
-                            </datalist>
-                          </form>
-                        </div>
-                        <div>
-                          <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
-                            @if (request()->has("paginate"))
-                            <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
-                            @endif
-                            <span class="d-block">Search</span>
-                            <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
-                          </div>
-                        </form>
+                <div class="d-flex justify-content-between flex-column flex-md-row">
+                    <div>
+                      <form action="" method="GET" class="d-block mb-2">
+                      @if (request()->has("search"))
+                      <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                      @endif
+                      <span class="d-block">Data Per Page</span>
+                        <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                        <datalist id="paginates">
+                          <option value="25">25</option>
+                          <option value="50">50</option>
+                          <option value="75">75</option>
+                          <option value="100">100</option>
+                        </datalist>
+                      </form>
+                    </div>
+                    <div>
+                      <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                        @if (request()->has("paginate"))
+                        <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                        @endif
+                        <span class="d-block">Search</span>
+                        <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
                       </div>
-                        {{ $relawan->links() }}
+                    </form>
+                  </div>
+                    {{ $relawan->links() }}
                 <table class="table table-bordered" id="" width="100%" cellspacing="0">
                     <thead>
                         <tr>
@@ -71,10 +70,10 @@
                                     <td>
                                         {{ $data->desa->kecamatan->nama_kecamatan ?? '' }}
                                     </td>
-                                    <td></td>
+                                    <td>{{ $data->status }}</td>
                                     <td>
-                                        @if (Storage::exists($data->foto_ktp))
-                                            <img src="{{ asset('storage/' . $data->foto_ktp) }}" alt="" style="width: 200px">
+                                        @if (Storage::disk("public_path")->exists($data->foto_ktp))
+                                            <img src="{{ asset('public/' . $data->foto_ktp) }}" alt="" style="width: 200px">
                                         @else
                                             <i class="fas fa-image"></i>
                                             <span>Image Not Found</span>
@@ -180,8 +179,5 @@
         }
         
         $(".setForm").on("click", addEmail)
-        $(document).on("click", function() {
-            $(".setForm").off().on("click", addEmail)
-        })
     </script>
 @endsection

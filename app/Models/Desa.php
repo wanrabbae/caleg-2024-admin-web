@@ -13,7 +13,7 @@ class Desa extends Model
     protected $primaryKey = 'id_desa';
     public $timestamps = false;
     protected $guarded = [];
-
+    
     public function scopeFilter($query, array $search) {
         return $query->whereHas("kecamatan.kabupaten.provinsi", function($desa) use ($search) {
             $desa->where("kabupaten.id_provinsi", $search["id"])->where("kabupaten.dapil", $search["dapil"]);
@@ -26,10 +26,10 @@ class Desa extends Model
             $kecamatan->where("nama_kecamatan", "LIKE", "%$search%")->orWhere("nama_kabupaten", "LIKE", "%$search%")->orWhere("nama_provinsi", "LIKE", "%$search%");
         })->orWhere("tps", $search);
     }
-
+    
     public function kecamatan()
     {
-        return $this->belongsTo(Kecamatan::class, 'id_kecamatan');
+        return $this->belongsTo(Kecamatan::class, 'id_kecamatan')->withDefault();
     }
 
     public function relawan()

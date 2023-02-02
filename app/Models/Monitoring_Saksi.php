@@ -15,13 +15,7 @@ class Monitoring_Saksi extends Model
     protected $guarded = [""];
 
     // protected $with = ["desa", "caleg", "partai"];
-
-    public function scopeFilter($query, array $search) {
-        return $query->whereHas("desa.kecamatan.kabupaten.provinsi", function($desa) use ($search) {
-            $desa->where("kabupaten.id_provinsi", $search["id"])->where("kabupaten.dapil", $search["dapil"]);
-        });
-    }
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("suara_caleg", "LIKE", "%$search%")
         ->orWhere("suara_partai", "LIKE", "%$search%")

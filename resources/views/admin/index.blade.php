@@ -69,7 +69,8 @@
         </div>
 
     </div>
-@endsection --}}
+@endsection
+--}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -84,11 +85,11 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Custom fonts for this template-->
-    <link href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('public/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
 </head>
 
@@ -98,10 +99,10 @@
             <div class="col-md-8 d-none bg-gradient-primary p-md-4 d-md-flex justify-content-center align-items-center text-white flex-column">
                 <h1>Caleg 2024</h1>
                 <span>Cara Jitu Memenangkan Caleg 2024 Dengan Mudah Dan Tepat</span>
-                <img src="{{ asset('images/logomd.png') }}" alt="" class="w-75">
+                <img src="{{ asset('public/images/logomd.png') }}" alt="" class="w-75">
             </div>
             <div class="col-md-4 d-flex justify-content-center min-vh-100 flex-column p-4">
-                    <img src="{{ asset("images/jagat.png") }}" alt="" class="w-25 mx-auto">
+                    <img src="{{ asset("public/images/jagat.png") }}" alt="" class="w-25 mx-auto">
                     <h1 class="font-weight-lighter font-bold text-dark text-center">Administrator</h1>
                     @if ($errors->any())
                         @foreach($errors->all() as $error)
@@ -123,9 +124,9 @@
                       <input type="text" name="username" class="form-control" id="username" aria-describedby="username">
                     </div>
                     <div class="form-group">
-                      <label for="password">Password</label>
-                      <input type="password" name="password" class="form-control" id="password">
-                      <i class="fas fa-eye btn btn-primary mt-2" id="btn"></i>
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control" id="password">
+                        <i class="fas fa-eye btn btn-primary mt-2" id="btn"></i>
                     </div>
                     <div class="form-group form-check">
                       <input type="checkbox" name="remember" class="form-check-input" id="remember">

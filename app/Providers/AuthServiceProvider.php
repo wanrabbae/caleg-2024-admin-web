@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Calegs;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -26,13 +26,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
+        
         Gate::define("all-caleg", function(Calegs $calegs, $model) {
             return $calegs->id_caleg === $model->id_caleg;
-        });
-
-        Gate::define("level", function(Calegs $calegs, ...$levels) {
-            return in_array(strtolower(auth("caleg")->user()->level), $levels);
         });
     }
 }

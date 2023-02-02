@@ -13,7 +13,7 @@ class Medsos extends Model
     public $timestamps = false;
 
     protected $guarded = [];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("type", "LIKE", "%$search%")
         ->orWhere("nama_medsos", "LIKE", "%$search%")

@@ -48,11 +48,11 @@ class DashboardLegislatifController extends Controller
         if ($request->has("getData") && $request->getData) {
             return response()->json(Legislatif::find($request->data), 200);
         }
-
-        $data = $request->validate([    
+        
+        $data = $request->validate([
             "nama_legislatif" => "required|max:255|unique:legislatif",
             "type" => "required"
-        ]);
+    ]);
 
         if (Legislatif::create($request->only('nama_legislatif'))) {
             return back()->with("success", "Success Create New Legislatif");
@@ -69,7 +69,7 @@ class DashboardLegislatifController extends Controller
      */
     public function show(Legislatif $legislatif)
     {
-        //
+ 
     }
 
     /**
@@ -91,21 +91,24 @@ class DashboardLegislatifController extends Controller
      */
     public function update(Request $request, Legislatif $legislatif)
     {
-        $rules = [
-            "type" => "required"
-        ];
 
-        if ($request->nama_legislatif !== $legislatif->nama_legislatif) {
-            $rules["nama_legislatif"] = "required|max:255|unique:legislatif";
-        }
+        // if ($request->nama_legislatif == $legislatif->nama_legislatif) {
+        //     return back();
+        // }
+        
+        // $rules = [
+        //     "type" => "required"
+        // ];
+        
+        // $rules["nama_legislatif"] = "required|max:255|unique:legislatif";
 
-        $data = $request->validate($rules);
+        // $data = $request->validate($rules);
 
-        if (Legislatif::where("id_legislatif", $legislatif->id_legislatif)->update($data)) {
-            return redirect("/dashboard/legislatif")->with("success", "Success Update $legislatif->nama_legislatif");
-        }
+        // if (Legislatif::where("id_legislatif", $legislatif->id_legislatif)->update($data)) {
+        //     return redirect("/dashboard/legislatif")->with("success", "Success Update $legislatif->nama_legislatif");
+        // }
 
-        return back()->with("error", "Error, Can't Update $legislatif->nama_legislatif");
+        // return back()->with("error", "Error, Can't Update $legislatif->nama_legislatif");
     }
 
     /**
@@ -122,7 +125,7 @@ class DashboardLegislatifController extends Controller
 
         return back()->with("error", "Error, Can't Delete $legislatif->nama_legislatif Legislatif");
     }
-
+    
     public function provinsi(Request $request) {
         if ($request->has("getData") && $request->getData) {
             $data = Legislatif::find($request->data)->type;
@@ -159,7 +162,7 @@ class DashboardLegislatifController extends Controller
             return response()->json($text, 200);
         }
     }
-
+    
     public function dapil(Request $request) {
         if ($request->has("getData") && $request->getData) {
             if ($request->id == "provinsi" || $request->id == "edit_provinsi") {

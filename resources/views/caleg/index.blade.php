@@ -41,13 +41,13 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Kode</th>
                             <th>Demo</th>
                             <th>Nama Caleg</th>
-                            <th>Nama Lengkap</th>
+                            <th>Nama</th>
                             <th>Legislatif</th>
                             <th>Wilayah</th>
                             <th>Dapil</th>
-                            <th>Downline</th>
                             <th>Level</th>
                             <th>Alamat</th>
                             <th>Phone</th>
@@ -64,6 +64,7 @@
                             @foreach ($dataArr as $data)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>ABCD-{{ $data->id_caleg }}</td>
                                     <td>
                                         <form action="{{ asset("caleg/" . $data->id_caleg) }}" method="POST">
                                             @method("put")
@@ -78,7 +79,6 @@
                                     <td>{{ $data->legislatif->nama_legislatif }}</td>
                                     <td>{{ $data->legislatif->type == "Provinsi" ? $data->provinsi->nama_provinsi : $data->kabupaten->nama_kabupaten }}</td>
                                     <td>{{ $data->dapil }}</td>
-                                    <td>{{ $data->downline }}</td>
                                     <td>
                                         <button data-toggle="modal" data-target="#editLevelModal" class="getLevel btn @if ($data->level == 'Basic') btn-primary @endif @if ($data->level == "Gold") btn-warning @endif @if ($data->level == "Platinum") btn-secondary @endif @if ($data->level == "Custom") btn-success @endif" type="button" value="{{ $data->id_caleg }}">
                                             {{ $data->level }}
@@ -99,8 +99,8 @@
                                     </td>
                                     <td>{{ $data->username }}</td>
                                     <td>
-                                        @if (File::exists($data->foto))
-                                            <img src="{{ asset($data->foto) }}" alt="" class="mx-auto d-block" style="width: 75px">
+                                        @if (Storage::disk("public_path")->exists($data->foto))
+                                            <img src="{{ asset("public/" . $data->foto) }}" alt="" class="mx-auto d-block" style="width: 75px">
                                         @else
                                             <i class="fas fa-image"></i>
                                             <span>Image Not Found</span>
@@ -137,7 +137,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ asset("caleg") }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ asset('caleg') }}" method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
                         @csrf
                         <div class="form-group">
@@ -221,10 +221,10 @@
                 </form>
             </div>
         </div>
-    </div>
-
-    {{-- Edit Modal --}}
-  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        </div>
+    
+        {{-- Edit Modal --}}
+      <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -304,13 +304,13 @@
       </div>
     </div>
   </div>
-
+  
   {{-- Level Modal --}}
-<div class="modal fade" id="editLevelModal" tabindex="-1" role="dialog" aria-labelledby="createLevelLabel" aria-hidden="true">
+<div class="modal fade" id="editLevelModal" tabindex="-1" role="dialog" aria-labelledby="createJabatanLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createModalLabel">Edit Level</h5>
+                <h5 class="modal-title" id="createModalLabel">Edit Jabatan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -370,7 +370,7 @@
         } 
       })
   }
-
+  
   let getDapil = e => {
             $.ajax({
                 url: `{{ asset('dashboard/dapil') }}`,
@@ -390,7 +390,7 @@
                 },
             })
         }
-
+  
   let getKab = e => {
             $.ajax({
                 url: `{{ asset('dashboard/kabupaten') }}`,
@@ -530,7 +530,7 @@
                 },
             })
         }
-
+        
         let getLevel = e => {
             $.ajax({
             url: `{{ asset('caleg') }}`,

@@ -18,7 +18,7 @@ class Relawan extends Model
     protected $hidden = [
         'password',
     ];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("nik", "LIKE", "%$search%")
         ->orWhere("nama_relawan", "LIKE", "%$search%")
@@ -40,7 +40,7 @@ class Relawan extends Model
 
     public function desa()
     {
-        return $this->belongsTo(Desa::class, 'id_desa');
+        return $this->belongsTo(Desa::class, 'id_desa')->withDefault();
     }
 
     public function uplineRel()
@@ -58,15 +58,15 @@ class Relawan extends Model
     }
 
     public function daftarIsu() {
-        return $this->hasMany(Daftar_Isu::class, "id_relawan");
+        return $this->hasMany(Daftar_Isu::class, "id_relawan")->withDefault();
     }
-
+    
     public function survey() {
-        return $this->hasMany(Hasil_Survey::class, "id_relawan");
+        return $this->hasMany(Hasil_Survey::class, "id_relawan")->withDefault();
     }
-
+    
     public function saksi() {
-        return $this->hasMany(Daftar_Saksi::class, "id_relawan");
+        return $this->hasMany(Daftar_Saksi::class, "id_relawan")->withDefault(["nama_relawan" => "Data Tidak Ditemukan"]);
     }
 
     public static function boot() {

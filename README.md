@@ -1,8 +1,3 @@
-# Sistem Informasi Management Caleg
-<img src="https://cdn.discordapp.com/attachments/1008921423915532368/1054204086225997905/Screenshot_2022-12-19_075519.png" >
-<img src="https://cdn.discordapp.com/attachments/1008921423915532368/1054204086632849419/Screenshot_2022-12-19_080326.png" >
-<img src="https://cdn.discordapp.com/attachments/1008921423915532368/1054204087178104862/Screenshot_2022-12-19_080403.png" >
-
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">

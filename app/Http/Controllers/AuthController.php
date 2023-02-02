@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Caleg;
 use App\Models\Legislatif;
-use App\Models\Kabupaten;
-use App\Models\Provinsi;
 use App\Models\Partai;
 use App\Models\User;
-use App\Mail\Activate;
-use App\Models\Invoice;
+use App\Models\Kabupaten;
+use App\Models\Provinsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\Activate;
+use App\Models\Invoice;
 
 class AuthController extends Controller
 {
@@ -53,7 +53,7 @@ class AuthController extends Controller
                 Auth::logout();
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
-                return redirect()->route("login")->with("error", "Maaf Akun Anda Belum Di Setujui");
+                return redirect()->route("login")->with("error", "Maaf Akun Anda Belum Di Aktifkan");
             }
             $request->session()->regenerate();
             return redirect()->route('dashboard')->with('success', 'You are now logged in!');
@@ -74,7 +74,6 @@ class AuthController extends Controller
                 "legislatif" => "required",
                 "level" => "required",
                 "provinsi" => "required",
-                "dapil" => "required",
                 "alamat" => "required|max:255",
                 "no_hp" => "required|max:20|unique:caleg",
                 "partai" => "required",
@@ -87,20 +86,20 @@ class AuthController extends Controller
             $request->validate([
                 "nama_caleg" => "required|max:255",
                 "nama_lengkap" => "required|max:255",
-                "email" => "required|email|unique:caleg",
+                "email" => "required|email",
                 "legislatif" => "required",
                 "level" => "required",
+                "provinsi" => "required",
                 "kabupaten" => "required",
-                "dapil" => "required",
                 "alamat" => "required|max:255",
-                "no_hp" => "required|max:20|unique:caleg",
+                "no_hp" => "required|max:20",
                 "partai" => "required",
-                "username" => "unique:caleg|required",
+                "username" => "required",
                 "password" => "required",
                 "foto" => "required"
                 ]);
         }
-
+        
         if ($request->hasFile('foto')) {
             // rename file with time
             $file = time() . '.' . $request->foto->extension();
@@ -109,14 +108,13 @@ class AuthController extends Controller
 
         // CREATE CALEG
         $caleg = Caleg::create([
-            "demo" => "Y",
+             "demo" => "Y",
             'nama_caleg' => $request->nama_caleg,
             'nama_lengkap' => $request->nama_lengkap,
-            'id_legislatif' => $request->legislatif,
             "level" => $request->level,
-            "id_provinsi" => $request["provinsi"],
-            "id_kabupaten" => $request["kabupaten"],
-            "dapil" => $request->dapil,
+            'id_legislatif' => $request->legislatif,
+            "id_provinsi" => $request["provinsi"] ?? null,
+            "id_kabupaten" => $request["kabupaten"] ?? null,
             'alamat' => $request->alamat,
             'no_hp' => $request->no_hp,
             'email' => $request->email,
@@ -127,7 +125,7 @@ class AuthController extends Controller
             'foto' => "images/" . $file,
             "created_at" => date("Y-m-d h:m:s", strtotime(now()))
         ]);
-
+        
         if ($caleg) {
         Caleg::where("email", $request->email)->update(["reset_token" => Str::random(60)]);
         $token = Caleg::where("email", $request->email)->first();
@@ -135,7 +133,7 @@ class AuthController extends Controller
         return redirect()->route('login')->with("error", "Silahkan Cek E-Mail $request->email Untuk Aktivasi Akun Demo");
         }
     }
-
+    
     public function activate() {
         if (!Caleg::where("reset_token", request("token"))->first()) {
             return redirect("login")->with("error", "Token Tidak Sama!");
@@ -164,7 +162,7 @@ class AuthController extends Controller
         }
         return back()->with("error", "Gagal mengubah warna tema");
     }
-
+    
     public function invoice(Request $request) {
         $data = $request->validate([
             "id_caleg" => "required"

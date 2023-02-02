@@ -44,7 +44,16 @@ class TransaksiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Rk_transaksi  $rk_transaksi
+     * @return \Illuminate\Http\Response
+     */
+     
+     public function store(Request $request)
     {
         if ($request->has("getData") && $request->getData) {
             $data = Rk_transaksi::find($request->data);
@@ -110,16 +119,9 @@ class TransaksiController extends Controller
     }
     return back()->with("error", "Error When Creating New Transaksi");
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Rk_transaksi  $rk_transaksi
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($data)
     {
-        //
     }
 
     /**
@@ -145,7 +147,7 @@ class TransaksiController extends Controller
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $rk_transaksi);
         }
-
+        
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
@@ -166,7 +168,6 @@ class TransaksiController extends Controller
         }
             
         $data = $request->validate($rule);
-        
         if (array_key_exists("media", $request->all())) {
             if ($request["media"] != "") {
                 if ($request["media"] == "Bank") {

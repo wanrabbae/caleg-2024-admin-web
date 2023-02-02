@@ -1,9 +1,10 @@
 @extends('layouts.admin')
 
 @section("content")
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-      @if ($dataArr->count() === 0)
+       @if ($dataArr->count() === 0)
         @if (!request()->has("paginate") && !request()->has("search"))
           <!-- Button trigger modal -->
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createModal">
@@ -15,7 +16,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-          <div class="d-flex justify-content-between flex-column flex-md-row">
+            <div class="d-flex justify-content-between flex-column flex-md-row">
             <div>
               <form action="" method="GET" class="d-block mb-2">
               @if (request()->has("search"))

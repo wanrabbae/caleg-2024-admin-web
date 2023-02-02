@@ -47,15 +47,9 @@
         max-height: 100%;
     }
 
-    @media print {
-        @page  {
-            size: A4 landscape;
-            margin: 0;
-            max-width: 100%;
-            max-height: 100%;
-        }
+    @media  print {
 
-    html,
+        html,
         body {
             width: 100%;
             height: 100%;

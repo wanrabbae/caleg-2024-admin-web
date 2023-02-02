@@ -20,7 +20,7 @@ class Invoice extends Model
         })
         ->orWhere("created_at", "LIKE", "%$search%");
     }
-
+    
     public function caleg() {
         return $this->belongsTo(Caleg::class, "id_caleg");
     }

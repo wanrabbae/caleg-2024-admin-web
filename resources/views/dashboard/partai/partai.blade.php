@@ -47,6 +47,8 @@
                             <th>Warna</th>
                             <th>Warna Kedua</th>
                             <th>Warna Teks</th>
+                            <th>Warna 1</th>
+                            <th>Warna 2</th>
                             <th>Logo</th>
                             <th>Action</th>
                         </tr>
@@ -59,13 +61,14 @@
                                     <td>{{ $data->nama_partai }}</td>
                                     <td>{{ $data->nama_pendek }}</td>
                                     <td>{{ $data->no_urut }}</td>
-                                    <td style="background: {{ $data->warna }}">
+                                    <td style="background: {{ $data->warna }}"></td>
                                     <td style="background: {{ $data->secondary_color }}"></td>
                                     <td style="background: {{ $data->text_color }}"></td>
-                                    </td>
+                                    <td style="background: {{ $data->front1 }}"></td>
+                                    <td style="background: {{ $data->front2 }}"></td>
                                     <td>
-                                        @if (File::exists($data->logo))
-                                            <img src="{{ asset($data->logo) }}" alt="" class="mx-auto d-block" style="width: 75px">
+                                        @if (Storage::disk("public_path")->exists($data->logo))
+                                            <img src="{{ asset("public/" . $data->logo) }}" alt="" class="mx-auto d-block" style="width: 75px">
                                         @else
                                             <i class="fas fa-image"></i>
                                             <span>Image Not Found</span>
@@ -75,7 +78,7 @@
                                         <button class="btn btn-warning mx-3 getData" value={{ $data->id_partai }} data-target="#editModal" data-toggle="modal">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <form action="{{ asset('dashboard/partai/' . $data->id_partai) }}" method="POST" class="d-inline">
+                                        <form action="/dashboard/partai/{{ $data->id_partai }}" method="POST" class="d-inline">
                                             @method('delete')
                                             @csrf
                                             <button type="submit" class="btn btn-danger">
@@ -126,6 +129,14 @@
                             <input type="color" class="form-control" id="text_color" name="text_color">
                         </div>
                         <div class="form-group">
+                            <label for="text_color">Warna Depan 1</label>
+                            <input type="color" class="form-control" id="front1" name="front1">
+                        </div>
+                        <div class="form-group">
+                            <label for="text_color">Warna Depan 2</label>
+                            <input type="color" class="form-control" id="front2" name="front2">
+                        </div>
+                        <div class="form-group">
                             <label for="no_urut">No Urut</label>
                             <input type="number" class="form-control" id="no_urut" placeholder="No Urut" name="no_urut">
                         </div>
@@ -173,12 +184,20 @@
                 </div>
                 <div class="form-group">
                     <label for="secondary_color">Warna Kedua</label>
-                    <input type="color" class="form-control" id="edit_secondary_color" name="secondary_color">
+                    <input type="color" class="form-control edit" id="edit_warna_kedua" name="secondary_color">
                 </div>
                 <div class="form-group">
                     <label for="text_color">Warna Teks</label>
                     <input type="color" class="form-control" id="edit_text_color" name="text_color">
                 </div>
+                 <div class="form-group">
+                            <label for="text_color">Warna Depan 1</label>
+                            <input type="color" class="form-control" id="edit_front1" name="front1">
+                        </div>
+                        <div class="form-group">
+                            <label for="text_color">Warna Depan 2</label>
+                            <input type="color" class="form-control" id="edit_front2" name="front2">
+                        </div>
                 <div class="form-group">
                     <label for="no_urut">No Urut</label>
                     <input type="number" class="form-control edit" id="edit_no_urut" placeholder="No Urut" name="no_urut">
@@ -224,6 +243,8 @@
             $("#edit_warna").val(resp.warna);
             $("#edit_secondary_color").val(resp.secondary_color);
             $("#edit_text_color").val(resp.text_color);
+            $("#edit_front1").val(resp.front1);
+            $("#edit_front2").val(resp.front2);
             $("#edit_no_urut").val(resp.no_urut);
         } 
       })

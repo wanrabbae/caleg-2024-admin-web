@@ -59,7 +59,6 @@
                             <th>Desa</th>
                             <th>Saksi</th>
                             <th>Kecamatan</th>
-                            <th>KTP</th>
                             <th>TPS</th>
                             <th>Referral</th>
                             @auth("web")
@@ -117,14 +116,6 @@
                                        @endif
                                    </td>
                                     <td>{{ $data->desa->kecamatan->nama_kecamatan }}</td>
-                                    <td>
-                                        @if (File::exists($data->foto_ktp))
-                                            <img src="{{ asset($data->foto_ktp) }}" alt="" style="width: 75px">
-                                        @else
-                                            <i class="fas fa-image"></i>
-                                            <span>Image Not Found</span>
-                                        @endif
-                                    </td>
                                     <td>{{ $data->tps ?? "Tidak Ada" }}</td>
                                     <td>{{ $data->referal }}</td>
                                     @auth("web")
@@ -138,56 +129,30 @@
                                         <form action="{{ asset("team/" . $data->id_relawan) }}" method="POST">
                                         @method("put")
                                         @csrf
-                                            <button type="submit" value="{{ $data->blokir }}" class="btn @if ($data->blokir == 'Y') btn-success @else btn-danger @endif" name="blokir">
+                                            <button type="submit" value="{{ $data->blokir }}" class="btn @if ($data->blokir == 'Y') btn-danger @else btn-success @endif" name="blokir">
                                                 {{ $data->blokir }}
                                             </button>
                                         </form>
                                     </td>
-                                    <td>
-                                        <a href="{{ asset("team/upline/" . $data->id_relawan) }}" target="_blank">
-                                            <button class="btn btn-warning" type="submit" name="id" value="{{ $data->id_relawan }}">
+                                    <td class="d-flex justify-content-center">
+                                        <form action="{{ asset("team/upline") }}" method="POST">
+                                            @csrf
+                                            <button class="btn btn-info " type="submit" name="id" value="{{ $data->id_relawan }}">
                                                 <i class="fas fa-eye"></i>
                                             </button>
-                                        </a>
-                                        <button class="btn btn-primary getData" value="{{ $data->id_relawan }}" data-toggle="modal" data-target="#editModal">
+                                        </form>
+                                        <button class="btn btn-primary getData mx-3" value="{{ $data->id_relawan }}" data-toggle="modal" data-target="#editModal">
                                             <i class="fas fa-edit"></i>
                                         </button>
                                         <form action="{{ asset("team/" . $data->id_relawan) }}" method="POST">
                                             @method('delete')
                                             @csrf
-                                            <button type="submit" onclick="return confirm('Anda yakin ingin menghapus data ini ?')" class="btn btn-danger">
+                                            <button type="submit" onclick="return confirm('Anda yakin ingin menghapus data ini ?')" class="btn btn-danger ">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
-                                 {{-- Modal Create Tps --}}
-                                 <div class="modal fade" id="createTpsModal{{$loop->iteration}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Create Tps</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form action="team/{{ $data->id_relawan }}" method="post">
-                                                        @method('put')
-                                                        @csrf
-                                                        <div class="form-group">
-                                                            <label for="tps">Input Tps</label>
-                                                            <input type="number" class="form-control" id="tps" name="tps" placeholder="Masukan Nomor Tps" >
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <a type="button" class="btn btn-secondary" data-dismiss="modal">Close</a>
-                                                            <button type="submit" name="saksi" value="{{ $data->saksi }}" class="btn btn-primary">edit</button>
-                                                        </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             @endforeach
                         @endif
                     </tbody>
@@ -246,23 +211,12 @@
                             <input required value="{{ old('nama_relawan') }}" type="text" class="form-control" id="nama_relawan" placeholder="Nama Relawan" name="nama_relawan">
                         </div>
                         <div class="form-group">
-                            <label for="jk">Jenis Kelamin</label>
-                            <select class="form-select form-control" aria-label="Default select example" name="jk" id="jk">
-                                <option value="Laki-Laki">Laki-laki</option>
-                                <option value="Perempuan">perempuan</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label for="id_desa">Pilih Desa</label>
                             <select class="form-control" name="id_desa" id="id_desa">
                                 @foreach ($desa as $item)
                                     <option value="{{ $item->id_desa }}">{{ $item->nama_desa }}</option>
                                 @endforeach
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="foto_ktp">Upload Foto KTP</label>
-                            <input required value="{{ old('foto_ktp') }}" type="file" class="form-control" id="foto_ktp" name="foto_ktp">
                         </div>
                         @auth("web")
                         <div class="form-group">
@@ -317,7 +271,7 @@
             </div>
         </div>
     </div> --}}
-
+    
     {{-- Report Modal --}}
   <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -400,10 +354,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="foto_ktp">Upload Foto KTP</label>
-                            <input value="{{ old('foto_ktp') }}" type="file" class="form-control" id="foto_ktp" name="foto_ktp">
-                        </div>
                         @auth("web")
                         <div class="form-group">
                             <label for="id_caleg">Pilih Caleg</label>
@@ -481,8 +431,8 @@
     </div>
 </div>
 
-    {{-- Jabatan Modal --}}
-    <div class="modal fade" id="editJabatanModal" tabindex="-1" role="dialog" aria-labelledby="createJabatanLabel" aria-hidden="true">
+{{-- Jabatan Modal --}}
+<div class="modal fade" id="editJabatanModal" tabindex="-1" role="dialog" aria-labelledby="createJabatanLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -604,7 +554,7 @@
   $(".getData").on("click", getData);
   $(".getLoyalis").on("click", getLoyalis);
   $(".getJabatan").on("click", getJabatan);
-
+  
   $("input[type='checkbox'].check").on("click", e => {
     $("input[type='checkbox'].check").each((i, v) => {
         if (v.checked) {

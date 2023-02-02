@@ -7,8 +7,8 @@
         <h3 class="text-primary">Setting Profile</h3>
     </div>
     <div class="card-body">
-    <form action="{{ asset('setting/'. auth()->user()->id_caleg) }}" method="POST" enctype="multipart/form-data">
-        @method("put")
+    <form action="/setting/{{ auth()->user()->id_caleg }}" method="POST" enctype="multipart/form-data">
+    @method("put")
         @csrf
     <div class="row">
         <div class="col-md-6">
@@ -28,7 +28,7 @@
             </select>
         </div>
         <div class="col-md-6 mt-3">
-            <label for="harapan_suara">Harapan Suara</label>
+            <label for="harapan_suara">Target Suara</label>
             <input type="text" class="form-control" value="{{ auth()->user()->harapan_suara }}" name="harapan_suara">
         </div>
         <div class="col-md-6 mt-3">
@@ -66,7 +66,7 @@
         </div>
         <div class="col-md-12 mt-3">
             <p>Foto</p>
-            <img src="{{ auth()->user()->foto }}" alt="" class="img-fluid" style="height: 200px">
+            <img src="{{ asset("public/" . auth()->user()->foto) }}" alt="" class="img-fluid" style="height: 200px">
             <p class="mt-2">Update Foto</p>
             <input type="file" class="form-control-file" id="foto" name="foto">
         </div>
@@ -83,7 +83,7 @@
         <h3 class="text-primary">Setting Profile</h3>
     </div>
     <div class="card-body">
-    <form action="/setting/{{ auth()->user()->id_users }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ asset('setting/'. auth()->user()->id_caleg) }}" method="POST" enctype="multipart/form-data">
     @method("put")
         @csrf
     <div class="row">
@@ -118,7 +118,7 @@
         </div>
         <div class="col-md-12 mt-3">
             <p>Foto</p>
-            <img src="{{ auth()->user()->foto_user }}" alt="" class="img-fluid" style="height: 200px">
+            <img src="{{ asset("public/".auth()->user()->foto_user) }}" alt="" class="img-fluid" style="height: 200px">
             <p class="mt-2">Update Foto</p>
             <input type="file" class="form-control-file" id="foto" name="foto_user">
         </div>

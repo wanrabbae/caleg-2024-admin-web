@@ -49,6 +49,7 @@ class CategoryController extends Controller
                     $this->authorize("all-caleg", $data);
                 }
                 return response()->json($data, 200);
+                return response()->json(Rk_kategori::find($request->data), 200);
             }
 
             if (auth("caleg")->check()) {
@@ -101,7 +102,7 @@ class CategoryController extends Controller
             if (auth("caleg")->check()) {
                 $this->authorize("all-caleg", $rk_kategori);
             }
-
+            
             $data = $request->validate([
                 "kode_kategori" => "required|max:6",
                 "nama_kategori" => "required|max:255",

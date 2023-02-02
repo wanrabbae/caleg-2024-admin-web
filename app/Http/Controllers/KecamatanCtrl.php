@@ -14,10 +14,9 @@ class KecamatanCtrl extends Controller
      */
     public function getKecamatan(Request $request)
     {
-        $kecamatan = Kecamatan::where('id_kabupaten', $request->id_kabupaten)->get();
-        // Kecamatan::orderBy('id_kecamatan', 'ASC')->get();
+        $kecamatan = Kecamatan::with('caleg')->where('dapil', request('dapil'))->where('id_kabupaten', $request->id_kabupaten)->get();
 
-        return response()->json(["message" => 1, 'kecamatan' => $kecamatan], 200);
+        return response()->json(['kecamatan' => $kecamatan], 200);
     }
 
     /**
@@ -26,19 +25,11 @@ class KecamatanCtrl extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function getKecamatan2()
     {
-
-        $data = $request->validate([
-            "nama_kecamatan" => "required|max:225|unique:kecamatan",
-            "wilayah" => "required",
-            "id_kabupaten" => "required",
-    ]);
-
-        if (Kecamatan::create($data)) {
-            return response()->json(["message" => 1], 201);
-        };
-        return response()->json(["message" => 0], 500);
+        $data = Kecamatan::where('id_kabupaten', request('id_kabupaten'))->with('desa')->orderBy('id_kecamatan', 'ASC')->get();
+        
+        return response()->json(['kecamatan' => $data]);
     }
 
     /**

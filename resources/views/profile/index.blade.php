@@ -9,7 +9,7 @@
         <div class="d-flex justify-content-between">
             <div style="overflow: hidden; width: 75%">
                 <div class="card text-center" style="width: 50%; ">
-                    <img src="{{ auth()->user()->foto }}" alt="" class="img rounded" width="100%">
+                    <img src="{{ asset('public/' . auth()->user()->foto) }}" alt="" class="img rounded" width="100%">
                     <div class="card-body">
                         <div class="">
                             <p class="h4 font-weight-bold">Nama Caleg</p>
@@ -51,7 +51,7 @@
         <div class="d-flex justify-content-between">
             <div style="overflow: hidden; width: 75%">
                 <div class="card text-center" style="width: 50%; ">
-                    <img src="{{ auth()->user()->foto_user }}" alt="" class="img rounded" width="100%">
+                    <img src="{{ asset("public/".auth()->user()->foto_user) }}" alt="" class="img rounded" width="100%">
                     <div class="card-body">
                         <div class="mt-4">
                             <p class="h4 font-weight-bold">Nama Lengkap</p>

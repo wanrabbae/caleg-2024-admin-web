@@ -13,7 +13,7 @@ class Agenda extends Model
     protected $primaryKey = "id_agenda";
 
     protected $guarded = [];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("tanggal", "LIKE", "%$search%")
         ->orWhere("jam", "LIKE", "%$search%")

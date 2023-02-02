@@ -94,7 +94,7 @@
         <div class="page">
             <div class="subpage">
                 <div class="header">
-                    <img src="{{ asset($foto) }}" width="80px" style="position: absolute; top: 0">
+                    <img src="{{ asset('public/'.$foto) }}" width="80px" style="position: absolute; top: 0">
                     <h2 style="text-align: center">{{ auth()->user()->partai->nama_partai }}</h2>
                     <h4 style="text-align: center">{{ auth()->user()->nama_caleg }}</h4>
                 </div>
@@ -157,7 +157,7 @@
             </div>
         </div>
         <script>
-            // window.print();
+            window.print();
         </script>
 </body>
 </html>

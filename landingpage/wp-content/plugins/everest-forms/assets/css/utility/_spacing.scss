@@ -1,0 +1,77 @@
+// Margin and Padding
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+	@include media-breakpoint-up($breakpoint) {
+		$infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+		@each $prop, $abbrev in (margin: m, padding: p) {
+			@each $size, $length in $grid-spacers {
+				.evf-#{$abbrev}#{$infix}-#{$size} {
+					#{$prop}: $length !important;
+				}
+				.evf-#{$abbrev}t#{$infix}-#{$size},
+				.evf-#{$abbrev}y#{$infix}-#{$size} {
+					#{$prop}-top: $length !important;
+				}
+				.evf-#{$abbrev}r#{$infix}-#{$size},
+				.evf-#{$abbrev}x#{$infix}-#{$size} {
+					#{$prop}-right: $length !important;
+				}
+				.evf-#{$abbrev}b#{$infix}-#{$size},
+				.evf-#{$abbrev}y#{$infix}-#{$size} {
+					#{$prop}-bottom: $length !important;
+				}
+				.evf-#{$abbrev}l#{$infix}-#{$size},
+				.evf-#{$abbrev}x#{$infix}-#{$size} {
+					#{$prop}-left: $length !important;
+				}
+			}
+		}
+
+		// Negative margins (e.g., where `.evf-mb-n1` is negative version of `.evf-mb-1`)
+		@each $size, $length in $grid-spacers {
+			@if $size != 0 {
+				.evf-m#{$infix}-n#{$size} {
+					margin: -$length !important;
+				}
+				.evf-mt#{$infix}-n#{$size},
+				.evf-my#{$infix}-n#{$size} {
+					margin-top: -$length !important;
+				}
+				.evf-mr#{$infix}-n#{$size},
+				.evf-mx#{$infix}-n#{$size} {
+					margin-right: -$length !important;
+				}
+				.evf-mb#{$infix}-n#{$size},
+				.evf-my#{$infix}-n#{$size} {
+					margin-bottom: -$length !important;
+				}
+				.evf-ml#{$infix}-n#{$size},
+				.evf-mx#{$infix}-n#{$size} {
+					margin-left: -$length !important;
+				}
+			}
+		}
+
+		// Some special margin utils
+		.evf-m#{$infix}-auto {
+			margin: auto !important;
+		}
+		.evf-mt#{$infix}-auto,
+		.evf-my#{$infix}-auto {
+			margin-top: auto !important;
+		}
+		.evf-mr#{$infix}-auto,
+		.evf-mx#{$infix}-auto {
+			margin-right: auto !important;
+		}
+		.evf-mb#{$infix}-auto,
+		.evf-my#{$infix}-auto {
+			margin-bottom: auto !important;
+		}
+		.evf-ml#{$infix}-auto,
+		.evf-mx#{$infix}-auto {
+			margin-left: auto !important;
+		}
+	}
+}

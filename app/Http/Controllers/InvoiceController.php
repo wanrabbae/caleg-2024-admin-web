@@ -19,7 +19,7 @@ class InvoiceController extends Controller
         if (Helper::RequestCheck(request()->all())) {
             return back()->with("error", "Karakter Ilegal Ditemukan");
         };
-
+        
         return view("invoice.index", [
             "title" => "Invoice Page",
             "data" => Invoice::with("caleg")->search(request("search"))->paginate(request("paginate") ?? 10)->withQueryString(),

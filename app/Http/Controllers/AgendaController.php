@@ -52,12 +52,11 @@ class AgendaController extends Controller
             }
             return response()->json($data, 200);
         }
-
+        
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
-
-        // dd($request);
+        
         $data = $request->validate([
             "nama_agenda" => "max:255|required",
             "tanggal" => "required",
@@ -65,7 +64,7 @@ class AgendaController extends Controller
             "lokasi" => "required|max:255",
             "id_caleg" => "required",
             "jenis" => "required"
-        ]);
+    ]);
 
         if (Agenda::create($data)) {
             return back()->with("success", "Success Create New Agenda");
@@ -81,6 +80,7 @@ class AgendaController extends Controller
      */
     public function show(Agenda $agenda)
     {
+        //
     }
 
     /**
@@ -106,7 +106,7 @@ class AgendaController extends Controller
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $agenda);
         }
-
+        
         if ($request->has('jenis')){
             if (Agenda::where('id_agenda', $agenda->id_agenda)->update(["jenis" => $request->jenis])){
                 return back()->with('success', 'Success Updating Jenis Agenda');
@@ -121,11 +121,11 @@ class AgendaController extends Controller
 
             return back()->with('error', 'Failed Updating Status');
         }
-
+        
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
-
+        
         $rules = [
             "nama_agenda" => "max:255|required",
             "tanggal" => "required",
@@ -134,22 +134,8 @@ class AgendaController extends Controller
             "id_caleg" => "required"
         ];
 
-        if($request->has('status')){
-            if(Agenda::where('id_agenda', $agenda->id_agenda)->update(["status" => $request->status])){
-                return back()->with('success', 'Success Updating Status');
-            }
-
-            return back()->with('error', 'Failed Updating Status');
-        }
-
-        if($request->has('jenis')){
-            if(Agenda::where('id_agenda', $agenda->id_agenda)->update(["jenis" => $request->jenis])){
-                return back()->with('success', 'Success Updating Jenis Agenda');
-            }
-            return back()->with('error', 'Failed Updating jenis Agenda');
-        }
-
         $data = $request->validate($rules);
+        
 
         if (Agenda::find($agenda->id_agenda)->update($data)) {
             return back()->with("success", "Success Edit $agenda->nama_agenda Agenda");
@@ -168,7 +154,7 @@ class AgendaController extends Controller
         if (auth("caleg")->check()) {
             $this->authorize("all-caleg", $agenda);
         }
-
+        
         if (Agenda::destroy($agenda->id_agenda)) {
             return back()->with("success", "Success delete $agenda->nama_agenda Agenda");
         }

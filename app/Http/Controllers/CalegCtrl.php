@@ -14,7 +14,7 @@ class CalegCtrl extends Controller
         //     return response()->json(["caleg" => Caleg::find($request->caleg)]);
         // }
 
-        $caleg = Caleg::with("partai", "medsos")->where('id_caleg', $request->id_caleg)->orderBy('id_caleg', 'ASC')->get();
+        $caleg = Caleg::with("partai")->where('id_caleg', $request->id_caleg)->orderBy('id_caleg', 'ASC')->get();
 
         if (!Caleg::where('id_caleg', $request->id_caleg)->with("partai")->first()) {
             return response()->json(['message' => 'gagal'], 400);

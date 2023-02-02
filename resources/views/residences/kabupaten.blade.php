@@ -12,6 +12,7 @@
 
     <div class="card-body">
         <div class="table-responsive">
+            <div class="table-responsive">
           <div class="d-flex justify-content-between flex-column flex-md-row">
             <div>
               <form action="" method="GET" class="d-block mb-2">
@@ -45,7 +46,7 @@
                         <th>No</th>
                         <th>Nama Kabupaten</th>
                         <th>Nama Provinsi</th>
-                        <th>Dapil Provinsi</th>
+                        <th>Daerah Pemilihan</th>
                         <th>Jumlah Dapil</th>
                         <th>Action</th>
                     </tr>
@@ -94,18 +95,18 @@
         <div class="modal-body">
                 @csrf
                 <div class="form-group">
-                  <label for="provinsi">Pilih Provinsi</label>
-                  <select class="form-control" name="id_provinsi" id="provinsi">
-                    <option value="">Pilih Provinsi</option>
-                    @foreach ($provinsi as $item)
-                    <option value="{{ $item->id_provinsi }}">{{ $item->nama_provinsi }}</option>
-                    @endforeach
-                  </select>
-                </div>
-                <div class="form-group">
                   <label for="kabupaten">Nama Kabupaten</label>
                   <input type="text" class="form-control" id="kabupaten" placeholder="Nama Kabupaten" name="nama_kabupaten">
                 </div>
+                <div class="form-group">
+                  <label for="provinsi">Pilih Provinsi</label>
+                  <select class="form-control" name="id_provinsi" id="provinsi">
+                      <option value="">Pilih Provinsi</option>
+                      @foreach ($provinsi as $item)
+                      <option value="{{ $item->id_provinsi }}">{{ $item->nama_provinsi }}</option>
+                      @endforeach
+                  </select>
+              </div>
                 <div class="form-group">
                   <label for="dapil">Pilih Dapil</label>
                   <select class="form-control" name="dapil" id="dapil">
@@ -143,17 +144,17 @@
                 @method('put')
                 @csrf
                 <div class="form-group">
-                  <label for="provinsi">Pilih Provinsi</label>
-                  <select class="form-control" name="id_provinsi" id="edit_provinsi">
-                    @foreach ($provinsi as $item)
-                    <option value="{{ $item->id_provinsi }}">{{ $item->nama_provinsi }}</option>
-                    @endforeach
-                  </select>
-                </div>
-                <div class="form-group">
                     <label for="kabupaten">Nama Kabupaten</label>
                     <input type="text" class="form-control" id="edit_kabupaten" placeholder="Nama Kabupaten" name="nama_kabupaten">
                 </div>
+                <div class="form-group">
+                  <label for="provinsi">Pilih Provinsi</label>
+                  <select class="form-control" name="id_provinsi" id="edit_provinsi">
+                      @foreach ($provinsi as $item)
+                      <option value="{{ $item->id_provinsi }}">{{ $item->nama_provinsi }}</option>
+                      @endforeach
+                  </select>
+              </div>
               <div class="form-group">
                   <label for="dapil">Pilih Dapil</label>
                   <select class="form-control" name="dapil" id="edit_dapil">

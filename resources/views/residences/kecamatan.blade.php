@@ -12,53 +12,54 @@
 
     <div class="card-body">
         <div class="table-responsive">
-          <div class="d-flex justify-content-between">
-            <div>
-              <form action="" method="GET" class="d-block mb-2">
-              @if (request()->has("search"))
-              <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@]+">
-              @endif
-              <span>Data Per Page</span>
-                <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
-                <datalist id="paginates">
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="75">75</option>
-                  <option value="100">100</option>
-                </datalist>
-              </form>
-            </div>
-            <div>
-              <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@]/gi.test(this['search'].value)">
-                @if (request()->has("paginate"))
-                <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
-                @endif
-                <span>Search</span>
-                <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@]+">
-              </div>
-            </form>
-          </div>
-            {{ $dataArr->links() }}
+            <div class="table-responsive">
+                <div class="d-flex justify-content-between flex-column flex-md-row">
+                    <div>
+                      <form action="" method="GET" class="d-block mb-2">
+                      @if (request()->has("search"))
+                      <input type="hidden" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                      @endif
+                      <span class="d-block">Data Per Page</span>
+                        <input type="number" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                        <datalist id="paginates">
+                          <option value="25">25</option>
+                          <option value="50">50</option>
+                          <option value="75">75</option>
+                          <option value="100">100</option>
+                        </datalist>
+                      </form>
+                    </div>
+                    <div>
+                      <form action="" method="GET" class="d-block mb-2" onsubmit="return !/[^\w\d@\s]/gi.test(this['search'].value)">
+                        @if (request()->has("paginate"))
+                        <input type="hidden" name="paginate" id="paginate" list="paginates" value="{{ request("paginate") }}">
+                        @endif
+                        <span class="d-block">Search</span>
+                        <input type="text" name="search" id="search" value="{{ request("search") }}" pattern="[a-zA-Z0-9@\s]+">
+                      </div>
+                    </form>
+                  </div>
+                    {{ $dataArr->links() }}
             <table class="table table-bordered" id="" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama Kecamatan</th>
-                    <th>Nama Kabupaten</th>
-                    <th>Nama Provinsi</th>
-                    <th>Dapil Kabupaten</th>
-                    <th>Wilayah</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if ($dataArr->count())
-                    @foreach($dataArr as $data)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $data->nama_kecamatan }}</td>
-                            <td>{{ $data->kabupaten->nama_kabupaten }}</td>
-                            <td>{{ $data->kabupaten->provinsi->nama_provinsi }}</td>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Kecamatan</th>
+                        <th>Nama Kabupaten</th>
+                        <th>Nama Provinsi</th>
+                        <th>Dapil Kabupaten</th>
+                        <th>Wilayah</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if ($dataArr->count())
+                        @foreach($dataArr as $data)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $data->nama_kecamatan }}</td>
+                                <td>{{ $data->kabupaten->nama_kabupaten }}</td>
+                                <td>{{ $data->kabupaten->provinsi->nama_provinsi }}</td>
                                 <td>{{ $data->dapil == 0 ? "Tidak Ada" : $data->dapil }}</td>
                                 <td><a href="{{ $data->wilayah }}" target="_blank" class="btn btn-primary">Lokasi</a></td>
                                 <td class="d-flex justify-content-center">
@@ -172,7 +173,7 @@
                   <div class="form-group">
                     <label for="dapil">Pilih Dapil</label>
                     <select class="form-control" name="dapil" id="edit_dapil">
-                        <option value="">Pilih Kabupaten Dahulu</option>
+                        <option value="">Pilih Kabupaten</option>
                     </select>
                 </div>
                   <div class="form-group">

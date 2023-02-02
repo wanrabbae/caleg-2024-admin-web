@@ -16,11 +16,11 @@ class DptCtrl extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+   public function index(Request $request)
     {
-        $data = Rk_pemilih::where('nik', request("nik"))->with('desa.kecamatan.kabupaten')->first();
+        $data = Rk_pemilih::where('nik', request("nik"))->with('desa.kecamatan.kabupaten.provinsi')->first();
         if(!$data){
-            return response()->json(['message' => 0], 500 );
+            return response()->json(['message' => 0]);
         }
         return response()->json(['message' => 1, 'data_dpt' => $data], 200);
     }

@@ -17,7 +17,7 @@ class DashboardPartaiController extends Controller
      */
     public function index()
     {
-        if (Helper::RequestCheck(request()->all())) {
+       if (Helper::RequestCheck(request()->all())) {
             return back()->with("error", "Karakter Ilegal Ditemukan");
         };
 
@@ -47,13 +47,15 @@ class DashboardPartaiController extends Controller
         if ($request->has("getData") && $request->getData) {
             return response()->json(Partai::find($request->data), 200);
         }
-
+        
         $data = $request->validate([
-            "nama_partai" => "required|max:100|unique:partai",
+            "nama_partai" => "required|max:255|unique:partai",
             "nama_pendek" => "required|max:50|unique:partai",
             "warna" => "required",
             "secondary_color" => "required",
             "text_color" => "required",
+            "front1" => "required",
+            "front2" => "required",
             "no_urut" => "required|max:100",
             "logo" => "image|max:2048|required"
     ]);
@@ -75,7 +77,7 @@ class DashboardPartaiController extends Controller
      */
     public function show(Partai $partai)
     {
-        //
+
     }
 
     /**
@@ -102,13 +104,15 @@ class DashboardPartaiController extends Controller
             "warna" => "required",
             "secondary_color" => "required",
             "text_color" => "required",
+            "front1" => "required",
+            "front2" => "required",
             "no_urut" => "required|max:100"
         ];
 
         if ($request->nama_partai != $partai->nama_partai) {
-            $rules["nama_partai"] = "required|max:100|unique:partai";
+            $rules["nama_partai"] = "required|max:255|unique:partai";
         }
-
+        
         if ($request->nama_pendek != $partai->nama_pendek) {
             $rules["nama_pendek"] = "required|max:50|unique:partai";
         }
@@ -116,7 +120,7 @@ class DashboardPartaiController extends Controller
         $data = $request->validate($rules);
 
         if ($request->file("logo")) {
-            if (Storage::disk("public_path")->exists($partai->foto)) {
+            if (Storage::disk("public_path")->exists($partai->logo)) {
                 Storage::disk("public_path")->delete($partai->logo);
             }
             $data["logo"] = $request->file("logo")->store("/images", "public_path");

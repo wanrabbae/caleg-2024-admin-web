@@ -16,7 +16,7 @@ class Kecamatan extends Model
     protected $guarded = [];
 
     public $timestamps = false;
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("nama_kecamatan", "LIKE", "%$search%")
         ->orWhere("dapil", $search)
@@ -32,9 +32,9 @@ class Kecamatan extends Model
     public function desa() {
         return $this->hasMany(Desa::class, "id_kecamatan");
     }
-
-    public function detailDapil() {
-        return $this->belongsTo(Detail_Dapil::class, "id_kecamatan");
+    
+     public function caleg(){
+        return $this->belongsTo(Caleg::class, "dapil", "dapil");
     }
 
     public static function boot() {
@@ -44,8 +44,6 @@ class Kecamatan extends Model
             $kecamatan->desa()->each(function($desa) {
                 $desa->delete();
             });
-
-            $kecamatan->detailDapil()->delete();
         });
     }
 

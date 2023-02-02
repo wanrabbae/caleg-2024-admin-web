@@ -14,8 +14,7 @@
         </button>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-          <div class="d-flex justify-content-between flex-column flex-md-row">
+        <div class="table-responsive"><div class="d-flex justify-content-between flex-column flex-md-row">
             <div>
               <form action="" method="GET" class="d-block mb-2">
               @if (request()->has("search"))
@@ -58,8 +57,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                  @if ($dataArr->count())
-                  @foreach($dataArr as $data)
+                    @if ($dataArr->count())
+                        @foreach($dataArr as $data)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $data->tgl_transaksi }}</td>
@@ -68,11 +67,11 @@
                             <td>{{ $data->id_bank ? "Bank" : "Wallet" }}</td>
                             <td>{{ $data->id_bank ? $data->bank->nama_bank : $data->wallet->nama_wallet }}</td>
                             @if ($data->kategori->jenis_transaksi == "Pemasukan")
-                            <td>Rp. {{ $data->jumlah }}</td>
+                            <td>Rp.{{ number_format($data->jumlah,2,',','.') }}</td>
                             <td></td>
                             @else
                             <td></td>
-                            <td>Rp.{{ $data->jumlah }}</td>
+                            <td>Rp.{{ number_format($data->jumlah,2,',','.') }}</td>
                             @endif
                             <td>{{ $data->deskripsi }}</td>
                             <td class="d-flex justify-content-center">
@@ -174,7 +173,7 @@
         <form action="" method="POST" id="edit_form">
           <div class="modal-body">
             @method('put')
-                @csrf
+                   @csrf
                   <div class="form-group">
                     <label for="tgl_transaksi">Tanggal Transaksi</label>
                     <input  type="date" class="form-control" name="tgl_transaksi" id="edit_tgl_transaksi">
@@ -226,7 +225,7 @@
       </div>
     </div>
   </div>
-
+  
   {{-- Report Modal --}}
   <div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -241,8 +240,8 @@
           <button type="button" class="btn btn-primary col-md-5 mx-auto d-block p-2 mt-2" data-toggle="modal" data-target="#neracaModal">
             Neraca Saldo
           </button>
-          <button type="button" class="btn btn-primary col-md-5 mx-auto d-block p-2 mt-2" data-toggle="modal" data-target="#periodeModal">
-            Periode Neraca
+          <button type="button" class="btn btn-primary col-md-5 d-block mx-auto mt-2 p-2" data-toggle="modal" data-target="#jurnalModal">
+            Jurnal Umum
           </button>
         </div>
       </div>
@@ -259,7 +258,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{ asset("laporan") }}" method="POST">
+        <form action="{{ asset("laporan") }}" method="POST" target="_blank">
         <div class="modal-body row">
             @csrf
             <input type="hidden" value="neraca" name="type">
@@ -284,8 +283,8 @@
     </div>
   </div>
 
-  {{-- Periode Neraca Modal --}}
-  <div class="modal fade" id="periodeModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  {{-- Jurnal Modal --}}
+  <div class="modal fade" id="jurnalModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -294,10 +293,10 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{ asset("laporan") }}" method="POST">
+        <form action="{{ asset("laporan") }}" method="POST" target="_blank">
         <div class="modal-body row">
             @csrf
-            <input type="hidden" value="periode" name="type">
+            <input type="hidden" value="jurnal" name="type">
             <div class="form-group col-md-5">
               <input type="date" class="form-control" name="start" id="start">
             </div>
@@ -318,10 +317,10 @@
       </div>
     </div>
   </div>
-  @endsection
-  @section("script")
+@endsection
+@section("script")
   <script>
-  $(document).ready(function() {
+$(document).ready(function() {
   $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -347,8 +346,8 @@
   }
 
     let getMedia = e => {
-      let data = $(`#${e.currentTarget.id}`).val();
-      
+        let data = $(`#${e.currentTarget.id}`).val();
+        
       $.ajax({
         url: "{{ asset('transaksi') }}",
         method: "POST",
@@ -384,12 +383,12 @@
         }
       })
     }
-
-    $("#media").on("change", getMedia);
+        
+     $("#media").on("change", getMedia);
     $("#jenis_transaksi").on("change", getMedia);
     $("#edit_media").on("change", getMedia);
     $("#edit_jenis_transaksi").on("change", getMedia);
     $(".getData").on("click", getData);
-  })
-</script>
+    })
+  </script>
 @endsection

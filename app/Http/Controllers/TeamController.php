@@ -110,10 +110,8 @@ class TeamController extends Controller
             "email" => "required|email:dns|max:255|unique:relawan",
             "username" => "required|max:255|unique:relawan",
             "password" => "required|max:255|min:3",
-            "foto_ktp" => "image|max:2048|required"
         ]);
 
-        $data['foto_ktp'] = $request->file("foto_ktp")->store("/images", "public_path");
         $data['password'] = bcrypt($data['password']);
         $data['referal'] = Str::random(3) . random_int(10, 99) . "5" . Str::random(1) .  Relawan::where("id_relawan", $request->id_relawan)->first() + 1;
 
@@ -131,7 +129,6 @@ class TeamController extends Controller
             $this->authorize("all-caleg", $relawan);
         }
         if ($relawan->delete()) {
-            Storage::disk("public_path")->delete($relawan->foto_ktp);
             return back()->with("success", "Success Delete Relawan");
         }
         return back()->with("error", "Error, Can't Delete Relawan");
@@ -227,7 +224,6 @@ class TeamController extends Controller
             "id_caleg" => "required",
             "status" => "required",
             "username" => "required|max:255",
-            "foto_ktp" => "image|max:2048"
     ];
 
     if ($request->nik !== $relawan->nik) {
@@ -243,11 +239,6 @@ class TeamController extends Controller
     }
 
     $data = $request->validate($rules);
-    
-    if ($request->hasFile("foto_ktp")) {
-        Storage::disk("public_path")->delete($relawan->foto_ktp);
-        $data['foto_ktp'] = $request->file("foto_ktp")->store("/images", "public_path");
-    }
 
     if ($request->password) {
         $data["password"] = bcrypt($request->password);

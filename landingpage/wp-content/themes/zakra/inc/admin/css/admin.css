@@ -1,0 +1,325 @@
+.zakra-notice {
+	position: relative;
+	padding: 8px 40px 8px 8px;
+}
+
+.zakra-notice .links {
+	margin: 1.2em 0;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.zakra-notice .links a {
+	margin-right: 10px;
+}
+
+.zakra-notice .links a > span {
+	vertical-align: middle;
+	padding-right: 5px;
+}
+
+.zakra-notice .notice-text .coupon-code {
+	display: inline-block;
+}
+
+.zakra-notice .notice-dismiss {
+	text-decoration: none;
+}
+
+.zakra-message__content {
+	display: flex;
+}
+
+.zakra-message__content .zakra-message__image {
+	display: flex;
+	flex: 0 0 160px;
+	min-height: 100px;
+	margin-right: 12px;
+	border-right: 1px solid #FCFCFD;
+}
+
+.zakra-message__content .zakra-message__image .zakra-screenshot {
+	width: 100%;
+	box-shadow: 0 0 1px 0 #ccd0d4;
+	border: 1px solid #dddddd;
+}
+
+.zakra-message__content .zakra-message__heading {
+	margin-top: 0;
+	margin-bottom: 12px;
+	line-height: 1.4;
+}
+
+.zakra-message__content .zakra-message__heading > a {
+	font-size: inherit;
+}
+
+.zakra-message__content .zakra-message__cta {
+	display: flex;
+	align-items: center;
+}
+
+.zakra-message__content .zakra-message__cta .plugin-install-notice {
+	margin-left: 15px;
+	line-height: 1.4;
+}
+
+.zakra-message__content .zakra-message__cta a:before {
+	margin: 5px;
+	vertical-align: middle;
+}
+
+a.zakra-message-close {
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 10px 15px 10px 21px;
+	font-size: 13px;
+	line-height: 1.23076923;
+	text-decoration: none;
+}
+
+a.zakra-message-close:before {
+	position: absolute;
+	top: 8px;
+	left: 0;
+	-webkit-transition: all .1s ease-in-out;
+	transition: all .1s ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+	.zakra-message__content .zakra-message__image {
+		display: none;
+	}
+}
+
+.appearance_page_zakra-options .wrap {
+	margin-top: 0;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.appearance_page_zakra-options #wpcontent,
+.appearance_page_zakra-options #wpbody-content .metabox-holder {
+	padding: 0;
+}
+
+.zakra-container {
+	max-width: 1150px;
+	margin: 0 auto;
+	padding: 0 20px;
+	box-sizing: border-box;
+}
+
+.zakra-container a {
+	text-decoration: none;
+	font-size: 13px;
+}
+
+.zakra-container ul {
+	margin: 0;
+	padding: 0;
+}
+
+.zakra-container .postbox {
+	box-shadow: 0 0 0 1px rgba(200, 215, 225, 0.5), 0 1px 2px #DDD;
+	border: 0;
+	min-width: initial;
+	margin-bottom: 40px;
+}
+
+.zakra-container .postbox .hndle {
+	cursor: inherit;
+	border-bottom: 1px solid #ccd0d4;
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+
+.zakra-container .postbox .hndle .dashicons {
+	padding-right: 5px;
+}
+
+.zakra-header {
+	background-color: #fff;
+	text-align: center;
+	box-shadow: 0 1px 0 rgba(200, 215, 225, 0.5), 0 1px 2px #DDD;
+	margin-bottom: 40px;
+	padding: 20px;
+}
+
+.zakra-header > .zakra-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.zakra-header .zakra-title {
+	display: flex;
+	align-items: center;
+}
+
+.zakra-header .zakra-title + div {
+	float: right;
+	align-items: center;
+}
+
+.zakra-header .zakra-title + div a {
+	display: inline-block;
+	margin: 0 10px;
+	vertical-align: middle;
+}
+
+.zakra-icon {
+	width: 130px;
+	height: 60px;
+}
+
+.zakra-version {
+	color: #000;
+	margin-left: 5px;
+	background: #efefef;
+	padding: 1px 3px;
+}
+
+.pro-feature {
+	display: flex;
+	justify-content: space-between;
+	padding: 15px;
+	margin: 0;
+	box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1) inset;
+}
+
+.pro-feature > a {
+	font-weight: bold;
+}
+
+.col-30 .postbox:first-child {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 7px 12px 7px 0;
+}
+
+@media (min-width: 768px) {
+	.col-70 {
+		float: left;
+		width: 70%;
+		box-sizing: border-box;
+		padding-right: 20px;
+	}
+	.col-30 {
+		float: left;
+		width: 30%;
+		box-sizing: border-box;
+		padding-left: 20px;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.zakra-header {
+		margin: 20px;
+	}
+	.zakra-header > .zakra-container {
+		display: block;
+	}
+	.zakra-header .zakra-title {
+		justify-content: center;
+	}
+	.zakra-header .zakra-title + div {
+		float: none;
+		margin-top: 20px;
+	}
+}
+
+.zakra-notice.theme-review-notice {
+	border-left-color: #23AB70;
+	padding: 20px 15px;
+}
+
+@media screen and (max-width: 768px) {
+	.zakra-notice.theme-review-notice .zakra-message__content {
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+.zakra-notice.theme-review-notice a.btn {
+	display: flex;
+	max-width: fit-content;
+	justify-content: center;
+	align-items: center;
+}
+
+.zakra-notice.theme-review-notice .zakra-message__image {
+	flex: 0;
+	min-height: auto;
+	margin-right: 35px;
+	margin-left: 10px;
+	padding-right: 0;
+	border-right: none;
+}
+
+.zakra-notice.theme-review-notice .zakra-logo--png {
+	width: 80px;
+	height: 80px;
+}
+
+.zakra-notice.theme-review-notice h3 {
+	font-size: 21px;
+	margin: 0;
+	line-height: 1;
+	color: #000;
+}
+
+.zakra-notice.theme-review-notice p {
+	font-size: 14px;
+	line-height: 21px;
+	color: #3C434A;
+	margin: 0;
+	margin-bottom: 6px;
+	max-width: 720px;
+	padding: 2px 0;
+}
+
+.zakra-notice.theme-review-notice span.dashicons.dashicons-smiley.smile-icon {
+	background: #f7e143;
+	border-radius: 50%;
+	font-size: 15px;
+	border: 1px solid;
+	width: 17px;
+	height: 17px;
+}
+
+.zakra-notice.theme-review-notice .button-primary {
+	background: #23AB70;
+	border-color: #23AB70;
+	box-shadow: none;
+	color: #fff;
+}
+
+@media screen and (max-width: 768px) {
+	.zakra-notice.theme-review-notice .button-primary {
+		margin-bottom: 10px;
+	}
+}
+
+.zakra-notice.theme-review-notice .button-secondary {
+	color: #23AB70;
+	border-color: #23AB70;
+	background: #f6f7f7;
+	vertical-align: top;
+}
+
+@media screen and (max-width: 768px) {
+	.zakra-notice.theme-review-notice .button-secondary {
+		margin-bottom: 10px;
+	}
+}
+
+.zakra-notice.theme-review-notice strong {
+	color: #000;
+}
+
+.zakra-notice.theme-review-notice .links {
+	margin: 1.2em 0 5px 0;
+}

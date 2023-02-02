@@ -13,7 +13,7 @@ class Rk_kategori extends Model
     public $timestamps = false;
     protected $primaryKey = "id_kategori";
     protected $guarded = ["id"];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("kode_kategori", "LIKE", "%$search%")
         ->orWhere("nama_kategori", "LIKE", "%$search%")
@@ -37,5 +37,4 @@ class Rk_kategori extends Model
             });
         });
     }
-
 }

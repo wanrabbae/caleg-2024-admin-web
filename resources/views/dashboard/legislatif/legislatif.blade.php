@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-          <div class="d-flex justify-content-between flex-column flex-md-row">
+            <div class="d-flex justify-content-between flex-column flex-md-row">
             <div>
               <form action="" method="GET" class="d-block mb-2">
               @if (request()->has("search"))
@@ -56,9 +56,9 @@
                                 <td>{{ $data->nama_legislatif }}</td>
                                 <td>{{ $data->type }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <button class="btn btn-warning mx-3 getData" value="{{ $data->id_legislatif }}" data-toggle="modal" data-target="#editModal">
+                                    {{-- <button class="btn btn-warning mx-3 getData" value="{{ $data->id_legislatif }}" data-toggle="modal" data-target="#editModal">
                                         <i class="fas fa-edit"></i>
-                                    </button>
+                                    </button> --}}
                                     <form action="{{ asset('dashboard/legislatif/'. $data->id_legislatif) }}" method="POST" class="d-inline">
                                         @method("delete")
                                         @csrf
@@ -113,7 +113,7 @@
   </div>
 
   {{-- Edit Modal --}}
-  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  {{-- <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -147,9 +147,9 @@
             </form>
       </div>
     </div>
-  </div>
+  </div> --}}
 @endsection
-@section("script")
+{{-- @section("script")
   <script>
   $(document).ready(function() {
   $.ajaxSetup({
@@ -169,8 +169,8 @@
         dataType: "json",
         success: resp => {
             $("#edit_form").attr("action", `{{ asset('dashboard/legislatif/${resp.id_legislatif}') }}`)
-            $("#edit_legislatif").val(resp.nama_legislatif)
-            $("#edit_type").val(resp.type)
+            $("#edit_legislatif").val(resp.nama_legislatif);
+            $("#edit_type").val(resp.type);        
         } 
       })
   }
@@ -178,4 +178,4 @@
   $(".getData").on("click", getData);
   })
 </script>
-@endsection
+@endsection --}}

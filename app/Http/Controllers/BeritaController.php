@@ -54,7 +54,7 @@ class BeritaController extends Controller
             }
             return response()->json($data, 200);
         }
-
+        
         if (auth("caleg")->check()) {
             $request["id_caleg"] = auth()->user()->id_caleg;
         }
@@ -85,6 +85,7 @@ class BeritaController extends Controller
      */
     public function show(News $news, $id_news)
     {
+        //
     }
 
     /**
@@ -111,7 +112,7 @@ class BeritaController extends Controller
             $data = News::find($id_news);
             $this->authorize("all-caleg", $data);
         }
-
+        
         if ($request->publish) {
             if(News::where('id_news', $id_news)->update(["aktif" => $request->publish])){
                 return redirect('/infoPolitik/berita')->with('success', 'Success Updating Data News');

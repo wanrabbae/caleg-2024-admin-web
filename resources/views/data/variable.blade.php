@@ -64,11 +64,7 @@
                                    <button type="button" class="btn btn-warning mx-3 getData" value="{{ $item->id_variabel }}" data-bs-toggle="modal" data-bs-target="#exampleModal1">
                                        <i class="fas fa-edit"></i>
                                    </button>
-<<<<<<< HEAD
                                    <form action="{{ asset("survey/VariableSurvey/" . $item->id_variabel) }}" method="post" class="d-inline">
-=======
-                                   <form action="{{ asset("survey/HasilSurvey/" . $item->id_variabel) }}" method="post" class="d-inline">
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
                                     @method('delete')
                                     @csrf
                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin Ingin Menghapus Variabel {{ $item->nama_variabel }}')">
@@ -197,11 +193,7 @@
 
   let getData = e => {
     $.ajax({
-<<<<<<< HEAD
         url: `{{ asset('survey/VariableSurvey') }}`,
-=======
-        url: `{{ asset('survey/HasilSurvey') }}`,
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
         method: "POST",
         data: {
           getData: true,
@@ -209,11 +201,7 @@
         },
         dataType: "json",
         success: resp => {
-<<<<<<< HEAD
             $("#edit_form").attr("action", `{{ asset('survey/VariableSurvey/${resp.id_variabel}') }}`)
-=======
-            $("#edit_form").attr("action", `{{ asset('survey/HasilSurvey/${resp.id_variabel}') }}`)
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
             $("#edit_pertanyaan").val(resp.pertanyaan);
             @auth("web")
             $("#edit_id_caleg").val(resp.id_caleg)
@@ -224,12 +212,6 @@
   }
 
   $(".getData").on("click", getData);
-<<<<<<< HEAD
-=======
-  $(document).on("click", function() {
-      $(".getData").on("click", getData);
-  })
->>>>>>> ca71d608ae3bc759255ca2f8d6a423981dcbc151
   })
   </script>
 @endsection

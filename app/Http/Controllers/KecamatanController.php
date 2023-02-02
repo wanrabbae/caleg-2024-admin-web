@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Helper;
 use App\Models\Provinsi;
-use App\Models\Kecamatan;
 use App\Models\Kabupaten;
+use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 
 class KecamatanController extends Controller
@@ -48,7 +48,7 @@ class KecamatanController extends Controller
         if ($request->has("getData") && $request->getData) {
             return response()->json(Kecamatan::find($request->data), 200);
         }
-
+        
         if ($request->has("getProvinsi") && $request->getProvinsi) {
             $data = Kabupaten::where("id_provinsi", $request->data)->get();
             if (!$data->count()) {
@@ -73,8 +73,8 @@ class KecamatanController extends Controller
         $data = $request->validate([
             "nama_kecamatan" => "required|max:255|unique:kecamatan",
             "id_kabupaten" => "required",
-            "dapil" => "",
-            "wilayah" => "",
+            "dapil" => "nullable",
+            "wilayah" => "nullable",
         ]);
 
         if (Kecamatan::create($data)) {
@@ -117,7 +117,7 @@ class KecamatanController extends Controller
         $rules = [
             "wilayah" => "",
         ];
-
+        
         if ($request->id_kabupaten && $request->id_kabupaten != $kecamatan->id_kabupaten) {
             $rules["id_kabupaten"] = "required";
         }

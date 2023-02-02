@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous"></script>
 </head>
 <body>
     <style>
@@ -38,10 +39,10 @@
     </style>
     <div class="container">
         <img src="{{ asset("images/jagat.png") }}" alt="">
-        <h1 style="margin-top: 32px; text-align: center">Aktivasi Akun</h1>
+        <h1 style="margin-top: 32px;">Aktivasi Akun</h1>
         <p style="font-size: 20px; text-align: center;">Kami Mengirimkan Email Ini Untuk Memverifikasi Akun Anda, Silahkan Klik Tombol Dibawah Ini</p>
-        <a href="{{ env("APP_URL") . "/aktivasi?token=$data->reset_token" }}" style="outline: none; text-decoration: none">
-            <button type="button" style="color: white; background-color: #4e73df; padding: 24px; border-radius: 6px; font-size: 24px; border: none; outline: none; margin: auto; display: block; cursor: pointer">
+        <a href="{{ asset("aktivasi?token=" . $data->reset_token) }}">
+            <button class="btn" type="submit">
                 Aktivasi Akun
             </button>
         </a>

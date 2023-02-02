@@ -17,19 +17,17 @@ class ReportController extends Controller
         ]);
 
         $transaksi;
-
+        
         if ($data["type"] == "jurnal") {
-            $transaksi = Rk_transaksi::with("kategori")->where("id_caleg", auth()->user()->id_caleg)->whereBetween("tgl_transaksi", [
+            $transaksi = Rk_transaksi::with("kategori")->whereBetween("tgl_transaksi", [
                 $data["start"], $data["end"]
             ])->orderBy("tgl_transaksi")->get();
         };
-        
+
         if ($data["type"] == "neraca") {
-            $transaksi = Rk_kategori::where("id_caleg", auth()->user()->id_caleg)->get();
+            $transaksi = Rk_kategori::all();
             foreach ($transaksi as $i => $item1) {
-                $dataTransaksi = Rk_transaksi::where("id_caleg", auth()->user()->id_caleg)->where("id_kategori", $item1->id_kategori)->whereBetween("tgl_transaksi", [
-                $data["start"], $data["end"]
-            ])->get();
+                $dataTransaksi = Rk_transaksi::where("id_kategori", $item1->id_kategori)->get();
                 if ($dataTransaksi->count() != 0) {
                     foreach ($dataTransaksi as $item2) {
                         $transaksi[$i]["jumlah"] += $item2->jumlah;

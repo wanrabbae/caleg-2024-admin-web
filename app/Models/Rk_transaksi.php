@@ -12,7 +12,7 @@ class Rk_transaksi extends Model
     public $timestamps = false;
     protected $primaryKey = "id_transaksi";
     protected $guarded = ["id"];
-
+    
     public function scopeSearch($query, $search) {
         return $query->where("tgl_transaksi", "LIKE", "%$search%")
         ->orWhereHas("bank", function($bank) use ($search) {
@@ -36,11 +36,11 @@ class Rk_transaksi extends Model
         return $this->belongsTo(Rk_kategori::class, "id_kategori");
     }
 
-    public function bank() {
-        return $this->belongsTo(Rk_bank::class, "id_bank");
-    }
-
     public function wallet() {
         return $this->belongsTo(Rk_wallet::class, "id_wallet");
+    }
+
+    public function bank() {
+        return $this->belongsTo(Rk_bank::class, "id_bank");
     }
 }

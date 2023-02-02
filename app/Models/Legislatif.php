@@ -24,10 +24,6 @@ class Legislatif extends Model
         return $this->hasMany(Caleg::class, "id_legislatif");
     }
 
-    public function dapil() {
-        return $this->hasMany(Dapil::class, "id_legislatif");
-    }
-
     public static function boot() {
         parent::boot();
 
@@ -35,12 +31,7 @@ class Legislatif extends Model
             $legislatif->caleg()->each(function($value) {
                 $value->delete();
             });
-
-            $legislatif->dapil()->each(function($value) {
-                $value->delete();
-            });
         });
-
     }
 
 }
